@@ -1,0 +1,14 @@
+Project: Parakh, your own AI co-founder
+Repository: https://github.com/mayankmalik263/parakh
+Author: Mayank Malik (github.com/mayankmalik263)
+Built for: BharatCode Build League 2026
+
+How Parakh uses BharatCode
+- Every model call goes through BharatCode's OpenAI-compatible API: the four plan agents
+  (Strategist, Builder, Economics, Growth), the Critic, the clarifying questions, the
+  council chat and the evaluation suite.
+- Base URL: https://bharatcode.ai/api/model/v1
+- Model: qwen-3.8-27b
+- Code: agents/llm_router.py (the single entry point for every LLM call)
+- Visitors can use their own BharatCode key via the X-BharatCode-Key header.
+  It is used for that request only and never stored.
