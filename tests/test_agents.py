@@ -1,3 +1,5 @@
+import pytest
+
 from agents.context_block import build_context_block, build_profile
 
 
@@ -19,6 +21,36 @@ def test_profile_no_substring_false_positives():
     # "services" contains "vc"; "business" contains "us". Neither may flip the profile.
     p = build_profile(_state(market="Global", constraints="Selling services to business owners"))
     assert (p["funding"], p["currency"]) == ("unspecified", "USD")
+
+
+@pytest.mark.parametrize("idea", ["Notes sharing app for my college", "An app where hostel students tell us what to cook"])
+def test_blank_market_defaults_to_an_indian_student_founder(idea):
+    p = build_profile(_state(startup_idea=idea, market="", constraints=""))
+    assert (p["market"], p["currency"], p["funding"], p["student"]) == ("India", "INR", "bootstrapped", True)
+    assert (p["mvp_cap"], p["burn_cap"]) == (15_000, 10_000)
+
+
+def test_a_named_foreign_market_is_not_assumed_india():
+    p = build_profile(_state(startup_idea="Scheduling tool for dentists in the USA", market="not specified"))
+    assert (p["currency"], p["funding"], p["student"]) == ("USD", "unspecified", False)
+
+
+def test_clarify_markers_beat_the_question_wording():
+    # The free-text context carries the question text, which mentions both funding modes.
+    constraints = "Funding: Venture. Founder: Full-time. Context: How will you fund the start? Bootstrapped or venture?"
+    p = build_profile(_state(market="India", constraints=constraints))
+    assert (p["funding"], p["student"], p["burn_cap"]) == ("venture", False, None)
+
+
+def test_working_founder_in_india_gets_the_wider_bootstrapped_caps():
+    p = build_profile(_state(market="India", constraints="Funding: Bootstrapped. Founder: Professional."))
+    assert (p["student"], p["mvp_cap"], p["burn_cap"]) == (False, 40_000, 30_000)
+
+
+def test_student_context_block_is_campus_first():
+    block = build_context_block(_state(market="India"))
+    assert "nights and weekends" in block and "WhatsApp groups" in block
+    assert "MVP build cost under ₹15,000" in block and "Monthly burn under ₹10,000" in block
 
 
 def test_context_block_bootstrapped_rules():

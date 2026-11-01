@@ -21,22 +21,67 @@ Rules for everything you write:
 - A solo founder with AI coding tools (Cursor, v0, Claude Code) ships what a 5-person team did in 2020. Size plans accordingly.
 - Stay inside your own section. Other agents own the other sections; use their numbers as fixed inputs."""
 
-_INDIA = re.compile(r"\b(india|indian|inr|₹|delhi|mumbai|bangalore|bengaluru|dehradun|pune|hyderabad|chennai|kolkata)\b", re.I)
+_INDIA = re.compile(
+    r"(₹|\b(india|indian|inr|bharat|upi|delhi|ncr|noida|gurgaon|gurugram|mumbai|bangalore|bengaluru|dehradun|pune|"
+    r"hyderabad|chennai|kolkata|jaipur|lucknow|chandigarh|ahmedabad|indore|bhopal|kochi|rohtak|patna)\b)", re.I)
+# Somewhere else named outright: don't assume India for these.
+_ELSEWHERE = re.compile(
+    r"\b(usa|u\.s\.a?|united states|america|american|uk|united kingdom|britain|europe|european|canada|australia|"
+    r"dubai|uae|singapore|germany|worldwide)\b|\bglobal market\b|\bglobal (customers|users|audience)\b", re.I)
+_UNSET_MARKET = {"", "not specified", "none", "unspecified", "any"}
 _BOOTSTRAP = re.compile(r"\bbootstrap", re.I)
 _VENTURE = re.compile(r"\b(venture|vc|seed|angel|series a|funded)\b", re.I)
+# Explicit markers the frontend adds from the clarify answers. They beat keyword guessing, because the
+# free-text context also carries the question wording ("Bootstrapped or Venture Backed?").
+_FUNDING_MARK = re.compile(r"\bfunding:\s*(bootstrapped|venture)", re.I)
+_FOUNDER_MARK = re.compile(r"\bfounder:\s*(student|full-time|professional)", re.I)
+_NOT_STUDENT = re.compile(r"\b(not a student|full[- ]time founder|working professional|side project from my job)\b", re.I)
+
+# Caps for a bootstrapped founder before revenue, in the plan currency. A student funds the start from
+# savings and pocket money, so their caps are tighter than an Indian founder working full time.
+CAPS = {
+    "student_india": {"mvp_cap": 15_000, "burn_cap": 10_000},
+    "india": {"mvp_cap": 40_000, "burn_cap": 30_000},
+    "global": {"mvp_cap": 500, "burn_cap": 500},
+}
 
 
 def build_profile(state: dict) -> dict:
-    market = state.get("market") or "Global"
+    """
+    Parakh is built for Indian student founders, so that is the default: a blank market means India,
+    and an Indian founder who doesn't say otherwise is a bootstrapped student. Anything the founder
+    states (another country, venture funding, working full time) overrides the default.
+    """
+    raw_market = (state.get("market") or "").strip()
     constraints = state.get("constraints") or ""
-    is_india = bool(_INDIA.search(f"{market} {state.get('startup_idea', '')}"))
+    idea = state.get("startup_idea", "")
 
-    if _BOOTSTRAP.search(constraints):
+    market_unset = raw_market.lower() in _UNSET_MARKET
+    if _INDIA.search(f"{raw_market} {idea}"):
+        is_india = True
+    elif market_unset:
+        is_india = not _ELSEWHERE.search(f"{idea} {constraints}")
+    else:
+        is_india = False
+    market = raw_market if not market_unset else ("India" if is_india else "Global")
+
+    marked = _FUNDING_MARK.search(constraints)
+    if marked:
+        funding = marked.group(1).lower()
+    elif _BOOTSTRAP.search(constraints):
         funding = "bootstrapped"
     elif _VENTURE.search(constraints):
         funding = "venture"
     else:
-        funding = "unspecified"
+        funding = "bootstrapped" if is_india else "unspecified"
+
+    # Student mode is the Indian student founder: it changes caps, channels and pricing to India's.
+    founder = _FOUNDER_MARK.search(constraints)
+    if founder:
+        student = founder.group(1).lower() == "student"
+    else:
+        student = not _NOT_STUDENT.search(constraints)
+    student = student and is_india and funding == "bootstrapped"
 
     profile = {
         "market": market,
@@ -44,12 +89,13 @@ def build_profile(state: dict) -> dict:
         "currency": "INR" if is_india else "USD",
         "symbol": "₹" if is_india else "$",
         "funding": funding,
+        "student": student,
         "burn_cap": None,
         "mvp_cap": None,
     }
     if funding == "bootstrapped":
-        profile["burn_cap"] = 30_000 if is_india else 500
-        profile["mvp_cap"] = 40_000 if is_india else 500
+        tier = "global" if not is_india else ("student_india" if student else "india")
+        profile.update(CAPS[tier])
     return profile
 
 
@@ -58,7 +104,21 @@ def _rules(profile: dict) -> list[str]:
     rules = [f"All money in {profile['currency']} ({s}). " + (
         "Indian benchmarks: UPI, Razorpay, Indian pricing power." if profile["is_india"]
         else "Global/US benchmarks: Stripe, US pricing power.")]
-    if profile["funding"] == "bootstrapped":
+    if profile.get("student"):
+        rules += [
+            "Founder: a student in India, building nights and weekends (about 15 hours a week) around classes and exams. "
+            "No VC, no hires, no office. Batchmates or a friend can help part time.",
+            f"Money: starting capital is the founder's own savings, usually {s}5,000-{s}25,000 unless they said otherwise. "
+            f"MVP build cost under {s}{profile['mvp_cap']:,}. Monthly burn under {s}{profile['burn_cap']:,} before revenue.",
+            "Free tiers and student offers first (GitHub Student Developer Pack, Supabase and Netlify free tiers, Canva free). "
+            "Pay for a tool only once a customer pays.",
+            "Payments: UPI and Razorpay payment links. Indian students and consumers pay tens to a few hundred rupees a month; "
+            "small local businesses pay a few hundred to a few thousand rupees a month for something that clearly saves time or brings customers.",
+            "Customers and channels: campus first. Batchmates, seniors and juniors, college clubs and fests, class and hostel WhatsApp groups, "
+            "Instagram, LinkedIn, alumni, and shops or businesses near campus.",
+            "Timeline: ship in 3-4 weeks, first paying customer within 6 weeks. Leave exam weeks out of the plan.",
+        ]
+    elif profile["funding"] == "bootstrapped":
         rules += [
             "Bootstrapped: no VC, no angels, no hires. Founder + AI tools + occasional freelancer.",
             f"MVP build cost under {s}{profile['mvp_cap']:,}. Monthly burn under {s}{profile['burn_cap']:,} before revenue.",
@@ -78,7 +138,7 @@ def get_lessons_from_db(profile: dict, limit: int = 5) -> list[str]:
     """Most recent lessons for this profile. Advisory only, capped in count and length."""
     try:
         from supabase_client import get_supabase
-        tags = ["general", profile["funding"]] + (["india"] if profile["is_india"] else [])
+        tags = ["general"] + ([profile["funding"]] if profile["funding"] != "unspecified" else []) + (["india"] if profile["is_india"] else [])
         response = (
             get_supabase().table("agent_lessons").select("lesson")
             .in_("tag", tags).order("created_at", desc=True).limit(limit).execute()

@@ -59,7 +59,9 @@ def test_clarify_uses_llm_json(monkeypatch):
     canned = ClarifyResponse(questions=[{"question": f"Q{i}?", "options": ["A", "B", "C"]} for i in range(10)])
     monkeypatch.setattr(api, "call_llm_json", lambda prompt, schema, role: canned)
     data = client.post("/clarify", json={"idea": "A CRM for pet sitters"}).json()
-    assert len(data["questions"]) == 10
+    # The fixed market/founder/funding questions come first, word for word, then 3 idea-specific ones.
+    assert data["questions"][:3] == api.CLARIFY_FIXED
+    assert [q["question"] for q in data["questions"][3:]] == ["Q0?", "Q1?", "Q2?"]
 
 
 def test_clarify_falls_back_when_llm_fails(monkeypatch):
@@ -67,7 +69,7 @@ def test_clarify_falls_back_when_llm_fails(monkeypatch):
         raise RuntimeError("bharatcode down")
     monkeypatch.setattr(api, "call_llm_json", boom)
     data = client.post("/clarify", json={"idea": "A CRM for pet sitters"}).json()
-    assert len(data["questions"]) == 3
+    assert data["questions"][:3] == api.CLARIFY_FIXED and len(data["questions"]) == 4
 
 
 def test_simulate_endpoint_queues_job_only_its_owner_can_see(monkeypatch):
@@ -152,3 +154,14 @@ def test_clarify_without_key_uses_the_server_key(monkeypatch):
     monkeypatch.setattr(api, "call_llm_json", lambda *a, **k: seen.append(llm_router._user_key.get()) or canned)
     client.post("/clarify", json={"idea": "A CRM for pet sitters"})
     assert seen == [None]
+
+
+@pytest.mark.parametrize("language,expect_hinglish", [("hinglish", True), ("en", False)])
+def test_chat_can_answer_in_hinglish(monkeypatch, language, expect_hinglish):
+    monkeypatch.setattr(api, "get_supabase", lambda: FakeSupabase({"simulations": [
+        {"id": "sim-1", "job_id": "job-1", "user_id": "user-1", "final_report": "# Build Plan"}]}))
+    seen = {}
+    monkeypatch.setattr(api, "call_llm", lambda prompt, role, system: seen.update(system=system) or "Haan, chalega.")
+    r = client.post("/simulate/job-1/chat", json={"language": language, "messages": [{"role": "user", "content": "Price theek hai?"}]})
+    assert r.status_code == 200
+    assert ("Hinglish" in seen["system"]) is expect_hinglish

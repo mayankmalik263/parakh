@@ -1,8 +1,7 @@
 {
   "last_updated": "2026-07-20",
   "version": "1.0",
-  "note": "Curated knowledge base of real SaaS tools and current pricing for Parakh AI agents. Prices are as of July 2026.",
-
+  "note": "Curated knowledge base of real SaaS tools and current pricing for Parakh AI agents. Prices are as of July 2026. India Student Launch Kit added Nov 2026; prices there marked unverified where unsure.",
   "categories": {
     "frontend_frameworks": {
       "label": "Frontend Frameworks",
@@ -42,7 +41,6 @@
         }
       ]
     },
-
     "backend_as_a_service": {
       "label": "Backend-as-a-Service (BaaS)",
       "recommended_default": "Supabase",
@@ -81,7 +79,6 @@
         }
       ]
     },
-
     "ai_coding_tools": {
       "label": "AI Coding & Prototyping Tools",
       "recommended_default": "Cursor (for coding), v0 (for UI prototyping)",
@@ -136,7 +133,6 @@
         }
       ]
     },
-
     "hosting_deployment": {
       "label": "Hosting & Deployment",
       "recommended_default": "Vercel (for Next.js), Netlify (for commercial free tier)",
@@ -183,7 +179,6 @@
         }
       ]
     },
-
     "payments": {
       "label": "Payment Gateways",
       "recommended_default_india": "Razorpay",
@@ -223,7 +218,6 @@
         }
       ]
     },
-
     "marketing_growth": {
       "label": "Marketing & Growth / Cold Outreach Tools",
       "recommended_default": "Apollo.io (free tier for leads) + Manual LinkedIn DMs (free)",
@@ -278,7 +272,6 @@
         }
       ]
     },
-
     "design_ui": {
       "label": "Design & UI",
       "recommended_default": "shadcn/ui + TailwindCSS",
@@ -309,7 +302,6 @@
         }
       ]
     },
-
     "domains_email": {
       "label": "Domains & Email",
       "recommended_default": "Cloudflare (domain) + Resend (transactional email)",
@@ -348,7 +340,6 @@
         }
       ]
     },
-
     "analytics": {
       "label": "Analytics & Monitoring",
       "recommended_default": "PostHog",
@@ -379,7 +370,6 @@
         }
       ]
     },
-
     "auth_providers": {
       "label": "Authentication Providers",
       "recommended_default": "Supabase Auth (if using Supabase) or Clerk (standalone)",
@@ -409,36 +399,141 @@
           "pricing_inr": "Essential: ~₹2,940/mo"
         }
       ]
+    },
+    "india_student_launch": {
+      "label": "India Student Launch Kit",
+      "recommended_default": "WhatsApp Business app + Razorpay Payment Links + Google Forms",
+      "tools": [
+        {
+          "name": "WhatsApp Business app",
+          "description": "Catalogue, quick replies and labels on a business number. Where Indian customers already are.",
+          "free_tier": "Free app",
+          "paid_tier": null,
+          "best_for": "Talking to first customers, order taking, campus groups"
+        },
+        {
+          "name": "Razorpay Payment Links",
+          "description": "Send a payment link over WhatsApp or Instagram; accepts UPI, cards and netbanking. No website needed.",
+          "free_tier": "No setup fee",
+          "paid_tier": null,
+          "transaction_fee": "Per-transaction fee as on Razorpay checkout (price not verified for links)",
+          "best_for": "Taking the first payments before building checkout",
+          "pricing_inr": "Per-transaction fee; verify current rate"
+        },
+        {
+          "name": "Google Forms",
+          "description": "Waitlists, pre-orders and feedback forms with responses in Google Sheets.",
+          "free_tier": "Free with a Google account",
+          "paid_tier": null,
+          "best_for": "Validating demand before building"
+        },
+        {
+          "name": "GitHub Student Developer Pack",
+          "description": "Free offers from developer tools for verified students.",
+          "free_tier": "Free for verified students",
+          "paid_tier": null,
+          "best_for": "Student founders cutting tool costs to zero"
+        },
+        {
+          "name": "Canva",
+          "description": "Posters, Instagram posts and pitch slides from templates.",
+          "free_tier": "Free plan",
+          "paid_tier": "Pro (price not verified)",
+          "best_for": "Campus posters, reels covers, pitch decks"
+        }
+      ]
     }
   },
-
   "starter_stack_bootstrapped": {
     "label": "Recommended Bootstrapped Starter Stack (Month 1 Cost: $0)",
     "stack": [
-      {"tool": "Next.js (App Router)", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "Supabase Free (DB + Auth)", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "TailwindCSS + shadcn/ui", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "Vercel Hobby (Hosting)", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "PostHog Free (Analytics)", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "Resend Free (Email)", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "Cursor Hobby (AI Coding)", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "Cloudflare Domain (.com)", "cost": "$9.77/yr", "cost_inr": "₹820/yr"},
-      {"tool": "Razorpay (India) / Stripe (Global)", "cost": "Pay per transaction", "cost_inr": "2% per txn"}
+      {
+        "tool": "Next.js (App Router)",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "Supabase Free (DB + Auth)",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "TailwindCSS + shadcn/ui",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "Vercel Hobby (Hosting)",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "PostHog Free (Analytics)",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "Resend Free (Email)",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "Cursor Hobby (AI Coding)",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "Cloudflare Domain (.com)",
+        "cost": "$9.77/yr",
+        "cost_inr": "₹820/yr"
+      },
+      {
+        "tool": "Razorpay (India) / Stripe (Global)",
+        "cost": "Pay per transaction",
+        "cost_inr": "2% per txn"
+      }
     ],
     "total_monthly_cost": "$0 (+ ~$10/yr for domain)",
     "total_monthly_cost_inr": "₹0 (+ ~₹820/yr for domain)"
   },
-
   "starter_stack_scale_up": {
     "label": "Scale-Up Stack (When Revenue Starts: ~$85/mo)",
     "stack": [
-      {"tool": "Next.js (App Router)", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "Supabase Pro (DB + Auth)", "cost": "$25/mo", "cost_inr": "₹2,100/mo"},
-      {"tool": "Vercel Pro (Hosting)", "cost": "$20/mo", "cost_inr": "₹1,680/mo"},
-      {"tool": "Cursor Pro (AI Coding)", "cost": "$20/mo", "cost_inr": "₹1,680/mo"},
-      {"tool": "Resend Pro (Email)", "cost": "$20/mo", "cost_inr": "₹1,680/mo"},
-      {"tool": "PostHog Free (Analytics)", "cost": "$0", "cost_inr": "₹0"},
-      {"tool": "Cloudflare Domain (.com)", "cost": "$9.77/yr", "cost_inr": "₹820/yr"}
+      {
+        "tool": "Next.js (App Router)",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "Supabase Pro (DB + Auth)",
+        "cost": "$25/mo",
+        "cost_inr": "₹2,100/mo"
+      },
+      {
+        "tool": "Vercel Pro (Hosting)",
+        "cost": "$20/mo",
+        "cost_inr": "₹1,680/mo"
+      },
+      {
+        "tool": "Cursor Pro (AI Coding)",
+        "cost": "$20/mo",
+        "cost_inr": "₹1,680/mo"
+      },
+      {
+        "tool": "Resend Pro (Email)",
+        "cost": "$20/mo",
+        "cost_inr": "₹1,680/mo"
+      },
+      {
+        "tool": "PostHog Free (Analytics)",
+        "cost": "$0",
+        "cost_inr": "₹0"
+      },
+      {
+        "tool": "Cloudflare Domain (.com)",
+        "cost": "$9.77/yr",
+        "cost_inr": "₹820/yr"
+      }
     ],
     "total_monthly_cost": "~$85/mo",
     "total_monthly_cost_inr": "~₹7,140/mo"

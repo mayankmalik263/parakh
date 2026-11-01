@@ -14,6 +14,8 @@ from fastapi import FastAPI, HTTPException, BackgroundTasks, Depends
 from auth import get_current_user
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 from job_store import create_job, update_job, get_job, JobStatus
@@ -59,6 +61,22 @@ class ClarifyRequest(BaseModel):
     tier: str = "free"  # ignored; kept so older clients don't 422
 
 
+# The first clarify questions are fixed, because the frontend maps their answers to market, funding and
+# founder markers that build_profile reads. Keep the option wording in sync with simulate/page.tsx.
+CLARIFY_FIXED = [
+    {"question": "Where are your first customers?",
+     "options": ["India (pay in ₹)", "Outside India (pay in $)", "Both, starting with India"]},
+    {"question": "Who's building this?",
+     "options": ["Me, a student (nights and weekends)", "Me, full time", "Me, alongside a job"]},
+    {"question": "How will you fund the start?",
+     "options": ["My own savings or pocket money", "Friends and family", "I'm raising from investors"]},
+]
+
+HINGLISH_RULE = """
+Reply in Hinglish: everyday Hindi and English mixed, written in Roman script, the way Indian college friends text each other.
+Keep numbers, tool names and the plan's terms (MRR, CAC, runway) in English."""
+
+
 class ClarifyQuestion(BaseModel):
     question: str
     options: list[str] = Field(min_length=2, max_length=4)
@@ -74,6 +92,8 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     tier: str = "free"
     messages: list[ChatMessage]
+    # "hinglish" makes the council answer in Hindi-English mix, written in Roman script.
+    language: Literal["en", "hinglish"] = "en"
 
 
 class EvaluateRequest(BaseModel):
@@ -142,34 +162,23 @@ def simulate(req: SimulateRequest, background_tasks: BackgroundTasks, user_id: s
 
 @app.post("/clarify")
 def clarify_idea(req: ClarifyRequest, user_id: str = Depends(get_current_user)):
-    prompt = f"""You are an expert startup consultant. A founder gave you this raw startup idea:
+    prompt = f"""You help student founders in India sharpen a raw startup idea before planning. The idea:
 "{req.idea}"
 
-Before planning, clarify their target market, funding constraint, revenue model and customer.
-Write exactly 10 multiple-choice questions, each with 3-4 distinct options.
-The first question must be the target market (include "India (INR)" and "Global (USD)" options).
-The second must be the funding constraint (include "Bootstrapped" and "Venture Backed" options)."""
+Market, funding and who is building it are already asked separately. Write exactly 3 more multiple-choice questions,
+specific to THIS idea, each with 3-4 short, distinct options, in plain words a first-time founder understands:
+1. who exactly pays, 2. how they pay (one-time, monthly, per use, commission), 3. the one thing the idea must get right.
+Options should be concrete for the Indian market where that fits."""
     try:
-        return call_llm_json(prompt, ClarifyResponse, role="clarify").model_dump()
+        extra = call_llm_json(prompt, ClarifyResponse, role="clarify").questions[:3]
+        return {"questions": CLARIFY_FIXED + [q.model_dump() for q in extra]}
     except Exception as e:
         print(f"Error in /clarify: {e}")
-        # Fallback questions if LLM fails
-        return {
-            "questions": [
-                {
-                    "question": "What is your primary market?",
-                    "options": ["Global", "India", "United States", "Europe"]
-                },
-                {
-                    "question": "What is your funding situation?",
-                    "options": ["Bootstrapped", "Venture Backed"]
-                },
-                {
-                    "question": "What is the primary revenue model?",
-                    "options": ["B2B SaaS", "B2C Subscription", "Marketplace / Commission", "One-time Purchase"]
-                }
-            ]
-        }
+        # Fallback questions if the LLM fails: the fixed ones plus a revenue model question.
+        return {"questions": CLARIFY_FIXED + [{
+            "question": "How will customers pay you?",
+            "options": ["Monthly subscription", "One-time payment", "Per use or per order", "Commission on each sale"],
+        }]}
 
 
 @app.get("/simulate/{job_id}")
@@ -208,6 +217,7 @@ def chat_with_council(job_id: str, req: ChatRequest, user_id: str = Depends(get_
     if not final_report:
         raise HTTPException(status_code=404, detail="Simulation not found")
 
+    language = HINGLISH_RULE if req.language == "hinglish" else ""
     system_prompt = f"""You are the Parakh council. You just created this build plan for the founder:
 
 {final_report}
@@ -215,7 +225,7 @@ def chat_with_council(job_id: str, req: ChatRequest, user_id: str = Depends(get_
 The council: Strategist (problem, customer, competitors), Builder (stack, tools, steps),
 Economics (pricing, burn, runway, targets), Growth (channels, first customers), Critic (review).
 If the founder addresses one of them (e.g. "@Economics"), answer as that role. Otherwise answer as the Critic.
-Keep answers concise, brutally honest, and specific to their constraints and the numbers in the plan."""
+Keep answers concise, brutally honest, and specific to their constraints and the numbers in the plan.{language}"""
 
     if not req.messages or not req.messages[-1].content.strip():
         raise HTTPException(status_code=400, detail="Empty message")
