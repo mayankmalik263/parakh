@@ -81,6 +81,7 @@ export type AgentEventType =
   | 'agent_done'
   | 'supervisor_result'
   | 'debate_loop'
+  | 'math_fixed'
   | 'job_done'
   | 'job_error';
 
@@ -97,6 +98,9 @@ export interface AgentEvent {
   forced?: boolean;
   // debate_loop: agents re-running in this revision pass
   agents?: string[];
+  // math_fixed: numbers the agents got wrong that code rewrote
+  fixes?: { label: string; unit: 'money' | 'months' | 'customers'; before: number; after: number }[];
+  symbol?: string;
   // error
   error?: string;
   timestamp?: number;

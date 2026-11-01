@@ -64,6 +64,7 @@ const EVENTS = [
   ['agent_start', 'An agent starts', 'agent, round'],
   ['agent_done', 'An agent finishes', 'agent, round, summary'],
   ['supervisor_result', 'The Critic is done', 'agreed, reason, conflicts, forced'],
+  ['math_fixed', 'Code corrected numbers the agents got wrong', 'round, symbol, fixes [{label, unit, before, after}]'],
   ['debate_loop', 'A revision round starts', 'round, agents, reason'],
   ['job_done', 'The plan is saved', '-'],
   ['job_error', 'The run failed', 'error'],

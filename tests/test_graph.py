@@ -82,8 +82,14 @@ def test_full_graph_revises_only_the_agent_at_fault(slices, profile, monkeypatch
         verdict="Viable if 4 clinics convert in 60 days.", adherence_score=0.9))[1])
     monkeypatch.setattr(go, "save_state", lambda *a, **k: None)
     monkeypatch.setattr(go, "get_lessons_from_db", lambda profile: [])
+    events = []
+    monkeypatch.setattr(go.event_bus, "publish", lambda job_id, event: events.append(event))
 
     final = go.run("SMS reminders for dental clinics", {"market": "US", "constraints": "bootstrapped"})
+
+    # The auto-repair is streamed to the live view: the agent's 999 and code's 160.
+    fixes = [f for e in events if e["type"] == "math_fixed" for f in e["fixes"]]
+    assert {"label": "Monthly burn", "unit": "money", "before": 999, "after": 160} in fixes
 
     assert calls == ["strategist", "builder", "economics", "growth", "critic", "economics", "critic"]
     assert final["revision"] == 1

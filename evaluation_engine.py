@@ -29,29 +29,29 @@ class StressScenarios(BaseModel):
     scenarios: List[StressScenario] = Field(min_length=1, max_length=3)
 
 
-def autofix_math(slices: Dict[str, Any]) -> List[str]:
+def autofix_math(slices: Dict[str, Any]) -> List[Dict[str, Any]]:
     """
     Rewrites numbers that have exactly one right answer (burn total, runway, break-even, MRR, CAC)
     so a revision round is never spent on arithmetic. Judgement calls (prices, targets, caps) are
-    left for check_plan to report. Returns what was changed.
+    left for check_plan to report. Returns what was changed: [{label, unit, before, after}].
     """
-    fixed: List[str] = []
+    fixed: List[Dict[str, Any]] = []
 
-    def put(d: dict, key: str, value, label: str, tol: float):
+    def put(d: dict, key: str, value, label: str, tol: float, unit: str = "money"):
         if abs(d[key] - value) > tol:
-            fixed.append(f"{label}: {d[key]:,.1f} -> {value:,.1f}")
+            fixed.append({"label": label, "unit": unit, "before": d[key], "after": value})
             d[key] = value
 
     econ, growth = slices.get("economics"), slices.get("growth")
     if econ:
         burn = sum(i["monthly_cost"] for i in econ["burn_line_items"])
-        put(econ, "monthly_burn", burn, "monthly_burn", 0.5)
+        put(econ, "monthly_burn", burn, "Monthly burn", 0.5)
         if burn > 0:
-            put(econ, "runway_months", round(econ["starting_capital"] / burn, 1), "runway_months", 0.05)
+            put(econ, "runway_months", round(econ["starting_capital"] / burn, 1), "Runway", 0.05, "months")
         arpc = econ["avg_revenue_per_customer"]
         margin = arpc - econ["delivery_cost_per_customer"]
         if margin > 0:
-            put(econ, "break_even_customers", math.ceil(burn / margin) if burn > 0 else 0, "break_even_customers", 0)
+            put(econ, "break_even_customers", math.ceil(burn / margin) if burn > 0 else 0, "Break-even customers", 0, "customers")
         for t in econ["revenue_targets"]:
             put(t, "mrr", t["paying_customers"] * arpc, f"Day {t['day']} MRR", 0.5)
     if growth:

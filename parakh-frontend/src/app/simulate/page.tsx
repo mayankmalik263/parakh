@@ -593,6 +593,30 @@ function ActivityLogEntry({ event }: { event: AgentEvent }) {
         </div>
       );
 
+    case 'math_fixed': {
+      const fmt = (v: number, unit: string) =>
+        unit === 'money' ? `${event.symbol ?? '₹'}${Math.round(v).toLocaleString(event.symbol === '$' ? 'en-US' : 'en-IN')}`
+          : unit === 'months' ? `${v} mo` : v.toLocaleString('en-IN');
+      return (
+        <div className="enter my-2 rounded-2xl border-l-2 border-tertiary bg-tertiary/10 px-4 py-3.5">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-tertiary">
+            <Icon name="calculate" className="text-[1.05rem]" />
+            Code corrected {event.fixes?.length} number{event.fixes?.length === 1 ? '' : 's'} the agents got wrong
+          </div>
+          <ul className="m-0 flex list-none flex-col gap-1.5 p-0 text-sm">
+            {event.fixes?.map((f, i) => (
+              <li key={i} className="flex flex-wrap items-baseline gap-x-2 tabular-nums">
+                <span className="muted">{f.label}</span>
+                <span className="text-[#8d8b8b] line-through">{fmt(f.before, f.unit)}</span>
+                <span aria-hidden>→</span>
+                <span className="font-semibold text-tertiary">{fmt(f.after, f.unit)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
     case 'debate_loop':
       return (
         <div className="enter my-2 flex items-center gap-3 text-sm text-tertiary">

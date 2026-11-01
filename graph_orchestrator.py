@@ -96,7 +96,9 @@ def critic_node(state: StartupState) -> StartupState:
 
     fixed = autofix_math(state["slices"])
     if fixed:
-        print(f"[Critic] code corrected {len(fixed)} number(s): {'; '.join(fixed)}")
+        print(f"[Critic] code corrected {len(fixed)} number(s): " + "; ".join(f"{f['label']} {f['before']:,.1f} -> {f['after']:,.1f}" for f in fixed))
+        # The moment the auto-repair happens, made visible: the agent's number and the one code computed.
+        event_bus.publish(job_id, {"type": "math_fixed", "round": round_num, "symbol": state["profile"]["symbol"], "fixes": fixed})
     math = check_plan(state["slices"], state["profile"])
     try:
         result = critic.run(state, math)
