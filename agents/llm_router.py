@@ -31,11 +31,15 @@ BASE_URL = os.getenv("BHARATCODE_BASE_URL", "https://bharatcode.ai/api/model/v1"
 MODEL = os.getenv("PARAKH_MODEL", "qwen-3.8-27b")
 CRITIC_MODEL = os.getenv("PARAKH_CRITIC_MODEL") or MODEL
 
+# Reads pitch-deck images. Set PARAKH_VISION_MODEL if your tier serves a separate vision model.
+VISION_MODEL = os.getenv("PARAKH_VISION_MODEL") or MODEL
+
 ROLE_MODELS = {role: MODEL for role in ("strategist", "builder", "economics", "growth", "chat", "clarify", "utility")}
 ROLE_MODELS["critic"] = CRITIC_MODEL
+ROLE_MODELS["vision"] = VISION_MODEL
 
-# Next models to try when one fails. Only a separate Critic model has somewhere to fall back to.
-FALLBACK = {CRITIC_MODEL: [MODEL]} if CRITIC_MODEL != MODEL else {}
+# Next models to try when one fails. Only a separately configured model has somewhere to fall back to.
+FALLBACK = {m: [MODEL] for m in (CRITIC_MODEL, VISION_MODEL) if m != MODEL}
 
 # Ask for response_format={"type": "json_object"} on JSON calls. Set BHARATCODE_JSON_MODE=0 if the
 # API rejects it: _extract_json still pulls the object out of a plain-text reply.
@@ -198,13 +202,18 @@ def call_llm_json(
     role: str = "utility",
     system: str | None = None,
     max_tokens: int = 3000,
+    images: list[str] | None = None,
 ) -> T:
     """
     JSON call validated against a Pydantic model. On invalid output, retries once
     with the validation errors fed back to the model.
+
+    images: data URLs (data:image/png;base64,...) sent with the prompt in the OpenAI
+    vision message format, for models that accept image input.
     """
     user = f"{prompt}\n\nRespond with ONLY a JSON object matching this JSON Schema:\n{_schema_hint(schema)}"
-    messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": user}]
+    content = [{"type": "text", "text": user}, *({"type": "image_url", "image_url": {"url": url}} for url in images)] if images else user
+    messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": content}]
 
     last_error: Exception | None = None
     for attempt in (1, 2):

@@ -362,3 +362,145 @@ GO-TO-MARKET: {json.dumps(plan.get("go_to_market", []))}"""
                 {"title": "Payment Rails Down", "constraint_text": "The primary payment provider is down for 7 days."},
                 {"title": "Marketing Cost Spike", "constraint_text": "Customer Acquisition Cost spikes by 3x on all major ad networks."},
             ]
+
+
+# ── Deck critique: the same arithmetic, run on numbers read from a deck ──────
+
+def format_money(value: float, currency: str = "INR") -> str:
+    """₹2,00,000 with Indian lakh grouping for INR, $200,000 for USD."""
+    symbol = "₹" if currency == "INR" else "$"
+    sign, value = ("-" if value < 0 else ""), abs(value)
+    whole = f"{value:,.0f}" if currency != "INR" else _lakh(round(value))
+    return f"{sign}{symbol}{whole}"
+
+
+def _lakh(n: int) -> str:
+    digits = str(n)
+    if len(digits) <= 3:
+        return digits
+    head, tail = digits[:-3], digits[-3:]
+    groups = []
+    while len(head) > 2:
+        groups.insert(0, head[-2:])
+        head = head[:-2]
+    return ",".join([head, *groups, tail]) if head else ",".join([*groups, tail])
+
+
+def check_claims(claims: Dict[str, Any]) -> tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """
+    Recomputes every number in a deck that follows from its other numbers, and flags the ones
+    that don't hold. Only uses what the deck states; a missing input skips that check.
+    Returns (findings, recomputed): findings are [{field, claimed, computed, problem, fix, severity}],
+    recomputed is [{label, value, unit, formula}] for the numbers code worked out.
+    """
+    cur = claims.get("currency") or "INR"
+    m = lambda v: format_money(v, cur)  # noqa: E731
+    findings: List[Dict[str, Any]] = []
+    recomputed: List[Dict[str, Any]] = []
+
+    def flag(field, claimed, computed, problem, fix, severity="error"):
+        findings.append({"field": field, "claimed": claimed, "computed": computed,
+                         "problem": problem, "fix": fix, "severity": severity})
+
+    def show(label, value, unit, formula):
+        recomputed.append({"label": label, "value": value, "unit": unit, "formula": formula})
+
+    price = claims.get("price_per_customer_monthly")
+    delivery = claims.get("delivery_cost_per_customer")
+    burn = claims.get("monthly_burn")
+    cash = claims.get("cash_in_bank")
+    ask = claims.get("funding_ask")
+
+    items = [i for i in claims.get("burn_line_items") or [] if i.get("monthly_cost") is not None]
+    if items:
+        items_total = sum(i["monthly_cost"] for i in items)
+        show("Monthly burn from the line items", items_total, "money", " + ".join(m(i["monthly_cost"]) for i in items))
+        if burn is not None and abs(items_total - burn) > max(1, 0.01 * burn):
+            flag("monthly_burn", burn, items_total,
+                 f"Monthly burn says {m(burn)}, but the line items add up to {m(items_total)}.",
+                 f"Use {m(items_total)}, or list the costs that are missing.")
+        if burn is None:
+            burn = items_total
+
+    if burn and cash is not None:
+        runway = cash / burn
+        show("Runway", round(runway, 1), "months", f"{m(cash)} ÷ {m(burn)} a month")
+        claimed = claims.get("runway_months")
+        if claimed is not None and abs(claimed - runway) > max(0.5, 0.1 * runway):
+            flag("runway_months", claimed, round(runway, 1),
+                 f"Runway says {claimed:g} months, but {m(cash)} ÷ {m(burn)} a month is {runway:.1f} months.",
+                 f"Say {runway:.1f} months, or show where the extra cash comes from.")
+        if ask:
+            show("Runway if the raise closes", round((cash + ask) / burn, 1), "months", f"({m(cash)} + {m(ask)}) ÷ {m(burn)} a month")
+    elif claims.get("runway_months") is not None and burn:
+        flag("runway_months", claims["runway_months"], None,
+             f"Runway says {claims['runway_months']:g} months, but the deck never says how much cash that's based on.",
+             "Add cash in the bank, so anyone can check it.", "warning")
+    elif ask and burn:
+        show("Months the raise would last", round(ask / burn, 1), "months", f"{m(ask)} ÷ {m(burn)} a month")
+
+    margin = None
+    if price is not None:
+        margin = price - (delivery or 0)
+        if delivery is not None and margin <= 0:
+            flag("delivery_cost_per_customer", delivery, price,
+                 f"Each customer pays {m(price)} a month but costs {m(delivery)} to serve, so every sale loses money.",
+                 "Raise the price or cut what each customer gets until the margin is positive.")
+        if delivery is None and burn:
+            flag("delivery_cost_per_customer", None, None,
+                 "The deck doesn't say what serving one customer costs, so break-even below assumes it costs nothing.",
+                 "Add the monthly cost per customer (hosting, support, API usage, goods, delivery).", "warning")
+
+    if burn and margin and margin > 0:
+        be = math.ceil(burn / margin)
+        show("Paying customers to break even", be, "customers",
+             f"{m(burn)} ÷ {m(margin)} margin per customer" if delivery else f"{m(burn)} ÷ {m(price)} per customer")
+        claimed = claims.get("break_even_customers")
+        if claimed is not None and abs(claimed - be) > 1:
+            flag("break_even_customers", claimed, be,
+                 f"Break-even says {claimed:,} customers, but {m(burn)} ÷ {m(margin)} per customer needs {be:,}.",
+                 f"Say {be:,}, or change the price or the burn it rests on.")
+        current = claims.get("current_paying_customers")
+        if current is not None and current < be:
+            show("More paying customers needed to break even", be - current, "customers", f"{be:,} − {current:,} today")
+
+    if price:
+        customers, mrr = claims.get("current_paying_customers"), claims.get("current_mrr")
+        if customers is not None and mrr is not None:
+            expected = customers * price
+            if abs(expected - mrr) > max(1, 0.1 * expected):
+                flag("current_mrr", mrr, expected,
+                     f"MRR says {m(mrr)}, but {customers:,} customers × {m(price)} is {m(expected)}.",
+                     f"Say {m(expected)}, or explain the other revenue.")
+        last = None
+        for t in claims.get("revenue_targets") or []:
+            if t.get("paying_customers") is not None and t.get("mrr") is not None:
+                expected = t["paying_customers"] * price
+                if abs(expected - t["mrr"]) > max(1, 0.1 * expected):
+                    flag("revenue_targets", t["mrr"], expected,
+                         f"{t['label']}: MRR says {m(t['mrr'])}, but {t['paying_customers']:,} customers × {m(price)} is {m(expected)}.",
+                         "Make MRR equal customers × price, or show the other revenue line.")
+            if t.get("mrr") is not None:
+                if last is not None and t["mrr"] < last:
+                    flag("revenue_targets", t["mrr"], last, f"{t['label']}: MRR drops from {m(last)} to {m(t['mrr'])}.",
+                         "Explain the drop, or fix the order of the targets.", "warning")
+                last = t["mrr"]
+
+    for c in claims.get("channels") or []:
+        spend, new, cac = c.get("monthly_spend"), c.get("new_customers_per_month"), c.get("cac")
+        if spend is not None and new:
+            actual = spend / new
+            show(f"{c['name']}: cost per customer", round(actual), "money", f"{m(spend)} ÷ {new:,} customers")
+            if cac is not None and abs(actual - cac) > max(1, 0.2 * actual):
+                flag("channels", cac, round(actual),
+                     f"{c['name']}: CAC says {m(cac)}, but {m(spend)} ÷ {new:,} customers is {m(actual)}.",
+                     f"Say {m(actual)}, or show the cheaper results that back the lower number.")
+            cac = actual
+        if cac is not None and price and cac >= 3 * price:
+            flag("channels", cac, 3 * price,
+                 f"{c['name']}: it costs {m(cac)} to win a customer who pays {m(price)} a month. That takes over 3 months to earn back.",
+                 "Find a cheaper channel, or show customers stay long enough to pay it back.", "warning")
+        if cac and margin and margin > 0:
+            show(f"{c['name']}: months to earn back a customer", round(cac / margin, 1), "months", f"{m(cac)} ÷ {m(margin)} a month")
+
+    return findings, recomputed

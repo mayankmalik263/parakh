@@ -169,3 +169,72 @@ class StartupBusinessPlan(BaseModel):
     competition: List[Competitor] = Field(default_factory=list)
     key_conflicts: List[Conflict] = Field(default_factory=list)
     final_verdict: str
+
+
+# ── Deck critique: numbers read from a pitch deck or a pasted numbers sheet ──
+
+def _to_optional_number(value):
+    """Like _to_number, but blanks and "n/a" mean the deck didn't say: None."""
+    if value is None or (isinstance(value, str) and value.strip().lower() in ("", "n/a", "na", "-", "none", "null", "unknown")):
+        return None
+    return _to_number(value)
+
+
+OptMoney = Annotated[Annotated[float, Field(ge=0)] | None, BeforeValidator(_to_optional_number)]
+OptCount = Annotated[Annotated[int, Field(ge=0)] | None,
+                     BeforeValidator(lambda v: (lambda n: round(n) if isinstance(n, (int, float)) else n)(_to_optional_number(v)))]
+OptFloat = Annotated[Annotated[float, Field(ge=0)] | None, BeforeValidator(_to_optional_number)]
+
+
+class ClaimedLineItem(BaseModel):
+    item: str
+    monthly_cost: OptMoney = None
+
+
+class ClaimedTarget(BaseModel):
+    label: str = Field(description="When, as written, e.g. 'Month 6', 'Dec 2026', 'Year 1'")
+    paying_customers: OptCount = None
+    mrr: OptMoney = None
+
+
+class ClaimedChannel(BaseModel):
+    name: str
+    monthly_spend: OptMoney = None
+    new_customers_per_month: OptCount = None
+    cac: OptMoney = None
+
+
+class DeckClaims(BaseModel):
+    """Only what the deck states. Every number the deck doesn't give stays null: never guess or compute."""
+    startup_name: str = ""
+    one_liner: str = Field(default="", description="What the business does, in the deck's words, one sentence")
+    currency: Literal["INR", "USD"] = "INR"
+    price_per_customer_monthly: OptMoney = Field(default=None, description="Average monthly revenue per PAYING customer")
+    delivery_cost_per_customer: OptMoney = Field(default=None, description="Monthly cost to serve one paying customer")
+    monthly_burn: OptMoney = Field(default=None, description="Total monthly spend as the deck states it")
+    burn_line_items: List[ClaimedLineItem] = Field(default_factory=list)
+    cash_in_bank: OptMoney = Field(default=None, description="Money available now (savings, raised, grants)")
+    funding_ask: OptMoney = Field(default=None, description="Amount the deck asks investors for")
+    runway_months: OptFloat = None
+    break_even_customers: OptCount = None
+    current_paying_customers: OptCount = None
+    current_mrr: OptMoney = None
+    revenue_targets: List[ClaimedTarget] = Field(default_factory=list)
+    channels: List[ClaimedChannel] = Field(default_factory=list)
+    market_size_claims: List[str] = Field(default_factory=list, description="TAM/SAM/SOM and similar, quoted")
+    other_claims: List[str] = Field(default_factory=list, description="Other factual claims worth checking, quoted")
+    unreadable: List[str] = Field(default_factory=list, description="Numbers that were present but could not be read with confidence")
+
+
+class DeckRedFlag(BaseModel):
+    claim: str = Field(description="The claim as the deck makes it")
+    problem: str = Field(description="Why a judge or investor won't believe it, one or two sentences")
+    fix: str = Field(description="What to change or prove instead, one sentence")
+
+
+class DeckVerdict(BaseModel):
+    verdict: str = Field(min_length=20, description="Three honest sentences: would this deck convince a careful judge?")
+    biggest_risk: str = Field(min_length=10, description="The single most likely reason this business fails")
+    red_flags: List[DeckRedFlag] = Field(default_factory=list, max_length=5)
+    missing: List[str] = Field(default_factory=list, max_length=5, description="Numbers a judge will ask for that the deck doesn't give")
+    questions_to_expect: List[str] = Field(default_factory=list, max_length=3)

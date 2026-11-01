@@ -48,6 +48,8 @@ def test_read_root():
     ("post", "/simulate/abc/chat", {"messages": [{"role": "user", "content": "hi"}]}),
     ("get", "/simulate/abc", None),
     ("get", "/simulations/abc/chat", None),
+    ("post", "/critique", {"text": "Burn 40k a month, runway 12 months, cash 2 lakh"}),
+    ("get", "/critique/abc", None),
 ])
 def test_endpoints_that_spend_quota_or_show_data_require_login(method, path, body):
     app.dependency_overrides.clear()
@@ -165,3 +167,39 @@ def test_chat_can_answer_in_hinglish(monkeypatch, language, expect_hinglish):
     r = client.post("/simulate/job-1/chat", json={"language": language, "messages": [{"role": "user", "content": "Price theek hai?"}]})
     assert r.status_code == 200
     assert ("Hinglish" in seen["system"]) is expect_hinglish
+
+
+PNG = "data:image/png;base64," + "A" * 40
+
+
+@pytest.mark.parametrize("body, status", [
+    ({}, 400),                                                         # nothing to read
+    ({"text": "too short"}, 400),
+    ({"images": ["data:application/pdf;base64,AAAA"]}, 400),           # not an image
+    ({"images": ["data:image/png;base64," + "A" * 7_000_000]}, 413),   # over 5 MB
+    ({"images": [PNG] * 4}, 422),                                      # more than 3 slides
+])
+def test_critique_rejects_bad_input(body, status):
+    assert client.post("/critique", json=body).status_code == status
+
+
+def test_critique_runs_in_the_background_for_its_owner_only(monkeypatch):
+    import agents.deck_reader as deck
+    seen = {}
+    monkeypatch.setattr(deck, "critique", lambda images, text, idea: seen.update(images=images, text=text, idea=idea) or {"findings": []})
+    r = client.post("/critique", json={"images": [PNG], "text": "  Burn 40k, runway 12 months  ", "idea": "Notes app"})
+    job_id = r.json()["job_id"]
+    assert seen == {"images": [PNG], "text": "Burn 40k, runway 12 months", "idea": "Notes app"}
+    assert client.get(f"/critique/{job_id}").json() == {"job_id": job_id, "status": "done", "result": {"findings": []}}
+    app.dependency_overrides[get_current_user] = lambda: "user-2"
+    assert client.get(f"/critique/{job_id}").status_code == 404
+
+
+def test_critique_failure_message_is_safe_for_users(monkeypatch):
+    import agents.deck_reader as deck
+
+    def boom(*a):
+        raise RuntimeError("internal stack detail")
+    monkeypatch.setattr(deck, "critique", boom)
+    job_id = client.post("/critique", json={"text": "Burn 40k a month, runway 12 months"}).json()["job_id"]
+    assert client.get(f"/critique/{job_id}").json()["error"] == "The critique failed. Try again in a minute."

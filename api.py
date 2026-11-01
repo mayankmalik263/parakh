@@ -114,6 +114,18 @@ class FeedbackRequest(BaseModel):
     comment: str
 
 
+MAX_DECK_IMAGES = 3
+MAX_IMAGE_BYTES = 5 * 1024 * 1024
+_IMAGE_PREFIXES = tuple(f"data:image/{kind};base64," for kind in ("png", "jpeg", "jpg", "webp"))
+
+
+class CritiqueRequest(BaseModel):
+    # Slide screenshots as data URLs (data:image/png;base64,...), and/or the numbers pasted as text.
+    images: list[str] = Field(default_factory=list, max_length=MAX_DECK_IMAGES)
+    text: str = Field(default="", max_length=8000)
+    idea: str = Field(default="", max_length=500)
+
+
 
 def run_simulation(job_id: str, req: SimulateRequest, user_id: str):
     try:
@@ -179,6 +191,40 @@ Options should be concrete for the Indian market where that fits."""
             "question": "How will customers pay you?",
             "options": ["Monthly subscription", "One-time payment", "Per use or per order", "Commission on each sale"],
         }]}
+
+
+def run_critique(job_id: str, req: CritiqueRequest):
+    from agents.deck_reader import critique
+    try:
+        update_job(job_id, status=JobStatus.RUNNING)
+        update_job(job_id, status=JobStatus.DONE, result=critique(req.images, req.text.strip(), req.idea.strip()))
+    except Exception as e:
+        print(f"Error in critique job: {e}")
+        msg = str(e)
+        user_facing = ("quota", "BharatCode API key", "BharatCode is busy", "slide images")
+        update_job(job_id, status=JobStatus.ERROR,
+                   error=msg if any(s in msg for s in user_facing) else "The critique failed. Try again in a minute.")
+
+
+@app.post("/critique")
+def start_critique(req: CritiqueRequest, background_tasks: BackgroundTasks, user_id: str = Depends(get_current_user)):
+    """Reads a pitch deck (slide images or pasted numbers), checks its math in code, and has the Critic review it.
+    Nothing from the deck is stored: the result lives in memory until the server restarts."""
+    if not req.images and len(req.text.strip()) < 20:
+        raise HTTPException(status_code=400, detail="Add a slide screenshot or paste the numbers from your deck.")
+    for url in req.images:
+        if not url.startswith(_IMAGE_PREFIXES):
+            raise HTTPException(status_code=400, detail="Slides must be PNG, JPEG or WebP images.")
+        if (len(url) - url.index(",") - 1) * 3 // 4 > MAX_IMAGE_BYTES:
+            raise HTTPException(status_code=413, detail="Each slide image must be under 5 MB.")
+    job_id = create_job(user_id)
+    background_tasks.add_task(run_critique, job_id, req)
+    return {"job_id": job_id, "status": "pending"}
+
+
+@app.get("/critique/{job_id}")
+def get_critique(job_id: str, user_id: str = Depends(get_current_user)):
+    return get_simulation(job_id, user_id)
 
 
 @app.get("/simulate/{job_id}")
