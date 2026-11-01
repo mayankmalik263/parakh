@@ -1,0 +1,171 @@
+import re
+from typing import Annotated, List, Literal
+
+from pydantic import BaseModel, BeforeValidator, Field
+
+
+def _to_number(value):
+    """Accepts 1200, "1,200", "₹1,200/mo", "$1.2k" from the LLM and returns a float."""
+    if isinstance(value, (int, float)) or value is None:
+        return value
+    text = str(value).replace(",", "")
+    match = re.search(r"(-?\d+(?:\.\d+)?)\s*([kKmM]\b)?", text)
+    if not match:
+        return value  # let pydantic raise a clear error
+    number = float(match.group(1))
+    suffix = (match.group(2) or "").lower()
+    return number * {"k": 1_000, "m": 1_000_000}.get(suffix, 1)
+
+
+Money = Annotated[float, BeforeValidator(_to_number), Field(ge=0)]
+Count = Annotated[int, BeforeValidator(lambda v: round(_to_number(v)) if v is not None else v), Field(ge=0)]
+
+
+# ── Agent slices: each agent owns exactly one of these ─────────────────────
+
+class Competitor(BaseModel):
+    name: str = Field(min_length=2, max_length=100)
+    differentiator: str = Field(min_length=5, max_length=500, description="Why we win against them, one line")
+
+
+BusinessType = Literal["software", "service", "physical"]
+
+
+class StrategySlice(BaseModel):
+    business_type: BusinessType = Field(description="software (app/SaaS/API), service (agency, consulting, done-for-you), physical (products shipped)")
+    problem: str = Field(min_length=10, description="The specific pain and the exact moment the user feels it")
+    target_customer: str = Field(min_length=10, description="One sentence: who, where, what behaviour makes them a buyer")
+    mission: str = Field(min_length=10, description="One sentence: what we do, for whom, why we win")
+    competitors: List[Competitor] = Field(min_length=2, max_length=3)
+    scope_cuts: List[str] = Field(min_length=1, max_length=3, description="Things we are deliberately NOT building, with reason")
+
+
+class StackItem(BaseModel):
+    name: str
+    why: str = Field(description="Why this choice for THIS idea, one line")
+
+
+class ToolCost(BaseModel):
+    tool: str
+    plan: str = Field(description="Exact plan/tier name, e.g. 'Supabase Free'")
+    monthly_cost: Money = Field(description="Monthly cost in the plan currency; 0 if free")
+
+
+class BuildSlice(BaseModel):
+    stack: List[StackItem] = Field(min_length=2, max_length=6)
+    ai_tools: List[StackItem] = Field(min_length=1, max_length=4)
+    mvp_features: List[str] = Field(min_length=1, max_length=3)
+    tool_costs: List[ToolCost] = Field(min_length=1, description="Every paid or free service the MVP runs on")
+    mvp_build_cost: Money = Field(description="One-time cost to ship the MVP, in plan currency")
+    first_10_steps: List[str] = Field(min_length=5, max_length=10)
+
+
+class PricingTier(BaseModel):
+    name: str = Field(min_length=2, max_length=50)
+    monthly_price: Money = Field(description="Price per customer per month in plan currency; 0 for a free tier")
+    features: List[str] = Field(min_length=1)
+
+
+class LineItem(BaseModel):
+    item: str
+    monthly_cost: Money
+
+
+class RevenueTarget(BaseModel):
+    day: Count = Field(gt=0)
+    paying_customers: Count
+    mrr: Money
+    notes: str = ""
+
+
+class EconomicsSlice(BaseModel):
+    pricing: List[PricingTier] = Field(min_length=1, max_length=3)
+    avg_revenue_per_customer: Money = Field(description="Blended monthly revenue per PAYING customer")
+    delivery_cost_per_customer: Money = Field(description="Monthly cost to serve ONE paying customer: freelancers, per-client tools, API usage, goods")
+    burn_line_items: List[LineItem] = Field(min_length=1, description="Must include every Builder tool cost and the marketing budget")
+    monthly_burn: Money = Field(description="Exactly the sum of burn_line_items")
+    marketing_budget: Money = Field(description="Monthly cap Growth may spend; must also appear as a burn line item")
+    starting_capital: Money = Field(description="Cash available at start (founder savings or raised money)")
+    external_funding: Money = Field(description="Outside money raised; 0 if bootstrapped")
+    runway_months: Annotated[float, BeforeValidator(_to_number), Field(ge=0)] = Field(description="starting_capital / monthly_burn")
+    break_even_customers: Count = Field(description="ceil(monthly_burn / (avg_revenue_per_customer - delivery_cost_per_customer))")
+    revenue_targets: List[RevenueTarget] = Field(min_length=3, max_length=3, description="Day 30, 60 and 90")
+    key_assumptions: List[str] = Field(min_length=1, max_length=4)
+
+
+class Channel(BaseModel):
+    name: str
+    tactic: str = Field(description="Exact platform, action, volume, e.g. 'DM 40 clinic owners/day on LinkedIn'")
+    monthly_spend: Money
+    new_customers_per_month: Count
+    cac: Money = Field(description="monthly_spend / new_customers_per_month")
+
+
+class Objection(BaseModel):
+    objection: str
+    response: str
+
+
+class GrowthSlice(BaseModel):
+    channels: List[Channel] = Field(min_length=1, max_length=2)
+    first_10_customers: List[str] = Field(min_length=3, max_length=6, description="Step-by-step founder hustle to land the first 10 paying customers")
+    cold_message: str = Field(min_length=20, description="A 3-line cold DM/email the founder can send today")
+    objections: List[Objection] = Field(min_length=2, max_length=2)
+
+
+Owner = Literal["strategist", "builder", "economics", "growth"]
+
+
+class CriticIssue(BaseModel):
+    owner: Owner
+    problem: str = Field(description="One or two sentences")
+    fix: str = Field(description="Exactly what the owner must change, one sentence")
+
+
+class CriticResult(BaseModel):
+    verdict: str = Field(min_length=20, description="3 sentence honest verdict on viability")
+    biggest_risk: str = Field(min_length=20, description="The single most likely reason THIS plan fails, specific to this idea. Required even if issues is empty.")
+    adherence_score: Annotated[float, Field(ge=0, le=1)] = Field(description="How well the plan honours market + funding constraints, 0-1")
+    issues: List[CriticIssue] = Field(default_factory=list, description="Only blocking problems; empty if the plan is sound")
+
+
+# ── Display plan: the shape the frontend renders (built in Python from slices) ──
+
+class DisplayPricingTier(BaseModel):
+    name: str
+    price: str
+    features: List[str]
+
+
+class FinancialSnapshot(BaseModel):
+    monthly_burn: str
+    burn_breakdown: str = ""
+    funding_needed: str
+    runway: str
+    break_even_target: str
+
+
+class DisplayRevenueTarget(BaseModel):
+    day: int
+    mrr: str
+    notes: str = ""
+
+
+class Conflict(BaseModel):
+    title: str
+    description: str
+
+
+class StartupBusinessPlan(BaseModel):
+    startup_idea: str
+    mission: str
+    problem: str
+    target_customer: str
+    business_model: List[DisplayPricingTier]
+    financial_snapshot: FinancialSnapshot
+    go_to_market: List[str]
+    product_mvp: List[str]
+    revenue_targets: List[DisplayRevenueTarget]
+    competition: List[Competitor] = Field(default_factory=list)
+    key_conflicts: List[Conflict] = Field(default_factory=list)
+    final_verdict: str

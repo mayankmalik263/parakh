@@ -1,0 +1,366 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* ──────────────────────────────────────────────
+   Tailwind v4 Theme – MASS Design System
+   Registers all custom tokens so Tailwind auto-
+   generates the matching utility classes.
+   ────────────────────────────────────────────── */
+
+@theme {
+  /* ── Colors ───────────────────────────────── */
+  --color-background: #000000;
+  --color-on-background: #e5e2e1;
+  --color-surface: #131313;
+  --color-surface-dim: #131313;
+  --color-surface-bright: #3a3939;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-surface-container-low: #1c1b1b;
+  --color-surface-container: #201f1f;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353534;
+  --color-surface-variant: #353534;
+  --color-surface-tint: #d0bcff;
+  --color-on-surface: #e5e2e1;
+  --color-on-surface-variant: #d9d0e3;
+  --color-inverse-surface: #e5e2e1;
+  --color-inverse-on-surface: #313030;
+
+  --color-primary: #8b5cf6;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #a078ff;
+  --color-on-primary-container: #340080;
+  --color-primary-fixed: #e9ddff;
+  --color-primary-fixed-dim: #d0bcff;
+  --color-on-primary-fixed: #23005c;
+  --color-on-primary-fixed-variant: #5516be;
+  --color-inverse-primary: #6d3bd7;
+
+  --color-secondary: #c6c6c7;
+  --color-on-secondary: #2f3131;
+  --color-secondary-container: #454747;
+  --color-on-secondary-container: #b4b5b5;
+  --color-secondary-fixed: #e2e2e2;
+  --color-secondary-fixed-dim: #c6c6c7;
+  --color-on-secondary-fixed: #1a1c1c;
+  --color-on-secondary-fixed-variant: #454747;
+
+  --color-tertiary: #ffb869;
+  --color-on-tertiary: #482900;
+  --color-tertiary-container: #ca801e;
+  --color-on-tertiary-container: #3f2300;
+  --color-tertiary-fixed: #ffdcbb;
+  --color-tertiary-fixed-dim: #ffb869;
+  --color-on-tertiary-fixed: #2c1700;
+  --color-on-tertiary-fixed-variant: #673d00;
+
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+
+  --color-outline: #737373;
+  --color-outline-variant: #262626;
+
+  /* ── Spacing ──────────────────────────────── */
+  --spacing-base: 4px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 48px;
+  --spacing-2xl: 80px;
+  --spacing-gutter: 24px;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 40px;
+
+  /* ── Font Families ────────────────────────── */
+  --font-display: var(--font-instrument-serif), Georgia, serif;
+  --font-sans: var(--font-inter-tight), system-ui, sans-serif;
+  --font-body-lg: var(--font-inter-tight), system-ui, sans-serif;
+  --font-body-sm: var(--font-inter-tight), system-ui, sans-serif;
+  --font-headline-lg: var(--font-instrument-serif), Georgia, serif;
+  --font-headline-md: var(--font-inter-tight), system-ui, sans-serif;
+  --font-label-mono: var(--font-inter-tight), system-ui, sans-serif;
+  --font-stats-lg: var(--font-inter-tight), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+
+  /* ── Motion: springs sampled into linear() ── */
+  --ease-spring: linear(0, 0.05, 0.158, 0.286, 0.413, 0.527, 0.626, 0.707, 0.774, 0.826, 0.868, 0.9, 0.925, 0.943, 0.958, 0.969, 0.977, 0.983, 0.987, 0.991, 0.993, 1);
+  --ease-bounce: linear(0, 0.063, 0.206, 0.377, 0.543, 0.688, 0.804, 0.891, 0.952, 0.991, 1.014, 1.025, 1.028, 1.027, 1.023, 1.018, 1.013, 1.009, 1.006, 1.003, 1.001, 1);
+
+  /* ── Border Radius ────────────────────────── */
+  --radius-DEFAULT: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 9999px;
+
+  /* ── Animations ───────────────────────────── */
+  --animate-line-dash: line-dash 5s linear infinite;
+  --animate-float: float 4s ease-in-out infinite;
+}
+
+@keyframes line-dash {
+  from {
+    stroke-dashoffset: 200;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Base styles
+   ────────────────────────────────────────────── */
+
+@layer base {
+  * {
+    border-color: var(--color-outline-variant);
+  }
+
+  html {
+    @apply h-full;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-on-surface);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    @apply min-h-full flex flex-col;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Component presets
+   Typography helpers, effects, and patterns
+   ────────────────────────────────────────────── */
+
+@layer components {
+  /* Typography presets */
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  .font-headline-lg {
+    font-family: var(--font-headline-lg);
+    @apply text-3xl font-normal;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .font-headline-md {
+    font-family: var(--font-headline-md);
+    @apply text-xl font-medium;
+    line-height: 1.4;
+  }
+
+  .font-body-lg {
+    font-family: var(--font-body-lg);
+    @apply text-base;
+    line-height: 1.6;
+  }
+
+  .font-body-sm {
+    font-family: var(--font-body-sm);
+    @apply text-sm;
+    line-height: 1.5;
+  }
+
+  .font-label-mono {
+    font-family: var(--font-label-mono);
+    @apply text-xs font-medium;
+    letter-spacing: 0.04em;
+  }
+
+  .font-stats-lg {
+    font-family: var(--font-stats-lg);
+    @apply text-2xl font-semibold tabular-nums;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  /* Pixel Grid Background */
+  .pixel-grid {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, #141414 1px, transparent 1px),
+      linear-gradient(to bottom, #141414 1px, transparent 1px);
+  }
+
+  /* Glow Border Effect */
+  .glow-border {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+  }
+
+  /* SVG line animation */
+  .line-animation {
+    stroke-dasharray: 100;
+    animation: var(--animate-line-dash);
+  }
+
+  /* Material Symbols baseline */
+  .material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Monolith UI: shared pieces for every page
+   ────────────────────────────────────────────── */
+
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+  .display em { font-style: italic; color: var(--color-primary-fixed-dim); }
+
+  .eyebrow {
+    @apply text-[0.8125rem] font-medium uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-tertiary);
+  }
+
+  .muted { color: #c6c6c7; }
+
+  /* Short copy set in the headline serif: card text, replay lines, nav. */
+  .serif {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: 0.005em;
+    line-height: 1.3;
+  }
+
+  /* Nav links: serif, with an underline that draws in from the left on hover. */
+  .nav-link {
+    @apply relative cursor-pointer bg-transparent text-[1.1875rem] no-underline;
+    font-family: var(--font-display);
+    color: #c6c6c7;
+    transition: color 0.2s;
+  }
+  .nav-link::after {
+    content: '';
+    @apply absolute inset-x-0 -bottom-0.5 h-px;
+    background: var(--color-primary-fixed-dim);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.45s var(--ease-spring);
+  }
+  .nav-link:hover { color: var(--color-on-surface); font-style: italic; }
+  .nav-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* Buttons: press on pointer-down, spring back on release, ripple from the click point (Interactions.tsx). */
+  .btn {
+    @apply relative inline-flex min-h-12 cursor-pointer select-none items-center justify-center gap-2 overflow-hidden rounded-full px-6 font-semibold no-underline;
+    isolation: isolate;
+    transition: transform 0.6s var(--ease-bounce), background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.3s;
+  }
+  .btn:active { transform: scale(0.96); transition: transform 0.08s ease-out; }
+  .btn:disabled { @apply cursor-not-allowed opacity-50; transform: none; }
+  .btn-sm { @apply min-h-10 px-4 text-sm; }
+  .btn-primary { background: var(--color-inverse-primary); color: #fff; box-shadow: 0 0 0 0 rgba(109, 59, 215, 0); }
+  .btn-primary:hover:not(:disabled) { background: #7a48e6; box-shadow: 0 8px 32px -8px rgba(122, 72, 230, 0.7); }
+  .btn-ghost { border: 1px solid var(--color-outline-variant); color: var(--color-on-surface); }
+  .btn-ghost:hover:not(:disabled) { border-color: var(--color-outline); background: rgba(255, 255, 255, 0.04); }
+  .btn .arrow { transition: transform 0.45s var(--ease-spring); }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  .ripple {
+    position: absolute; z-index: -1; border-radius: 50%; pointer-events: none;
+    width: 8px; height: 8px; margin: -4px 0 0 -4px;
+    background: rgba(255, 255, 255, 0.35);
+    animation: ripple 0.65s var(--ease-spring) forwards;
+  }
+
+  /* Cards: a soft light that follows the pointer (--mx/--my set by Interactions.tsx). */
+  .card {
+    @apply relative rounded-[1.25rem] bg-surface;
+    isolation: isolate;
+  }
+  .spotlight::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(22rem circle at var(--mx, 50%) var(--my, -30%), rgba(139, 92, 246, 0.16), transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .spotlight:hover::before { opacity: 1; }
+  .lift { transition: transform 0.6s var(--ease-spring), box-shadow 0.6s var(--ease-spring); }
+  .lift:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.06); }
+
+  .field {
+    @apply w-full rounded-2xl bg-surface px-5 py-4 text-on-surface outline-none placeholder:text-[#8d8b8b];
+    box-shadow: inset 0 0 0 1px var(--color-outline-variant);
+    transition: box-shadow 0.25s;
+  }
+  .field:focus { box-shadow: inset 0 0 0 1.5px var(--color-primary), 0 0 0 4px rgba(139, 92, 246, 0.15); }
+
+  /* Scroll reveal (Reveal.tsx flips data-in). Children with --i stagger. */
+  [data-reveal] > * , [data-reveal-self] {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity 0.7s ease, transform 0.9s var(--ease-spring);
+    transition-delay: calc(var(--i, 0) * 70ms);
+  }
+  [data-reveal][data-in] > *, [data-reveal-self][data-in] { opacity: 1; transform: none; }
+
+  /* Charts grow in when their Reveal parent comes into view */
+  .bar { transform-origin: bottom; transform: scaleY(0); transition: transform 1.1s var(--ease-spring); transition-delay: calc(var(--i, 0) * 120ms + 150ms); }
+  .seg { transform-origin: left; transform: scaleX(0); transition: transform 0.9s var(--ease-spring); transition-delay: calc(var(--i, 0) * 90ms + 150ms); }
+  [data-in] .bar, [data-in] .seg { transform: none; }
+
+  /* Math-check card: the wrong number gets struck through, the right one pops in */
+  .strike::after { content: ""; position: absolute; left: -4%; right: -4%; top: 52%; height: 2px; background: var(--color-tertiary); transform: scaleX(0); transform-origin: left; transition: transform 0.6s var(--ease-spring) 0.5s; }
+  .pop { display: inline-block; opacity: 0; transform: scale(0.6) translateY(6px); transition: opacity 0.4s 1s, transform 0.8s var(--ease-bounce) 1s; }
+  [data-in] .strike::after, [data-in].pop, [data-in] .pop { transform: none; opacity: 1; }
+
+  /* Page and hero entrances */
+  .enter { animation: enter 0.9s var(--ease-spring) both; animation-delay: calc(var(--i, 0) * 80ms); }
+  .word { display: inline-block; animation: word 1s var(--ease-spring) both; animation-delay: calc(var(--i, 0) * 55ms + 80ms); }
+
+  .shimmer {
+    background: linear-gradient(90deg, #1c1b1b 0%, #2a2a2a 50%, #1c1b1b 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s linear infinite;
+  }
+}
+
+@keyframes ripple { to { transform: scale(60); opacity: 0; } }
+@keyframes enter { from { opacity: 0; transform: translateY(14px); } }
+@keyframes word { from { opacity: 0; transform: translateY(0.45em) rotate(2deg); filter: blur(6px); } }
+@keyframes shimmer { to { background-position: -200% 0; } }
+@keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.55); } 100% { box-shadow: 0 0 0 14px rgba(139, 92, 246, 0); } }
+@keyframes dash { to { stroke-dashoffset: -24; } }
+
+/* ──────────────────────────────────────────────
+   Accessibility
+   ────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] > *, [data-reveal-self], .bar, .seg, .pop, .strike::after { opacity: 1; transform: none; }
+  .ripple { display: none; }
+  .btn:active { transform: scale(0.97); }
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
