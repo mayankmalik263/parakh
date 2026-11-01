@@ -496,7 +496,7 @@ export default function SimulatePage() {
               <Icon name="error" className="text-[1.75rem]" />
             </span>
             <p className="m-0 text-[1.0625rem] leading-relaxed">{errorMsg}</p>
-            {/quota|bharatcode api key/i.test(errorMsg) ? (
+            {/quota|bharatcode api key|bharatcode key|bharatcode\.ai\/account/i.test(errorMsg) ? (
               <div className="w-full">
                 <BharatCodeKeyField defaultOpen />
               </div>

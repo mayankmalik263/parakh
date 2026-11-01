@@ -230,3 +230,12 @@ def test_a_plan_is_private_until_its_owner_shares_it(monkeypatch):
     assert shared.status_code == 200
     # The fake returns whole rows; the real query only selects SHARED_FIELDS, which must leave these out.
     assert "user_id" not in api.SHARED_FIELDS and "constraints" not in api.SHARED_FIELDS
+
+
+def test_clarify_stops_early_when_the_key_cannot_use_the_model(monkeypatch):
+    from agents.llm_router import BharatCodeAccessError
+    def no_access(*a, **k):
+        raise BharatCodeAccessError("The server's BharatCode key can't use qwen-3.8-27b yet. ... https://bharatcode.ai/account")
+    monkeypatch.setattr(api, "call_llm_json", no_access)
+    r = client.post("/clarify", json={"idea": "A CRM for pet sitters"})
+    assert r.status_code == 402 and "bharatcode.ai/account" in r.json()["detail"]

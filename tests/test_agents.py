@@ -154,3 +154,12 @@ def test_rejected_visitor_key_gives_a_readable_error(monkeypatch):
     monkeypatch.setattr(r, "OpenAI", lambda **kw: _fake_client([_status_error("AuthenticationError", 401)], []))
     with r.use_bharatcode_key("bc_wrong"), pytest.raises(RuntimeError, match="Your BharatCode API key was rejected"):
         r.call_llm("hi", role="strategist")
+
+
+def test_unverified_student_key_says_how_to_unlock_the_model(monkeypatch):
+    # BharatCode answers 402 when a key isn't allowed the model yet (e.g. student email not verified).
+    import pytest
+    from agents import llm_router as r
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client([_status_error("APIStatusError", 402)], []))
+    with pytest.raises(r.BharatCodeAccessError, match="bharatcode.ai/account"):
+        r.call_llm("hi", role="strategist")

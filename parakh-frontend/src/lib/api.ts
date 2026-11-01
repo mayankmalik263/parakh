@@ -45,8 +45,8 @@ export async function clarifyIdea(idea: string, tier: string = "free"): Promise<
   });
 
   if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Clarification failed: ${err}`);
+    const err = await res.json().catch(() => ({}));
+    throw new Error(typeof err.detail === 'string' ? err.detail : `Couldn't read your idea (${res.status})`);
   }
 
   return res.json();

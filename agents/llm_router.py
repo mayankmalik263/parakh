@@ -146,6 +146,10 @@ def _complete(model: str, messages: list[dict], json_mode: bool, max_tokens: int
     raise AssertionError("unreachable")
 
 
+class BharatCodeAccessError(RuntimeError):
+    """The key works but isn't allowed to use the model (BharatCode answers 402 or 403). Retrying won't help."""
+
+
 def _complete_with_fallback(role: str, messages: list[dict], json_mode: bool, max_tokens: int) -> str:
     primary = ROLE_MODELS.get(role, MODEL)
     chain = [primary, *FALLBACK.get(primary, [])]
@@ -164,6 +168,12 @@ def _complete_with_fallback(role: str, messages: list[dict], json_mode: bool, ma
             if model != chain[-1]:
                 logger.warning("%s failed (%s). Falling back for role '%s'.", model, status or e, role)
                 continue
+            if status in (402, 403):
+                whose = "Your BharatCode key" if _user_key.get() else "The server's BharatCode key"
+                raise BharatCodeAccessError(
+                    f"{whose} can't use {model} yet. Students get it free after verifying their college email at "
+                    "https://bharatcode.ai/account. Otherwise it needs a BharatCode Lite or Pro plan."
+                ) from e
             if status == 429:
                 whose = "Your BharatCode key's" if _user_key.get() else "Today's shared"
                 raise RuntimeError(f"{whose} AI quota is used up. Try again later, or add your own BharatCode API key.") from e

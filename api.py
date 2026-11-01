@@ -23,7 +23,7 @@ from graph_orchestrator import run
 import event_bus
 
 from supabase_client import get_supabase
-from agents.llm_router import call_llm, call_llm_json, use_bharatcode_key
+from agents.llm_router import BharatCodeAccessError, call_llm, call_llm_json, use_bharatcode_key
 
 app = FastAPI(title="Parakh API", description="Your own AI co-founder, on BharatCode")
 
@@ -184,6 +184,9 @@ Options should be concrete for the Indian market where that fits."""
     try:
         extra = call_llm_json(prompt, ClarifyResponse, role="clarify").questions[:3]
         return {"questions": CLARIFY_FIXED + [q.model_dump() for q in extra]}
+    except BharatCodeAccessError as e:
+        # No point asking questions for a run that can't call the model. Say so before the run starts.
+        raise HTTPException(status_code=402, detail=str(e))
     except Exception as e:
         print(f"Error in /clarify: {e}")
         # Fallback questions if the LLM fails: the fixed ones plus a revenue model question.
@@ -201,7 +204,7 @@ def run_critique(job_id: str, req: CritiqueRequest):
     except Exception as e:
         print(f"Error in critique job: {e}")
         msg = str(e)
-        user_facing = ("quota", "BharatCode API key", "BharatCode is busy", "slide images")
+        user_facing = ("quota", "BharatCode API key", "BharatCode is busy", "slide images", "bharatcode.ai/account")
         update_job(job_id, status=JobStatus.ERROR,
                    error=msg if any(s in msg for s in user_facing) else "The critique failed. Try again in a minute.")
 
