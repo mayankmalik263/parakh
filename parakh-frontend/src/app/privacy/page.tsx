@@ -84,8 +84,8 @@ export default function PrivacyPage() {
             <p>
               Parakh is open-source software licensed under the{' '}
               <strong className="text-on-surface">MIT License</strong>. The source code is publicly available at{' '}
-              <a href="https://github.com/mayankmalik263/Mass-Multi-Agent-STARTUP-Simulator-" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
-                github.com/mayankmalik263/Mass-Multi-Agent-STARTUP-Simulator-
+              <a href="https://github.com/mayankmalik263/parakh" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
+                github.com/mayankmalik263/parakh
               </a>
               . You can inspect exactly how your data is processed by reviewing the source code.
             </p>
@@ -112,7 +112,7 @@ export default function PrivacyPage() {
                 𝕏 @systemslearner
               </a>{' '}
               or open an issue on the{' '}
-              <a href="https://github.com/mayankmalik263/Mass-Multi-Agent-STARTUP-Simulator-/issues" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
+              <a href="https://github.com/mayankmalik263/parakh/issues" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
                 GitHub repository
               </a>.
             </p>

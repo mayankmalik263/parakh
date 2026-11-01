@@ -5,13 +5,12 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Navigation from '@/components/landing/Navigation';
 import PlanView from '@/components/plan/PlanView';
-import { getSharedPlan } from '@/lib/api';
-import type { BusinessPlan } from '@/types/simulation';
+import { getSharedPlan, type SharedPlan } from '@/lib/api';
 
 /** A plan its owner chose to share. Read-only: no checklist, no chat, no owner details. */
 export default function SharedPlanPage() {
   const { id } = useParams<{ id: string }>();
-  const [plan, setPlan] = useState<{ idea: string; market?: string; business_plan?: BusinessPlan; final_report?: string } | null>(null);
+  const [plan, setPlan] = useState<SharedPlan | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {

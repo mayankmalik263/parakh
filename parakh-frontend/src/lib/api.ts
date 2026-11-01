@@ -1,4 +1,4 @@
-import type { SimulateRequest, SimulationJob, AgentEvent } from '@/types/simulation';
+import type { SimulateRequest, SimulationJob, AgentEvent, BusinessPlan } from '@/types/simulation';
 
 // Strip trailing slashes: "https://x.onrender.com/" + "/clarify" would 404 on "//clarify".
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
@@ -387,7 +387,16 @@ export async function setSharing(id: string, isPublic: boolean): Promise<{ is_pu
 }
 
 /** GET /shared/{id}: a plan its owner made public. No login needed. */
-export async function getSharedPlan(id: string): Promise<any> {
+export type SharedPlan = {
+  id: string;
+  idea: string;
+  market?: string;
+  business_plan?: BusinessPlan;
+  final_report?: string;
+  created_at?: string;
+};
+
+export async function getSharedPlan(id: string): Promise<SharedPlan> {
   const res = await fetch(`${API_URL}/shared/${id}`, { cache: 'no-store' });
   if (!res.ok) throw new Error(res.status === 404 ? "This plan isn't shared, or the link is wrong." : `Couldn't load the plan (${res.status})`);
   return res.json();

@@ -303,7 +303,7 @@ npm run dev`}</Pre>
               The code is MIT licensed: use, change and share it, as long as the copyright notice and license text stay
               in every copy and Mayank Malik is credited as the original author. Full text in the{' '}
               <Link href="/terms" className="text-primary-fixed-dim underline">Terms</Link> or the{' '}
-              <a href="https://github.com/mayankmalik263/Mass-Multi-Agent-STARTUP-Simulator-/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">LICENSE file</a>.
+              <a href="https://github.com/mayankmalik263/parakh/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">LICENSE file</a>.
             </P>
           </Section>
         </main>
