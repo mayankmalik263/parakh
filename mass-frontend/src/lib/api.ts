@@ -3,15 +3,15 @@ import type { SimulateRequest, SimulationJob, AgentEvent } from '@/types/simulat
 // Strip trailing slashes: "https://x.onrender.com/" + "/clarify" would 404 on "//clarify".
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
 import { supabase } from './supabase';
-import { getGroqKey } from './groqKey';
+import { getBharatCodeKey } from './bharatcodeKey';
 
 async function getAuthHeaders() {
   const { data: { session } } = await supabase.auth.getSession();
-  const groqKey = getGroqKey();
+  const bharatcodeKey = getBharatCodeKey();
   return {
     'Content-Type': 'application/json',
     ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
-    ...(groqKey ? { 'X-Groq-Key': groqKey } : {})
+    ...(bharatcodeKey ? { 'X-BharatCode-Key': bharatcodeKey } : {})
   };
 }
 

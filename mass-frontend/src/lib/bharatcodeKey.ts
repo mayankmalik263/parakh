@@ -1,9 +1,9 @@
-// A visitor's own Groq API key. Kept only in this browser and sent as X-Groq-Key so their
-// simulations use their free Groq quota instead of the shared one. The server never stores it.
-const STORAGE_KEY = 'mass_groq_key';
-const CHANGE_EVENT = 'mass-groq-key-change';
+// A visitor's own BharatCode API key. Kept only in this browser and sent as X-BharatCode-Key so
+// their plans use their own BharatCode quota instead of the shared one. The server never stores it.
+const STORAGE_KEY = 'parakh_bharatcode_key';
+const CHANGE_EVENT = 'parakh-bharatcode-key-change';
 
-export function getGroqKey(): string {
+export function getBharatCodeKey(): string {
   try {
     return localStorage.getItem(STORAGE_KEY) || '';
   } catch {
@@ -11,7 +11,7 @@ export function getGroqKey(): string {
   }
 }
 
-export function setGroqKey(key: string) {
+export function setBharatCodeKey(key: string) {
   try {
     if (key.trim()) localStorage.setItem(STORAGE_KEY, key.trim());
     else localStorage.removeItem(STORAGE_KEY);
@@ -22,7 +22,7 @@ export function setGroqKey(key: string) {
 }
 
 /** For useSyncExternalStore: fires on changes in this tab and in other tabs. */
-export function subscribeGroqKey(onChange: () => void) {
+export function subscribeBharatCodeKey(onChange: () => void) {
   window.addEventListener(CHANGE_EVENT, onChange);
   window.addEventListener('storage', onChange);
   return () => {

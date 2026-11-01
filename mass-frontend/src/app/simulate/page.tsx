@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import PlanView from '@/components/plan/PlanView';
 import { Icon } from '@/components/ui/Icon';
-import { GroqKeyField } from '@/components/GroqKeyField';
+import { BharatCodeKeyField } from '@/components/BharatCodeKeyField';
 /* ─── Agent display config ─────────────────────────── */
 const AGENTS = [
   { key: 'Strategist', icon: 'explore' },
@@ -366,7 +366,7 @@ export default function SimulatePage() {
               ))}
             </div>
 
-            <GroqKeyField />
+            <BharatCodeKeyField />
 
             <ol className="m-0 mt-4 grid list-none gap-3 p-0 text-sm sm:grid-cols-3">
               {['Describe the idea', 'Answer a few quick questions', 'Watch the agents work'].map((t, i) => (
@@ -486,9 +486,9 @@ export default function SimulatePage() {
               <Icon name="error" className="text-[1.75rem]" />
             </span>
             <p className="m-0 text-[1.0625rem] leading-relaxed">{errorMsg}</p>
-            {/quota|groq api key/i.test(errorMsg) ? (
+            {/quota|bharatcode api key/i.test(errorMsg) ? (
               <div className="w-full">
-                <GroqKeyField defaultOpen />
+                <BharatCodeKeyField defaultOpen />
               </div>
             ) : (
               <p className="m-0 text-sm muted">If it keeps happening, wait a minute and try again.</p>
