@@ -7,12 +7,12 @@ import Reveal from '@/components/motion/Reveal';
 import { Icon } from '@/components/ui/Icon';
 
 export const metadata: Metadata = {
-  title: 'Docs | MASS',
-  description: 'How MASS works: the five agents, the math check, the revision loop, the API, and how to run it yourself.',
+  title: 'Docs | Parakh',
+  description: 'How Parakh works: the five agents, the math check, the revision loop, the API, and how to run it yourself.',
 };
 
 const TOC = [
-  ['overview', 'What MASS does'],
+  ['overview', 'What Parakh does'],
   ['run', 'How a run works'],
   ['agents', 'The agents'],
   ['math', 'The math check'],
@@ -37,11 +37,11 @@ const STEPS = [
 ];
 
 const AGENTS = [
-  { name: 'Strategist', model: 'GPT-OSS 120B', text: 'Keeps the business you named. A social media agency stays a social media agency. Competitors must exist; for a service business they can be agencies, freelancers or an in-house hire.' },
-  { name: 'Builder', model: 'GPT-OSS 120B', text: 'Writes for the type of business: software gets a stack and tools, a service gets pilots and a contract, a physical product gets a store and fulfilment setup.' },
-  { name: 'Economics', model: 'GPT-OSS 120B (Qwen 3.8 27B on paid Groq)', text: 'Sets the price and what delivering to one customer costs, then burn, runway and break-even from the margin.' },
-  { name: 'Growth', model: 'GPT-OSS 120B', text: 'Picks one or two channels sized to the Day 30 target, never more than 1.5× it. No invented track record in the cold message.' },
-  { name: 'Critic', model: 'Qwen 3.8 27B', text: 'A different model from the writers, so it doesn’t share their blind spots. Scores how well the plan matches what you asked and names the biggest risk.' },
+  { name: 'Strategist', model: 'Qwen 3.8 27B', text: 'Keeps the business you named. A social media agency stays a social media agency. Competitors must exist; for a service business they can be agencies, freelancers or an in-house hire.' },
+  { name: 'Builder', model: 'Qwen 3.8 27B', text: 'Writes for the type of business: software gets a stack and tools, a service gets pilots and a contract, a physical product gets a store and fulfilment setup.' },
+  { name: 'Economics', model: 'Qwen 3.8 27B', text: 'Sets the price and what delivering to one customer costs, then burn, runway and break-even from the margin.' },
+  { name: 'Growth', model: 'Qwen 3.8 27B', text: 'Picks one or two channels sized to the Day 30 target, never more than 1.5× it. No invented track record in the cold message.' },
+  { name: 'Critic', model: 'Qwen 3.8 27B', text: 'Judges only what code can’t check, because the math is already recomputed. Scores how well the plan matches what you asked and names the biggest risk. Self-hosters can give it a separate model with PARAKH_CRITIC_MODEL.' },
 ];
 
 const ENDPOINTS: { method: string; path: string; text: string; body?: string }[] = [
@@ -88,7 +88,7 @@ export default function DocsPage() {
           <header className="flex flex-col gap-4">
             <span className="eyebrow enter">Docs</span>
             <h1 className="display enter m-0 text-[clamp(3rem,7vw,5.5rem)]" style={i(1)}>
-              How MASS <em>works</em>
+              How Parakh <em>works</em>
             </h1>
             <p className="enter m-0 max-w-[40rem] text-lg leading-relaxed muted" style={i(2)}>
               Five agents, one math check, and up to two rounds of revisions. Here is what each part does, what the API
@@ -96,9 +96,9 @@ export default function DocsPage() {
             </p>
           </header>
 
-          <Section id="overview" eyebrow="Overview" title="What MASS does">
+          <Section id="overview" eyebrow="Overview" title="What Parakh does">
             <P>
-              You describe a business idea in a sentence. MASS turns it into a build plan: who the customer is, what to
+              You describe a business idea in a sentence. Parakh turns it into a build plan: who the customer is, what to
               build it with and what that costs, what to charge, how long the money lasts, and where the first customers
               come from.
             </P>
@@ -142,7 +142,7 @@ export default function DocsPage() {
                 </div>
               ))}
             </Reveal>
-            <P>All models run on Groq. The clarifying questions use the smaller GPT-OSS 20B.</P>
+            <P>Every agent runs on BharatCode&apos;s API, including the clarifying questions.</P>
           </Section>
 
           <Section id="math" eyebrow="Math check" title="Numbers get recomputed in code">
@@ -175,15 +175,16 @@ export default function DocsPage() {
 
           <Section id="limits" eyebrow="Limits" title="Limits and your own key">
             <P>
-              MASS runs on Groq&apos;s free tier, which gives each model a daily token budget shared by everyone using
-              the site. A plan uses a fair share of it, so on busy days the shared quota can run out. When that happens
-              you&apos;ll see how long until it resets.
+              Parakh runs on BharatCode&apos;s API with one shared key, which has a daily token budget shared by
+              everyone using the site. A plan uses a fair share of it, so on busy days the shared quota can run out.
+              When that happens you&apos;ll see a message saying so.
             </P>
             <P>
-              You can skip the wait with your own free key from{' '}
-              <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">console.groq.com/keys</a>.
+              You can skip the wait with your own key from{' '}
+              <a href="https://bharatcode.ai" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">bharatcode.ai</a>{' '}
+              (free with a .ac.in or .edu.in email).
               Paste it on the New plan page. It is stored only in your browser, sent with your own requests in an{' '}
-              <Code>X-Groq-Key</Code> header, and never saved or logged on the server.
+              <Code>X-BharatCode-Key</Code> header, and never saved or logged on the server.
             </P>
           </Section>
 
@@ -237,17 +238,17 @@ export default function DocsPage() {
           </Section>
 
           <Section id="self-host" eyebrow="Self-hosting" title="Run it yourself">
-            <P>You need Python 3.10+, Node 18+, a free Groq key and a Supabase project.</P>
-            <Pre>{`git clone https://github.com/mayankmalik263/Mass-Multi-Agent-STARTUP-Simulator-.git
-cd Mass-Multi-Agent-STARTUP-Simulator-
+            <P>You need Python 3.10+, Node 18+, a BharatCode API key and a Supabase project.</P>
+            <Pre>{`git clone https://github.com/mayankmalik263/parakh.git
+cd parakh
 
 python -m venv venv
 venv\\Scripts\\activate          # macOS/Linux: source venv/bin/activate
 pip install -r requirements.txt
 
-cp .env.example .env            # GROQ_API_KEY, SUPABASE_URL, SUPABASE_KEY
+cp .env.example .env            # BHARATCODE_API_KEY, SUPABASE_URL, SUPABASE_KEY
 uvicorn api:app --reload`}</Pre>
-            <Pre>{`cd mass-frontend
+            <Pre>{`cd parakh-frontend
 npm install
 # .env.local: NEXT_PUBLIC_API_URL, NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY
 npm run dev`}</Pre>
@@ -259,8 +260,8 @@ npm run dev`}</Pre>
 
           <Section id="license" eyebrow="License" title="License and ownership">
             <P>
-              MASS is the original work of Mayank Malik, who designed the architecture, agent boundaries, revision loop,
-              prompts, state and UI. AI tools helped during development. Copyright © 2026 Mayank Malik.
+              Parakh is the original work of Mayank Malik, who designed the architecture, agent boundaries, revision
+              loop, prompts, state and UI. It grew out of his earlier project, MASS. AI tools helped during development. Copyright © 2026 Mayank Malik.
             </P>
             <P>
               The code is MIT licensed: use, change and share it, as long as the copyright notice and license text stay

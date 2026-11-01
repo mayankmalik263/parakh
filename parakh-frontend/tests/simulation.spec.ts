@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('MASS Simulation Flow', () => {
+test.describe('Parakh Simulation Flow', () => {
   test('should allow user to enter an idea and reach clarify phase', async ({ page }) => {
     // Navigate to the main simulation entry
     await page.goto('http://localhost:3000');

@@ -45,7 +45,7 @@ function makeCanvas(w: number, h: number) {
   return c;
 }
 
-// The engraving: a whole MASS plan, drawn into a texture on the slab's face.
+// The engraving: a whole Parakh plan, drawn into a texture on the slab's face.
 function drawPlan(c: HTMLCanvasElement) {
   const g = c.getContext('2d')!, w = c.width, h = c.height;
   g.clearRect(0, 0, w, h);

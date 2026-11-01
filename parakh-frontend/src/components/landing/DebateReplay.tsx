@@ -14,7 +14,7 @@ const NODES: { key: Step['agent']; icon: string }[] = [
 ];
 const STEP_MS = 3400;
 
-/** Replays a real MASS run step by step. Autoplays once on screen; click a node or a segment to jump. */
+/** Replays a real run step by step. Autoplays once on screen; click a node or a segment to jump. */
 export default function DebateReplay() {
   const [step, setStep] = useState(-1);
   const [playing, setPlaying] = useState(false);

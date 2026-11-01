@@ -3,8 +3,8 @@ import Footer from '@/components/landing/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | MASS',
-  description: 'Privacy Policy for MASS — Multi-Agent Startup Simulator. Learn how we handle your data.',
+  title: 'Privacy Policy | Parakh',
+  description: 'Privacy Policy for Parakh, your own AI co-founder. Learn how we handle your data.',
 };
 
 export default function PrivacyPage() {
@@ -26,12 +26,9 @@ export default function PrivacyPage() {
         <div className="flex flex-col gap-3">
           <Section title="1. Introduction">
             <p>
-              MASS (&ldquo;Multi-Agent Startup Simulator&rdquo;) is an open-source project created and maintained by{' '}
+              Parakh is an open-source project created and maintained by{' '}
               <strong className="text-on-surface">Mayank Malik</strong>. This Privacy Policy explains how we collect, use,
-              and protect information when you use the MASS platform at{' '}
-              <a href="https://mass-multi-agent-startup-simulator.vercel.app" className="text-primary-fixed-dim underline">
-                mass-multi-agent-startup-simulator.vercel.app
-              </a>.
+              and protect information when you use the Parakh website.
             </p>
           </Section>
 
@@ -53,21 +50,22 @@ export default function PrivacyPage() {
 
             <h3 className="m-0 mt-2 text-base font-semibold text-on-surface">2.3 Account Data</h3>
             <p>
-              MASS requires user accounts for saving your simulation history. We collect and securely store your email address for authentication purposes when you log in.
+              Parakh requires user accounts for saving your simulation history. We collect and securely store your email address for authentication purposes when you log in.
             </p>
           </Section>
 
           <Section title="3. Third-Party Services">
             <p>
               Your simulation inputs are sent to AI language models via{' '}
-              <a href="https://groq.com" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
-                Groq
+              <a href="https://bharatcode.ai" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
+                BharatCode
               </a>{' '}
-              for processing. We recommend reviewing Groq&apos;s Privacy Policy for details on how it handles data.
+              for processing. BharatCode may use inference partners and keep request logs; review its own terms and
+              privacy policy for details on how it handles data.
             </p>
             <p>
-              If you add your own Groq API key, it is stored only in your browser&apos;s local storage and sent with
-              your requests so they run on your own Groq quota. Our server uses it for that request only and never
+              If you add your own BharatCode API key, it is stored only in your browser&apos;s local storage and sent with
+              your requests so they run on your own BharatCode quota. Our server uses it for that request only and never
               stores or logs it. You can remove it at any time from the simulation page.
             </p>
             <p>
@@ -84,7 +82,7 @@ export default function PrivacyPage() {
 
           <Section title="5. Open Source">
             <p>
-              MASS is open-source software licensed under the{' '}
+              Parakh is open-source software licensed under the{' '}
               <strong className="text-on-surface">MIT License</strong>. The source code is publicly available at{' '}
               <a href="https://github.com/mayankmalik263/Mass-Multi-Agent-STARTUP-Simulator-" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
                 github.com/mayankmalik263/Mass-Multi-Agent-STARTUP-Simulator-
@@ -95,7 +93,7 @@ export default function PrivacyPage() {
 
           <Section title="6. Children's Privacy">
             <p>
-              MASS is not directed at children under 13. We do not knowingly collect information from children.
+              Parakh is not directed at children under 13. We do not knowingly collect information from children.
             </p>
           </Section>
 

@@ -23,7 +23,7 @@ import event_bus
 from supabase_client import get_supabase
 from agents.llm_router import call_llm, call_llm_json, use_bharatcode_key
 
-app = FastAPI(title="MASS API", description="Multi-Agent Startup Simulator")
+app = FastAPI(title="Parakh API", description="Your own AI co-founder, on BharatCode")
 
 # CORS — reads allowed origins from ALLOWED_ORIGINS env var
 # Browsers send origins without a trailing slash, so "https://site.app/" would never match.
@@ -130,7 +130,7 @@ def run_simulation(job_id: str, req: SimulateRequest, user_id: str):
 
 @app.get("/")
 def root():
-    return {"status": "MASS API running", "docs": "/docs"}
+    return {"status": "Parakh API running", "docs": "/docs"}
 
 
 @app.post("/simulate")
@@ -208,7 +208,7 @@ def chat_with_council(job_id: str, req: ChatRequest, user_id: str = Depends(get_
     if not final_report:
         raise HTTPException(status_code=404, detail="Simulation not found")
 
-    system_prompt = f"""You are the MASS Startup Council. You just created this build plan for the founder:
+    system_prompt = f"""You are the Parakh council. You just created this build plan for the founder:
 
 {final_report}
 

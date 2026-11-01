@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-[64rem] flex-wrap items-center justify-between gap-4 px-6 py-6 text-sm text-[#c6c6c7]">
         <span className="inline-flex items-center gap-2">
           <MassMark size={20} />
-          MASS, the multi-agent startup simulator
+          Parakh, your own AI co-founder
         </span>
         <div className="flex gap-6">
           <Link href="/docs" className="no-underline hover:text-on-surface">Docs</Link>

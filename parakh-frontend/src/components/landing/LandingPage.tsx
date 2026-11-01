@@ -179,7 +179,7 @@ export default function LandingPage() {
             {[
               ['lock', 'Saved to your account', 'Every plan lands in your dashboard. Nobody else can open it.'],
               ['forum', 'Ask follow-ups', 'Chat with the agents about your plan. "@Economics what if I charge ₹999?" The chat is saved too.'],
-              ['key', 'Bring your own key', 'Hit the free daily limit? Paste your own free Groq key. It stays in your browser.'],
+              ['key', 'Bring your own key', 'Hit the free daily limit? Paste your own BharatCode key. It stays in your browser.'],
             ].map(([icon, title, text], n) => (
               <div key={title} className="card spotlight lift flex flex-col gap-3 p-6" style={i(n)}>
                 <Icon name={icon} className="text-[1.5rem] text-primary-fixed-dim" />

@@ -1,4 +1,4 @@
--- MASS: per-user history and chat (run once in Supabase → SQL Editor; safe to re-run).
+-- Parakh: per-user history and chat (run once in Supabase → SQL Editor; safe to re-run).
 -- Adds columns and one table. Deletes nothing.
 
 -- 1. The backend saves an alignment score with every simulation. Without this column every

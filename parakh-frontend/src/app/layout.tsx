@@ -25,9 +25,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MASS | Multi-Agent Startup Simulator",
+  title: "Parakh | Your own AI co-founder",
   description:
-    "Type one sentence about your startup idea. Five AI agents write a build plan with real tools and prices, then a Critic sends back whatever won't hold up.",
+    "Type one sentence about your startup idea. Four AI agents write a build plan with real tools and prices, code checks the math, then a Critic sends back whatever won't hold up.",
 };
 
 export default function RootLayout({

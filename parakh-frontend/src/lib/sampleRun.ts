@@ -1,7 +1,7 @@
 import type { BusinessPlan } from '@/types/simulation';
 import plan from './sample-plan.json';
 
-// A real MASS run from 31 Oct 2026, unedited: outputs/a_whatsapp_bot_that__20261031_192116.*
+// A real run from 31 Oct 2026, made on Groq when this project was still MASS, unedited: outputs/a_whatsapp_bot_that__20261031_192116.*
 export const SAMPLE_IDEA = 'A WhatsApp bot that reminds dental clinic patients about appointments and collects deposits';
 export const SAMPLE_CONTEXT = 'India · Bootstrapped · ₹50,000 to start';
 export const SAMPLE_PLAN = plan as BusinessPlan;

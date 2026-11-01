@@ -1,5 +1,5 @@
 """
-MASS agent graph.
+Parakh agent graph.
 
   Strategist -> Builder -> Economics -> Growth -> Critic --(issues, 2 revisions max)--> earliest agent at fault
                                                     |                                   (re-runs it and downstream agents whose inputs changed)
@@ -197,7 +197,7 @@ def run(idea: str, context: dict | None = None, job_id: str = "", user_id: str =
     state["started_at"] = time.monotonic()
     state["profile"] = build_profile(state)
     state["lessons"] = get_lessons_from_db(state["profile"])
-    print(f"[MASS] profile: {state['profile']}")
+    print(f"[Parakh] profile: {state['profile']}")
 
     final_state = build_graph().invoke(state)
     event_bus.publish(job_id, {"type": "job_done"})

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-/** The MASS mark: the monolith slab, cut by one line of light. */
+/** The Parakh mark: the monolith slab, cut by one line of light. */
 export function MassMark({ size = 28 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 64 64" aria-hidden="true" className="shrink-0">
@@ -16,10 +16,10 @@ export function MassMark({ size = 28 }: { size?: number }) {
 /** Mark + wordmark, linking home. Used in every page header. */
 export function Logo({ size = 28 }: { size?: number }) {
   return (
-    <Link href="/" aria-label="MASS home" className="inline-flex items-center gap-sm text-on-surface no-underline">
+    <Link href="/" aria-label="Parakh home" className="inline-flex items-center gap-sm text-on-surface no-underline">
       <MassMark size={size} />
       <span className="font-display tracking-[0.02em]" style={{ fontSize: `${size * 0.05}rem` }}>
-        MASS
+        Parakh
       </span>
     </Link>
   );

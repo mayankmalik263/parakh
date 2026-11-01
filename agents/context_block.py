@@ -1,5 +1,5 @@
 """
-Shared context for all MASS agents.
+Shared context for all Parakh agents.
 
 - build_profile(state): parses market/funding ONCE into a small dict (currency, caps).
 - build_context_block(state): a short (~300 token) brief every agent receives.
@@ -13,7 +13,7 @@ import re
 _TOOL_KB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "tool_knowledge.json")
 
 # Shared once via the system message instead of repeated self-check blocks per agent.
-ANTI_FLUFF_RULES = """You are part of MASS, a team that turns a startup idea into a build plan a solo founder can start tonight.
+ANTI_FLUFF_RULES = """You are part of Parakh, a team that turns a startup idea into a build plan a solo founder can start tonight.
 Rules for everything you write:
 - No generic phrases ("build an MVP", "do market research", "run social media ads", "leverage", "increase awareness"). Name the tool, the platform, the action and the number.
 - Every tool is a real 2026 product with its real plan name and price. If unsure of a price, say "price not verified".

@@ -3,8 +3,8 @@ import Footer from '@/components/landing/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service | MASS',
-  description: 'Terms of Service for MASS — Multi-Agent Startup Simulator.',
+  title: 'Terms of Service | Parakh',
+  description: 'Terms of Service for Parakh, your own AI co-founder.',
 };
 
 export default function TermsPage() {
@@ -26,15 +26,15 @@ export default function TermsPage() {
         <div className="flex flex-col gap-3">
           <Section title="1. Acceptance of Terms">
             <p>
-              By accessing or using MASS (&ldquo;Multi-Agent Startup Simulator&rdquo;), you agree to be bound by these
-              Terms of Service. If you do not agree, do not use the platform. MASS is operated by{' '}
+              By accessing or using Parakh, you agree to be bound by these
+              Terms of Service. If you do not agree, do not use the platform. Parakh is operated by{' '}
               <strong className="text-on-surface">Mayank Malik</strong>.
             </p>
           </Section>
 
           <Section title="2. Service Description">
             <p>
-              MASS is an AI-powered startup simulation tool that uses multiple specialized AI agents to analyze,
+              Parakh is an AI-powered startup simulation tool that uses multiple specialized AI agents to analyze,
               debate, and produce structured business plans based on user-submitted startup ideas. The service is
               provided <strong className="text-on-surface">&ldquo;as is&rdquo;</strong> for educational and
               exploratory purposes.
@@ -44,9 +44,9 @@ export default function TermsPage() {
           <Section title="3. No Professional Advice">
             <div className="border-l-2 border-tertiary pl-md mb-md bg-tertiary/5 py-sm">
               <p className="text-on-surface">
-                <strong>Important:</strong> MASS generates AI-produced content. The output is{' '}
+                <strong>Important:</strong> Parakh generates AI-produced content. The output is{' '}
                 <strong>not</strong> professional financial, legal, or business advice. Do not make real business
-                decisions solely based on MASS output. Always consult qualified professionals before acting on any
+                decisions solely based on Parakh output. Always consult qualified professionals before acting on any
                 startup plan.
               </p>
             </div>
@@ -60,7 +60,7 @@ export default function TermsPage() {
           <Section title="4. Intellectual Property">
             <h3 className="m-0 mt-2 text-base font-semibold text-on-surface">4.1 Platform Ownership</h3>
             <p>
-              The MASS platform — including its architecture, agent design, debate flow, state management system,
+              The Parakh platform — including its architecture, agent design, debate flow, state management system,
               prompt engineering, UI design, and all associated code — is the original work of{' '}
               <strong className="text-on-surface">Mayank Malik</strong>.
               Copyright © 2026 Mayank Malik. All rights reserved.
@@ -89,7 +89,7 @@ export default function TermsPage() {
 
             <h3 className="m-0 mt-2 text-base font-semibold text-on-surface">4.3 User Content</h3>
             <p>
-              You retain full ownership of the startup ideas and context you submit to MASS. We do not claim
+              You retain full ownership of the startup ideas and context you submit to Parakh. We do not claim
               any rights over your input or the generated output. The simulation results belong to you.
             </p>
           </Section>
@@ -99,7 +99,7 @@ export default function TermsPage() {
             <ul className="space-y-xs ml-md">
               <li className="flex items-start gap-xs">
                 <span className="text-error mt-[2px]">•</span>
-                Use MASS to generate content that is illegal, harmful, or violates the rights of others.
+                Use Parakh to generate content that is illegal, harmful, or violates the rights of others.
               </li>
               <li className="flex items-start gap-xs">
                 <span className="text-error mt-[2px]">•</span>
@@ -111,14 +111,14 @@ export default function TermsPage() {
               </li>
               <li className="flex items-start gap-xs">
                 <span className="text-error mt-[2px]">•</span>
-                Misrepresent MASS output as professional advice to third parties.
+                Misrepresent Parakh output as professional advice to third parties.
               </li>
             </ul>
           </Section>
 
           <Section title="6. Limitation of Liability">
             <p>
-              To the maximum extent permitted by law, Mayank Malik and the MASS project shall not be liable for any
+              To the maximum extent permitted by law, Mayank Malik and the Parakh project shall not be liable for any
               indirect, incidental, special, consequential, or punitive damages, including but not limited to loss
               of profits, data, or business opportunities, arising from your use of the platform or reliance on its
               output. The platform is provided without warranties of any kind, express or implied.
@@ -127,7 +127,7 @@ export default function TermsPage() {
 
           <Section title="7. Disclaimer of Warranties">
             <p>
-              MASS is provided on an &ldquo;AS IS&rdquo; and &ldquo;AS AVAILABLE&rdquo; basis. We make no warranties,
+              Parakh is provided on an &ldquo;AS IS&rdquo; and &ldquo;AS AVAILABLE&rdquo; basis. We make no warranties,
               expressed or implied, regarding the accuracy, reliability, or completeness of the AI-generated content.
               We do not guarantee uninterrupted access to the service.
             </p>
@@ -136,13 +136,13 @@ export default function TermsPage() {
           <Section title="8. Modifications">
             <p>
               We reserve the right to modify these Terms at any time. Changes take effect immediately upon being
-              posted on this page. Your continued use of MASS after changes constitutes acceptance of the new terms.
+              posted on this page. Your continued use of Parakh after changes constitutes acceptance of the new terms.
             </p>
           </Section>
 
           <Section title="9. Termination">
             <p>
-              We reserve the right to restrict or terminate access to MASS for any user who violates these terms
+              We reserve the right to restrict or terminate access to Parakh for any user who violates these terms
               or engages in behavior that could harm the platform or its users.
             </p>
           </Section>
