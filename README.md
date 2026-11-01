@@ -24,6 +24,7 @@ Parakh splits the work:
 - **Student mode by default.** A blank market means India. A student founder gets an MVP cap of ₹15,000, running costs under ₹10,000 a month before revenue, about 15 hours a week, UPI and Razorpay links, and campus-first channels (class WhatsApp groups, fests, Instagram, shops near campus). Say you're full time, working, selling abroad or raising, and the limits change.
 - **Deck check** at `/critique`: up to 3 slide screenshots or pasted numbers. Every mismatch comes with its formula, e.g. *Runway says 12 months, but ₹2,00,000 ÷ ₹40,000 a month is 5.0 months.* Try it with [`examples/sample-deck-slide.png`](examples/sample-deck-slide.png), which has four planted mistakes. Nothing you upload is stored.
 - **Ask the agents** follow-up questions about your plan, in English or Hinglish.
+- **Share a plan** with a public link, if you want to. Plans are private by default, and a shared link shows the plan only, never your answers or chat.
 
 ## How it works
 
@@ -83,7 +84,7 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. The `supabase_*.sql` files create the tables; run `supabase_auth_migration.sql` last.
+Open `http://localhost:3000`. The `supabase_*.sql` files create the tables; run `supabase_auth_migration.sql` and then `supabase_share_migration.sql` last.
 
 No frontend? `python main.py` runs one plan in the terminal. `pytest` runs the test suite; it fakes every model call, so it needs no key.
 
@@ -91,7 +92,7 @@ No frontend? `python main.py` runs one plan in the terminal. `pytest` runs the t
 
 - **API on Render:** New → Blueprint, pick this repo. [`render.yaml`](render.yaml) sets the build and start commands; Render asks for `BHARATCODE_API_KEY`, `SUPABASE_URL`, `SUPABASE_KEY` and `ALLOWED_ORIGINS` (your Vercel URL).
 - **Frontend on Vercel:** import the repo with root directory `parakh-frontend`, and set `NEXT_PUBLIC_API_URL` (the Render URL), `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
-- **Supabase:** run the `supabase_*.sql` files in the SQL editor, `supabase_auth_migration.sql` last.
+- **Supabase:** run the `supabase_*.sql` files in the SQL editor, with `supabase_auth_migration.sql` and then `supabase_share_migration.sql` last.
 
 ## Project layout
 

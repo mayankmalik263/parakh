@@ -57,6 +57,8 @@ const ENDPOINTS: { method: string; path: string; text: string; body?: string }[]
   { method: 'GET', path: '/simulations/{id}/chat', text: 'The saved follow-up chat for a plan. Send "language": "hinglish" with a chat message to get answers in Hinglish.' },
   { method: 'POST', path: '/critique', text: 'Check a pitch deck. Up to 3 slide images as data URLs and/or the numbers as text. Returns a job id. Nothing is stored.', body: '{\n  "images": ["data:image/png;base64,..."],\n  "text": "Burn ₹40,000/month, cash ₹2,00,000, runway 12 months",\n  "idea": "Shared notes for UPES students"\n}' },
   { method: 'GET', path: '/critique/{job_id}', text: 'Status of a deck check. When done: what the deck claims, the findings, the recomputed numbers and the Critic\'s review.' },
+  { method: 'PATCH', path: '/simulations/{id}/share', text: 'Turn a public link for one of your plans on or off.', body: '{ "public": true }' },
+  { method: 'GET', path: '/shared/{id}', text: 'A plan its owner shared. No login needed. Returns the plan and report only.' },
   { method: 'PATCH', path: '/simulations/{id}/checklist', text: 'Tick or untick a step.', body: '{ "category": "product_mvp", "item_index": 2, "completed": true }' },
 ];
 
@@ -288,7 +290,7 @@ npm install
 npm run dev`}</Pre>
             <P>
               Then open <Code>http://localhost:3000</Code>. The SQL files in the repo root create the tables; run{' '}
-              <Code>supabase_auth_migration.sql</Code> last.
+              <Code>supabase_auth_migration.sql</Code> and then <Code>supabase_share_migration.sql</Code> last.
             </P>
           </Section>
 

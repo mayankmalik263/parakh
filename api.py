@@ -375,6 +375,42 @@ def get_simulation_by_id(id: str, user_id: str = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+class ShareRequest(BaseModel):
+    public: bool
+
+
+# What a shared plan shows. Never the owner, their clarify answers (constraints) or the chat.
+SHARED_FIELDS = "id, idea, market, business_plan, final_report, created_at"
+
+
+@app.patch("/simulations/{id}/share")
+def set_sharing(id: str, req: ShareRequest, user_id: str = Depends(get_current_user)):
+    """Turns the public link for one of the user's plans on or off."""
+    try:
+        response = (get_supabase().table("simulations").update({"is_public": req.public})
+                    .eq("id", id).eq("user_id", user_id).execute())
+    except Exception as e:
+        print(f"Failed to update sharing: {e}")
+        raise HTTPException(status_code=500, detail="Sharing isn't set up yet: run supabase_share_migration.sql in Supabase.")
+    if not response.data:
+        raise HTTPException(status_code=404, detail="Simulation not found")
+    return {"id": id, "is_public": req.public}
+
+
+@app.get("/shared/{id}")
+def get_shared_plan(id: str):
+    """A plan its owner chose to share. No login needed; a private or missing plan is a 404 either way."""
+    try:
+        response = (get_supabase().table("simulations").select(SHARED_FIELDS)
+                    .eq("id", id).eq("is_public", True).execute())
+    except Exception as e:
+        print(f"Failed to load shared plan: {e}")
+        raise HTTPException(status_code=404, detail="This plan isn't shared.")
+    if not response.data:
+        raise HTTPException(status_code=404, detail="This plan isn't shared.")
+    return response.data[0]
+
+
 @app.post("/evaluate")
 def evaluate(req: EvaluateRequest, background_tasks: BackgroundTasks, user_id: str = Depends(get_current_user)):
     from evaluation_engine import EvaluationEngine

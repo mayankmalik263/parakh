@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Navigation from '@/components/landing/Navigation';
 import PlanView from '@/components/plan/PlanView';
-import { getSimulationById, getChecklist, initializeChecklist, toggleChecklistItem } from '@/lib/api';
+import { getSimulationById, getChecklist, initializeChecklist, toggleChecklistItem, setSharing } from '@/lib/api';
 import { Icon } from '@/components/ui/Icon';
 
 const SUGGESTIONS = [
@@ -31,6 +31,19 @@ export default function HistoryDetailPage() {
   const [chatInput, setChatInput] = useState('');
   const [isChatting, setIsChatting] = useState(false);
   const [hinglish, setHinglish] = useState(false);
+  const [shareError, setShareError] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  const toggleSharing = async () => {
+    setShareError('');
+    try {
+      const { is_public } = await setSharing(simulation.id, !simulation.is_public);
+      setSimulation({ ...simulation, is_public });
+    } catch (err) {
+      setShareError(err instanceof Error ? err.message : 'Could not change sharing.');
+    }
+  };
+  const shareUrl = typeof window !== 'undefined' && simulation ? `${window.location.origin}/p/${simulation.id}` : '';
   const chatEnd = useRef<HTMLDivElement>(null);
   const [showContext, setShowContext] = useState(false);
 
@@ -159,6 +172,25 @@ export default function HistoryDetailPage() {
                     {showContext ? 'Hide' : 'Show'} your answers
                   </button>
                 )}
+              </div>
+              <div className="enter flex flex-wrap items-center gap-3 text-sm" style={{ '--i': 3 } as CSSProperties}>
+                <button type="button" onClick={toggleSharing} aria-pressed={!!simulation.is_public} className="btn btn-ghost btn-sm">
+                  {simulation.is_public ? 'Stop sharing' : 'Share a public link'}
+                </button>
+                {simulation.is_public && (
+                  <>
+                    <code className="max-w-full truncate rounded-full bg-surface px-3 py-1.5">{shareUrl}</code>
+                    <button
+                      type="button"
+                      className="cursor-pointer text-primary-fixed-dim underline"
+                      onClick={() => navigator.clipboard?.writeText(shareUrl).then(() => setCopied(true)).catch(() => {})}
+                    >
+                      {copied ? 'Copied' : 'Copy link'}
+                    </button>
+                  </>
+                )}
+                {!simulation.is_public && <span className="muted">Anyone with the link sees the plan, not your answers or chat.</span>}
+                {shareError && <span role="alert" className="text-error">{shareError}</span>}
               </div>
               {showContext && (
                 <p className="enter m-0 max-w-[48rem] whitespace-pre-wrap rounded-2xl bg-surface p-5 text-[0.9375rem] leading-relaxed muted">

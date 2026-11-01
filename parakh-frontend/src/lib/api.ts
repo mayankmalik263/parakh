@@ -369,3 +369,26 @@ export async function getCritique(jobId: string): Promise<{ status: string; resu
   if (!res.ok) throw new Error(`Couldn't load the result (${res.status})`);
   return res.json();
 }
+
+/* ─── Sharing ─────────────────────────────────────────── */
+
+/** PATCH /simulations/{id}/share: turn a plan's public link on or off. */
+export async function setSharing(id: string, isPublic: boolean): Promise<{ is_public: boolean }> {
+  const res = await fetch(`${API_URL}/simulations/${id}/share`, {
+    method: 'PATCH',
+    headers: await getAuthHeaders(),
+    body: JSON.stringify({ public: isPublic }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(typeof err.detail === 'string' ? err.detail : `Couldn't change sharing (${res.status})`);
+  }
+  return res.json();
+}
+
+/** GET /shared/{id}: a plan its owner made public. No login needed. */
+export async function getSharedPlan(id: string): Promise<any> {
+  const res = await fetch(`${API_URL}/shared/${id}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error(res.status === 404 ? "This plan isn't shared, or the link is wrong." : `Couldn't load the plan (${res.status})`);
+  return res.json();
+}

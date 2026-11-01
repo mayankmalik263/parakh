@@ -32,7 +32,15 @@ class FakeSupabase:
         query.order = lambda *a, **k: query
         query.eq = lambda col, val: (filters.append((col, val)), query)[1]
         query.insert = lambda new: (rows.extend(new if isinstance(new, list) else [new]), query)[1]
-        query.execute = lambda: SimpleNamespace(data=[r for r in rows if all(r.get(c) == v for c, v in filters)])
+        changes = {}
+        query.update = lambda values: (changes.update(values), query)[1]
+
+        def execute():
+            matched = [r for r in rows if all(r.get(c) == v for c, v in filters)]
+            for r in matched:
+                r.update(changes)
+            return SimpleNamespace(data=matched)
+        query.execute = execute
         return query
 
 
@@ -203,3 +211,22 @@ def test_critique_failure_message_is_safe_for_users(monkeypatch):
     monkeypatch.setattr(deck, "critique", boom)
     job_id = client.post("/critique", json={"text": "Burn 40k a month, runway 12 months"}).json()["job_id"]
     assert client.get(f"/critique/{job_id}").json()["error"] == "The critique failed. Try again in a minute."
+
+
+def test_a_plan_is_private_until_its_owner_shares_it(monkeypatch):
+    db = FakeSupabase({"simulations": [{"id": "sim-1", "user_id": "user-1", "idea": "Notes app", "is_public": False,
+                                        "business_plan": {"mission": "m"}, "final_report": "# Plan", "constraints": "my answers"}]})
+    monkeypatch.setattr(api, "get_supabase", lambda: db)
+    app.dependency_overrides.clear()  # the public page is anonymous
+    assert client.get("/shared/sim-1").status_code == 404
+
+    app.dependency_overrides[get_current_user] = lambda: "user-2"
+    assert client.patch("/simulations/sim-1/share", json={"public": True}).status_code == 404  # not their plan
+    app.dependency_overrides[get_current_user] = lambda: "user-1"
+    assert client.patch("/simulations/sim-1/share", json={"public": True}).json() == {"id": "sim-1", "is_public": True}
+
+    app.dependency_overrides.clear()
+    shared = client.get("/shared/sim-1")
+    assert shared.status_code == 200
+    # The fake returns whole rows; the real query only selects SHARED_FIELDS, which must leave these out.
+    assert "user_id" not in api.SHARED_FIELDS and "constraints" not in api.SHARED_FIELDS
