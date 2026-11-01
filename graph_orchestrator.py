@@ -9,6 +9,7 @@ Each agent owns one JSON slice of the plan. Python corrects the arithmetic it ca
 before the Critic looks at it, and every issue is addressed to the one agent that owns the broken field.
 """
 import json
+import os
 import time
 
 from langgraph.graph import END, StateGraph
@@ -23,9 +24,9 @@ from state import StartupState, create_state
 
 AGENT_CHAIN = ["strategist", "builder", "economics", "growth"]
 LABELS = {"strategist": "Strategist", "builder": "Builder", "economics": "Economics", "growth": "Growth"}
-# A second revision round starts only if the run is still under this. Measured on the Groq free
-# tier: one full revision round costs ~70-90s, and a single-round run took ~130-170s.
-SECOND_ROUND_BUDGET_S = 100
+# A second revision round starts only if the run is still under this many seconds. 100 was measured
+# on Groq (a revision round cost ~70-90s); re-measure on BharatCode and set it in .env.
+SECOND_ROUND_BUDGET_S = float(os.getenv("PARAKH_SECOND_ROUND_BUDGET_S", "100"))
 
 RUNNERS = {"strategist": strategist.run, "builder": builder.run, "economics": economics.run, "growth": growth.run}
 

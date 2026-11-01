@@ -35,54 +35,90 @@ def test_context_block_lessons_are_advisory():
     assert "MUST follow" not in block
 
 
-def _fake_groq(exhausted: set, calls: list):
-    """A Groq client whose models in `exhausted` answer with a daily-quota 429."""
+def _status_error(cls_name: str, status: int, headers: dict | None = None):
+    """An openai SDK error carrying a fake HTTP response, as BharatCode would trigger it."""
+    import httpx2
+    import openai
+    resp = httpx2.Response(status, headers=headers or {}, request=httpx2.Request("POST", "https://bharatcode.test"))
+    return getattr(openai, cls_name)(f"HTTP {status}", response=resp, body=None)
+
+
+def _fake_client(script: list, calls: list):
+    """A client whose create() raises or returns the next item of `script` on each call."""
     from types import SimpleNamespace
 
-    import httpx
-    from groq import RateLimitError
-
-    def create(model, **kwargs):
-        calls.append(model)
-        if model in exhausted:
-            resp = httpx.Response(429, headers={"retry-after": "352"}, request=httpx.Request("POST", "https://x"))
-            raise RateLimitError("Rate limit reached on tokens per day (TPD)", response=resp, body=None)
-        return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content="ok"))], usage=None)
+    def create(**kwargs):
+        calls.append(kwargs)
+        step = script.pop(0) if len(script) > 1 else script[0]
+        if isinstance(step, Exception):
+            raise step
+        return SimpleNamespace(choices=[SimpleNamespace(message=SimpleNamespace(content=step))], usage=None)
 
     return SimpleNamespace(chat=SimpleNamespace(completions=SimpleNamespace(create=create)))
 
 
-def test_daily_quota_falls_back_to_next_model(monkeypatch):
+def test_only_standard_openai_params_are_sent(monkeypatch):
     from agents import llm_router as r
     calls = []
-    monkeypatch.setattr(r, "_get_client", lambda: _fake_groq({r.OSS_120B}, calls))
-    monkeypatch.setattr(r.time, "sleep", lambda s: (_ for _ in ()).throw(AssertionError("must not wait out a daily quota")))
-    assert r.call_llm("hi", role="strategist") == "ok"
-    assert calls == [r.OSS_120B, r.OSS_20B]
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client(["ok"], calls))
+    r.call_llm("hi", role="strategist")
+    sent = calls[0]
+    assert sent["model"] == r.MODEL
+    assert not any(k.startswith("reasoning") for k in sent), "Groq-only params make BharatCode return 400"
 
 
-def test_all_models_exhausted_gives_a_readable_error(monkeypatch):
+def test_busy_server_is_retried_then_succeeds(monkeypatch):
+    from agents import llm_router as r
+    calls, waits = [], []
+    busy = _status_error("InternalServerError", 503)
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client([busy, busy, "ok"], calls))
+    monkeypatch.setattr(r.time, "sleep", waits.append)
+    assert r.call_llm("hi", role="builder") == "ok"
+    assert len(calls) == 3 and len(waits) == 2
+    assert waits[1] > waits[0]  # backoff grows
+
+
+def test_server_still_busy_gives_a_readable_error(monkeypatch):
     import pytest
     from agents import llm_router as r
-    monkeypatch.setattr(r, "_get_client", lambda: _fake_groq({r.QWEN, r.OSS_120B, r.OSS_20B}, []))
-    with pytest.raises(RuntimeError, match="free AI quota is used up. Try again in about 6 minute"):
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client([_status_error("InternalServerError", 503)], []))
+    monkeypatch.setattr(r.time, "sleep", lambda s: None)
+    with pytest.raises(RuntimeError, match="BharatCode is busy"):
+        r.call_llm("hi", role="growth")
+
+
+def test_daily_quota_is_not_waited_out(monkeypatch):
+    import pytest
+    from agents import llm_router as r
+    quota = _status_error("RateLimitError", 429, {"retry-after": "3600"})
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client([quota], []))
+    monkeypatch.setattr(r.time, "sleep", lambda s: (_ for _ in ()).throw(AssertionError("must not wait out a daily quota")))
+    with pytest.raises(RuntimeError, match="AI quota is used up"):
         r.call_llm("hi", role="critic")
 
 
-def test_rejected_visitor_key_gives_a_readable_error(monkeypatch):
-    from types import SimpleNamespace
-
-    import httpx
-    import pytest
-    from groq import AuthenticationError
-
+def test_separate_critic_model_falls_back_to_main_model(monkeypatch):
     from agents import llm_router as r
+    calls = []
+    monkeypatch.setitem(r.ROLE_MODELS, "critic", "pro-model")
+    monkeypatch.setattr(r, "FALLBACK", {"pro-model": [r.MODEL]})
+    client = _fake_client([_status_error("NotFoundError", 404), "ok"], calls)  # one client: the script must not restart
+    monkeypatch.setattr(r, "_get_client", lambda: client)
+    assert r.call_llm("hi", role="critic") == "ok"
+    assert [c["model"] for c in calls] == ["pro-model", r.MODEL]
 
-    def create(model, **kwargs):
-        resp = httpx.Response(401, request=httpx.Request("POST", "https://x"))
-        raise AuthenticationError("Invalid API Key", response=resp, body=None)
 
-    monkeypatch.setattr(r, "Groq", lambda api_key, max_retries: SimpleNamespace(
-        chat=SimpleNamespace(completions=SimpleNamespace(create=create))))
-    with r.use_groq_key("gsk_wrong"), pytest.raises(RuntimeError, match="Your Groq API key was rejected"):
+def test_json_reply_with_thinking_and_fences_is_parsed(monkeypatch):
+    from agents import llm_router as r
+    from models import Objection
+    reply = '<think>They want JSON.</think>\nSure:\n```json\n{"objection": "Too pricey", "response": "It pays for itself."}\n```'
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client([reply], []))
+    assert r.call_llm_json("hi", Objection, role="growth").objection == "Too pricey"
+
+
+def test_rejected_visitor_key_gives_a_readable_error(monkeypatch):
+    import pytest
+    from agents import llm_router as r
+    monkeypatch.setattr(r, "OpenAI", lambda **kw: _fake_client([_status_error("AuthenticationError", 401)], []))
+    with r.use_bharatcode_key("bc_wrong"), pytest.raises(RuntimeError, match="Your BharatCode API key was rejected"):
         r.call_llm("hi", role="strategist")

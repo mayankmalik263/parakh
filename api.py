@@ -21,7 +21,7 @@ from graph_orchestrator import run
 import event_bus
 
 from supabase_client import get_supabase
-from agents.llm_router import call_llm, call_llm_json, use_groq_key
+from agents.llm_router import call_llm, call_llm_json, use_bharatcode_key
 
 app = FastAPI(title="MASS API", description="Multi-Agent Startup Simulator")
 
@@ -30,10 +30,10 @@ app = FastAPI(title="MASS API", description="Multi-Agent Startup Simulator")
 allowed_origins = [o.strip().rstrip("/") for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
 
 @app.middleware("http")
-async def groq_key_from_header(request, call_next):
-    # Optional visitor-supplied Groq key. The endpoint and its background tasks run in a copy of
+async def bharatcode_key_from_header(request, call_next):
+    # Optional visitor-supplied BharatCode key. The endpoint and its background tasks run in a copy of
     # this context, so every LLM call for the request (including a whole simulation) uses it.
-    with use_groq_key(request.headers.get("x-groq-key")):
+    with use_bharatcode_key(request.headers.get("x-bharatcode-key")):
         return await call_next(request)
 
 
@@ -228,8 +228,9 @@ Keep answers concise, brutally honest, and specific to their constraints and the
         reply = call_llm(prompt, role="chat", system=system_prompt)
     except Exception as e:
         print(f"Error in chat: {e}")
-        # Quota and rejected-key messages are written for the user; anything else stays generic.
-        detail = str(e) if "quota" in str(e) or "Groq API key" in str(e) else "Failed to get chat response"
+        # Quota, busy and rejected-key messages are written for the user; anything else stays generic.
+        msg = str(e)
+        detail = msg if any(s in msg for s in ("quota", "BharatCode API key", "BharatCode is busy")) else "Failed to get chat response"
         raise HTTPException(status_code=500, detail=detail)
 
     if simulation_id:

@@ -64,7 +64,7 @@ def test_clarify_uses_llm_json(monkeypatch):
 
 def test_clarify_falls_back_when_llm_fails(monkeypatch):
     def boom(*a, **k):
-        raise RuntimeError("groq down")
+        raise RuntimeError("bharatcode down")
     monkeypatch.setattr(api, "call_llm_json", boom)
     data = client.post("/clarify", json={"idea": "A CRM for pet sitters"}).json()
     assert len(data["questions"]) == 3
@@ -119,7 +119,7 @@ def test_chat_falls_back_to_the_owners_finished_job_when_the_save_failed(monkeyp
     assert r.status_code == 200
 
 
-def test_visitor_groq_key_reaches_every_agent_of_a_background_simulation(slices, monkeypatch):
+def test_visitor_bharatcode_key_reaches_every_agent_of_a_background_simulation(slices, monkeypatch):
     import graph_orchestrator as go
     from agents import llm_router
     from models import BuildSlice, CriticResult, EconomicsSlice, GrowthSlice, StrategySlice
@@ -139,9 +139,9 @@ def test_visitor_groq_key_reaches_every_agent_of_a_background_simulation(slices,
     monkeypatch.setattr("time.sleep", lambda s: None)  # run_simulation pauses 1s for SSE to flush
 
     r = client.post("/simulate", json={"idea": "SMS reminders for dental clinics", "constraints": "bootstrapped"},
-                    headers={"X-Groq-Key": " gsk_visitor "})
+                    headers={"X-BharatCode-Key": " bc_visitor "})
     assert api.get_job(r.json()["job_id"])["status"] == "done"
-    assert seen == ["gsk_visitor"] * 5
+    assert seen == ["bc_visitor"] * 5
     assert llm_router._user_key.get() is None  # nothing leaks past the request
 
 
