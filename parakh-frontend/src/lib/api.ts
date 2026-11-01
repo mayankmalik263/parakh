@@ -319,3 +319,53 @@ export async function getChecklistProgress(simulationId: string) {
   if (!res.ok) throw new Error('Failed to fetch checklist progress');
   return res.json();
 }
+
+/* ─── Deck critique ───────────────────────────────────── */
+
+export type CritiqueFinding = {
+  field: string;
+  claimed: number | null;
+  computed: number | null;
+  problem: string;
+  fix: string;
+  severity: 'error' | 'warning';
+};
+
+export type CritiqueResult = {
+  claims: Record<string, unknown> & { currency?: 'INR' | 'USD'; startup_name?: string; one_liner?: string; unreadable?: string[] };
+  findings: CritiqueFinding[];
+  recomputed: { label: string; value: number; unit: 'money' | 'months' | 'customers'; formula: string }[];
+  verdict: {
+    verdict: string;
+    biggest_risk: string;
+    red_flags: { claim: string; problem: string; fix: string }[];
+    missing: string[];
+    questions_to_expect: string[];
+  } | null;
+};
+
+/**
+ * POST /critique: slide images (data URLs) and/or pasted numbers. Returns { job_id }.
+ */
+export async function startCritique(body: { images: string[]; text: string; idea: string }): Promise<{ job_id: string }> {
+  const res = await fetch(`${API_URL}/critique`, {
+    method: 'POST',
+    headers: await getAuthHeaders(),
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    const detail = typeof err.detail === 'string' ? err.detail : `Couldn't start the check (${res.status})`;
+    throw new Error(detail);
+  }
+  return res.json();
+}
+
+/**
+ * GET /critique/{job_id}: { status, result?, error? }.
+ */
+export async function getCritique(jobId: string): Promise<{ status: string; result?: CritiqueResult; error?: string }> {
+  const res = await fetch(`${API_URL}/critique/${jobId}`, { headers: await getAuthHeaders() });
+  if (!res.ok) throw new Error(`Couldn't load the result (${res.status})`);
+  return res.json();
+}

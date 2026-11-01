@@ -26,6 +26,7 @@ export default function Navigation() {
         <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
           <Link href="/#agents" className={`${linkClass} hidden sm:inline`}>Agents</Link>
           <Link href="/#sample" className={`${linkClass} hidden sm:inline`}>Sample plan</Link>
+          <Link href="/critique" className={linkClass}>Check a deck</Link>
           <Link href="/docs" className={linkClass}>Docs</Link>
           {session ? (
             <>

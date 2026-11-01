@@ -113,7 +113,7 @@ export default function LandingPage() {
           <Reveal className="flex max-w-[44rem] flex-col gap-3">
             <span className="eyebrow">Student mode</span>
             <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">
-              Planned for a <em>hostel-room</em> budget
+              Planned for a <em className="whitespace-nowrap">hostel-room</em> budget
             </h2>
             <p className="m-0 text-lg leading-relaxed muted">
               Unless you say otherwise, Parakh assumes you&apos;re a student in India with savings, not a seed round. Not
@@ -174,6 +174,26 @@ export default function LandingPage() {
               </div>
               <div className="mt-3 text-sm muted">The Growth agent wrote ₹60. ₹6,000 ÷ 10 is ₹600, so the plan got a warning.</div>
             </div>
+          </Reveal>
+        </section>
+
+        {/* Deck check */}
+        <section className="mx-auto flex max-w-[68rem] flex-col gap-6 px-6 py-20">
+          <Reveal className="flex max-w-[44rem] flex-col gap-3">
+            <span className="eyebrow">Already have a deck?</span>
+            <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">
+              Find the number a judge <em>will</em> catch
+            </h2>
+            <p className="m-0 text-lg leading-relaxed muted">
+              Upload the slides with your numbers, or paste them. Code redoes runway, break-even, MRR and cost per
+              customer from what the deck itself says, then the Critic goes after the claims math can&apos;t check, like
+              &ldquo;we only need 1% of the market&rdquo;. Your deck isn&apos;t saved.
+            </p>
+          </Reveal>
+          <Reveal self className="flex flex-wrap gap-3">
+            <Link href="/critique" className="btn btn-primary">
+              Check my deck <span className="arrow">→</span>
+            </Link>
           </Reveal>
         </section>
 
