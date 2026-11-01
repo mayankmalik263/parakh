@@ -2,8 +2,7 @@ import type { BusinessPlan } from '@/types/simulation';
 import plan from './example-plan.json';
 
 // An EXAMPLE plan, written by hand to show what Parakh gives you. It went through Parakh's own
-// report code and passes the same math checks a real run does (scripts in the repo history:
-// make_example.py). It is not output from a model run, and the landing page says so.
+// report code and passes the same math checks a real run does (see scripts/make_example_plan.py). It is not output from a model run, and the landing page says so.
 export const EXAMPLE_IDEA = "Notes and past papers for juniors at my college, sold before exams";
 export const EXAMPLE_CONTEXT = 'Example · India · student · ₹8,000 to start';
 export const EXAMPLE_PLAN = plan as BusinessPlan;

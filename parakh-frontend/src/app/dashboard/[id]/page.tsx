@@ -131,7 +131,7 @@ export default function HistoryDetailPage() {
   const score = typeof simulation?.alignment_score === 'number' ? Math.round(simulation.alignment_score * 100) : null;
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <main className="mx-auto w-full max-w-[64rem] px-6 pb-24 pt-10">
@@ -161,14 +161,14 @@ export default function HistoryDetailPage() {
                 {simulation.idea}
               </h1>
               <div className="enter flex flex-wrap items-center gap-2 text-sm" style={{ '--i': 2 } as CSSProperties}>
-                {simulation.market && <span className="rounded-full bg-surface px-3 py-1.5">{simulation.market}</span>}
+                {simulation.market && <span className="rounded-full border-2 border-ink bg-surface px-3 py-1 font-semibold">{simulation.market}</span>}
                 {score !== null && (
-                  <span className={`rounded-full px-3 py-1.5 ${score >= 70 ? 'bg-primary/15 text-primary-fixed-dim' : 'bg-tertiary/15 text-tertiary'}`}>
+                  <span className={`rounded-full px-3 py-1 font-semibold ${score >= 70 ? 'border-2 border-ink bg-primary-fixed text-on-primary-fixed' : 'border-2 border-ink bg-marigold text-ink'}`}>
                     Critic score {score}%
                   </span>
                 )}
                 {simulation.constraints && (
-                  <button type="button" onClick={() => setShowContext(!showContext)} aria-expanded={showContext} className="cursor-pointer rounded-full px-3 py-1.5 muted transition-colors hover:bg-surface hover:text-on-surface">
+                  <button type="button" onClick={() => setShowContext(!showContext)} aria-expanded={showContext} className="cursor-pointer rounded-full px-3 py-1 font-bold underline decoration-2 underline-offset-2 transition-colors hover:text-primary-fixed-dim">
                     {showContext ? 'Hide' : 'Show'} your answers
                   </button>
                 )}
@@ -179,10 +179,10 @@ export default function HistoryDetailPage() {
                 </button>
                 {simulation.is_public && (
                   <>
-                    <code className="max-w-full truncate rounded-full bg-surface px-3 py-1.5">{shareUrl}</code>
+                    <code className="max-w-full truncate rounded-full border-2 border-ink bg-surface px-3 py-1.5 font-mono">{shareUrl}</code>
                     <button
                       type="button"
-                      className="cursor-pointer text-primary-fixed-dim underline"
+                      className="cursor-pointer font-bold text-primary-fixed-dim underline decoration-2 underline-offset-2"
                       onClick={() => navigator.clipboard?.writeText(shareUrl).then(() => setCopied(true)).catch(() => {})}
                     >
                       {copied ? 'Copied' : 'Copy link'}
@@ -193,7 +193,7 @@ export default function HistoryDetailPage() {
                 {shareError && <span role="alert" className="text-error">{shareError}</span>}
               </div>
               {showContext && (
-                <p className="enter m-0 max-w-[48rem] whitespace-pre-wrap rounded-2xl bg-surface p-5 text-[0.9375rem] leading-relaxed muted">
+                <p className="enter m-0 max-w-[48rem] whitespace-pre-wrap rounded-2xl border-[3px] border-ink bg-surface p-5 text-[0.9375rem] leading-relaxed muted">
                   {simulation.constraints.replace('. Context:', '\n')}
                 </p>
               )}
@@ -210,30 +210,30 @@ export default function HistoryDetailPage() {
 
             {/* Follow-up chat */}
             <section className="card overflow-hidden" aria-labelledby="chat-title">
-              <div className="flex flex-col gap-1 border-b border-surface-container-high px-6 py-5">
+              <div className="flex flex-col gap-1 border-b-[3px] border-ink bg-marigold px-6 py-5">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <h2 id="chat-title" className="display m-0 text-[2rem]">Ask the agents</h2>
-                  <div role="group" aria-label="Reply language" className="flex rounded-full bg-surface-container-low p-1 text-sm">
+                  <div role="group" aria-label="Reply language" className="flex rounded-full border-2 border-ink bg-surface p-1 text-sm">
                     {([['English', false], ['Hinglish', true]] as const).map(([label, value]) => (
                       <button
                         key={label}
                         type="button"
                         aria-pressed={hinglish === value}
                         onClick={() => setHinglish(value)}
-                        className={`cursor-pointer rounded-full px-3 py-1 transition-colors ${hinglish === value ? 'bg-inverse-primary/30 text-on-surface' : 'muted hover:text-on-surface'}`}
+                        className={`cursor-pointer rounded-full px-3 py-1 transition-colors ${hinglish === value ? 'bg-ink font-bold text-marigold' : 'muted hover:text-on-surface'}`}
                       >
                         {label}
                       </button>
                     ))}
                   </div>
                 </div>
-                <p className="m-0 text-sm muted">Start with a role, like @Economics, to get that agent&apos;s answer. Switch to Hinglish if that&apos;s how you think. The chat is saved with this plan.</p>
+                <p className="m-0 text-sm font-medium">Start with a role, like @Economics, to get that agent&apos;s answer. Switch to Hinglish if that&apos;s how you think. The chat is saved with this plan.</p>
               </div>
               <div className="flex max-h-[30rem] min-h-[10rem] flex-col gap-3 overflow-y-auto px-6 py-5">
                 {chatMessages.length === 0 && !isChatting && (
                   <div className="flex flex-wrap gap-2">
                     {SUGGESTIONS.map((q) => (
-                      <button key={q} type="button" onClick={() => setChatInput(q)} className="cursor-pointer rounded-full bg-surface-container-low px-3.5 py-2 text-left text-sm text-[#d4d2d2] transition-[background-color,transform] duration-200 hover:bg-surface-container-high active:scale-95">
+                      <button key={q} type="button" onClick={() => setChatInput(q)} className="cursor-pointer rounded-full border-2 border-ink bg-surface px-3.5 py-2 font-semibold text-left text-sm text-on-surface transition-[background-color,transform] duration-200 hover:bg-marigold active:scale-95">
                         {q}
                       </button>
                     ))}
@@ -241,23 +241,23 @@ export default function HistoryDetailPage() {
                 )}
                 {chatMessages.map((msg, i) => (
                   <div key={i} className={`enter flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-[0.9375rem] leading-relaxed ${msg.role === 'user' ? 'rounded-br-md bg-inverse-primary text-white' : 'rounded-bl-md bg-surface-container-high text-on-surface'}`}>
+                    <div className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-[0.9375rem] leading-relaxed ${msg.role === 'user' ? 'rounded-br-md border-2 border-ink bg-rani text-white' : 'rounded-bl-md border-2 border-ink bg-surface text-on-surface'}`}>
                       {msg.content}
                     </div>
                   </div>
                 ))}
                 {isChatting && (
                   <div className="enter flex justify-start">
-                    <div className="flex gap-1.5 rounded-2xl rounded-bl-md bg-surface-container-high px-4 py-4" role="status" aria-label="The agents are typing">
+                    <div className="flex gap-1.5 rounded-2xl rounded-bl-md border-2 border-ink bg-surface px-4 py-4" role="status" aria-label="The agents are typing">
                       {[0, 1, 2].map((d) => (
-                        <span key={d} className="size-2 animate-bounce rounded-full bg-[#9d9b9b]" style={{ animationDelay: `${d * 140}ms` }} />
+                        <span key={d} className="size-2 animate-bounce rounded-full bg-ink" style={{ animationDelay: `${d * 140}ms` }} />
                       ))}
                     </div>
                   </div>
                 )}
                 <div ref={chatEnd} />
               </div>
-              <form onSubmit={handleChatSubmit} className="flex gap-2 border-t border-surface-container-high p-3">
+              <form onSubmit={handleChatSubmit} className="flex gap-2 border-t-[3px] border-ink p-3">
                 <label htmlFor="chat-input" className="sr-only">Ask the agents</label>
                 <input
                   id="chat-input"
@@ -265,7 +265,7 @@ export default function HistoryDetailPage() {
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder="@Growth what if I skip ads entirely?"
-                  className="field min-w-0 flex-1 rounded-full bg-surface-container-low py-3"
+                  className="field min-w-0 flex-1 rounded-full py-3"
                 />
                 <button type="submit" disabled={isChatting || !chatInput.trim()} className="btn btn-primary" aria-label="Send">
                   <Icon name="arrow_upward" className="text-[1.25rem]" />
@@ -275,7 +275,7 @@ export default function HistoryDetailPage() {
           </div>
         ) : (
           <div className="card flex flex-col items-center gap-5 p-10 text-center">
-            <Icon name="search_off" className="text-[2.5rem] text-[#8d8b8b]" />
+            <Icon name="search_off" className="text-[2.5rem] text-on-surface-variant" />
             <p className="m-0 muted">That plan doesn&apos;t exist, or it isn&apos;t yours.</p>
             <Link href="/dashboard" className="btn btn-primary">Back to your plans</Link>
           </div>

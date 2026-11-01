@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <main className="mx-auto w-full max-w-[48rem] px-6 pb-24 pt-14">
@@ -60,8 +60,7 @@ export default function PrivacyPage() {
               <a href="https://bharatcode.ai" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
                 BharatCode
               </a>{' '}
-              for processing. BharatCode may use inference partners and keep request logs; review its own terms and
-              privacy policy for details on how it handles data.
+              for processing. BharatCode&apos;s own terms and privacy policy cover how it handles that data.
             </p>
             <p>
               If you add your own BharatCode API key, it is stored only in your browser&apos;s local storage and sent with
@@ -100,7 +99,7 @@ export default function PrivacyPage() {
           <Section title="7. Changes to This Policy">
             <p>
               We may update this Privacy Policy from time to time. Changes will be reflected on this page with an
-              updated &ldquo;Last updated&rdquo; date. Continued use of the platform after changes constitutes
+              updated &quot;Last updated&quot; date. Continued use of the platform after changes constitutes
               acceptance of the revised policy.
             </p>
           </Section>
@@ -128,7 +127,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div className="card p-6 md:p-7">
       <h2 className="m-0 mb-3 text-lg font-semibold">{title}</h2>
-      <div className="flex flex-col gap-3 leading-relaxed text-[#d4d2d2]">
+      <div className="flex flex-col gap-3 leading-relaxed text-on-surface">
         {children}
       </div>
     </div>

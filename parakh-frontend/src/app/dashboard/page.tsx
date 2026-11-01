@@ -36,7 +36,7 @@ export default function DashboardPage() {
   const shown = simulations.filter((s) => s.idea?.toLowerCase().includes(query.trim().toLowerCase()));
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <main className="mx-auto w-full max-w-[68rem] px-6 pb-24 pt-14">
@@ -65,7 +65,7 @@ export default function DashboardPage() {
           <div className="enter mb-6" style={{ '--i': 4 } as CSSProperties}>
             <label htmlFor="plan-search" className="sr-only">Search plans</label>
             <div className="relative max-w-[26rem]">
-              <Icon name="search" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[1.25rem] text-[#8d8b8b]" />
+              <Icon name="search" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[1.25rem] text-on-surface-variant" />
               <input
                 id="plan-search"
                 value={query}
@@ -89,12 +89,12 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : error ? (
-          <div className="card p-8 text-center shadow-[inset_0_0_0_1px_rgba(255,180,171,0.35)]">
+          <div className="card p-8 text-center shadow-[6px_6px_0_#B3122E]">
             <p className="m-0 text-error">{error}</p>
           </div>
         ) : simulations.length === 0 ? (
           <div className="card enter flex flex-col items-center gap-5 px-6 py-16 text-center">
-            <span className="grid size-16 place-items-center rounded-full bg-inverse-primary/25 text-primary-fixed-dim">
+            <span className="grid size-16 place-items-center rounded-full border-[3px] border-ink bg-marigold text-ink">
               <Icon name="lightbulb" className="text-[2rem]" />
             </span>
             <h2 className="display m-0 text-[2.25rem]">No plans yet</h2>
@@ -102,7 +102,7 @@ export default function DashboardPage() {
             <Link href="/simulate" className="btn btn-primary">Run my first idea <span className="arrow">→</span></Link>
           </div>
         ) : shown.length === 0 ? (
-          <p className="py-12 text-center muted">No plans match &ldquo;{query}&rdquo;.</p>
+          <p className="py-12 text-center muted">No plans match &quot;{query}&quot;.</p>
         ) : (
           <Reveal className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
             {shown.map((sim, n) => (
@@ -116,7 +116,7 @@ export default function DashboardPage() {
                   <span>
                     {new Date(sim.created_at).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })}
                   </span>
-                  {sim.market && <span className="rounded-full bg-surface-container-high px-2.5 py-1 text-xs">{sim.market}</span>}
+                  {sim.market && <span className="rounded-full border-2 border-ink bg-marigold px-2.5 py-0.5 text-xs font-bold text-ink">{sim.market}</span>}
                 </div>
                 <h3 className="display m-0 line-clamp-3 text-[1.625rem] leading-[1.15] text-on-surface">{sim.idea}</h3>
                 <span className="mt-auto flex items-center gap-1.5 text-sm font-medium text-primary-fixed-dim">

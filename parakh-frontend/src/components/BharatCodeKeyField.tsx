@@ -34,7 +34,7 @@ export function BharatCodeKeyField({ defaultOpen = false }: { defaultOpen?: bool
             type="button"
             onClick={() => setOpen(!open)}
             aria-expanded={open}
-            className="cursor-pointer font-medium text-primary-fixed-dim transition-colors hover:text-white"
+            className="cursor-pointer font-medium text-primary-fixed-dim transition-colors hover:text-ink"
           >
             {saved ? 'Change key' : 'Use your own BharatCode key'}
           </button>
@@ -48,7 +48,7 @@ export function BharatCodeKeyField({ defaultOpen = false }: { defaultOpen?: bool
             <a href="https://bharatcode.ai" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">
               bharatcode.ai
             </a>{' '}
-            (free if you sign up with a .ac.in or .edu.in email). Your plans then run on your own daily quota. The key is stored only in this browser and
+            (eligible students get free access, subject to BharatCode&apos;s current usage limits). Your plans then run on your own quota. The key is stored only in this browser and
             sent with your requests; our server never saves it.
           </p>
           <div className="flex gap-2">

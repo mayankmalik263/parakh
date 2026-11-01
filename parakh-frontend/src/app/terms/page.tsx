@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <main className="mx-auto w-full max-w-[48rem] px-6 pb-24 pt-14">
@@ -36,13 +36,13 @@ export default function TermsPage() {
             <p>
               Parakh is an AI-powered startup simulation tool that uses multiple specialized AI agents to analyze,
               debate, and produce structured business plans based on user-submitted startup ideas. The service is
-              provided <strong className="text-on-surface">&ldquo;as is&rdquo;</strong> for educational and
+              provided <strong className="text-on-surface">&quot;as is&quot;</strong> for educational and
               exploratory purposes.
             </p>
           </Section>
 
           <Section title="3. No Professional Advice">
-            <div className="border-l-2 border-tertiary pl-md mb-md bg-tertiary/5 py-sm">
+            <div className="rounded-xl border-[3px] border-ink bg-tertiary-fixed px-md mb-md py-sm">
               <p className="text-on-surface">
                 <strong>Important:</strong> Parakh generates AI-produced content. The output is{' '}
                 <strong>not</strong> professional financial, legal, or business advice. Do not make real business
@@ -60,8 +60,8 @@ export default function TermsPage() {
           <Section title="4. Intellectual Property">
             <h3 className="m-0 mt-2 text-base font-semibold text-on-surface">4.1 Platform Ownership</h3>
             <p>
-              The Parakh platform — including its architecture, agent design, debate flow, state management system,
-              prompt engineering, UI design, and all associated code — is the original work of{' '}
+              The Parakh platform, including its architecture, agent design, debate flow, state management system,
+              prompt engineering, UI design, and all associated code, is the original work of{' '}
               <strong className="text-on-surface">Mayank Malik</strong>.
               Copyright © 2026 Mayank Malik. All rights reserved.
             </p>
@@ -127,7 +127,7 @@ export default function TermsPage() {
 
           <Section title="7. Disclaimer of Warranties">
             <p>
-              Parakh is provided on an &ldquo;AS IS&rdquo; and &ldquo;AS AVAILABLE&rdquo; basis. We make no warranties,
+              Parakh is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. We make no warranties,
               expressed or implied, regarding the accuracy, reliability, or completeness of the AI-generated content.
               We do not guarantee uninterrupted access to the service.
             </p>
@@ -168,7 +168,7 @@ export default function TermsPage() {
           </Section>
 
           {/* MIT License block */}
-          <div className="border border-primary/30 bg-primary/5 p-lg">
+          <div className="rounded-2xl border-[3px] border-ink bg-primary-fixed p-lg">
             <h3 className="font-label-mono text-primary mb-md uppercase text-sm">MIT License</h3>
             <pre className="font-mono text-[11px] text-on-surface-variant leading-relaxed whitespace-pre-wrap">
 {`Copyright (c) 2026 Mayank Malik
@@ -203,7 +203,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div className="card p-6 md:p-7">
       <h2 className="m-0 mb-3 text-lg font-semibold">{title}</h2>
-      <div className="flex flex-col gap-3 leading-relaxed text-[#d4d2d2]">
+      <div className="flex flex-col gap-3 leading-relaxed text-on-surface">
         {children}
       </div>
     </div>

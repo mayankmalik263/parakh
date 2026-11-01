@@ -304,13 +304,13 @@ export default function SimulatePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <main className="mx-auto w-full max-w-[56rem] px-6 pb-24 pt-14">
         {/* Page header */}
         <div key={phase} className="mb-10 flex flex-col gap-3 text-center">
-          <span className="eyebrow enter">
+          <span className="eyebrow enter mx-auto">
             {phase === 'form' && 'New plan'}
             {phase === 'clarify' && 'Quick questions'}
             {phase === 'running' && `Round ${currentRound} · ${mmss}`}
@@ -327,8 +327,8 @@ export default function SimulatePage() {
           <p className="enter mx-auto m-0 max-w-[38rem] text-lg leading-relaxed muted" style={{ '--i': 2 } as CSSProperties}>
             {phase === 'form' && "One or two sentences is enough. Say who it's for, which city or campus, and how much you can put in."}
             {phase === 'clarify' && 'Your answers go to every agent, so the plan fits your budget and market.'}
-            {phase === 'running' && 'Four agents write the plan, then the Critic sends problems back. Usually two or three minutes.'}
-            {phase === 'done' && 'It is saved to your dashboard. Tick off steps as you go, or ask the agents follow-up questions there.'}
+            {phase === 'running' && 'Four agents write the plan, then the Critic sends problems back. This usually takes a few minutes.'}
+            {phase === 'done' && "It's saved to your dashboard. Tick off steps as you go, or ask the agents follow-up questions there."}
             {phase === 'error' && 'Nothing was saved. Read the message below, then try again.'}
           </p>
         </div>
@@ -336,7 +336,7 @@ export default function SimulatePage() {
         {/* ═══ FORM ═══ */}
         {phase === 'form' && (
           <form onSubmit={handleSubmit} className="enter flex flex-col gap-4" style={{ '--i': 3 } as CSSProperties}>
-            <div className="card p-2 transition-shadow duration-300 focus-within:shadow-[inset_0_0_0_1.5px_#8b5cf6,0_0_0_4px_rgba(139,92,246,0.15)]">
+            <div className="card p-2 transition-shadow duration-200 focus-within:shadow-[8px_8px_0_#E0177A]">
               <label htmlFor="startup-idea" className="sr-only">Your startup idea</label>
               <textarea
                 id="startup-idea"
@@ -345,10 +345,10 @@ export default function SimulatePage() {
                 placeholder="e.g. A tiffin service for hostel students in Bidholi, starting with ₹8,000 of savings"
                 required
                 rows={4}
-                className="field resize-none bg-transparent text-xl leading-relaxed shadow-none focus:shadow-none"
+                className="field resize-none border-0 bg-transparent text-xl font-medium leading-relaxed shadow-none focus:transform-none focus:shadow-none"
               />
               <div className="flex flex-wrap items-center justify-between gap-3 px-3 pb-2">
-                <span className="text-sm tabular-nums text-[#8d8b8b]">{form.idea.length} characters</span>
+                <span className="font-mono text-sm tabular-nums text-on-surface-variant">{form.idea.length} characters</span>
                 <button type="submit" disabled={isClarifying || !form.idea.trim()} className="btn btn-primary">
                   {isClarifying ? (
                     <>
@@ -363,13 +363,13 @@ export default function SimulatePage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm muted">Try one:</span>
+              <span className="text-sm font-bold">Try one:</span>
               {EXAMPLES.map((ex) => (
                 <button
                   key={ex}
                   type="button"
                   onClick={() => setForm({ ...form, idea: ex })}
-                  className="cursor-pointer rounded-full bg-surface px-3.5 py-2 text-sm text-[#d4d2d2] transition-[background-color,transform] duration-200 hover:bg-surface-container-high active:scale-95"
+                  className="cursor-pointer rounded-full border-2 border-ink bg-surface px-3.5 py-2 text-sm font-semibold text-ink transition-[background-color,transform] duration-200 hover:bg-marigold active:scale-95"
                 >
                   {ex}
                 </button>
@@ -380,8 +380,8 @@ export default function SimulatePage() {
 
             <ol className="m-0 mt-4 grid list-none gap-3 p-0 text-sm sm:grid-cols-3">
               {['Describe the idea', 'Answer a few quick questions', 'Watch the agents work'].map((t, i) => (
-                <li key={t} className="flex items-center gap-2.5 muted">
-                  <span className={`grid size-7 shrink-0 place-items-center rounded-full text-xs font-semibold ${i === 0 ? 'bg-inverse-primary text-white' : 'bg-surface-container-high'}`}>{i + 1}</span>
+                <li key={t} className="flex items-center gap-2.5 font-semibold">
+                  <span className={`grid size-7 shrink-0 place-items-center rounded-full border-2 border-ink text-xs font-extrabold ${i === 0 ? 'bg-rani text-white' : 'bg-surface'}`}>{i + 1}</span>
                   {t}
                 </li>
               ))}
@@ -394,11 +394,11 @@ export default function SimulatePage() {
           <div className="card mx-auto max-w-[44rem] p-6 md:p-10">
             <div className="mb-8 flex gap-1.5">
               {questions.map((_, i) => (
-                <span key={i} className={`h-1.5 flex-1 rounded-full transition-colors duration-500 ${i <= currentQuestionIndex ? 'bg-primary' : 'bg-surface-container-highest'}`} />
+                <span key={i} className={`h-3 flex-1 rounded-full border-2 border-ink transition-colors duration-500 ${i <= currentQuestionIndex ? 'bg-rani' : 'bg-surface'}`} />
               ))}
             </div>
             <div key={currentQuestionIndex} className="enter">
-              <div className="mb-3 text-sm muted">
+              <div className="mb-3 font-mono text-sm muted">
                 Question {currentQuestionIndex + 1} of {questions.length}
               </div>
               <h2 className="display m-0 mb-8 text-[clamp(1.75rem,3.5vw,2.5rem)] leading-[1.1]">
@@ -410,7 +410,7 @@ export default function SimulatePage() {
                     key={i}
                     type="button"
                     onClick={() => handleAnswerSelect(option)}
-                    className={`enter group flex cursor-pointer items-center justify-between gap-4 rounded-2xl px-5 py-4 text-left transition-[background-color,transform,box-shadow] duration-300 [transition-timing-function:var(--ease-spring)] hover:-translate-y-0.5 active:scale-[0.98] ${answers[currentQuestionIndex] === option ? 'bg-inverse-primary/25 shadow-[inset_0_0_0_1.5px_#8b5cf6]' : 'bg-surface-container-low hover:bg-surface-container-high'}`}
+                    className={`enter group flex cursor-pointer items-center justify-between gap-4 rounded-2xl border-[3px] border-ink px-5 py-4 text-left font-semibold shadow-[4px_4px_0_#161616] transition-[background-color,transform,box-shadow] duration-150 ease-out hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0_#161616] active:translate-x-1 active:translate-y-1 active:shadow-none ${answers[currentQuestionIndex] === option ? 'bg-marigold' : 'bg-surface hover:bg-surface-container-low'}`}
                     style={{ '--i': i + 1 } as CSSProperties}
                   >
                     <span className="text-[1.0625rem] leading-snug">{option}</span>
@@ -419,7 +419,7 @@ export default function SimulatePage() {
                 ))}
               </div>
               {currentQuestionIndex > 0 && (
-                <button type="button" onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)} className="mt-6 cursor-pointer text-sm muted transition-colors hover:text-on-surface">
+                <button type="button" onClick={() => setCurrentQuestionIndex(currentQuestionIndex - 1)} className="mt-6 cursor-pointer text-sm font-bold muted transition-colors hover:text-ink">
                   ← Previous question
                 </button>
               )}
@@ -432,10 +432,10 @@ export default function SimulatePage() {
           <div className="flex flex-col gap-4">
             <div className="card p-5 md:p-8">
               <div className="relative grid grid-cols-3 gap-y-6 md:grid-cols-6">
-                <div aria-hidden className="absolute left-[8.33%] right-[8.33%] top-7 hidden h-px bg-surface-container-highest md:block" />
+                <div aria-hidden className="absolute left-[8.33%] right-[8.33%] top-[1.65rem] hidden h-[3px] bg-ink/15 md:block" />
                 <div
                   aria-hidden
-                  className="absolute left-[8.33%] top-7 hidden h-px bg-primary transition-[width] duration-700 [transition-timing-function:var(--ease-spring)] md:block"
+                  className="absolute left-[8.33%] top-[1.65rem] hidden h-[3px] bg-rani transition-[width] duration-700 [transition-timing-function:var(--ease-spring)] md:block"
                   style={{ width: `${(Math.max(0, doneCount - 1) / (AGENTS.length - 1)) * 83.34}%` }}
                 />
                 {AGENTS.map((agent) => {
@@ -444,21 +444,21 @@ export default function SimulatePage() {
                   return (
                     <div key={agent.key} className="relative flex flex-col items-center gap-2">
                       <span
-                        className={`relative grid size-14 place-items-center rounded-full transition-all duration-500 [transition-timing-function:var(--ease-bounce)] ${
+                        className={`relative grid size-14 place-items-center rounded-full border-[3px] border-ink transition-all duration-500 [transition-timing-function:var(--ease-bounce)] ${
                           status === 'active'
-                            ? `${critic ? 'bg-tertiary text-on-tertiary' : 'bg-inverse-primary text-white'} scale-110 [animation:pulse-ring_1.4s_ease-out_infinite]`
+                            ? `${critic ? 'bg-ink text-marigold' : 'bg-rani text-white'} scale-110 [animation:pulse-ring_1.4s_ease-out_infinite]`
                             : status === 'completed'
-                              ? 'bg-surface-container-highest text-primary-fixed-dim'
-                              : 'bg-surface-container-high text-[#6f6d6d]'
+                              ? 'bg-marigold text-ink'
+                              : 'bg-surface text-on-surface-variant'
                         }`}
                       >
                         <Icon name={agent.icon} className="text-[1.5rem]" />
                         {status === 'completed' && (
-                          <span className="enter absolute -right-0.5 -top-0.5 grid size-5 place-items-center rounded-full bg-primary text-[0.7rem] text-white">✓</span>
+                          <span className="enter absolute -right-0.5 -top-0.5 grid size-5 place-items-center rounded-full border-2 border-ink bg-rani text-[0.7rem] text-white">✓</span>
                         )}
                       </span>
-                      <span className={`text-sm font-medium ${status === 'waiting' ? 'text-[#8d8b8b]' : 'text-on-surface'}`}>{agent.key}</span>
-                      <span className="h-4 text-xs text-primary-fixed-dim">{status === 'active' && 'working…'}</span>
+                      <span className={`text-sm font-bold ${status === 'waiting' ? 'text-on-surface-variant' : 'text-ink'}`}>{agent.key}</span>
+                      <span className="h-4 text-xs font-bold text-primary-fixed-dim">{status === 'active' && 'working…'}</span>
                     </div>
                   );
                 })}
@@ -466,10 +466,10 @@ export default function SimulatePage() {
             </div>
 
             <div className="card overflow-hidden">
-              <div className="flex items-center justify-between border-b border-surface-container-high px-5 py-3.5 md:px-6">
-                <span className="text-sm font-semibold">What the agents are doing</span>
-                <span className="flex items-center gap-2 text-sm muted">
-                  <span className="size-2 animate-pulse rounded-full bg-primary" />
+              <div className="flex items-center justify-between border-b-[3px] border-ink bg-marigold px-5 py-3 md:px-6">
+                <span className="font-display text-lg uppercase tracking-[0.03em]">What the agents are doing</span>
+                <span className="flex items-center gap-2 font-mono text-sm font-medium">
+                  <span className="size-2.5 animate-pulse rounded-full border-2 border-ink bg-rani" />
                   Live · {mmss}
                 </span>
               </div>
@@ -491,8 +491,8 @@ export default function SimulatePage() {
 
         {/* ═══ ERROR ═══ */}
         {phase === 'error' && (
-          <div className="card mx-auto flex max-w-[40rem] flex-col items-center gap-5 p-8 text-center shadow-[inset_0_0_0_1px_rgba(255,180,171,0.35)]">
-            <span className="grid size-14 place-items-center rounded-full bg-error/15 text-error">
+          <div className="card mx-auto flex max-w-[40rem] flex-col items-center gap-5 p-8 text-center shadow-[6px_6px_0_#B3122E]">
+            <span className="grid size-14 place-items-center rounded-full border-[3px] border-ink bg-error-container text-error">
               <Icon name="error" className="text-[1.75rem]" />
             </span>
             <p className="m-0 text-[1.0625rem] leading-relaxed">{errorMsg}</p>
@@ -512,10 +512,10 @@ export default function SimulatePage() {
           <div className="enter flex flex-col gap-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex min-w-0 flex-wrap gap-2 text-sm">
-                <span className="rounded-full bg-surface px-3 py-1.5">
+                <span className="rounded-full border-2 border-ink bg-surface px-3 py-1.5 font-semibold">
                   {result.result.debate_rounds} review {result.result.debate_rounds === 1 ? 'round' : 'rounds'}
                 </span>
-                <span className="truncate rounded-full bg-surface px-3 py-1.5 muted">&ldquo;{form.idea.length > 60 ? `${form.idea.slice(0, 60)}…` : form.idea}&rdquo;</span>
+                <span className="truncate rounded-full border-2 border-ink bg-surface px-3 py-1.5 muted">&quot;{form.idea.length > 60 ? `${form.idea.slice(0, 60)}…` : form.idea}&quot;</span>
               </div>
               <div className="flex gap-2">
                 <Link href="/dashboard" className="btn btn-ghost btn-sm">All plans</Link>
@@ -545,7 +545,7 @@ function ActivityLogEntry({ event }: { event: AgentEvent }) {
     case 'agent_start':
       return (
         <div className="enter flex items-center gap-3 py-2">
-          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-surface-container-high text-[#9d9b9b]">
+          <span className="grid size-8 shrink-0 place-items-center rounded-full border-2 border-ink bg-surface text-ink">
             <Icon name={agent?.icon || 'settings'} className="text-[1.05rem]" />
           </span>
           <span className="text-sm">
@@ -558,24 +558,24 @@ function ActivityLogEntry({ event }: { event: AgentEvent }) {
     case 'agent_done':
       return (
         <div className="enter flex gap-3 py-2">
-          <span className="grid size-8 shrink-0 place-items-center rounded-full bg-inverse-primary/25 text-primary-fixed-dim">
+          <span className="grid size-8 shrink-0 place-items-center rounded-full border-2 border-ink bg-marigold text-ink">
             <Icon name={agent?.icon || 'check'} className="text-[1.05rem]" />
           </span>
           <div className="min-w-0 flex-1">
             <div className="text-sm"><span className="font-semibold">{event.agent}</span> <span className="text-primary-fixed-dim">done</span></div>
-            {event.summary && <p className="m-0 mt-0.5 text-[0.9375rem] leading-relaxed text-[#d4d2d2]">{event.summary}</p>}
+            {event.summary && <p className="m-0 mt-0.5 text-[0.9375rem] leading-relaxed">{event.summary}</p>}
           </div>
         </div>
       );
 
     case 'supervisor_result':
       return (
-        <div className={`enter my-2 rounded-2xl border-l-2 px-4 py-3.5 ${event.forced ? 'border-tertiary bg-tertiary/10' : event.agreed ? 'border-primary bg-primary/10' : 'border-error bg-error/10'}`}>
+        <div className={`enter my-2 rounded-2xl border-[3px] border-ink px-4 py-3.5 shadow-[4px_4px_0_#161616] ${event.forced ? 'bg-tertiary-fixed' : event.agreed ? 'bg-marigold' : 'bg-primary-fixed'}`}>
           <div className="mb-1 flex items-center gap-2 text-sm font-semibold">
             <Icon name="gavel" className="text-[1.05rem]" />
             {event.forced ? 'Critic: out of revisions, open issues stay in the plan' : event.agreed ? 'Critic approved the plan' : 'Critic sent problems back'}
           </div>
-          {event.reason && <p className="m-0 text-[0.9375rem] leading-relaxed text-[#d4d2d2]">{event.reason}</p>}
+          {event.reason && <p className="m-0 text-[0.9375rem] leading-relaxed">{event.reason}</p>}
           {!!event.conflicts?.length && (
             <ul className="m-0 mt-2 flex list-none flex-col gap-1 p-0 text-sm muted">
               {event.conflicts.map((c, i) => (
@@ -598,8 +598,8 @@ function ActivityLogEntry({ event }: { event: AgentEvent }) {
         unit === 'money' ? `${event.symbol ?? '₹'}${Math.round(v).toLocaleString(event.symbol === '$' ? 'en-US' : 'en-IN')}`
           : unit === 'months' ? `${v} mo` : v.toLocaleString('en-IN');
       return (
-        <div className="enter my-2 rounded-2xl border-l-2 border-tertiary bg-tertiary/10 px-4 py-3.5">
-          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-tertiary">
+        <div className="enter my-2 rounded-2xl border-[3px] border-ink bg-surface px-4 py-3.5 shadow-[4px_4px_0_#E0177A]">
+          <div className="mb-2 flex items-center gap-2 text-sm font-extrabold text-primary-fixed-dim">
             <Icon name="calculate" className="text-[1.05rem]" />
             Code corrected {event.fixes?.length} number{event.fixes?.length === 1 ? '' : 's'} the agents got wrong
           </div>
@@ -607,9 +607,9 @@ function ActivityLogEntry({ event }: { event: AgentEvent }) {
             {event.fixes?.map((f, i) => (
               <li key={i} className="flex flex-wrap items-baseline gap-x-2 tabular-nums">
                 <span className="muted">{f.label}</span>
-                <span className="text-[#8d8b8b] line-through">{fmt(f.before, f.unit)}</span>
+                <span className="text-on-surface-variant line-through decoration-rani decoration-2">{fmt(f.before, f.unit)}</span>
                 <span aria-hidden>→</span>
-                <span className="font-semibold text-tertiary">{fmt(f.after, f.unit)}</span>
+                <span className="font-extrabold text-primary-fixed-dim">{fmt(f.after, f.unit)}</span>
               </li>
             ))}
           </ul>
@@ -619,24 +619,24 @@ function ActivityLogEntry({ event }: { event: AgentEvent }) {
 
     case 'debate_loop':
       return (
-        <div className="enter my-2 flex items-center gap-3 text-sm text-tertiary">
-          <span className="h-px flex-1 bg-tertiary/30" />
+        <div className="enter my-2 flex items-center gap-3 text-sm font-bold text-ink">
+          <span className="h-[3px] flex-1 bg-ink" />
           <Icon name="sync" className="animate-spin text-[1rem]" />
           Round {event.round}: {event.agents?.length ? event.agents.join(', ') : 'the agents'} revise
-          <span className="h-px flex-1 bg-tertiary/30" />
+          <span className="h-[3px] flex-1 bg-ink" />
         </div>
       );
 
     case 'job_done':
       return (
-        <div className="enter my-2 flex items-center gap-2 rounded-2xl bg-primary/10 px-4 py-3 text-sm text-primary-fixed-dim">
+        <div className="enter my-2 flex items-center gap-2 rounded-2xl border-2 border-ink bg-marigold px-4 py-3 text-sm font-semibold text-ink">
           <Icon name="task_alt" className="text-[1.05rem]" /> Plan finished. Loading it…
         </div>
       );
 
     case 'job_error':
       return (
-        <div className="enter my-2 flex items-center gap-2 rounded-2xl bg-error/10 px-4 py-3 text-sm text-error">
+        <div className="enter my-2 flex items-center gap-2 rounded-2xl border-2 border-ink bg-error-container px-4 py-3 text-sm font-semibold text-on-error-container">
           <Icon name="error" className="text-[1.05rem]" /> {event.error || 'Simulation failed'}
         </div>
       );

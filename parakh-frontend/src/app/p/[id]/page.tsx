@@ -19,7 +19,7 @@ export default function SharedPlanPage() {
   }, [id]);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navigation />
       <main className="mx-auto w-full max-w-[64rem] px-6 pb-24 pt-10">
         {error ? (
@@ -42,7 +42,7 @@ export default function SharedPlanPage() {
               </h1>
               {plan.market && (
                 <div className="enter flex flex-wrap gap-2 text-sm" style={{ '--i': 2 } as CSSProperties}>
-                  <span className="rounded-full bg-surface px-3 py-1.5">{plan.market}</span>
+                  <span className="rounded-full border-2 border-ink bg-surface px-3 py-1 font-semibold">{plan.market}</span>
                 </div>
               )}
             </header>

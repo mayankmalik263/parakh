@@ -60,7 +60,7 @@ function money(value: number, currency: string) {
 }
 
 function formatValue(value: number | null, field: string, currency: string) {
-  if (value === null || value === undefined) return '—';
+  if (value === null || value === undefined) return 'not given';
   if (field === 'runway_months') return `${value} mo`;
   if (field === 'break_even_customers') return `${value.toLocaleString('en-IN')} customers`;
   return money(value, currency);
@@ -79,22 +79,22 @@ const FIELD_LABELS: Record<string, string> = {
 function FindingCard({ f, currency, n }: { f: CritiqueFinding; currency: string; n: number }) {
   const showNumbers = f.severity === 'error' && f.claimed !== null && f.computed !== null;
   return (
-    <Reveal self className="card flex flex-col gap-3 p-5 md:p-6" style={i(n)}>
+    <Reveal self className={`card flex flex-col gap-3 p-5 md:p-6 ${f.severity === 'error' ? 'shadow-[6px_6px_0_#E0177A]' : ''}`} style={i(n)}>
       <div className="flex items-center gap-2 text-sm">
-        <Icon name={f.severity === 'error' ? 'error' : 'warning'} className={f.severity === 'error' ? 'text-error' : 'text-tertiary'} />
-        <span className={f.severity === 'error' ? 'font-semibold text-error' : 'font-semibold text-tertiary'}>
+        <Icon name={f.severity === 'error' ? 'error' : 'warning'} className={f.severity === 'error' ? 'text-primary-fixed-dim' : 'text-tertiary'} />
+        <span className={f.severity === 'error' ? 'font-display text-lg uppercase tracking-[0.03em] text-primary-fixed-dim' : 'font-display text-lg uppercase tracking-[0.03em] text-tertiary'}>
           {FIELD_LABELS[f.field] ?? 'Check this'}
         </span>
       </div>
       {showNumbers && (
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 tabular-nums">
-          <span className="strike relative text-2xl font-semibold text-[#8d8b8b]">{formatValue(f.claimed, f.field, currency)}</span>
-          <span className="pop text-[2rem] font-semibold leading-none text-tertiary">{formatValue(f.computed, f.field, currency)}</span>
+          <span className="strike relative font-display text-[2rem] text-on-surface-variant">{formatValue(f.claimed, f.field, currency)}</span>
+          <span className="pop font-display text-[2.75rem] leading-none text-primary-fixed-dim">{formatValue(f.computed, f.field, currency)}</span>
         </div>
       )}
       <p className="m-0 leading-relaxed">{f.problem}</p>
       <p className="m-0 text-sm leading-relaxed muted">
-        <span className="font-semibold text-on-surface">Fix: </span>
+        <span className="font-extrabold text-ink">Fix: </span>
         {f.fix}
       </p>
     </Reveal>
@@ -197,11 +197,11 @@ export default function CritiquePage() {
   const warnings = result?.findings.filter((f) => f.severity === 'warning') ?? [];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navigation />
       <main className="mx-auto w-full max-w-[56rem] px-6 pb-24 pt-14">
         <div key={phase} className="mb-10 flex flex-col gap-3 text-center">
-          <span className="eyebrow enter" style={i(0)}>
+          <span className="eyebrow enter mx-auto" style={i(0)}>
             {phase === 'form' && 'Deck check'}
             {phase === 'running' && `Reading · ${elapsed}s`}
             {phase === 'done' && 'Checked'}
@@ -216,7 +216,7 @@ export default function CritiquePage() {
           <p className="enter mx-auto m-0 max-w-[38rem] text-lg leading-relaxed muted" style={i(2)}>
             {phase === 'form' && 'Drop in the slides with your numbers, or paste them. Code recomputes runway, break-even, MRR and CAC from what the deck says, then the Critic reads the rest.'}
             {phase === 'running' && 'Reading the slides, redoing the math, then the Critic weighs in. Usually under a minute.'}
-            {phase === 'done' && 'Every red number below was recomputed by code from your own deck. Your deck wasn’t saved.'}
+            {phase === 'done' && "Every pink number below was recomputed by code from your own deck. Parakh doesn't store your deck."}
             {phase === 'error' && error}
           </p>
         </div>
@@ -224,7 +224,7 @@ export default function CritiquePage() {
         {phase === 'form' && (
           <form onSubmit={submit} className="enter flex flex-col gap-4" style={i(3)}>
             <div
-              className="card flex flex-col items-center gap-3 border border-dashed border-outline-variant p-8 text-center"
+              className="card flex flex-col items-center gap-3 border-dashed p-8 text-center"
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
                 e.preventDefault();
@@ -232,7 +232,7 @@ export default function CritiquePage() {
               }}
             >
               <Icon name="add_photo_alternate" className="text-[2rem] text-primary-fixed-dim" />
-              <p className="m-0">Drop up to {MAX_SLIDES} slide screenshots here</p>
+              <p className="m-0 font-semibold">Drop up to {MAX_SLIDES} slide screenshots here</p>
               <button type="button" className="btn btn-ghost btn-sm" onClick={() => fileInput.current?.click()} disabled={slides.length >= MAX_SLIDES}>
                 Choose images
               </button>
@@ -253,12 +253,12 @@ export default function CritiquePage() {
                   {slides.map((s, n) => (
                     <li key={s.name + n} className="relative">
                       {/* eslint-disable-next-line @next/next/no-img-element -- local data URL preview */}
-                      <img src={s.url} alt={s.name} className="h-24 w-36 rounded-xl object-cover" />
+                      <img src={s.url} alt={s.name} className="h-24 w-36 rounded-xl border-[3px] border-ink object-cover" />
                       <button
                         type="button"
                         aria-label={`Remove ${s.name}`}
                         onClick={() => setSlides((all) => all.filter((_, k) => k !== n))}
-                        className="absolute -right-2 -top-2 grid size-7 cursor-pointer place-items-center rounded-full bg-surface-container-highest text-sm"
+                        className="absolute -right-2 -top-2 grid size-7 cursor-pointer place-items-center rounded-full border-2 border-ink bg-marigold text-sm font-bold"
                       >
                         ×
                       </button>
@@ -268,7 +268,7 @@ export default function CritiquePage() {
               )}
             </div>
 
-            <div className="card p-2">
+            <div className="card p-2 transition-shadow duration-200 focus-within:shadow-[8px_8px_0_#E0177A]">
               <label htmlFor="deck-text" className="sr-only">Or paste the numbers from your deck</label>
               <textarea
                 id="deck-text"
@@ -277,17 +277,17 @@ export default function CritiquePage() {
                 rows={7}
                 maxLength={8000}
                 placeholder={'Or paste the numbers, e.g.\nPrice ₹299/month, 150 paying users, MRR ₹60,000\nBurn ₹40,000/month, cash ₹2,00,000, runway 12 months'}
-                className="field resize-y bg-transparent font-mono text-sm leading-relaxed shadow-none focus:shadow-none"
+                className="field resize-y border-0 bg-transparent font-mono text-sm leading-relaxed shadow-none focus:transform-none focus:shadow-none"
               />
               <div className="flex flex-wrap items-center justify-between gap-2 px-3 pb-2">
-                <button type="button" className="cursor-pointer text-sm text-primary-fixed-dim underline" onClick={() => setText(SAMPLE)}>
+                <button type="button" className="cursor-pointer text-sm font-bold text-primary-fixed-dim underline decoration-2 underline-offset-2" onClick={() => setText(SAMPLE)}>
                   Try a sample with 4 mistakes in it
                 </button>
-                <span className="text-sm tabular-nums text-[#8d8b8b]">{text.length} / 8000</span>
+                <span className="font-mono text-sm tabular-nums text-on-surface-variant">{text.length} / 8000</span>
               </div>
             </div>
 
-            <label className="flex flex-col gap-2 text-sm muted">
+            <label className="flex flex-col gap-2 text-sm font-semibold">
               What does the startup do? (optional, helps the Critic)
               <input value={idea} onChange={(e) => setIdea(e.target.value)} maxLength={500} placeholder="Shared notes and past papers for UPES students" className="field" />
             </label>
@@ -295,7 +295,7 @@ export default function CritiquePage() {
             {error && <p role="alert" className="m-0 text-sm text-error">{error}</p>}
 
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="m-0 text-sm muted">Nothing you upload is saved.</p>
+              <p className="m-0 text-sm font-semibold muted">Parakh doesn&apos;t store what you upload.</p>
               <button type="submit" className="btn btn-primary">
                 Check my deck <span className="arrow">→</span>
               </button>
@@ -306,7 +306,7 @@ export default function CritiquePage() {
 
         {phase === 'running' && (
           <div className="flex justify-center py-10">
-            <span className="size-10 animate-spin rounded-full border-2 border-surface-container-highest border-t-primary" aria-label="Checking" />
+            <span className="size-12 animate-spin rounded-full border-[5px] border-surface-container-high border-t-rani" aria-label="Checking" />
           </div>
         )}
 
@@ -338,12 +338,12 @@ export default function CritiquePage() {
                 <h2 id="recomputed-title" className="display m-0 text-[2rem]">What the numbers actually say</h2>
                 <dl className="m-0 grid gap-3 sm:grid-cols-2">
                   {result.recomputed.map((r) => (
-                    <div key={r.label} className="rounded-2xl bg-surface-container-low p-4">
+                    <div key={r.label} className="rounded-2xl border-[3px] border-ink bg-surface p-4">
                       <dt className="text-sm muted">{r.label}</dt>
-                      <dd className="m-0 mt-1 text-2xl font-semibold tabular-nums">
+                      <dd className="m-0 mt-1 font-display text-[2rem] leading-none tabular-nums">
                         {r.unit === 'money' ? money(r.value, currency) : r.unit === 'months' ? `${r.value} months` : r.value.toLocaleString('en-IN')}
                       </dd>
-                      <dd className="m-0 mt-1 text-sm muted">{r.formula}</dd>
+                      <dd className="m-0 mt-2 font-mono text-sm muted">{r.formula}</dd>
                     </div>
                   ))}
                 </dl>
@@ -358,19 +358,19 @@ export default function CritiquePage() {
             )}
 
             {result.verdict ? (
-              <section className="card flex flex-col gap-5 p-6 shadow-[inset_0_0_0_1px_rgba(255,184,105,0.5)] md:p-8" aria-labelledby="critic-title">
+              <section className="card flex flex-col gap-5 bg-ink p-6 text-cream shadow-[6px_6px_0_#E0177A] md:p-8" aria-labelledby="critic-title">
                 <div className="flex items-center gap-3">
-                  <span className="grid size-11 place-items-center rounded-full bg-tertiary/15 text-tertiary"><Icon name="gavel" /></span>
-                  <h2 id="critic-title" className="font-display m-0 text-[2rem] font-normal italic text-tertiary">The Critic</h2>
+                  <span className="grid size-11 place-items-center rounded-full border-[3px] border-cream bg-marigold text-ink"><Icon name="gavel" /></span>
+                  <h2 id="critic-title" className="m-0 font-display text-[2rem] font-normal uppercase text-marigold">The Critic</h2>
                 </div>
-                <p className="serif m-0 text-[1.1875rem] leading-relaxed">{result.verdict.verdict}</p>
-                <p className="m-0"><span className="font-semibold">Biggest risk: </span>{result.verdict.biggest_risk}</p>
+                <p className="m-0 text-[1.1875rem] font-semibold leading-relaxed">{result.verdict.verdict}</p>
+                <p className="m-0"><span className="font-extrabold text-marigold">Biggest risk: </span>{result.verdict.biggest_risk}</p>
                 {result.verdict.red_flags.length > 0 && (
                   <div className="flex flex-col gap-3">
-                    <h3 className="m-0 text-base font-semibold">Claims a judge won&apos;t buy</h3>
+                    <h3 className="m-0 font-display text-lg font-normal uppercase tracking-[0.03em] text-marigold">Claims a judge won&apos;t buy</h3>
                     {result.verdict.red_flags.map((r, n) => (
-                      <div key={n} className="rounded-2xl bg-surface-container-low p-4">
-                        <p className="m-0 font-semibold">&ldquo;{r.claim}&rdquo;</p>
+                      <div key={n} className="rounded-2xl border-[3px] border-cream bg-cream p-4 text-ink">
+                        <p className="m-0 font-bold">&quot;{r.claim}&quot;</p>
                         <p className="m-0 mt-1 leading-relaxed muted">{r.problem}</p>
                         <p className="m-0 mt-1 text-sm"><span className="font-semibold">Fix: </span>{r.fix}</p>
                       </div>
@@ -379,14 +379,14 @@ export default function CritiquePage() {
                 )}
                 {result.verdict.missing.length > 0 && (
                   <div>
-                    <h3 className="m-0 mb-2 text-base font-semibold">Numbers you&apos;ll be asked for</h3>
-                    <ul className="m-0 flex flex-col gap-1 pl-5 muted">{result.verdict.missing.map((m) => <li key={m}>{m}</li>)}</ul>
+                    <h3 className="m-0 mb-2 font-display text-lg font-normal uppercase tracking-[0.03em] text-marigold">Numbers you&apos;ll be asked for</h3>
+                    <ul className="m-0 flex flex-col gap-1 pl-5 text-cream/85">{result.verdict.missing.map((m) => <li key={m}>{m}</li>)}</ul>
                   </div>
                 )}
                 {result.verdict.questions_to_expect.length > 0 && (
                   <div>
-                    <h3 className="m-0 mb-2 text-base font-semibold">Questions to expect</h3>
-                    <ul className="m-0 flex flex-col gap-1 pl-5 muted">{result.verdict.questions_to_expect.map((q) => <li key={q}>{q}</li>)}</ul>
+                    <h3 className="m-0 mb-2 font-display text-lg font-normal uppercase tracking-[0.03em] text-marigold">Questions to expect</h3>
+                    <ul className="m-0 flex flex-col gap-1 pl-5 text-cream/85">{result.verdict.questions_to_expect.map((q) => <li key={q}>{q}</li>)}</ul>
                   </div>
                 )}
               </section>

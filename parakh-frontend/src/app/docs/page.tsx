@@ -27,15 +27,15 @@ const TOC = [
 ];
 
 const STEPS = [
-  ['help', 'Clarify', 'You type the idea. A small model asks up to ten multiple-choice questions: market, funding, how you make money.'],
+  ['help', 'Clarify', "You type the idea and answer six multiple-choice questions: three fixed ones (where your customers are, who's building it, how you'll fund it) and three a model writes about your idea."],
   ['explore', 'Strategist', 'Customer, problem, real competitors, and what to leave out.'],
   ['construction', 'Builder', 'Stack or delivery setup with plan names and prices, MVP features, first ten steps.'],
   ['payments', 'Economics', 'Pricing, cost to serve one customer, burn, runway, break-even, Day 30/60/90 targets.'],
   ['campaign', 'Growth', 'Channels with spend and expected customers, a cold message, objection replies.'],
   ['calculate', 'Math check', 'Plain code recomputes the numbers and fixes what it can.'],
   ['gavel', 'Critic', 'Reads the whole plan and sends each problem to the agent that owns it.'],
-  ['sync', 'Revise', 'Only the agents with problems run again, up to two rounds. Agents whose inputs didn’t change are skipped.'],
-  ['description', 'Report', 'The plan is saved to your dashboard with the Critic’s verdict and any open warnings.'],
+  ['sync', 'Revise', "Only the agents with problems run again, up to two rounds. Agents whose inputs didn't change are skipped."],
+  ['description', 'Report', "The plan is saved to your dashboard with the Critic's verdict and any open warnings."],
 ];
 
 const AGENTS = [
@@ -43,7 +43,7 @@ const AGENTS = [
   { name: 'Builder', model: 'Qwen 3.8 27B', text: 'Writes for the type of business: software gets a stack and tools, a service gets pilots and a contract, a physical product gets a store and fulfilment setup.' },
   { name: 'Economics', model: 'Qwen 3.8 27B', text: 'Sets the price and what delivering to one customer costs, then burn, runway and break-even from the margin.' },
   { name: 'Growth', model: 'Qwen 3.8 27B', text: 'Picks one or two channels sized to the Day 30 target, never more than 1.5× it. No invented track record in the cold message.' },
-  { name: 'Critic', model: 'Qwen 3.8 27B', text: 'Judges only what code can’t check, because the math is already recomputed. Scores how well the plan matches what you asked and names the biggest risk. Self-hosters can give it a separate model with PARAKH_CRITIC_MODEL.' },
+  { name: 'Critic', model: 'Qwen 3.8 27B', text: "Judges only what code can't check, because the math is already recomputed. Scores how well the plan matches what you asked and names the biggest risk. Self-hosters can give it a separate model with PARAKH_CRITIC_MODEL." },
 ];
 
 const ENDPOINTS: { method: string; path: string; text: string; body?: string }[] = [
@@ -76,7 +76,7 @@ const i = (n: number) => ({ '--i': n }) as CSSProperties;
 
 export default function DocsPage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <Navigation />
 
       <div className="mx-auto grid w-full max-w-[72rem] gap-12 px-6 pb-24 pt-14 lg:grid-cols-[13rem_1fr]">
@@ -121,7 +121,7 @@ export default function DocsPage() {
               <span aria-hidden className="absolute bottom-6 left-[1.6875rem] top-6 w-px bg-surface-container-highest" />
               {STEPS.map(([icon, name, text], n) => (
                 <li key={name} className="relative flex gap-4 rounded-2xl p-3 transition-colors hover:bg-surface" style={i(n)}>
-                  <span className={`relative grid size-8 shrink-0 place-items-center rounded-full ${name === 'Critic' ? 'bg-tertiary/20 text-tertiary' : 'bg-surface-container-high text-primary-fixed-dim'}`}>
+                  <span className={`relative grid size-8 shrink-0 place-items-center rounded-full ${name === 'Critic' ? 'border-2 border-ink bg-ink text-marigold' : 'border-2 border-ink bg-marigold text-ink'}`}>
                     <Icon name={icon} className="text-[1.05rem]" />
                   </span>
                   <div>
@@ -140,7 +140,7 @@ export default function DocsPage() {
           <Section id="agents" eyebrow="The agents" title="Who writes what">
             <Reveal className="grid gap-3 md:grid-cols-2">
               {AGENTS.map((a, n) => (
-                <div key={a.name} className={`card spotlight lift flex flex-col gap-2 p-6 ${a.name === 'Critic' ? 'shadow-[inset_0_0_0_1px_rgba(255,184,105,0.45)]' : ''}`} style={i(n)}>
+                <div key={a.name} className={`card spotlight lift flex flex-col gap-2 p-6 ${a.name === 'Critic' ? 'bg-marigold' : ''}`} style={i(n)}>
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className={`m-0 text-lg font-semibold ${a.name === 'Critic' ? 'text-tertiary' : ''}`}>{a.name}</h3>
                     <span className="rounded-full bg-surface-container-high px-2.5 py-1 text-xs muted">{a.model}</span>
@@ -189,8 +189,8 @@ export default function DocsPage() {
               Instagram and nearby shops.
             </P>
             <P>
-              Answer &ldquo;full time&rdquo; or &ldquo;alongside a job&rdquo; to the second question and the caps widen
-              to ₹40,000 and ₹30,000. Pick &ldquo;Outside India&rdquo; and the plan switches to dollars. Raising from
+              Answer &quot;full time&quot; or &quot;alongside a job&quot; to the second question and the caps widen
+              to ₹40,000 and ₹30,000. Pick &quot;Outside India&quot; and the plan switches to dollars. Raising from
               investors turns the caps off.
             </P>
           </Section>
@@ -201,7 +201,7 @@ export default function DocsPage() {
               states; it is told not to compute or fill gaps. Then plain code recomputes burn from the line items,
               runway (cash ÷ burn), break-even (burn ÷ margin per customer), MRR (customers × price) and cost per customer
               (spend ÷ new customers), and shows each mismatch with its formula. The Critic then reviews what code
-              can&apos;t check, such as a &ldquo;we only need 1% of the market&rdquo; slide.
+              can&apos;t check, such as a &quot;we only need 1% of the market&quot; slide.
             </P>
             <P>
               If the model on your key doesn&apos;t accept images, you&apos;ll be asked to paste the numbers instead. The
@@ -218,7 +218,7 @@ export default function DocsPage() {
             <P>
               You can skip the wait with your own key from{' '}
               <a href="https://bharatcode.ai" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">bharatcode.ai</a>{' '}
-              (free with a .ac.in or .edu.in email).
+              (eligible students get free access, subject to BharatCode&apos;s current usage limits).
               Paste it on the New plan page. It is stored only in your browser, sent with your own requests in an{' '}
               <Code>X-BharatCode-Key</Code> header, and never saved or logged on the server.
             </P>
@@ -233,13 +233,13 @@ export default function DocsPage() {
               {ENDPOINTS.map((e, n) => (
                 <details key={e.method + e.path} className="group card overflow-hidden" style={i(Math.min(n, 6))}>
                   <summary className="flex cursor-pointer list-none flex-wrap items-center gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
-                    <span className={`w-14 rounded-full py-1 text-center text-xs font-semibold ${e.method === 'GET' ? 'bg-primary/15 text-primary-fixed-dim' : e.method === 'POST' ? 'bg-tertiary/15 text-tertiary' : 'bg-surface-container-highest'}`}>{e.method}</span>
+                    <span className={`w-14 rounded-full py-1 text-center text-xs font-semibold ${e.method === 'GET' ? 'border-2 border-ink bg-primary-fixed text-on-primary-fixed' : e.method === 'POST' ? 'border-2 border-ink bg-marigold text-ink' : 'bg-surface-container-highest'}`}>{e.method}</span>
                     <code className="font-mono text-sm">{e.path}</code>
                     <span className="flex-1 text-sm muted">{e.text}</span>
-                    {e.body && <span aria-hidden className="text-[#8d8b8b] transition-transform duration-300 group-open:rotate-45">+</span>}
+                    {e.body && <span aria-hidden className="text-on-surface-variant transition-transform duration-300 group-open:rotate-45">+</span>}
                   </summary>
                   {e.body && (
-                    <pre className="m-0 mx-5 mb-5 overflow-x-auto rounded-xl bg-black p-4 font-mono text-[0.8125rem] leading-relaxed text-[#d4d2d2]">{e.body}</pre>
+                    <pre className="m-0 mx-5 mb-5 overflow-x-auto rounded-xl border-[3px] border-ink bg-ink p-4 font-mono text-[0.8125rem] leading-relaxed text-cream">{e.body}</pre>
                   )}
                 </details>
               ))}
@@ -325,8 +325,8 @@ function Section({ id, eyebrow, title, children }: { id: string; eyebrow: string
   );
 }
 
-const P = ({ children }: { children: ReactNode }) => <p className="m-0 max-w-[44rem] text-[1.0625rem] leading-relaxed text-[#d4d2d2]">{children}</p>;
+const P = ({ children }: { children: ReactNode }) => <p className="m-0 max-w-[44rem] text-[1.0625rem] leading-relaxed text-on-surface">{children}</p>;
 const Code = ({ children }: { children: ReactNode }) => <code className="rounded-md bg-surface-container-high px-1.5 py-0.5 font-mono text-[0.85em]">{children}</code>;
 const Pre = ({ children }: { children: ReactNode }) => (
-  <pre className="m-0 overflow-x-auto rounded-2xl bg-surface p-5 font-mono text-[0.8125rem] leading-relaxed text-[#d4d2d2]">{children}</pre>
+  <pre className="m-0 overflow-x-auto rounded-2xl border-[3px] border-ink bg-ink p-5 font-mono text-[0.8125rem] leading-relaxed text-cream">{children}</pre>
 );

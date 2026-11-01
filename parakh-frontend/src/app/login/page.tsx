@@ -50,7 +50,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-black">
+    <div className="flex min-h-screen flex-col bg-background">
       <Navigation />
 
       <main className="flex flex-1 items-center justify-center px-6 py-16">
@@ -63,12 +63,12 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <div role="alert" className="enter mb-5 rounded-2xl bg-error/10 px-4 py-3 text-center text-sm text-error">
+            <div role="alert" className="enter mb-5 rounded-2xl border-2 border-ink bg-error-container px-4 py-3 text-center text-sm text-error">
               {error}
             </div>
           )}
           {notice && (
-            <div role="status" className="enter mb-5 rounded-2xl bg-primary/10 px-4 py-3 text-center text-sm text-primary-fixed-dim">
+            <div role="status" className="enter mb-5 rounded-2xl border-2 border-ink bg-marigold px-4 py-3 text-center text-sm font-semibold text-ink">
               {notice}
             </div>
           )}
@@ -96,7 +96,7 @@ export default function LoginPage() {
                 setIsLogin(!isLogin);
                 setError(null);
               }}
-              className="cursor-pointer font-medium text-primary-fixed-dim transition-colors hover:text-white"
+              className="cursor-pointer font-medium text-primary-fixed-dim transition-colors hover:text-ink"
             >
               {isLogin ? 'Sign up' : 'Log in'}
             </button>

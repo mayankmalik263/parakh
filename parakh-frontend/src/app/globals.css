@@ -224,8 +224,14 @@
   }
 
   /* Material Symbols baseline */
+  /* Fixed 1em box: if the icon font fails to load, the ligature text is clipped instead of spilling. */
   .material-symbols-outlined {
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    display: inline-block;
+    width: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1;
   }
 }
 
