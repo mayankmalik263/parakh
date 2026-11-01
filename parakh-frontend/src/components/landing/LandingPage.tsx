@@ -1,254 +1,257 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 import Navigation from './Navigation';
-import MonolithScene from './MonolithScene';
-import DebateReplay from './DebateReplay';
 import Footer from './Footer';
 import Reveal from '@/components/motion/Reveal';
 import PlanView, { PlanFrame } from '@/components/plan/PlanView';
-import { Icon } from '@/components/ui/Icon';
-import { SAMPLE_CONTEXT, SAMPLE_PLAN, SAMPLE_REPORT } from '@/lib/sampleRun';
+import { EXAMPLE_CONTEXT, EXAMPLE_PLAN, EXAMPLE_REPORT } from '@/lib/examplePlan';
 
-const AGENTS = [
-  { name: 'Strategist', icon: 'explore', text: 'Who the customer is, the moment the problem hurts, and two or three competitors that actually exist.' },
-  { name: 'Builder', icon: 'construction', text: 'Tools with their plan names and prices, and your first ten steps. Running a service? You get pilots and a contract, not an app.' },
-  { name: 'Economics', icon: 'payments', text: 'Your price, what each customer costs to serve, monthly burn, runway, and where you should be on day 30, 60 and 90.' },
-  { name: 'Growth', icon: 'campaign', text: "One or two channels, a cold message you can send tonight, and replies to the two objections you'll hear first." },
+const TICKER = [
+  'Notes for juniors',
+  'Hostel tiffin',
+  'Reels for cafes',
+  'Thrift store on Insta',
+  'Campus laundry pickup',
+  'Candles from room 214',
+  'Fest merch',
+  'Cycle repair at the gate',
 ];
 
-const CHECKS = ['Monthly burn', 'Runway', 'Break-even', 'MRR', 'Cost per customer'];
+const AGENTS = [
+  { letter: 'S', name: 'Strategist', text: 'Who pays, and the week it hurts. Competitors that exist, not made-up ones.' },
+  { letter: 'B', name: 'Builder', text: 'Free tools first, with plan names and prices. Ten steps you can start tonight.' },
+  { letter: 'E', name: 'Economics', text: 'Price, monthly costs, runway, and how many paying customers you need to break even.' },
+  { letter: 'G', name: 'Growth', text: 'Your first 10 customers: class groups, fests, the shop outside the gate.' },
+];
 
-const i = (n: number) => ({ '--i': n }) as CSSProperties;
+const STUDENT = [
+  { big: '₹15,000', text: 'at most to build v1', r: -1.5 },
+  { big: '₹10,000', text: 'a month before anyone pays', r: 1 },
+  { big: '15 hrs', text: 'a week, around classes', r: -1 },
+  { big: 'Campus', text: 'first customers before any ads', r: 1.5 },
+];
 
-function Words({ text, from = 0 }: { text: string; from?: number }) {
-  return (
-    <>
-      {text.split(' ').map((w, k) => (
-        <span key={k} className="word" style={i(from + k)}>
-          {w}&nbsp;
-        </span>
-      ))}
-    </>
-  );
-}
+const v = (vars: Record<string, string | number>) => vars as CSSProperties;
 
 export default function LandingPage() {
   return (
-    <div className="w-full bg-black text-on-surface">
+    <div className="w-full bg-background text-on-surface">
+      <div aria-hidden className="overflow-hidden whitespace-nowrap border-b-[3px] border-ink bg-ink text-marigold">
+        <div className="ticker inline-flex gap-10 py-2 font-display text-base tracking-[0.04em] uppercase">
+          {[...TICKER, ...TICKER].map((t, k) => (
+            <span key={k}>{t} ★</span>
+          ))}
+        </div>
+      </div>
       <Navigation />
+
       <main className="overflow-x-hidden">
         {/* Hero */}
-        <section className="flex flex-col items-center gap-6 px-6 pt-16 text-center md:pt-20">
-          <span className="enter inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-sm muted" style={i(0)}>
-            <span className="size-1.5 rounded-full bg-tertiary [animation:pulse-ring_1.8s_ease-out_infinite]" />
-            Built for student founders in India
-          </span>
-          <h1 className="display m-0 max-w-[60rem] text-[clamp(3rem,7.5vw,6.5rem)]">
-            <Words text="Type one sentence. Get a build plan with" />
-            <em className="word" style={i(8)}>real prices.</em>
-          </h1>
-          <p className="enter m-0 max-w-[38rem] text-lg leading-relaxed muted md:text-xl" style={i(5)}>
-            Who pays, what to build it with on a student budget, what to charge in rupees, and where your first ten
-            customers come from. Then a Critic reads the whole thing and sends back whatever won&apos;t hold up.
-          </p>
-          <div className="enter mt-1 flex flex-wrap justify-center gap-3" style={i(6)}>
-            <Link href="/simulate" className="btn btn-primary">
-              Run my idea <span className="arrow">→</span>
-            </Link>
-            <Link href="#sample" className="btn btn-ghost">See a real plan</Link>
+        <section className="mx-auto flex max-w-[78rem] flex-wrap items-center gap-12 px-6 pb-20 pt-10">
+          <div className="flex min-w-0 flex-[1_1_32rem] flex-col gap-6">
+            <span
+              className="slap sticker w-fit rounded-full border-[3px] border-ink bg-rani px-4 py-1.5 text-[0.9375rem] font-extrabold text-white"
+              style={v({ '--r': '-3deg' })}
+              lang="hi-Latn"
+            >
+              Idea hai? Test karo.
+            </span>
+            <h1 className="display m-0 text-[clamp(3.5rem,8.5vw,7.75rem)] leading-[0.9]">
+              Test your idea <em>before campus</em> does.
+            </h1>
+            <p className="m-0 max-w-[34rem] text-xl font-medium leading-relaxed">
+              Write it in one line. Four AI agents plan it in rupees, plain code rechecks every number, and a Critic
+              tells you straight what won&apos;t hold up. Made for student founders in India.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link href="/simulate" className="btn btn-primary min-h-14 px-7 text-lg">
+                Test my idea <span className="arrow">→</span>
+              </Link>
+              <Link href="/critique" className="btn btn-ghost min-h-14 px-7 text-lg">
+                Check my deck
+              </Link>
+            </div>
+            <p className="m-0 text-sm font-semibold muted">
+              Free account. Hit the shared limit? Paste your own BharatCode key.
+            </p>
           </div>
-          <p className="enter m-0 text-sm muted" style={i(7)}>Free with an account. A plan takes two or three minutes.</p>
-        </section>
 
-        <section aria-hidden="true" className="relative -mt-4 h-[clamp(28rem,58vw,48rem)]">
-          <MonolithScene />
+          <div aria-hidden className="relative min-h-[30rem] min-w-0 flex-[1_1_24rem]">
+            <div className="spin-slow absolute right-2 top-0 size-36">
+              <svg viewBox="0 0 160 160" width="100%" height="100%">
+                <defs>
+                  <path id="stamp-ring" d="M80,80 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0" />
+                </defs>
+                <circle cx="80" cy="80" r="76" fill="#FFB20F" stroke="#161616" strokeWidth="4" />
+                <text style={{ fontFamily: 'var(--font-anton)' }} fontSize="17" letterSpacing="3" fill="#161616">
+                  <textPath href="#stamp-ring">CODE CHECKED ★ NO FAKE MATH ★</textPath>
+                </text>
+                <text x="80" y="96" textAnchor="middle" style={{ fontFamily: 'var(--font-tiro-deva)' }} fontSize="40" fill="#161616">
+                  परख
+                </text>
+              </svg>
+            </div>
+
+            <div className="slap sticker absolute left-0 top-10 w-[17rem] rounded-2xl border-[3px] border-ink bg-surface p-5 shadow-[7px_7px_0_#161616]" style={v({ '--r': '-6deg', '--i': 1 })}>
+              <div className="text-sm font-extrabold">RUNWAY</div>
+              <div className="flex items-baseline gap-3">
+                <span className="font-display text-4xl line-through decoration-rani decoration-4">12 MO</span>
+                <span className="font-display text-5xl text-primary-fixed-dim">3.2</span>
+              </div>
+              <div className="font-mono text-[0.8125rem]">₹8,000 ÷ ₹2,500 a month</div>
+            </div>
+
+            <div className="slap sticker absolute right-4 top-48 w-56 rounded-2xl border-[3px] border-ink bg-marigold p-5 shadow-[7px_7px_0_#161616]" style={v({ '--r': '5deg', '--i': 2 })}>
+              <div className="text-sm font-extrabold">PRICE</div>
+              <div className="font-display text-5xl leading-none">₹149 ✓</div>
+              <div className="text-sm font-semibold">per subject, exam week</div>
+            </div>
+
+            <div className="slap sticker absolute bottom-0 left-12 w-80 max-w-[calc(100%-3rem)] rounded-2xl border-[3px] border-ink bg-ink p-5 text-cream shadow-[7px_7px_0_#E0177A]" style={v({ '--r': '-2deg', '--i': 3 })}>
+              <div className="font-display text-lg tracking-[0.03em] text-marigold">THE CRITIC SAYS</div>
+              <p className="m-0 mt-1.5 font-semibold leading-snug">
+                One buyer posts the bundle in a class group and nobody else needs to pay.
+              </p>
+            </div>
+          </div>
         </section>
 
         {/* Agents */}
-        <section id="agents" className="mx-auto flex max-w-[68rem] scroll-mt-20 flex-col gap-10 px-6 py-20">
-          <Reveal className="flex max-w-[42rem] flex-col gap-3">
-            <span className="eyebrow">The agents</span>
-            <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">Who writes what</h2>
-            <p className="m-0 text-lg leading-relaxed muted">
-              Each agent owns one part of the plan, so the price can&apos;t quietly disagree with the burn.
+        <section id="how" className="scroll-mt-20 border-y-[3px] border-ink bg-ink px-6 py-20 text-cream">
+          <div className="mx-auto flex max-w-[78rem] flex-col gap-10">
+            <h2 className="display m-0 max-w-[48rem] text-[clamp(2.75rem,6vw,5rem)] leading-[0.95]">
+              Four agents. <span className="text-marigold">One Critic.</span> No sugarcoating.
+            </h2>
+            <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-5">
+              {AGENTS.map((a, n) => (
+                <article key={a.name} className="lift flex flex-col gap-2.5 rounded-[1.25rem] border-[3px] border-cream bg-cream p-6 text-ink shadow-[6px_6px_0_#FFB20F] hover:shadow-[9px_9px_0_#FFB20F]" style={v({ '--i': n })}>
+                  <span className="grid size-12 place-items-center rounded-full border-[3px] border-ink bg-marigold font-display text-[1.375rem]">{a.letter}</span>
+                  <h3 className="m-0 font-display text-[1.75rem] font-normal uppercase">{a.name}</h3>
+                  <p className="m-0 font-medium leading-normal">{a.text}</p>
+                </article>
+              ))}
+              <article className="lift flex flex-col gap-2.5 rounded-[1.25rem] border-[3px] border-cream bg-rani p-6 text-white shadow-[6px_6px_0_#FFB20F] hover:shadow-[9px_9px_0_#FFB20F]" style={v({ '--i': 4 })}>
+                <span aria-hidden className="grid size-12 place-items-center rounded-full border-[3px] border-cream bg-ink text-[1.375rem] text-marigold">★</span>
+                <h3 className="m-0 font-display text-[1.75rem] font-normal uppercase">The Critic</h3>
+                <p className="m-0 font-medium leading-normal">
+                  Wrote none of the plan. Reads all of it, sends each problem back to whoever owns it, and names your
+                  biggest risk.
+                </p>
+              </article>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* Math check */}
+        <section className="mx-auto flex max-w-[78rem] flex-wrap items-center gap-12 px-6 py-20">
+          <Reveal className="flex min-w-0 flex-[1_1_26rem] flex-col gap-4">
+            <h2 className="display m-0 text-[clamp(2.75rem,6vw,4.5rem)] leading-[0.95]">AI can&apos;t divide. Code can.</h2>
+            <p className="m-0 text-lg font-medium leading-relaxed">
+              After every round, plain Python redoes burn, runway, break-even, MRR and cost per customer from the
+              agents&apos; own numbers. If one is off, it gets replaced while you watch the run.
             </p>
           </Reveal>
-          <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,15rem),1fr))] gap-3">
-            {AGENTS.map((a, n) => (
-              <div key={a.name} className="card spotlight lift flex flex-col gap-3 p-6" style={i(n)}>
-                <span className="grid size-11 place-items-center rounded-full bg-inverse-primary/25 text-primary-fixed-dim">
-                  <Icon name={a.icon} className="text-[1.375rem]" />
-                </span>
-                <h3 className="font-display m-0 text-[2rem] font-normal leading-none">{a.name}</h3>
-                <p className="serif m-0 text-[1.1875rem] muted">{a.text}</p>
-              </div>
-            ))}
-            <div className="card spotlight lift flex flex-col gap-3 p-6 shadow-[inset_0_0_0_1px_rgba(255,184,105,0.5)]" style={i(4)}>
-              <span className="grid size-11 place-items-center rounded-full bg-tertiary/15 text-tertiary">
-                <Icon name="gavel" className="text-[1.375rem]" />
-              </span>
-              <h3 className="font-display m-0 text-[2rem] font-normal italic leading-none text-tertiary">Critic</h3>
-              <p className="serif m-0 text-[1.1875rem] muted">
-                Didn&apos;t write a word of the plan. Reads the finished thing, sends each problem back to whoever owns
-                it, and names the one risk most likely to sink you.
+          <Reveal self className="card flex min-w-0 flex-[1_1_22rem] flex-col gap-3 p-7 shadow-[8px_8px_0_#161616]">
+            <div className="font-extrabold">Growth agent · Instagram ads</div>
+            <div className="font-mono text-lg">₹6,000 spend ÷ 10 customers</div>
+            <div className="flex flex-wrap items-baseline gap-4">
+              <span className="strike relative font-display text-[2.5rem]">₹60</span>
+              <span className="pop font-display text-[4rem] leading-none text-primary-fixed-dim">₹600</span>
+            </div>
+            <span className="w-fit rounded-full border-2 border-ink bg-marigold px-3 py-1 text-sm font-extrabold">Fixed by code</span>
+            <p className="m-0 text-sm font-medium muted">An illustration of the kind of slip the check catches.</p>
+          </Reveal>
+        </section>
+
+        {/* Student mode */}
+        <section className="border-y-[3px] border-ink bg-marigold px-6 py-20">
+          <div className="mx-auto flex max-w-[78rem] flex-col gap-8">
+            <div className="flex max-w-[46rem] flex-col gap-3">
+              <h2 className="display m-0 text-[clamp(2.75rem,6vw,4.5rem)] leading-[0.95]">Pocket-money budget. Planned like one.</h2>
+              <p className="m-0 text-lg font-semibold leading-relaxed">
+                Unless you say otherwise, Parakh plans for a student in India spending their own savings. Not a student,
+                or selling abroad? Say so in the first questions and these limits change.
               </p>
             </div>
-          </Reveal>
-
-          <Reveal className="mt-10 flex max-w-[42rem] flex-col gap-3">
-            <span className="eyebrow">Replay</span>
-            <h2 className="display m-0 text-[clamp(2.25rem,4.5vw,3.5rem)]">Watch a real run argue with itself</h2>
-            <p className="m-0 text-lg leading-relaxed muted">
-              This is what happened when someone asked for a WhatsApp reminder bot for dental clinics. Press any agent to
-              see what it wrote, or drag through the timeline.
-            </p>
-          </Reveal>
-          <Reveal self>
-            <DebateReplay />
-          </Reveal>
-        </section>
-
-        {/* Student defaults */}
-        <section className="mx-auto flex max-w-[68rem] flex-col gap-8 px-6 py-20">
-          <Reveal className="flex max-w-[44rem] flex-col gap-3">
-            <span className="eyebrow">Student mode</span>
-            <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">
-              Planned for a <em className="whitespace-nowrap">hostel-room</em> budget
-            </h2>
-            <p className="m-0 text-lg leading-relaxed muted">
-              Unless you say otherwise, Parakh assumes you&apos;re a student in India with savings, not a seed round. Not
-              a student, or selling abroad? Say so in the first question and the limits change.
-            </p>
-          </Reveal>
-          <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
-            {[
-              ['₹15,000', 'to build the first version, at most. Free tiers and student offers first.'],
-              ['₹10,000', 'a month of costs before anyone pays you. The checks flag anything above it.'],
-              ['15 hours', 'a week, around classes. Exam weeks stay out of the plan.'],
-              ['Campus first', 'Batchmates, class WhatsApp groups, fests and the shops outside the gate before any ad spend.'],
-            ].map(([big, text], n) => (
-              <div key={big} className="card flex flex-col gap-2 p-6" style={i(n)}>
-                <span className="font-display text-[2.25rem] leading-none text-primary-fixed-dim">{big}</span>
-                <p className="serif m-0 text-[1.125rem] muted">{text}</p>
-              </div>
-            ))}
-          </Reveal>
-        </section>
-
-        {/* Math */}
-        <section className="mx-auto grid max-w-[68rem] grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] items-center gap-12 px-6 py-20">
-          <Reveal className="flex flex-col gap-4">
-            <span className="eyebrow">Math check</span>
-            <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">The math gets redone in code</h2>
-            <p className="m-0 text-[1.0625rem] leading-relaxed muted">
-              Language models are shaky at arithmetic, so they don&apos;t get the last word on it. After every round, plain
-              code recalculates the numbers from the agents&apos; own inputs and corrects what&apos;s off. What it
-              can&apos;t fix on its own shows up in your plan as a warning.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {CHECKS.map((c, n) => (
-                <span key={c} className="rounded-full bg-surface px-3 py-1.5 text-sm" style={i(n + 3)}>{c}</span>
+            <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-5">
+              {STUDENT.map((s, n) => (
+                <div key={s.big} className="sticker rounded-2xl border-[3px] border-ink bg-cream p-5 shadow-[6px_6px_0_#161616]" style={v({ '--r': `${s.r}deg`, '--i': n })}>
+                  <div className="font-display text-[2.75rem] uppercase leading-none">{s.big}</div>
+                  <p className="m-0 mt-1 font-semibold">{s.text}</p>
+                </div>
               ))}
-            </div>
-          </Reveal>
-          <Reveal self className="card p-6 md:p-8">
-            <div className="mb-5 flex items-center justify-between text-sm">
-              <span className="font-semibold">Facebook lead ads</span>
-              <span className="muted">from the run above</span>
-            </div>
-            <dl className="m-0 grid grid-cols-2 gap-3 tabular-nums">
-              <div className="rounded-2xl bg-surface-container-low p-4">
-                <dt className="text-sm muted">Spend per month</dt>
-                <dd className="m-0 mt-1 text-2xl font-semibold">₹6,000</dd>
-              </div>
-              <div className="rounded-2xl bg-surface-container-low p-4">
-                <dt className="text-sm muted">New clinics</dt>
-                <dd className="m-0 mt-1 text-2xl font-semibold">10</dd>
-              </div>
-            </dl>
-            <div className="mt-3 rounded-2xl bg-surface-container-low p-4">
-              <div className="text-sm muted">Cost per customer</div>
-              <div className="mt-1 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <span className="strike relative text-2xl font-semibold text-[#8d8b8b]">₹60</span>
-                <span className="pop text-[2.5rem] font-semibold leading-none text-tertiary">₹600</span>
-              </div>
-              <div className="mt-3 text-sm muted">The Growth agent wrote ₹60. ₹6,000 ÷ 10 is ₹600, so the plan got a warning.</div>
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
         </section>
 
         {/* Deck check */}
-        <section className="mx-auto flex max-w-[68rem] flex-col gap-6 px-6 py-20">
-          <Reveal className="flex max-w-[44rem] flex-col gap-3">
-            <span className="eyebrow">Already have a deck?</span>
-            <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">
-              Find the number a judge <em>will</em> catch
-            </h2>
-            <p className="m-0 text-lg leading-relaxed muted">
-              Upload the slides with your numbers, or paste them. Code redoes runway, break-even, MRR and cost per
-              customer from what the deck itself says, then the Critic goes after the claims math can&apos;t check, like
-              &ldquo;we only need 1% of the market&rdquo;. Your deck isn&apos;t saved.
+        <section className="mx-auto flex max-w-[78rem] flex-wrap items-center gap-12 px-6 py-20">
+          <div
+            aria-hidden
+            className="sticker grid aspect-video min-w-0 flex-[1_1_26rem] grid-cols-3 gap-3 rounded-[1.25rem] border-[3px] border-ink bg-surface p-6 shadow-[8px_8px_0_#E0177A]"
+            style={v({ '--r': '-1.5deg' })}
+          >
+            <div className="col-span-3 font-display text-[1.375rem]">SLIDE 7 · TRACTION</div>
+            <div className="rounded-xl border-[3px] border-rani p-2.5"><div className="text-xs font-bold">MRR</div><div className="font-mono">₹60,000</div></div>
+            <div className="rounded-xl border-2 border-ink p-2.5"><div className="text-xs font-bold">BURN</div><div className="font-mono">₹40,000</div></div>
+            <div className="rounded-xl border-[3px] border-rani p-2.5"><div className="text-xs font-bold">RUNWAY</div><div className="font-mono">12 mo</div></div>
+            <div className="col-span-3 self-end font-extrabold text-primary-fixed-dim">150 × ₹299 = ₹44,850. Not ₹60,000.</div>
+          </div>
+          <Reveal className="flex min-w-0 flex-[1_1_22rem] flex-col gap-4">
+            <h2 className="display m-0 text-[clamp(2.75rem,6vw,4.5rem)] leading-[0.95]">Pitching on Friday? Check the deck tonight.</h2>
+            <p className="m-0 text-lg font-medium leading-relaxed">
+              Upload up to three slides with numbers on them, or paste the numbers. Parakh redoes the math from your own
+              deck and shows the formula for every figure that&apos;s off. Then the Critic goes after the claims math
+              can&apos;t check, like &quot;we only need 1% of the market&quot;. Parakh doesn&apos;t store your deck.
             </p>
-          </Reveal>
-          <Reveal self className="flex flex-wrap gap-3">
-            <Link href="/critique" className="btn btn-primary">
+            <Link href="/critique" className="btn btn-ink w-fit min-h-14 px-7">
               Check my deck <span className="arrow">→</span>
             </Link>
           </Reveal>
         </section>
 
-        {/* Sample plan */}
-        <section id="sample" className="mx-auto flex max-w-[68rem] scroll-mt-20 flex-col gap-8 px-6 py-20">
-          <Reveal className="flex max-w-[44rem] flex-col gap-3">
-            <span className="eyebrow">Sample plan</span>
-            <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">
-              This is what lands in your <em>dashboard</em>
-            </h2>
-            <p className="m-0 text-lg leading-relaxed muted">
-              The same dental-bot run, unedited. Click through the tabs, tick off steps, open the Critic&apos;s notes. It
-              didn&apos;t like this plan much, and it says why.
-            </p>
-          </Reveal>
-          <Reveal self>
-            <PlanFrame title={`parakh · ${SAMPLE_CONTEXT}`}>
-              <PlanView plan={SAMPLE_PLAN} report={SAMPLE_REPORT} />
+        {/* Example plan */}
+        <section id="example" className="scroll-mt-20 border-t-[3px] border-ink bg-surface-container px-6 py-20">
+          <div className="mx-auto flex max-w-[78rem] flex-col gap-8">
+            <div className="flex max-w-[46rem] flex-col gap-3">
+              <span className="eyebrow">Example plan</span>
+              <h2 className="display m-0 text-[clamp(2.75rem,6vw,4.5rem)] leading-[0.95]">What lands in your dashboard</h2>
+              <p className="m-0 text-lg font-medium leading-relaxed">
+                We wrote this one by hand so you can click around without signing up: tabs, steps you can tick off, the
+                Critic&apos;s notes. Its numbers pass the same math check a real run goes through. Your own plan comes
+                from the agents.
+              </p>
+            </div>
+            <PlanFrame title={`parakh · ${EXAMPLE_CONTEXT}`}>
+              <PlanView plan={EXAMPLE_PLAN} report={EXAMPLE_REPORT} />
             </PlanFrame>
-          </Reveal>
+          </div>
         </section>
 
-        {/* Private */}
-        <section className="mx-auto flex max-w-[68rem] flex-col gap-8 px-6 py-20">
-          <Reveal className="flex max-w-[40rem] flex-col gap-3">
-            <span className="eyebrow">Yours only</span>
-            <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">Your plans are private</h2>
-          </Reveal>
-          <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,16rem),1fr))] gap-3">
+        {/* After the plan */}
+        <section className="mx-auto flex max-w-[78rem] flex-col gap-8 px-6 py-20">
+          <h2 className="display m-0 max-w-[40rem] text-[clamp(2.5rem,5vw,4rem)] leading-[0.95]">After the plan</h2>
+          <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,16rem),1fr))] gap-5">
             {[
-              ['lock', 'Saved to your account', 'Every plan lands in your dashboard. Nobody else can open it.'],
-              ['forum', 'Ask follow-ups', 'Chat with the agents about your plan. "@Economics what if I charge ₹999?" The chat is saved too.'],
-              ['key', 'Bring your own key', 'Hit the free daily limit? Paste your own BharatCode key. It stays in your browser.'],
-            ].map(([icon, title, text], n) => (
-              <div key={title} className="card spotlight lift flex flex-col gap-3 p-6" style={i(n)}>
-                <Icon name={icon} className="text-[1.5rem] text-primary-fixed-dim" />
-                <h3 className="font-display m-0 text-[1.75rem] font-normal leading-none">{title}</h3>
-                <p className="serif m-0 text-[1.1875rem] muted">{text}</p>
+              ['Ask the agents', 'Ask follow-ups like "@Economics what if I charge ₹99?" Reply in English or Hinglish.'],
+              ['Private by default', 'Plans save to your account. Share a read-only link only if you turn it on.'],
+              ['Your own key', 'Shared limit used up for the day? Paste your BharatCode key. It stays in your browser.'],
+            ].map(([title, text], n) => (
+              <div key={title} className="card lift flex flex-col gap-2 p-6" style={v({ '--i': n })}>
+                <h3 className="m-0 font-display text-[1.75rem] font-normal uppercase">{title}</h3>
+                <p className="serif m-0 text-[1.0625rem]">{text}</p>
               </div>
             ))}
           </Reveal>
         </section>
 
         {/* CTA */}
-        <section className="relative flex flex-col items-center gap-7 overflow-hidden px-6 pb-32 pt-24 text-center">
-          <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 -z-0 size-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(109,59,215,0.28),transparent_65%)]" />
-          <Reveal className="relative flex flex-col items-center gap-7">
-            <h2 className="display m-0 max-w-[50rem] text-[clamp(2.75rem,6.5vw,5.5rem)]">
-              What would the Critic say about <em>your</em> idea?
-            </h2>
-            <Link href="/simulate" className="btn btn-primary" style={i(1)}>
-              Run my idea <span className="arrow">→</span>
-            </Link>
-            <p className="m-0 text-sm muted" style={i(2)}>Free with an account. Two or three minutes per plan.</p>
-          </Reveal>
+        <section className="flex flex-col items-center gap-6 border-t-[3px] border-ink px-6 py-20 text-center">
+          <h2 className="display m-0 text-[clamp(3.25rem,8vw,7rem)] leading-[0.9]" lang="hi-Latn">Bas ek line likho.</h2>
+          <p className="m-0 text-xl font-semibold">One line about your idea. A plan usually takes a few minutes.</p>
+          <Link href="/simulate" className="btn btn-primary min-h-14 px-8 text-xl">
+            Test my idea <span className="arrow">→</span>
+          </Link>
         </section>
       </main>
       <Footer />

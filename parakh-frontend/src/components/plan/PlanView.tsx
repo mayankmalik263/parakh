@@ -64,8 +64,8 @@ export default function PlanView({ plan, report, checklist, onToggle }: Props) {
   return (
     <div className="flex flex-col gap-6">
       <div className="-mx-1 overflow-x-auto px-1 [scrollbar-width:none]">
-        <div ref={bar} role="tablist" aria-label="Plan sections" onKeyDown={onKey} className="relative inline-flex gap-1 rounded-full bg-surface p-1">
-          <div aria-hidden className="absolute bottom-1 left-0 top-1 rounded-full bg-surface-container-highest transition-[transform,width,opacity] duration-500 [transition-timing-function:var(--ease-spring)]" style={pill} />
+        <div ref={bar} role="tablist" aria-label="Plan sections" onKeyDown={onKey} className="relative inline-flex gap-1 rounded-full border-[3px] border-ink bg-surface p-1">
+          <div aria-hidden className="absolute bottom-1 left-0 top-1 rounded-full bg-marigold transition-[transform,width,opacity] duration-500 [transition-timing-function:var(--ease-spring)]" style={pill} />
           {tabs.map((t) => (
             <button
               key={t.id}
@@ -76,7 +76,7 @@ export default function PlanView({ plan, report, checklist, onToggle }: Props) {
               aria-controls={`panel-${t.id}`}
               tabIndex={active === t.id ? 0 : -1}
               onClick={() => setActive(t.id)}
-              className={`relative z-10 min-h-10 cursor-pointer whitespace-nowrap rounded-full px-4 text-sm font-medium transition-colors active:scale-[0.96] ${active === t.id ? 'text-on-surface' : 'text-[#9d9b9b] hover:text-on-surface'} ${t.id === 'critic' ? 'text-tertiary' : ''}`}
+              className={`relative z-10 min-h-10 cursor-pointer whitespace-nowrap rounded-full px-4 text-sm font-bold transition-colors active:scale-[0.96] ${active === t.id ? 'text-ink' : 'text-on-surface-variant hover:text-ink'} ${t.id === 'critic' && active !== t.id ? 'text-primary-fixed-dim' : ''}`}
             >
               {t.label}
             </button>
@@ -96,7 +96,7 @@ export default function PlanView({ plan, report, checklist, onToggle }: Props) {
         {active === 'rivals' && <Rivals plan={plan} />}
         {active === 'critic' && <Critic plan={plan} />}
         {active === 'report' && report && (
-          <article className="prose prose-invert max-w-none rounded-[1.25rem] bg-surface p-6 md:p-8 prose-headings:font-display prose-headings:font-normal prose-h1:text-4xl prose-h2:text-3xl prose-h2:text-primary-fixed-dim prose-p:text-[#c6c6c7] prose-li:text-[#c6c6c7] prose-strong:text-on-surface prose-blockquote:border-l-tertiary prose-blockquote:text-on-surface prose-table:text-sm">
+          <article className="card prose max-w-none p-6 md:p-8 prose-headings:font-display prose-headings:font-normal prose-headings:uppercase prose-h1:text-4xl prose-h2:text-3xl prose-h2:text-primary-fixed-dim prose-p:text-on-surface prose-li:text-on-surface prose-strong:text-ink prose-blockquote:border-l-rani prose-blockquote:text-ink prose-table:text-sm">
             <ReactMarkdown>{report}</ReactMarkdown>
           </article>
         )}
@@ -110,7 +110,7 @@ function Stat({ label, value, i, tone }: { label: string; value?: string; i: num
   return (
     <div className="card spotlight p-5" style={{ '--i': i } as CSSProperties}>
       <div className="text-sm muted">{label}</div>
-      <CountUp value={value} className={`mt-1.5 block text-[1.75rem] font-semibold tracking-[-0.02em] ${tone ?? ''}`} />
+      <CountUp value={value} className={`mt-1.5 block font-display text-[2.25rem] leading-none tabular-nums ${tone ?? ''}`} />
     </div>
   );
 }
@@ -123,7 +123,7 @@ function Overview({ plan }: { plan: BusinessPlan }) {
       {plan.mission && (
         <div className="card p-6 md:p-8">
           <div className="eyebrow mb-3">Mission</div>
-          <p className="display m-0 text-[clamp(1.75rem,3.2vw,2.5rem)] leading-[1.1]">{plan.mission}</p>
+          <p className="m-0 text-[clamp(1.375rem,2.4vw,1.875rem)] font-bold leading-snug">{plan.mission}</p>
         </div>
       )}
       <Reveal className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -163,7 +163,7 @@ function Money({ plan }: { plan: BusinessPlan }) {
   const partsTotal = parts.reduce((a, p) => a + p.amount, 0);
   const targets = plan.revenue_targets || [];
   const top = Math.max(burn, ...targets.map((t) => num(t.mrr)), 1) * 1.12;
-  const colors = ['#8b5cf6', '#ffb869', '#d0bcff', '#6d3bd7', '#c6c6c7'];
+  const colors = ['#E0177A', '#FFB20F', '#161616', '#8A4F00', '#F4DFB6', '#FCD3E6'];
 
   return (
     <div className="flex flex-col gap-3">
@@ -171,7 +171,7 @@ function Money({ plan }: { plan: BusinessPlan }) {
         <Reveal className="grid gap-3 md:grid-cols-[repeat(auto-fit,minmax(14rem,1fr))]">
           {plan.business_model.map((tier, i) => (
             <div key={tier.name} className="card spotlight lift p-6" style={{ '--i': i } as CSSProperties}>
-              <div className="text-sm font-medium text-primary-fixed-dim">{tier.name}</div>
+              <div className="text-sm font-extrabold uppercase text-primary-fixed-dim">{tier.name}</div>
               <div className="display mt-1 text-[2.5rem]">{tier.price}</div>
               <ul className="m-0 mt-3 flex list-none flex-col gap-1.5 p-0 text-[0.9375rem] muted">
                 {tier.features?.map((f) => (
@@ -197,11 +197,11 @@ function Money({ plan }: { plan: BusinessPlan }) {
               <div key={t.day} className="group relative flex h-full flex-1 flex-col justify-end">
                 <div className="mb-2 text-center text-sm font-semibold tabular-nums">{t.mrr.replace(/\s*MRR/i, '')}</div>
                 <div
-                  className="bar rounded-t-xl bg-gradient-to-t from-inverse-primary to-primary-container transition-[filter] group-hover:brightness-125"
+                  className="bar rounded-t-xl border-[3px] border-b-0 border-ink bg-rani transition-[filter] group-hover:brightness-110"
                   style={{ height: `${(num(t.mrr) / top) * 100}%`, '--i': i } as CSSProperties}
                 />
                 {t.notes && (
-                  <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-8 w-56 -translate-x-1/2 rounded-xl bg-surface-container-highest p-3 text-xs leading-snug opacity-0 shadow-xl transition-opacity group-hover:opacity-100">
+                  <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-8 w-56 -translate-x-1/2 rounded-xl border-2 border-ink bg-ink p-3 text-xs leading-snug text-cream opacity-0 transition-opacity group-hover:opacity-100">
                     {t.notes}
                   </div>
                 )}
@@ -220,7 +220,7 @@ function Money({ plan }: { plan: BusinessPlan }) {
         {parts.length > 0 && (
           <Reveal self className="card p-6">
             <div className="eyebrow mb-4">Where the burn goes</div>
-            <div className="flex h-3 overflow-hidden rounded-full bg-surface-container-high">
+            <div className="flex h-4 overflow-hidden rounded-full border-2 border-ink bg-surface-container-high">
               {parts.map((p, i) => (
                 <div key={p.label} className="seg h-full" style={{ width: `${(p.amount / partsTotal) * 100}%`, background: colors[i % colors.length], '--i': i } as CSSProperties} />
               ))}
@@ -228,7 +228,7 @@ function Money({ plan }: { plan: BusinessPlan }) {
             <ul className="m-0 mt-4 flex list-none flex-col gap-2 p-0 text-sm">
               {parts.map((p, i) => (
                 <li key={p.label} className="flex items-start gap-2.5">
-                  <span className="mt-1.5 size-2 shrink-0 rounded-full" style={{ background: colors[i % colors.length] }} />
+                  <span className="mt-1 size-3 shrink-0 rounded-full border-2 border-ink" style={{ background: colors[i % colors.length] }} />
                   <span className="flex-1 muted">{p.label}</span>
                   <span className="font-semibold tabular-nums">₹{p.amount.toLocaleString('en-IN')}</span>
                 </li>
@@ -261,8 +261,8 @@ function Checklist({ title, items, category, ticks, toggle }: {
         </div>
         <div className="relative size-14 shrink-0">
           <svg viewBox="0 0 36 36" className="size-14 -rotate-90">
-            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#2a2a2a" strokeWidth="3" />
-            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#8b5cf6" strokeWidth="3" strokeLinecap="round"
+            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#F4DFB6" strokeWidth="3.5" />
+            <circle cx="18" cy="18" r="15.5" fill="none" stroke="#E0177A" strokeWidth="3.5" strokeLinecap="round"
               strokeDasharray="97.4" strokeDashoffset={97.4 * (1 - pct)}
               className="transition-[stroke-dashoffset] duration-700 [transition-timing-function:var(--ease-spring)]" />
           </svg>
@@ -281,14 +281,14 @@ function Checklist({ title, items, category, ticks, toggle }: {
                 onClick={() => toggle(category, i)}
                 className="group flex w-full cursor-pointer items-start gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-surface-container-low active:scale-[0.99]"
               >
-                <span className={`mt-0.5 grid size-6 shrink-0 place-items-center rounded-lg transition-all duration-300 ${on ? 'scale-100 bg-primary' : 'bg-surface-container-high group-hover:bg-surface-container-highest'}`}>
+                <span className={`mt-0.5 grid size-6 shrink-0 place-items-center rounded-lg border-2 border-ink transition-all duration-300 ${on ? 'scale-100 bg-primary' : 'bg-surface group-hover:bg-surface-container'}`}>
                   <svg viewBox="0 0 16 16" className="size-3.5" fill="none" stroke="white" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M3.5 8.5l3 3 6-7" strokeDasharray="16" strokeDashoffset={on ? 0 : 16} className="transition-[stroke-dashoffset] duration-300" />
                   </svg>
                 </span>
                 <span className="flex-1">
-                  <span className="mr-2 text-sm tabular-nums text-[#8d8b8b]">{String(i + 1).padStart(2, '0')}</span>
-                  <span className={`leading-relaxed transition-colors ${on ? 'text-[#8d8b8b] line-through decoration-primary/60' : 'text-on-surface'}`}>{item}</span>
+                  <span className="mr-2 font-mono text-sm tabular-nums text-on-surface-variant">{String(i + 1).padStart(2, '0')}</span>
+                  <span className={`leading-relaxed transition-colors ${on ? 'text-on-surface-variant line-through decoration-rani decoration-2' : 'text-on-surface'}`}>{item}</span>
                 </span>
               </button>
             </li>
@@ -304,7 +304,7 @@ function Rivals({ plan }: { plan: BusinessPlan }) {
     <Reveal className="grid gap-3 md:grid-cols-[repeat(auto-fit,minmax(16rem,1fr))]">
       {plan.competition?.map((c, i) => (
         <div key={c.name} className="card spotlight lift flex flex-col gap-3 p-6" style={{ '--i': i } as CSSProperties}>
-          <div className="grid size-10 place-items-center rounded-full bg-surface-container-high font-display text-xl">{c.name[0]}</div>
+          <div className="grid size-11 place-items-center rounded-full border-[3px] border-ink bg-marigold font-display text-xl">{c.name[0]}</div>
           <h3 className="m-0 text-lg font-semibold">{c.name}</h3>
           <p className="m-0 leading-relaxed muted">{c.differentiator}</p>
         </div>
@@ -322,9 +322,9 @@ function Critic({ plan }: { plan: BusinessPlan }) {
   return (
     <div className="flex flex-col gap-3">
       {plan.final_verdict && (
-        <div className="card p-6 shadow-[inset_0_0_0_1px_rgba(255,184,105,0.45)] md:p-8">
-          <div className="eyebrow mb-3">The Critic&apos;s verdict</div>
-          <p className="display m-0 text-[clamp(1.5rem,2.6vw,2.125rem)] leading-[1.15]">{plan.final_verdict}</p>
+        <div className="card bg-ink p-6 text-cream shadow-[6px_6px_0_#E0177A] md:p-8">
+          <div className="mb-3 font-display text-lg uppercase tracking-[0.04em] text-marigold">The Critic&apos;s verdict</div>
+          <p className="m-0 text-[clamp(1.25rem,2.2vw,1.75rem)] font-bold leading-snug">{plan.final_verdict}</p>
         </div>
       )}
       {issues.length > 0 && (
@@ -332,12 +332,12 @@ function Critic({ plan }: { plan: BusinessPlan }) {
           {issues.map((it, i) => (
             <details key={i} className="group card overflow-hidden" style={{ '--i': Math.min(i, 6) } as CSSProperties}>
               <summary className="flex cursor-pointer list-none items-start gap-3 p-5 [&::-webkit-details-marker]:hidden">
-                <span className="shrink-0 rounded-full bg-surface-container-high px-2.5 py-1 text-xs font-medium text-primary-fixed-dim">{it.owner}</span>
+                <span className="shrink-0 rounded-full border-2 border-ink bg-marigold px-2.5 py-0.5 text-xs font-extrabold text-ink">{it.owner}</span>
                 <span className="flex-1 leading-relaxed line-clamp-2 group-open:line-clamp-none">{it.problem}</span>
-                <span aria-hidden className="mt-1 shrink-0 text-[#8d8b8b] transition-transform duration-300 group-open:rotate-45">+</span>
+                <span aria-hidden className="mt-0.5 shrink-0 text-xl font-bold transition-transform duration-300 group-open:rotate-45">+</span>
               </summary>
               {it.fix && (
-                <div className="mx-5 mb-5 rounded-xl bg-surface-container-low p-4 text-[0.9375rem] leading-relaxed">
+                <div className="mx-5 mb-5 rounded-xl border-2 border-ink bg-surface-container-low p-4 text-[0.9375rem] leading-relaxed">
                   <span className="font-semibold text-tertiary">Fix: </span>
                   <span className="muted">{it.fix}</span>
                 </div>
@@ -352,12 +352,12 @@ function Critic({ plan }: { plan: BusinessPlan }) {
 
 export function PlanFrame({ children, title }: { children: ReactNode; title: string }) {
   return (
-    <div className="overflow-hidden rounded-[1.75rem] bg-surface-container-lowest shadow-[0_40px_120px_-40px_rgba(109,59,215,0.45),inset_0_0_0_1px_rgba(255,255,255,0.06)]">
-      <div className="flex items-center gap-2 border-b border-surface-container-high px-5 py-3">
-        <span className="size-3 rounded-full bg-[#3a3939]" />
-        <span className="size-3 rounded-full bg-[#3a3939]" />
-        <span className="size-3 rounded-full bg-[#3a3939]" />
-        <span className="ml-3 truncate text-sm muted">{title}</span>
+    <div className="overflow-hidden rounded-[1.5rem] border-[3px] border-ink bg-cream shadow-[10px_10px_0_#161616]">
+      <div className="flex items-center gap-2 border-b-[3px] border-ink bg-surface px-5 py-3">
+        <span className="size-3.5 rounded-full border-2 border-ink bg-rani" />
+        <span className="size-3.5 rounded-full border-2 border-ink bg-marigold" />
+        <span className="size-3.5 rounded-full border-2 border-ink bg-surface" />
+        <span className="ml-3 truncate font-mono text-sm muted">{title}</span>
       </div>
       <div className="p-4 md:p-6">{children}</div>
     </div>

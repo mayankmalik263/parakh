@@ -7,8 +7,6 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { Logo } from '@/components/Logo';
 
-const linkClass = 'nav-link';
-
 export default function Navigation() {
   const [session, setSession] = useState<Session | null>(null);
   const router = useRouter();
@@ -20,32 +18,31 @@ export default function Navigation() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-black/55 backdrop-blur-[24px] backdrop-saturate-[180%] motion-safe:transition-colors [@media(prefers-reduced-transparency:reduce)]:bg-surface-container-lowest [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none">
-      <nav aria-label="Main" className="mx-auto flex max-w-[64rem] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-2.5 text-[0.9375rem]">
+    <header className="sticky top-0 z-50 border-b-[3px] border-ink bg-background/90 backdrop-blur-md [@media(prefers-reduced-transparency:reduce)]:bg-background [@media(prefers-reduced-transparency:reduce)]:backdrop-blur-none">
+      <nav aria-label="Main" className="mx-auto flex max-w-[78rem] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 py-3">
         <Logo />
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-1">
-          <Link href="/#agents" className={`${linkClass} hidden sm:inline`}>Agents</Link>
-          <Link href="/#sample" className={`${linkClass} hidden sm:inline`}>Sample plan</Link>
-          <Link href="/critique" className={linkClass}>Check a deck</Link>
-          <Link href="/docs" className={linkClass}>Docs</Link>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          <Link href="/#how" className="nav-link hidden sm:inline">How it works</Link>
+          <Link href="/critique" className="nav-link">Check a deck</Link>
+          <Link href="/docs" className="nav-link">Docs</Link>
           {session ? (
             <>
-              <Link href="/dashboard" className={linkClass}>Dashboard</Link>
+              <Link href="/dashboard" className="nav-link">My plans</Link>
               <button
                 type="button"
                 onClick={async () => {
                   await supabase.auth.signOut();
                   router.push('/');
                 }}
-                className={linkClass}
+                className="nav-link"
               >
                 Sign out
               </button>
             </>
           ) : (
-            <Link href="/login" className={linkClass}>Log in</Link>
+            <Link href="/login" className="nav-link">Log in</Link>
           )}
-          <Link href="/simulate" className="btn btn-primary btn-sm">
+          <Link href="/simulate" className="btn btn-marigold btn-sm">
             {session ? 'New plan' : 'Start free'}
           </Link>
         </div>

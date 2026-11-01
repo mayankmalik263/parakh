@@ -1,0 +1,77 @@
+{
+ "startup_idea": "Notes and past papers for juniors at my college, sold before exams",
+ "mission": "Sell exam-week note bundles, made from toppers' notes and past papers, to juniors on one campus.",
+ "problem": "First- and second-years skip classes, then panic the week before mid-sems with no clean notes for subjects like DBMS and OS.",
+ "target_customer": "First- and second-year B.Tech students at one campus who study in the last 7 days before an exam and already pay for printouts.",
+ "business_model": [
+  {
+   "name": "One subject",
+   "price": "₹149/mo",
+   "features": [
+    "Unit-wise notes",
+    "3 years of papers"
+   ]
+  },
+  {
+   "name": "Two subjects",
+   "price": "₹249/mo",
+   "features": [
+    "Both bundles",
+    "Most-asked questions list"
+   ]
+  }
+ ],
+ "financial_snapshot": {
+  "monthly_burn": "₹2,500/mo",
+  "burn_breakdown": "Scanning and printing: ₹500; Posters at the canteen and hostel: ₹1,000; Instagram story boosts (marketing budget): ₹1,000; Google Drive: ₹0; Notion: ₹0; Razorpay Payment Links: ₹0",
+  "funding_needed": "₹8,000 founder capital",
+  "runway": "3.2 months",
+  "break_even_target": "21 paying customers"
+ },
+ "go_to_market": [
+  "Class WhatsApp groups: Post one free sample page in 6 first-year groups the week before mid-sems",
+  "Instagram story boosts: Boost one story a week to students within 2 km of campus",
+  "Message 20 juniors from your own club or hostel",
+  "Give the first 5 buyers a second subject free for a review",
+  "Ask each buyer to forward the sample page to one class group"
+ ],
+ "product_mvp": [
+  "Unit-wise note bundle per subject, with the last 3 years of papers",
+  "Pay by UPI through a payment link, get the Drive link on WhatsApp",
+  "Ask 3 toppers for their DBMS and OS notes in exchange for ₹20 per bundle sold",
+  "Scan and sort the notes by unit",
+  "Collect the last 3 years of papers for both subjects",
+  "Make one Notion page with subjects and prices",
+  "Create a ₹149 Razorpay Payment Link",
+  "Post one free sample page in 6 first-year WhatsApp groups"
+ ],
+ "revenue_targets": [
+  {
+   "day": 30,
+   "mrr": "₹1,490 MRR",
+   "notes": "10 paying customers. Mid-sem week"
+  },
+  {
+   "day": 60,
+   "mrr": "₹3,725 MRR",
+   "notes": "25 paying customers. Second subject added"
+  },
+  {
+   "day": 90,
+   "mrr": "₹5,960 MRR",
+   "notes": "40 paying customers. End-sem season"
+  }
+ ],
+ "competition": [
+  {
+   "name": "Free PDFs in class WhatsApp groups",
+   "differentiator": "Ours are sorted by unit, checked by a topper and match this semester's syllabus."
+  },
+  {
+   "name": "Photocopy shops near campus",
+   "differentiator": "No queue the night before the exam, and the notes are searchable."
+  }
+ ],
+ "key_conflicts": [],
+ "final_verdict": "Workable for one campus if about 21 juniors buy each month. The price fits an exam-week panic buy, and the costs are low enough to survive a slow first month.\n\nBiggest risk: A buyer posts the bundle in a class group and nobody needs to pay after that."
+}
