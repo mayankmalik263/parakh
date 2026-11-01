@@ -1,0 +1,21 @@
+# Render Blueprint for the Parakh API (FastAPI). New -> Blueprint on render.com, pick this repo.
+# Values marked sync: false are asked for once in the Render dashboard and never committed.
+services:
+  - type: web
+    name: parakh-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /
+    envVars:
+      - key: BHARATCODE_API_KEY
+        sync: false
+      - key: PARAKH_MODEL
+        value: qwen-3.8-27b
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false

@@ -17,6 +17,8 @@ const TOC = [
   ['agents', 'The agents'],
   ['math', 'The math check'],
   ['plan', "What's in your plan"],
+  ['student', 'Student mode'],
+  ['deck', 'Deck check'],
   ['limits', 'Limits and your own key'],
   ['api', 'API'],
   ['events', 'Live events'],
@@ -52,7 +54,9 @@ const ENDPOINTS: { method: string; path: string; text: string; body?: string }[]
   { method: 'GET', path: '/simulations', text: 'Your saved plans, newest first.' },
   { method: 'GET', path: '/simulations/{id}', text: 'One saved plan.' },
   { method: 'POST', path: '/simulate/{job_id}/chat', text: 'Ask a follow-up. Start with @Economics (or another role) to get that agent.', body: '{ "messages": [{ "role": "user", "content": "@Economics what if I charge ₹999?" }] }' },
-  { method: 'GET', path: '/simulations/{id}/chat', text: 'The saved follow-up chat for a plan.' },
+  { method: 'GET', path: '/simulations/{id}/chat', text: 'The saved follow-up chat for a plan. Send "language": "hinglish" with a chat message to get answers in Hinglish.' },
+  { method: 'POST', path: '/critique', text: 'Check a pitch deck. Up to 3 slide images as data URLs and/or the numbers as text. Returns a job id. Nothing is stored.', body: '{\n  "images": ["data:image/png;base64,..."],\n  "text": "Burn ₹40,000/month, cash ₹2,00,000, runway 12 months",\n  "idea": "Shared notes for UPES students"\n}' },
+  { method: 'GET', path: '/critique/{job_id}', text: 'Status of a deck check. When done: what the deck claims, the findings, the recomputed numbers and the Critic\'s review.' },
   { method: 'PATCH', path: '/simulations/{id}/checklist', text: 'Tick or untick a step.', body: '{ "category": "product_mvp", "item_index": 2, "completed": true }' },
 ];
 
@@ -170,6 +174,35 @@ export default function DocsPage() {
             <P>
               Want to see one? The <Link href="/#sample" className="text-primary-fixed-dim underline">sample plan</Link> on
               the home page is a real run, unedited.
+            </P>
+          </Section>
+
+          <Section id="student" eyebrow="Defaults" title="Student mode">
+            <P>
+              Parakh assumes you&apos;re a student in India unless you say otherwise. A blank market means India and
+              rupees. A student founder gets these limits, and the math check enforces the money ones: the first version
+              costs at most ₹15,000 to build, running costs stay under ₹10,000 a month before revenue, and the plan fits
+              about 15 hours a week around classes. Channels start on campus: batchmates, class WhatsApp groups, fests,
+              Instagram and nearby shops.
+            </P>
+            <P>
+              Answer &ldquo;full time&rdquo; or &ldquo;alongside a job&rdquo; to the second question and the caps widen
+              to ₹40,000 and ₹30,000. Pick &ldquo;Outside India&rdquo; and the plan switches to dollars. Raising from
+              investors turns the caps off.
+            </P>
+          </Section>
+
+          <Section id="deck" eyebrow="Deck check" title="Check a deck you already have">
+            <P>
+              Upload up to three slide screenshots, or paste the numbers. The model copies out only what the deck
+              states; it is told not to compute or fill gaps. Then plain code recomputes burn from the line items,
+              runway (cash ÷ burn), break-even (burn ÷ margin per customer), MRR (customers × price) and cost per customer
+              (spend ÷ new customers), and shows each mismatch with its formula. The Critic then reviews what code
+              can&apos;t check, such as a &ldquo;we only need 1% of the market&rdquo; slide.
+            </P>
+            <P>
+              If the model on your key doesn&apos;t accept images, you&apos;ll be asked to paste the numbers instead. The
+              repo has a sample slide with four planted mistakes in <Code>examples/sample-deck-slide.png</Code>.
             </P>
           </Section>
 

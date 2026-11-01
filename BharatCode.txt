@@ -6,7 +6,8 @@ Built for: BharatCode Build League 2026
 How Parakh uses BharatCode
 - Every model call goes through BharatCode's OpenAI-compatible API: the four plan agents
   (Strategist, Builder, Economics, Growth), the Critic, the clarifying questions, the
-  council chat and the evaluation suite.
+  council chat, the evaluation suite, and the deck check, which sends pitch-deck
+  slide images to the model in the OpenAI vision format.
 - Base URL: https://bharatcode.ai/api/model/v1
 - Model: qwen-3.8-27b
 - Code: agents/llm_router.py (the single entry point for every LLM call)
