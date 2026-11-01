@@ -139,11 +139,15 @@ export async function getSimulationById(id: string): Promise<any> {
 /**
  * POST /simulate/{job_id}/chat — sends a follow-up question to the council.
  */
-export async function chatWithCouncil(jobId: string, messages: {role: string, content: string}[], tier: string = "pro"): Promise<{reply: string}> {
+export async function chatWithCouncil(
+  jobId: string,
+  messages: {role: string, content: string}[],
+  language: 'en' | 'hinglish' = 'en',
+): Promise<{reply: string}> {
   const res = await fetch(`${API_URL}/simulate/${jobId}/chat`, {
     method: 'POST',
     headers: await getAuthHeaders(),
-    body: JSON.stringify({ messages, tier }),
+    body: JSON.stringify({ messages, language }),
   });
 
   if (!res.ok) {

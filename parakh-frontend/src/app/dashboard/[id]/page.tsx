@@ -30,6 +30,7 @@ export default function HistoryDetailPage() {
   const [chatMessages, setChatMessages] = useState<{role: string, content: string}[]>([]);
   const [chatInput, setChatInput] = useState('');
   const [isChatting, setIsChatting] = useState(false);
+  const [hinglish, setHinglish] = useState(false);
   const chatEnd = useRef<HTMLDivElement>(null);
   const [showContext, setShowContext] = useState(false);
 
@@ -45,7 +46,7 @@ export default function HistoryDetailPage() {
 
     try {
       const { chatWithCouncil } = await import('@/lib/api');
-      const res = await chatWithCouncil(simulation.job_id, newMessages);
+      const res = await chatWithCouncil(simulation.job_id, newMessages, hinglish ? 'hinglish' : 'en');
       setChatMessages([...newMessages, { role: 'assistant', content: res.reply }]);
     } catch (err) {
       setChatMessages([...newMessages, { role: 'assistant', content: `Error: ${err instanceof Error ? err.message : err}` }]);
@@ -178,8 +179,23 @@ export default function HistoryDetailPage() {
             {/* Follow-up chat */}
             <section className="card overflow-hidden" aria-labelledby="chat-title">
               <div className="flex flex-col gap-1 border-b border-surface-container-high px-6 py-5">
-                <h2 id="chat-title" className="display m-0 text-[2rem]">Ask the agents</h2>
-                <p className="m-0 text-sm muted">Start with a role, like @Economics, to get that agent&apos;s answer. The chat is saved with this plan.</p>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <h2 id="chat-title" className="display m-0 text-[2rem]">Ask the agents</h2>
+                  <div role="group" aria-label="Reply language" className="flex rounded-full bg-surface-container-low p-1 text-sm">
+                    {([['English', false], ['Hinglish', true]] as const).map(([label, value]) => (
+                      <button
+                        key={label}
+                        type="button"
+                        aria-pressed={hinglish === value}
+                        onClick={() => setHinglish(value)}
+                        className={`cursor-pointer rounded-full px-3 py-1 transition-colors ${hinglish === value ? 'bg-inverse-primary/30 text-on-surface' : 'muted hover:text-on-surface'}`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <p className="m-0 text-sm muted">Start with a role, like @Economics, to get that agent&apos;s answer. Switch to Hinglish if that&apos;s how you think. The chat is saved with this plan.</p>
               </div>
               <div className="flex max-h-[30rem] min-h-[10rem] flex-col gap-3 overflow-y-auto px-6 py-5">
                 {chatMessages.length === 0 && !isChatting && (

@@ -26,14 +26,33 @@ const AGENTS = [
 ];
 
 const EXAMPLES = [
-  'A social media marketing agency for gyms in Pune',
-  'Handmade soy candles sold on Instagram',
-  'An app that turns lecture recordings into flashcards',
+  'Notes and PYQ papers for my college, sold to juniors before exams',
+  'Instagram reels editing for cafes near campus in Dehradun',
   'A WhatsApp bot that reminds dental patients about appointments',
+  'Handmade candles sold on Instagram, made in my hostel room',
 ];
 
 /* ─── Phase enum ───────────────────────────────────── */
 type Phase = 'form' | 'clarify' | 'running' | 'done' | 'error';
+
+/**
+ * Reads the three fixed clarify questions (CLARIFY_FIXED in api.py) into the market and the
+ * "Funding:" / "Founder:" markers the backend's build_profile trusts over keyword guessing.
+ * Only the chosen answers are read, never the question text, which names every option.
+ */
+function profileFromAnswers(pairs: [string, string][]): { market: string; markers: string } {
+  const answer = (question: string) => pairs.find(([q]) => q === question)?.[1]?.toLowerCase() ?? '';
+  const where = answer('Where are your first customers?');
+  const who = answer("Who's building this?");
+  const money = answer('How will you fund the start?');
+
+  const market = where.startsWith('outside india') ? 'Global' : where ? 'India' : '';
+  const markers = [
+    money.includes('investors') ? 'Funding: Venture' : money ? 'Funding: Bootstrapped' : '',
+    who.includes('student') ? 'Founder: Student' : who.includes('full time') ? 'Founder: Full-time' : who.includes('job') ? 'Founder: Professional' : '',
+  ].filter(Boolean).join('. ');
+  return { market, markers };
+}
 
 export default function SimulatePage() {
   /* Form state */
@@ -224,21 +243,12 @@ export default function SimulatePage() {
     } else {
       // Start Simulation
       const qaString = questions.map((q, i) => `${q.question} ${newAnswers[i]}`).join('. ');
-      
-      // Auto-detect market and constraints from answers
-      const combined = qaString.toLowerCase();
-      let market = form.market;
-      if (combined.includes('india')) market = 'India';
-      else if (combined.includes('global') || combined.includes('us')) market = 'Global';
-
-      let constraints = form.constraints;
-      if (combined.includes('bootstrap')) constraints += ' Bootstrapped';
-      else if (combined.includes('venture') || combined.includes('seed')) constraints += ' Venture Backed';
+      const { market, markers } = profileFromAnswers(questions.map((q, i) => [q.question, newAnswers[i] ?? '']));
 
       const finalForm = {
         ...form,
-        market,
-        constraints: `${constraints}. Context: ${qaString}`,
+        market: market || form.market,
+        constraints: [markers, form.constraints, `Context: ${qaString}`].filter(Boolean).join('. '),
         tier: "pro" as any
       };
 
@@ -315,7 +325,7 @@ export default function SimulatePage() {
             {phase === 'error' && <>That didn&apos;t <em>work</em></>}
           </h1>
           <p className="enter mx-auto m-0 max-w-[38rem] text-lg leading-relaxed muted" style={{ '--i': 2 } as CSSProperties}>
-            {phase === 'form' && "One or two sentences is enough. Say who it's for and where, if you know."}
+            {phase === 'form' && "One or two sentences is enough. Say who it's for, which city or campus, and how much you can put in."}
             {phase === 'clarify' && 'Your answers go to every agent, so the plan fits your budget and market.'}
             {phase === 'running' && 'Four agents write the plan, then the Critic sends problems back. Usually two or three minutes.'}
             {phase === 'done' && 'It is saved to your dashboard. Tick off steps as you go, or ask the agents follow-up questions there.'}
@@ -332,7 +342,7 @@ export default function SimulatePage() {
                 id="startup-idea"
                 value={form.idea}
                 onChange={(e) => setForm({ ...form, idea: e.target.value })}
-                placeholder="e.g. A tiffin service for office workers in Bengaluru, starting with ₹40,000"
+                placeholder="e.g. A tiffin service for hostel students in Bidholi, starting with ₹8,000 of savings"
                 required
                 rows={4}
                 className="field resize-none bg-transparent text-xl leading-relaxed shadow-none focus:shadow-none"

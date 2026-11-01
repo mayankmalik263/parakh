@@ -41,15 +41,15 @@ export default function LandingPage() {
         <section className="flex flex-col items-center gap-6 px-6 pt-16 text-center md:pt-20">
           <span className="enter inline-flex items-center gap-2 rounded-full bg-surface px-3.5 py-1.5 text-sm muted" style={i(0)}>
             <span className="size-1.5 rounded-full bg-tertiary [animation:pulse-ring_1.8s_ease-out_infinite]" />
-            Four agents write it. A fifth tears it apart.
+            Built for student founders in India
           </span>
           <h1 className="display m-0 max-w-[60rem] text-[clamp(3rem,7.5vw,6.5rem)]">
             <Words text="Type one sentence. Get a build plan with" />
             <em className="word" style={i(8)}>real prices.</em>
           </h1>
           <p className="enter m-0 max-w-[38rem] text-lg leading-relaxed muted md:text-xl" style={i(5)}>
-            Who to sell to, what to build it with, what to charge, and where your first ten customers come from. Then a
-            Critic reads the whole thing and sends back whatever won&apos;t hold up.
+            Who pays, what to build it with on a student budget, what to charge in rupees, and where your first ten
+            customers come from. Then a Critic reads the whole thing and sends back whatever won&apos;t hold up.
           </p>
           <div className="enter mt-1 flex flex-wrap justify-center gap-3" style={i(6)}>
             <Link href="/simulate" className="btn btn-primary">
@@ -89,8 +89,8 @@ export default function LandingPage() {
               </span>
               <h3 className="font-display m-0 text-[2rem] font-normal italic leading-none text-tertiary">Critic</h3>
               <p className="serif m-0 text-[1.1875rem] muted">
-                Runs on a different model. Reads the finished plan, sends each problem back to whoever owns it, and names
-                the one risk most likely to sink you.
+                Didn&apos;t write a word of the plan. Reads the finished thing, sends each problem back to whoever owns
+                it, and names the one risk most likely to sink you.
               </p>
             </div>
           </Reveal>
@@ -105,6 +105,33 @@ export default function LandingPage() {
           </Reveal>
           <Reveal self>
             <DebateReplay />
+          </Reveal>
+        </section>
+
+        {/* Student defaults */}
+        <section className="mx-auto flex max-w-[68rem] flex-col gap-8 px-6 py-20">
+          <Reveal className="flex max-w-[44rem] flex-col gap-3">
+            <span className="eyebrow">Student mode</span>
+            <h2 className="display m-0 text-[clamp(2.5rem,5vw,4rem)]">
+              Planned for a <em>hostel-room</em> budget
+            </h2>
+            <p className="m-0 text-lg leading-relaxed muted">
+              Unless you say otherwise, Parakh assumes you&apos;re a student in India with savings, not a seed round. Not
+              a student, or selling abroad? Say so in the first question and the limits change.
+            </p>
+          </Reveal>
+          <Reveal className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-3">
+            {[
+              ['₹15,000', 'to build the first version, at most. Free tiers and student offers first.'],
+              ['₹10,000', 'a month of costs before anyone pays you. The checks flag anything above it.'],
+              ['15 hours', 'a week, around classes. Exam weeks stay out of the plan.'],
+              ['Campus first', 'Batchmates, class WhatsApp groups, fests and the shops outside the gate before any ad spend.'],
+            ].map(([big, text], n) => (
+              <div key={big} className="card flex flex-col gap-2 p-6" style={i(n)}>
+                <span className="font-display text-[2.25rem] leading-none text-primary-fixed-dim">{big}</span>
+                <p className="serif m-0 text-[1.125rem] muted">{text}</p>
+              </div>
+            ))}
           </Reveal>
         </section>
 
@@ -163,7 +190,7 @@ export default function LandingPage() {
             </p>
           </Reveal>
           <Reveal self>
-            <PlanFrame title={`mass · ${SAMPLE_CONTEXT}`}>
+            <PlanFrame title={`parakh · ${SAMPLE_CONTEXT}`}>
               <PlanView plan={SAMPLE_PLAN} report={SAMPLE_REPORT} />
             </PlanFrame>
           </Reveal>

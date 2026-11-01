@@ -13,7 +13,7 @@ def get_user_context(idea: str) -> dict:
     ).strip()
 
     market = input(
-        "\n2. Which market/geography?\n"
+        "\n2. Which market/geography? Press Enter for India.\n"
         "   (e.g. India, US, Southeast Asia, global)\n"
         "   -> "
     ).strip()
@@ -26,7 +26,7 @@ def get_user_context(idea: str) -> dict:
 
     constraints = input(
     "\n4. Any hard constraints?\n"
-    "   (e.g. bootstrapped, no VC, mobile-first, Indian pricing only)\n"
+    "   (e.g. bootstrapped, not a student, mobile-first). Default: student founder, own savings\n"
     "   TIP: Be specific — 'bootstrapped' means no VC, revenue from day 1\n"
     "   -> "
     ).strip()
