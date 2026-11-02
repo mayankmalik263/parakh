@@ -167,7 +167,7 @@ def model_for(role: str) -> str:
         return (sel and sel["model"]) or ROLE_MODELS.get(role, MODEL)
     model = ((_selection.get() or {}).get("model")) or provider.default_model
     if not model:
-        raise RuntimeError(f"Choose a model for {provider.label} (for example from its model list) and try again.")
+        raise ProviderKeyError(f"Choose a model for {provider.label} (for example from its model list) and try again.")
     return model
 
 
@@ -186,7 +186,7 @@ def _get_client() -> OpenAI:
             _client = OpenAI(api_key=server_key, base_url=BASE_URL, max_retries=0, timeout=TIMEOUT_S)
         return _client
     if not key:
-        raise RuntimeError(f"Paste your {provider.label} API key to run plans on {provider.label}.")
+        raise ProviderKeyError(f"Paste your {provider.label} API key to run plans on {provider.label}.")
     return OpenAI(api_key=key, base_url=provider.base_url, max_retries=0, timeout=TIMEOUT_S,
                   default_headers=provider.headers or None)
 
@@ -196,7 +196,7 @@ def _get_anthropic():
         raise RuntimeError("Claude support needs the anthropic package: pip install -r requirements.txt")
     key = _own_key()
     if not key:
-        raise RuntimeError("Paste your Claude (Anthropic) API key to run plans on Claude.")
+        raise ProviderKeyError("Paste your Claude (Anthropic) API key to run plans on Claude.")
     return anthropic.Anthropic(api_key=key, max_retries=0, timeout=TIMEOUT_S)
 
 
@@ -405,6 +405,11 @@ def _complete_anthropic(model: str, messages: list[dict], json_mode: bool, max_t
     raise AssertionError("unreachable")
 
 
+class ProviderKeyError(RuntimeError):
+    """A problem with the visitor's own provider key or model (missing, rejected, no access, unknown model,
+    rate-limited). The message is written for the visitor, so the API shows it as is."""
+
+
 class BharatCodeAccessError(RuntimeError):
     """The key works but isn't allowed to use the model (BharatCode answers 402 or 403). Retrying won't help."""
 
@@ -447,15 +452,15 @@ def _complete_with_fallback(role: str, messages: list[dict], json_mode: bool, ma
 def _raise_readable(provider: Provider, model: str, status: int | None, err: Exception):
     """Errors from a visitor's own provider key, in words they can act on."""
     if status == 401:
-        raise RuntimeError(f"Your {provider.label} API key was rejected. Check it in the AI provider settings.") from err
+        raise ProviderKeyError(f"Your {provider.label} API key was rejected. Check it in the AI provider settings.") from err
     if status in (402, 403):
-        raise RuntimeError(f"Your {provider.label} account can't use {model}: check its billing or model access.") from err
+        raise ProviderKeyError(f"Your {provider.label} account can't use {model}: check its billing or model access.") from err
     if status == 404:
-        raise RuntimeError(f"{provider.label} doesn't know the model '{model}'. Check the model name.") from err
+        raise ProviderKeyError(f"{provider.label} doesn't know the model '{model}'. Check the model name.") from err
     if status == 429:
-        raise RuntimeError(f"Your {provider.label} key hit its rate limit or quota. Try again later.") from err
+        raise ProviderKeyError(f"Your {provider.label} key hit its rate limit or quota. Try again later.") from err
     if status is None or status >= 500:
-        raise RuntimeError(f"{provider.label} didn't answer after several retries. Try again in a minute.") from err
+        raise ProviderKeyError(f"{provider.label} didn't answer after several retries. Try again in a minute.") from err
     raise err
 
 

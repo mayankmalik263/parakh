@@ -518,7 +518,7 @@ export default function SimulatePage() {
               <Icon name="error" className="text-[1.75rem]" />
             </span>
             <p className="m-0 text-[1.0625rem] leading-relaxed">{errorMsg}</p>
-            {/quota|api key|bharatcode key|bharatcode\.ai\/account|rate limit|model access|know the model|model name/i.test(errorMsg) ? (
+            {/quota|api key|bharatcode key|bharatcode\.ai\/account|rate limit|model access|know the model|model name|choose a model/i.test(errorMsg) ? (
               <div className="w-full">
                 <ProviderPicker defaultOpen />
               </div>

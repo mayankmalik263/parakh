@@ -253,7 +253,10 @@
   /* Accent words get a marigold paint stroke behind them. */
   .display em {
     font-style: normal;
-    background: var(--color-marigold);
+    /* Paint only behind the capitals. A plain background fills Anton's whole content area (about
+       1.5em tall), which at a 0.9 line height spills up over the line above. Caps sit between 21%
+       and 78% of that area, so a centred 60% band covers them with a little margin. */
+    background: linear-gradient(var(--color-marigold), var(--color-marigold)) center / 100% 60% no-repeat;
     padding: 0 0.12em;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;

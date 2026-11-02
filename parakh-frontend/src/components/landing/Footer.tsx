@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-[78rem] flex-wrap items-center justify-between gap-4 px-6 py-6 text-[0.9375rem] font-semibold">
         <span className="inline-flex items-center gap-2">
           <ParakhMark size={22} />
-          Parakh · open source · model calls run on BharatCode
+          Parakh · open source · runs on BharatCode by default
         </span>
         <div className="flex flex-wrap gap-6">
           <Link href="/docs" className="text-cream no-underline hover:text-marigold">Docs</Link>

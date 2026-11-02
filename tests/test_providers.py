@@ -169,3 +169,14 @@ def test_run_stats_sums_the_meter():
     assert stats["provider_label"] == "Gemini" and stats["calls"] == 2 and stats["own_key"] is True
     assert (stats["tokens_in"], stats["tokens_out"], stats["seconds"]) == (4_000, 600, 61)
     assert stats["cost_usd"] == round((4_000 * 0.30 + 600 * 2.50) / 1_000_000, 4)
+
+
+def test_clarify_says_at_once_when_the_visitors_key_is_bad(monkeypatch):
+    def bad_key(*a, **k):
+        raise llm_router.ProviderKeyError("Your OpenAI API key was rejected. Check it in the AI provider settings.")
+    monkeypatch.setattr(api, "call_llm_json", bad_key)
+    r = client.post("/clarify", json={"idea": "A CRM for pet sitters"},
+                    headers={"X-Parakh-Provider": "openai", "X-Parakh-Key": "sk-wrong"})
+    assert r.status_code == 400
+    assert "OpenAI API key was rejected" in r.json()["detail"]
+    assert "sk-wrong" not in r.text  # the key itself never comes back

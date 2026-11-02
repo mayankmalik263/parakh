@@ -72,7 +72,7 @@ export default function LandingPage() {
               </Link>
             </div>
             <p className="m-0 text-sm font-semibold muted">
-              Free account. Hit the shared limit? Paste your own BharatCode key.
+              Free account, runs on BharatCode. Hit the shared limit? Use your own key.
             </p>
           </div>
 
@@ -235,7 +235,7 @@ export default function LandingPage() {
             {[
               ['Ask the agents', 'Ask follow-ups like "@Economics what if I charge ₹99?" Reply in English or Hinglish.'],
               ['Private by default', 'Plans save to your account. Share a read-only link only if you turn it on.'],
-              ['Your own key', 'Shared limit used up for the day? Paste your BharatCode key. It stays in your browser.'],
+              ['Your own key', 'Shared limit used up? Paste your own BharatCode key, or switch to OpenAI, Claude, Gemini or OpenRouter. The key stays in your browser.'],
             ].map(([title, text], n) => (
               <div key={title} className="card lift flex flex-col gap-2 p-6" style={v({ '--i': n })}>
                 <h3 className="m-0 font-display text-[1.75rem] font-normal uppercase">{title}</h3>

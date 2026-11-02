@@ -23,7 +23,7 @@ from graph_orchestrator import run
 import event_bus
 
 from supabase_client import get_supabase
-from agents.llm_router import BharatCodeAccessError, call_llm, call_llm_json, summarize_usage, token_meter, use_provider
+from agents.llm_router import BharatCodeAccessError, ProviderKeyError, call_llm, call_llm_json, summarize_usage, token_meter, use_provider
 from agents.providers import PROVIDERS
 
 app = FastAPI(title="Parakh API", description="Your own AI co-founder, on BharatCode")
@@ -212,6 +212,9 @@ Options should be concrete for the Indian market where that fits."""
     except BharatCodeAccessError as e:
         # No point asking questions for a run that can't call the model. Say so before the run starts.
         raise HTTPException(status_code=402, detail=str(e))
+    except ProviderKeyError as e:
+        # The visitor's own key or model doesn't work: tell them now, not after the questions.
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         print(f"Error in /clarify: {e}")
         # Fallback questions if the LLM fails: the fixed ones plus a revenue model question.
@@ -230,8 +233,8 @@ def run_critique(job_id: str, req: CritiqueRequest):
         print(f"Error in critique job: {e}")
         msg = str(e)
         user_facing = ("quota", "BharatCode API key", "BharatCode is busy", "slide images", "bharatcode.ai/account")
-        update_job(job_id, status=JobStatus.ERROR,
-                   error=msg if any(s in msg for s in user_facing) else "The critique failed. Try again in a minute.")
+        readable = isinstance(e, ProviderKeyError) or any(s in msg for s in user_facing)
+        update_job(job_id, status=JobStatus.ERROR, error=msg if readable else "The critique failed. Try again in a minute.")
 
 
 @app.post("/critique")
@@ -314,7 +317,8 @@ Keep answers concise, brutally honest, and specific to their constraints and the
         print(f"Error in chat: {e}")
         # Quota, busy and rejected-key messages are written for the user; anything else stays generic.
         msg = str(e)
-        detail = msg if any(s in msg for s in ("quota", "BharatCode API key", "BharatCode is busy")) else "Failed to get chat response"
+        readable = isinstance(e, ProviderKeyError) or any(s in msg for s in ("quota", "BharatCode API key", "BharatCode is busy"))
+        detail = msg if readable else "Failed to get chat response"
         raise HTTPException(status_code=500, detail=detail)
 
     if simulation_id:

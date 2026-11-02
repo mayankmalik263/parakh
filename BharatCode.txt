@@ -4,12 +4,15 @@ Author: Mayank Malik (github.com/mayankmalik263)
 Built for: BharatCode Build League 2026
 
 How Parakh uses BharatCode
-- Every model call goes through BharatCode's OpenAI-compatible API: the four plan agents
+- By default, every model call goes through BharatCode's OpenAI-compatible API: the four plan agents
   (Strategist, Builder, Economics, Growth), the Critic, the clarifying questions, the
   council chat, the evaluation suite, and the deck check, which sends pitch-deck
   slide images to the model in the OpenAI vision format.
 - Base URL: https://bharatcode.ai/api/model/v1
 - Model: qwen-3.8-27b
 - Code: agents/llm_router.py (the single entry point for every LLM call)
-- Visitors can use their own BharatCode key via the X-BharatCode-Key header.
-  It is used for that request only and never stored.
+- BharatCode is the default provider and is listed first in the app's AI picker.
+- Visitors can use their own BharatCode key (X-Parakh-Key header, or the older
+  X-BharatCode-Key). It is used for that request only and never stored.
+- Founders who already pay for OpenAI, Claude, Gemini or OpenRouter can optionally run
+  plans on their own key for that provider instead. The live demo runs on BharatCode.
