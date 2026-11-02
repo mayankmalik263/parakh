@@ -13,7 +13,6 @@
   "paid_prices_right": 0,
   "paid_prices": 2,
   "hidden_costs": [
-   "Google Docs",
    "Claude (claude.ai)",
    "ChatGPT"
   ],

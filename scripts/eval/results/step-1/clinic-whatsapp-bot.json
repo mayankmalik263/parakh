@@ -1,0 +1,421 @@
+{
+ "id": "clinic-whatsapp-bot",
+ "kind": "software",
+ "idea": "A WhatsApp bot that reminds dental clinic patients about appointments and collects deposits",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 4,
+  "math_warnings": 0,
+  "tools_costed": 12,
+  "tools_in_catalog": 12,
+  "paid_prices_right": 5,
+  "paid_prices": 5,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 15501
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "A solo dental clinic in Jaipur loses a booked slot when the patient doesn't show: the front desk calls on Monday morning to confirm Tuesday's appointment, the patient doesn't pick up, and by Tuesday 11am the chair sits empty while the dentist still pays staff and rent for that hour — and when the patient does show, the clinic discovers too late that they never paid the ₹500 booking deposit and now refuses to pay at the counter.",
+   "target_customer": "A solo or two-dentist dental clinic in Jaipur doing 15-40 appointments a week, billing ₹800-₹3,000 per procedure, whose front desk (often the dentist's spouse or one receptionist) manually calls or WhatsApps patients to confirm and chases deposits over UPI because no-shows and unpaid bookings cost them ₹15,000-₹40,000 a month.",
+   "mission": "Give solo Indian dental clinics a WhatsApp bot that confirms every appointment and collects the deposit before the patient sits in the chair, so no chair goes empty and no procedure starts unpaid.",
+   "competitors": [
+    {
+     "name": "Manual WhatsApp and phone follow-ups by the clinic's own receptionist",
+     "differentiator": "Our bot sends the reminder and deposit link 24 hours and 2 hours before automatically, so a one-person front desk stops losing 45 minutes a day to calling patients who don't pick up."
+    },
+    {
+     "name": "Practo and other patient-booking marketplace apps",
+     "differentiator": "Practo takes a lead fee and pushes patients to compare clinics; we sit on the clinic's own patient list inside WhatsApp, where Indian patients already reply, and cost a flat monthly subscription instead of per-lead."
+    },
+    {
+     "name": "Generic Indian appointment-reminder SaaS (ClinicPlus, Easy Clinic style practice-management tools)",
+     "differentiator": "Those are full practice-management suites the dentist must learn; we do one job — WhatsApp reminder plus UPI deposit link — and work with the paper register or Excel the clinic already uses."
+    }
+   ],
+   "scope_cuts": [
+    "No full practice-management module (billing, inventory, dental charting, prescriptions) — clinics already have a paper register or Excel, and building a suite delays the reminder+deposit loop that is the whole reason they pay.",
+    "No native Android/iOS patient app — patients in Jaipur will not install an app for a dental visit; WhatsApp is the interface, so an app would burn the ₹40,000 MVP budget with zero added retention.",
+    "No multi-city or multi-branch chain features (franchise dashboards, per-branch roles) — the first 10 customers are single-chair solo clinics in Jaipur, and chain support is a later expansion, not a month-1 build."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Next.js",
+     "why": "App Router + Tailwind for the clinic-facing web dashboard (appointments, deposit status, patient list) that works on the receptionist's laptop and phone browser"
+    },
+    {
+     "name": "Supabase",
+     "why": "Postgres for clinics, patients, appointments and payment status with row-level security per clinic; free tier covers the first 10 clinics"
+    },
+    {
+     "name": "WhatsApp Business Cloud API",
+     "why": "The whole product runs inside WhatsApp — reminder and deposit link messages sent 24h and 2h before the appointment at ₹0.115 per utility message"
+    },
+    {
+     "name": "Razorpay",
+     "why": "Payment links for the ₹500 deposit (2% + GST, UPI-first for Jaipur patients) and monthly subscription collection from clinics"
+    },
+    {
+     "name": "n8n",
+     "why": "Self-hosted (free) scheduler that triggers the 24h/2h reminder jobs and retries failed sends without writing a custom queue"
+    },
+    {
+     "name": "Cloudflare Pages",
+     "why": "Free commercial-use hosting for the Next.js dashboard; Workers Free runs the webhook endpoint"
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Claude Code writes the Next.js + Supabase app, n8n workflows and WhatsApp webhook handlers in weeks 1-4"
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Drafts the Hindi/Hinglish reminder message templates and clinic-facing copy for Jaipur patients"
+    },
+    {
+     "name": "Gemini API",
+     "why": "Gemini 2.5 Flash-Lite (₹0.10 per 1M input tokens) parses free-text patient replies like 'haan aaungi' into confirm/cancel intents"
+    },
+    {
+     "name": "Cursor",
+     "why": "Free tier for iterating on the dashboard UI while Claude Code handles the backend"
+    }
+   ],
+   "mvp_features": [
+    "WhatsApp reminder + deposit flow: bot sends appointment reminder 24h and 2h before with a Razorpay payment link; on payment, appointment status flips to 'deposit paid' in the clinic dashboard",
+    "Clinic dashboard: one screen listing today's/tomorrow's appointments with reminder-sent, reply and deposit-paid status, plus a CSV/Excel import so the clinic keeps its existing register",
+    "Reply handling: patient replies (confirm, cancel, reschedule) are parsed and shown in the dashboard, with auto-cancel releasing the slot back to the list"
+   ],
+   "tool_costs": [
+    {
+     "tool": "Claude",
+     "plan": "Pro",
+     "monthly_cost": 1900.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing ($20/month, converted to rupees)"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Plus",
+     "monthly_cost": 1900.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/ ($20/month, converted to rupees)"
+    },
+    {
+     "tool": "Gemini API",
+     "plan": "Gemini 2.5 Flash-Lite",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "$0.10 per 1M input tokens, $0.40 per 1M output. Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Cursor",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.cursor.com/pricing"
+    },
+    {
+     "tool": "Next.js",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/vercel/next.js"
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Pro",
+     "monthly_cost": 2374.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://supabase.com/pricing ($25/month, converted to rupees)"
+    },
+    {
+     "tool": "Cloudflare Pages",
+     "plan": "Workers Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.cloudflare.com/plans/developer-platform/"
+    },
+    {
+     "tool": "n8n",
+     "plan": "Community (self-hosted)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://n8n.io/pricing/"
+    },
+    {
+     "tool": "WhatsApp Business Cloud API",
+     "plan": "Pay per message (~₹0.115 utility)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "India: about Rs 0.86 per marketing message, Rs 0.115 per utility message (third-party copies of Meta's rate card). Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Domain",
+     "plan": "in domain ₹75/mo",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Business Base",
+     "monthly_cost": 99.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    }
+   ],
+   "mvp_build_cost": 0.0,
+   "first_10_steps": [
+    "Create a Meta for Developers app and generate a WhatsApp Business Cloud API token; send a test template message to your own number to verify the pipeline",
+    "Run `npx create-next-app@latest clinic-dashboard --ts --tailwind` and scaffold the Supabase schema: clinics, patients, appointments, reminders, deposits tables with RLS per clinic_id",
+    "Register a WhatsApp message template 'appointment_reminder' with Hindi + English variants containing {{1}} date/time and {{2}} payment link; get Meta approval (allow 1-3 days)",
+    "Build the Razorpay payment-link creation endpoint (₹500 deposit, UPI preferred) and the webhook that marks appointment.deposit_paid = true in Supabase",
+    "Set up n8n (self-hosted on a ₹500/mo Oracle or Hetzner VPS or free tier) with cron jobs that fire 24h and 2h before each appointment's start time",
+    "Implement the inbound WhatsApp webhook: match the patient's phone number, parse confirm/cancel with Gemini 2.5 Flash-Lite, update appointment status",
+    "Build the single dashboard screen: today/tomorrow table with columns Patient, Time, Reminder sent, Reply, Deposit paid; add CSV import for the clinic's existing register",
+    "Sign up the first clinic on Razorpay Subscriptions (monthly plan you set) and onboard by importing their next 2 weeks of appointments from their register",
+    "Run a live pilot with 1 clinic for 14 days: send real reminders, collect real deposits, log no-show count before vs after in a Notion tracker",
+    "Write a 1-page onboarding doc in Hindi + English and a 60-second screen recording (Claude Code + ffmpeg + Whisper captions) to send to the next 9 clinics in Jaipur"
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Starter — single chair",
+     "monthly_price": 1499.0,
+     "billing": "monthly",
+     "features": [
+      "Up to 60 appointments/month",
+      "WhatsApp reminders at 24h and 2h",
+      "₹500 deposit payment links (Razorpay)",
+      "Reply tracking dashboard",
+      "CSV import of clinic register"
+     ]
+    },
+    {
+     "name": "Growth — two dentists",
+     "monthly_price": 2499.0,
+     "billing": "monthly",
+     "features": [
+      "Up to 200 appointments/month",
+      "Everything in Starter",
+      "Auto-cancel releases no-show slots",
+      "Hindi + English message templates",
+      "Priority WhatsApp support"
+     ]
+    },
+    {
+     "name": "Setup & onboarding",
+     "monthly_price": 999.0,
+     "billing": "one_time",
+     "features": [
+      "One-time account setup",
+      "Register import of next 2 weeks of appointments",
+      "60-second Hindi onboarding recording",
+      "WhatsApp template configuration"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 1499.0,
+   "delivery_cost_per_customer": 574.0,
+   "burn_line_items": [
+    {
+     "item": "Claude Pro",
+     "monthly_cost": 1900.0
+    },
+    {
+     "item": "ChatGPT Plus",
+     "monthly_cost": 1900.0
+    },
+    {
+     "item": "Supabase Pro",
+     "monthly_cost": 2374.0
+    },
+    {
+     "item": "Domain (.in)",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "Google Workspace Business Base",
+     "monthly_cost": 99.0
+    },
+    {
+     "item": "n8n self-hosted VPS (Oracle/Hetzner)",
+     "monthly_cost": 500.0
+    },
+    {
+     "item": "WhatsApp Cloud API messages (~2,600 utility msgs)",
+     "monthly_cost": 300.0
+    },
+    {
+     "item": "Gemini API usage",
+     "monthly_cost": 100.0
+    },
+    {
+     "item": "Marketing budget (Jaipur clinic outreach: print flyers, Google Business Profile, 2 clinic visits/week)",
+     "monthly_cost": 4000.0
+    }
+   ],
+   "monthly_burn": 11248.0,
+   "marketing_budget": 4000.0,
+   "starting_capital": 50000.0,
+   "external_funding": 0.0,
+   "runway_months": 4.4,
+   "break_even_customers": 13,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 3,
+     "mrr": 4497.0,
+     "notes": "1 live pilot clinic + 2 signed from walk-in Jaipur clinic visits; revenue starts month 1 via Razorpay Subscriptions"
+    },
+    {
+     "day": 60,
+     "paying_customers": 7,
+     "mrr": 10493.0,
+     "notes": "Pilot clinic converts to paid after 14-day free run; 60-second Hindi onboarding video sent to next 9 clinics in Jaipur"
+    },
+    {
+     "day": 90,
+     "paying_customers": 12,
+     "mrr": 17988.0,
+     "notes": "Break-even crossed at 11 customers; all 12 on Starter tier, avg blended with occasional Growth upgrades"
+    }
+   ],
+   "key_assumptions": [
+    "Solo Jaipur dental clinics will pay ₹1,499/month flat because it costs them ₹15,000-₹40,000/month in no-shows and unpaid deposits — willingness-to-pay assumption, unvalidated until Day 30 pilot closes",
+    "WhatsApp utility reminder messages bill at ₹0.115 each; ~2,600 sends/month at 12 clinics ≈ ₹300/month",
+    "Delivery cost per customer = ₹100 WhatsApp + ₹20 Gemini + ₹54 Razorpay 2% fee on ₹1,499 + ₹400 founder time/travel amortized across onboarding visits and monthly support (in-person clinic visit, register import, template setup)",
+    "Founder puts in ₹50,000 of own money; no external funding; monthly burn capped at ₹11,248 (under ₹30,000)"
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Walk-in clinic visits across Jaipur",
+     "tactic": "Every weekday 10am-1pm and 4pm-7pm, founder physically visits 15-20 dental clinics in Jaipur (Malviya Nagar, Vaishali Nagar, C-Scheme, Raja Park, Jagatpura) carrying a phone showing a live WhatsApp reminder + Razorpay ₹500 deposit link demo; leaves a printed one-pager with QR to WhatsApp the demo number. 60-80 clinics/month walked, targeting 2 paying signups/month.",
+     "monthly_spend": 2500.0,
+     "new_customers_per_month": 2,
+     "cac": 1250.0
+    },
+    {
+     "name": "WhatsApp Business DMs to clinic owners from Jaipur dental directories",
+     "tactic": "Pull clinic WhatsApp numbers from Google Maps listings and Justdial for 'dental clinic Jaipur' (400+ results), then send 25 DMs/day on WhatsApp Business with the 3-line cold message + a 60-second Hindi screen recording of the reminder firing. Follow up once on day 3. 500 DMs/month targeting 2 signups/month.",
+     "monthly_spend": 1500.0,
+     "new_customers_per_month": 2,
+     "cac": 750.0
+    }
+   ],
+   "first_10_customers": [
+    "Week 1: Build a demo WhatsApp number that sends a real 24h reminder and a real ₹500 Razorpay payment link. Walk into 15 clinics in Malviya Nagar and Vaishali Nagar, Jaipur, between 4pm-7pm (when the receptionist is free), demo it on the founder's phone in 90 seconds, and ask for a 14-day free pilot on their next 10 appointments.",
+    "Week 1-2: Offer the first 2 pilot clinics the ₹999 setup fee waived if they let the founder import their next 2 weeks of appointments from their paper register on the spot — the import is the hook that makes the tool stick.",
+    "Week 2: Get the pilot clinic's front desk to send one WhatsApp voice note (in Hindi) to 5 other clinic receptionists they know from the local dental supply shop — ask the dental supplies vendor in Jaipur for the intro list of 20 solo clinics they deliver to.",
+    "Week 2-3: Convert pilot clinic 1 to paid ₹1,499 Starter by showing their actual reply-tracking dashboard: X reminders sent, Y confirmed, Z deposits collected. Record this as a 60-second screen recording (no patient names) and send it to the next 15 cold DMs.",
+    "Week 3: Walk into 15 more clinics in C-Scheme, Raja Park and Jagatpura with the recording + the live demo. Ask each receptionist the single question: 'Last Tuesday, how many chairs sat empty?' — then show the auto-cancel slot release.",
+    "Week 4: Close clinics 3-10 by offering the ₹999 setup free if they pay ₹1,499 for month 1 before the founder leaves the clinic — collect via Razorpay Subscriptions link on the spot, no invoice follow-up."
+   ],
+   "cold_message": "Namaste, main Jaipur mein dental clinics ke liye WhatsApp reminder + ₹500 deposit link tool bana raha hoon — aapki receptionist ko 24 ghante aur 2 ghante pehle patient ko khud message karna nahi padega. Ek 60-second Hindi demo bhej doon? Agar aapke next 10 appointments pe 14 din free chalao, uske baad decide kar lena — koi advance nahi.",
+   "objections": [
+    {
+     "objection": "Hum toh WhatsApp pe khud message kar lete hain, receptionist sab manage kar leti hai — tool ki zaroorat nahi.",
+     "response": "Aapki receptionist 45 minute roz calling mein lagati hai aur phir bhi 2 ghante pehle wala reminder miss ho jata hai. Humara bot 24h aur 2h pe khud fire karta hai plus ₹500 Razorpay deposit link — 14 din free, aapka register jaisa chal raha hai waisa hi, kuch nahi badalna."
+    },
+    {
+     "objection": "Deposit lena toh humare patients mana kar dete hain, UPI link bhejne se relationship kharab hoti hai.",
+     "response": "Hum ₹500 booking deposit link sirf confirmation ke saath bhejte hain Hindi template mein jo aap approve karenge — aur 14 din ke pilot mein aap khud dekhenge kitne patients ne link se pay kiya. Agar deposit collection zero raha toh aap pay hi mat karna, koi charge nahi."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan stays faithful to the WhatsApp reminder + deposit idea for solo Jaipur dental clinics, with coherent strategy, build, economics and growth sections all pointing at the same customer and the same ₹1,499/month offer. Constraints are respected: ₹50,000 bootstrapped capital, MVP under ₹40,000, burn ₹11,248 under ₹30,000, all figures in INR, revenue in month 1. The main soft spots are the unvalidated willingness-to-pay assumption and whether a solo founder can walk 60-80 clinics a month while also shipping the MVP.",
+  "biggest_risk": "Solo dental clinic owners in Jaipur may not pay ₹1,499/month for a reminder tool they believe their receptionist already handles with free WhatsApp — the 14-day free pilot could convert poorly and the plan has no fallback pricing or pivot if willingness-to-pay comes in far below ₹1,499.",
+  "adherence_score": 0.92
+ },
+ "seconds": 133.4,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1123,
+   "out": 574,
+   "thinking": 0,
+   "total": 1697
+  },
+  {
+   "role": "strategist",
+   "in": 1788,
+   "out": 573,
+   "thinking": 0,
+   "total": 2361
+  },
+  {
+   "role": "builder",
+   "in": 3248,
+   "out": 1091,
+   "thinking": 0,
+   "total": 4339
+  },
+  {
+   "role": "economics",
+   "in": 3760,
+   "out": 759,
+   "thinking": 0,
+   "total": 4519
+  },
+  {
+   "role": "growth",
+   "in": 2053,
+   "out": 1027,
+   "thinking": 0,
+   "total": 3080
+  },
+  {
+   "role": "critic",
+   "in": 4936,
+   "out": 406,
+   "thinking": 0,
+   "total": 5342
+  },
+  {
+   "role": "economics",
+   "in": 4666,
+   "out": 808,
+   "thinking": 0,
+   "total": 5474
+  },
+  {
+   "role": "growth",
+   "in": 3241,
+   "out": 1140,
+   "thinking": 0,
+   "total": 4381
+  },
+  {
+   "role": "critic",
+   "in": 4949,
+   "out": 453,
+   "thinking": 0,
+   "total": 5402
+  }
+ ],
+ "tokens": {
+  "in": 29764,
+  "out": 6831,
+  "thinking": 0,
+  "total": 36595
+ }
+}

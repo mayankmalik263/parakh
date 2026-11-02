@@ -1,0 +1,434 @@
+{
+ "id": "jee-planner",
+ "kind": "software",
+ "idea": "An AI study planner app for JEE aspirants that adjusts the timetable after every mock test",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 7,
+  "math_warnings": 0,
+  "tools_costed": 12,
+  "tools_in_catalog": 10,
+  "paid_prices_right": 3,
+  "paid_prices": 3,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 13754
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "A Class 11 or 12 JEE aspirant in India finishes a mock test on a Sunday evening, sees the score and topic-wise errors, and has no idea how to rewrite next week's timetable around them — so the plan they made on Monday collapses by Wednesday and the same weak chapters stay unprepared until the next test.",
+   "target_customer": "Parents of Class 11 and 12 JEE aspirants in India, household income roughly ₹5-25 lakh per year, who already pay for coaching and buy anything that visibly disciplines their child's study hours — they subscribe monthly because they can see the regenerated timetable in their child's app each week.",
+   "mission": "Give every JEE aspirant a timetable that rewrites itself from their latest mock test so weak chapters get the hours they actually need.",
+   "competitors": [
+    {
+     "name": "Allen, Aakash and FIITJEE in-house study planners and DPP schedules",
+     "differentiator": "Their plans are fixed batch-wide and updated by a teacher weeks apart; ours regenerates per student within minutes of every mock test at a fraction of a coaching fee."
+    },
+    {
+     "name": "Self-made timetables in Google Sheets or a paper diary",
+     "differentiator": "A static sheet cannot re-allocate hours from a test score; we do that automatically, which is the part students abandon first."
+    },
+    {
+     "name": "Generic AI chat assistants like ChatGPT asked to 'make a study plan'",
+     "differentiator": "A chat reply is one-off text with no saved state, no test-score input and no next-week diff — we persist the plan and update it after each test."
+    }
+   ],
+   "scope_cuts": [
+    "Skipping a built-in mock test engine or question bank — we ingest scores the student already gets from their coaching's tests, which keeps us out of content licensing and lets us ship in 3-4 weeks.",
+    "Skipping a separate parent dashboard or WhatsApp parent alerts in v1 — the parent pays for the visible weekly timetable in the student's app; a second portal doubles build surface for a founder working 15 hours a week.",
+    "Skipping Android/iOS native apps and a desktop client at launch — one mobile-web app the student opens after every test is enough to prove the re-planning loop before any platform work."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Next.js",
+     "why": "App Router + Tailwind for a mobile-web timetable app the student opens after every mock; ships fast, no native app needed"
+    },
+    {
+     "name": "Supabase",
+     "why": "Postgres + auth + row-level security to store each student's test scores and regenerated weekly timetable"
+    },
+    {
+     "name": "Netlify",
+     "why": "Free Personal tier hosts the Next.js app; Vercel Hobby is non-commercial so Netlify avoids a paid plan at launch"
+    },
+    {
+     "name": "Razorpay",
+     "why": "UPI + Subscriptions API for auto-renewing ₹ monthly parent subscriptions via UPI e-mandate, 2% + GST per payment"
+    },
+    {
+     "name": "Resend",
+     "why": "Free tier sends the weekly regenerated-timetable email to the parent's inbox so they see what they paid for"
+    },
+    {
+     "name": "Cloudflare Registrar",
+     "why": "Domain at cost for the app's web address"
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Claude Pro writes the re-planning prompt logic, timetable diff copy and landing page copy; Claude Code builds the Next.js screens"
+    },
+    {
+     "name": "BharatCode",
+     "why": "Student-verified free 10M tokens/day of Qwen 3.8 27B API powers the score→timetable regeneration server-side"
+    },
+    {
+     "name": "GitHub Copilot",
+     "why": "Copilot Student free tier pairs on the Next.js + Supabase code across nights-and-weekends sessions"
+    }
+   ],
+   "mvp_features": [
+    "1. Mock-test score intake + auto-regenerated weekly timetable: student enters topic-wise scores, the app re-allocates hours to weak chapters and shows the next-week plan diff (the moment the parent pays)",
+    "2. Saved plan state with week-over-week history so the timetable persists instead of being a one-off chat reply",
+    "3. Razorpay Subscription checkout (UPI e-mandate auto-debit) gating week 2+ regeneration, with the regenerated timetable emailed to the parent via Resend"
+   ],
+   "tool_costs": [
+    {
+     "tool": "Claude",
+     "plan": "Pro",
+     "monthly_cost": 1900.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing ($20/month, converted to rupees)"
+    },
+    {
+     "tool": "BharatCode",
+     "plan": "Student (verified college email)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://bharatcode.ai/account"
+    },
+    {
+     "tool": "GitHub Copilot",
+     "plan": "Student",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/features/copilot/plans"
+    },
+    {
+     "tool": "Next.js",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/vercel/next.js"
+    },
+    {
+     "tool": "Tailwind",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": false,
+     "price_note": "Not in Parakh's checked price list. Confirm the price before you pay."
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://supabase.com/pricing"
+    },
+    {
+     "tool": "Netlify",
+     "plan": "Personal",
+     "monthly_cost": 855.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.netlify.com/pricing/ ($9/month, converted to rupees)"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Resend",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://resend.com/pricing"
+    },
+    {
+     "tool": "Domain",
+     "plan": "in domain",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    },
+    {
+     "tool": "PostHog",
+     "plan": "Free tier",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://posthog.com/pricing"
+    },
+    {
+     "tool": "Cloudflare Registrar",
+     "plan": "not stated",
+     "monthly_cost": 0.0,
+     "verified": false,
+     "price_note": "Not in Parakh's checked price list. Confirm the price before you pay."
+    }
+   ],
+   "mvp_build_cost": 930.0,
+   "first_10_steps": [
+    "Run `npx create-next-app@latest jee-replan --ts --tailwind --app` and push it to a new GitHub repo",
+    "Create a Supabase project and run SQL for `students`, `mock_tests`, `test_topic_scores`, `weekly_plans` tables with row-level security on user_id",
+    "Sign up for the GitHub Student Developer Pack and enable GitHub Copilot Student, then verify a college email on BharatCode for the free API key",
+    "Build the score-intake screen: a form for test name, date, total score, and per-topic marks for Physics/Chemistry/Maths chapters",
+    "Write the regeneration prompt in Claude and call BharatCode's Qwen endpoint from a Next.js route handler to return a JSON weekly timetable with hours per chapter",
+    "Render the regenerated timetable as a 7-day grid with a 'changed from last week' diff highlighting hours added to weak chapters",
+    "Deploy to Netlify free tier with `netlify deploy` and connect the `.in` domain from Cloudflare Registrar",
+    "Activate Razorpay Subscriptions: create a recurring ₹299 plan with UPI e-mandate auto-debit, and gate week 2+ regeneration behind an active `subscription_status = 'active'` check (fall back to a manually re-sent Razorpay payment link each month if e-mandate fails, blocking regeneration when no active subscription exists)",
+    "Wire Resend to email the regenerated timetable to the parent's address each Sunday after a test is submitted",
+    "Post the live link in 5 class/hostel WhatsApp groups and DM 10 batchmates' parents with a 1-week free trial of the regenerated timetable"
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Free first week",
+     "monthly_price": 0.0,
+     "billing": "monthly",
+     "features": [
+      "One mock-test score intake",
+      "One regenerated weekly timetable with diff",
+      "No parent email"
+     ]
+    },
+    {
+     "name": "Parent Monthly",
+     "monthly_price": 299.0,
+     "billing": "monthly",
+     "features": [
+      "Unlimited weekly regenerations after each mock test",
+      "Saved plan history week-over-week",
+      "Weekly regenerated timetable emailed to parent via Resend",
+      "UPI via Razorpay"
+     ]
+    },
+    {
+     "name": "Term Pass 3 months",
+     "monthly_price": 799.0,
+     "billing": "one_time",
+     "features": [
+      "3 months of Parent Monthly",
+      "One-time UPI payment",
+      "Saves ₹98 vs monthly"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 299.0,
+   "delivery_cost_per_customer": 12.0,
+   "burn_line_items": [
+    {
+     "item": "Claude Pro",
+     "monthly_cost": 1900.0
+    },
+    {
+     "item": "BharatCode (student free tier)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "GitHub Copilot Student",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Next.js + Tailwind (open source)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Supabase Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Netlify Personal",
+     "monthly_cost": 855.0
+    },
+    {
+     "item": "Resend Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": ".in domain (Cloudflare Registrar)",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "PostHog Free tier",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay (2% + GST per payment, no fixed fee)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 1500.0
+    }
+   ],
+   "monthly_burn": 4330.0,
+   "marketing_budget": 1500.0,
+   "starting_capital": 20000.0,
+   "external_funding": 0.0,
+   "runway_months": 4.6,
+   "break_even_customers": 16,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 1495.0,
+     "notes": "10 WhatsApp groups + 10 parent DMs from step 10; free week converts ~5 parents at ₹299"
+    },
+    {
+     "day": 60,
+     "paying_customers": 15,
+     "mrr": 4485.0,
+     "notes": "Break-even month; 2 class WhatsApp groups + 1 coaching-institute WhatsApp share each week"
+    },
+    {
+     "day": 90,
+     "paying_customers": 30,
+     "mrr": 8970.0,
+     "notes": "Term Pass buyers blended in; ₹799/3 months counts as ~266/month per buyer"
+    }
+   ],
+   "key_assumptions": [
+    "Willingness to pay ₹299/month rests on the assumption that parents already pay ₹1,000-3,000/month for coaching and will pay roughly 10% of that for a visible weekly timetable in their child's app.",
+    "Delivery cost of ₹12/customer/month is an assumption: BharatCode Qwen regeneration tokens are free on the student tier, plus Resend free-tier emails and Razorpay 2% + GST on ₹299 (~₹7); it rises if regeneration volume exceeds free tiers.",
+    "Blended avg revenue of ₹299 assumes ~1 in 6 buyers picks the ₹799 term pass instead of ₹299 monthly.",
+    "Free trials and the free first week reduce revenue and are not counted in burn or marketing."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Class & hostel WhatsApp groups (student-to-parent loop)",
+     "tactic": "Join 10 JEE Class 11/12 WhatsApp groups (own coaching batch, seniors/juniors, hostel floor, 2 parent-teacher groups). Post 1 message per group per week: free-week app link + one sample regenerated timetable screenshot. Then DM the 2 most engaged parents in each group personally with the cold message. Volume: 10 group posts + 20 parent DMs per week = 40 group posts + 80 parent DMs per month.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Coaching parent WhatsApp communities + YouTube Shorts (parent-facing)",
+     "tactic": "Get added to 5 JEE coaching parent WhatsApp groups (ask your own coaching's parent coordinator, or a batchmate's parent to introduce you). Post 1 message per group per week with the free-week app link. In parallel, post 1 YouTube Short/day (30/month, 20-sec screen recording: mock score in, timetable regenerated, weak-chapter diff) titled in Hinglish for parents, and reply to every comment with the free-week link. Rs 0 spend on CapCut free + phone screen record.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 2,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Send the cold message to 20 parents already in your coaching's parent WhatsApp group and your own relatives/neighbours with a Class 11/12 child — give them the free-week app link and ask them to have their child enter one real mock score.",
+    "Day 4-7: In your own JEE batch WhatsApp group, post 1 message: 'enter your last mock score in this app, it rewrites your week's timetable free for 7 days' — ask each batchmate to forward the link to their parent.",
+    "Day 8-14: Get added to 5 coaching parent WhatsApp groups (via your coaching's parent coordinator or a batchmate's parent) and post 1 message per group per week with the free-week link; DM the 2 parents who react or reply in each group.",
+    "Day 15-21: Call the 6 parents who used the free week (voice note or 2-min call): ask what stopped them subscribing, fix that one thing, then send a Razorpay payment link at Rs 299.",
+    "Day 22-30: Ask every paying parent to forward the Razorpay link to 1 parent in their coaching's parent group; give the referrer's child an extra regenerated timetable week (no cash discount). Target: 5 paying by Day 30."
+   ],
+   "cold_message": "Namaste, I'm a Class 12 student building a planner that rewrites your child's weekly timetable from their latest mock test score — weak chapters automatically get more hours. Here's a free-week link: have your child enter one real mock score and the app regenerates the full week itself, no payment needed. If it looks useful, it's Rs 299/month and the new timetable lands in your inbox every week.",
+   "objections": [
+    {
+     "objection": "Coaching already gives my child a study plan, why pay Rs 299 more?",
+     "response": "Coaching plans are batch-wide and updated weeks apart. Ours regenerates within minutes of every mock test, per your child's own topic-wise errors. Take the free-week link, have them enter one real score, and compare the regenerated timetable before paying anything."
+    },
+    {
+     "objection": "Rs 299/month is just another subscription my child won't use.",
+     "response": "You see the regenerated timetable in your inbox every week, so you'll know it's being used. Cancel any month — no lock-in. Start with the free first week, pay only after you've seen 1 real regenerated timetable."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan stays faithful to the AI study planner for JEE aspirants with mock-test-driven timetable regeneration, and it fits a bootstrapped student founder with a savings-sized budget, free tiers and a campus-first WhatsApp launch. Pricing at ₹299/month is realistic for Indian parents already paying coaching fees, and the 3-4 week ship timeline with a 6-week first-paying-customer goal is achievable at 15 hours/week. The main weaknesses are in the growth playbook's volume assumptions and a couple of unverified tool choices, but nothing breaks the hard rules.",
+  "biggest_risk": "Conversion from free-week trials to paid parents stalls because the parent never actually sees their child use the app, so the weekly emailed timetable never lands or is ignored — killing the one value signal the ₹299 subscription rests on.",
+  "adherence_score": 0.9
+ },
+ "seconds": 185.4,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1277,
+   "out": 467,
+   "thinking": 0,
+   "total": 1744
+  },
+  {
+   "role": "strategist",
+   "in": 1874,
+   "out": 463,
+   "thinking": 0,
+   "total": 2337
+  },
+  {
+   "role": "builder",
+   "in": 3295,
+   "out": 872,
+   "thinking": 0,
+   "total": 4167
+  },
+  {
+   "role": "economics",
+   "in": 3511,
+   "out": 678,
+   "thinking": 0,
+   "total": 4189
+  },
+  {
+   "role": "growth",
+   "in": 2049,
+   "out": 773,
+   "thinking": 0,
+   "total": 2822
+  },
+  {
+   "role": "critic",
+   "in": 4378,
+   "out": 491,
+   "thinking": 0,
+   "total": 4869
+  },
+  {
+   "role": "builder",
+   "in": 4720,
+   "out": 953,
+   "thinking": 0,
+   "total": 5673
+  },
+  {
+   "role": "economics",
+   "in": 4336,
+   "out": 724,
+   "thinking": 0,
+   "total": 5060
+  },
+  {
+   "role": "growth",
+   "in": 3071,
+   "out": 843,
+   "thinking": 0,
+   "total": 3914
+  },
+  {
+   "role": "growth",
+   "in": 4004,
+   "out": 834,
+   "thinking": 0,
+   "total": 4838
+  },
+  {
+   "role": "critic",
+   "in": 4477,
+   "out": 455,
+   "thinking": 0,
+   "total": 4932
+  }
+ ],
+ "tokens": {
+  "in": 36992,
+  "out": 7553,
+  "thinking": 0,
+  "total": 44545
+ }
+}

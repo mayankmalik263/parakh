@@ -1,0 +1,386 @@
+{
+ "id": "resume-review",
+ "kind": "service",
+ "idea": "Resume and LinkedIn review for final-year engineering students before placements",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 5,
+  "math_warnings": 0,
+  "tools_costed": 12,
+  "tools_in_catalog": 12,
+  "paid_prices_right": 3,
+  "paid_prices": 3,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 14728
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "Final-year engineering students in India panic 2 weeks before campus placement drives when they realize their resume lacks ATS keywords and their LinkedIn profile looks inactive, but they cannot afford ₹5,000+ career coaches and don't know which specific lines to fix to pass the HR screen.",
+   "target_customer": "Final-year B.Tech/M.Tech students at Tier-2 and Tier-3 engineering colleges in India who are actively applying to 10+ companies via campus portals and LinkedIn, and who have already spent money on mock tests or interview prep, showing willingness to pay for placement-specific outcomes.",
+   "mission": "We provide a 48-hour, line-by-line resume and LinkedIn audit for final-year engineering students, delivered via WhatsApp, to ensure their profile passes the initial HR screen before the placement drive begins.",
+   "competitors": [
+    {
+     "name": "Local career coaching centers in Tier-2 cities",
+     "differentiator": "They charge ₹3,000-₹10,000 for generic 2-hour workshops; we offer a personalized, asynchronous 48-hour review for a fraction of that cost without requiring travel to a physical center."
+    },
+    {
+     "name": "Freelance resume writers on Fiverr/Upwork",
+     "differentiator": "They are global, slow (3-5 days), and often lack context on Indian campus placement ATS quirks; we are local, fast (48 hours), and specifically tuned to Indian engineering placement keywords and HR expectations."
+    },
+    {
+     "name": "AI resume builder tools (e.g., Teal, Rezi)",
+     "differentiator": "They are self-serve and require the student to interpret generic advice; we provide a human-in-the-loop, done-for-you review that tells the student exactly what to change and why, removing the cognitive load during a high-stress period."
+    }
+   ],
+   "scope_cuts": [
+    "No custom web app or SaaS dashboard: We deliver reviews via WhatsApp and Google Docs to avoid engineering overhead, allowing the founder to focus on the service quality and student acquisition rather than building and maintaining software infrastructure.",
+    "No LinkedIn content creation or ghostwriting: We only review and optimize the existing profile structure and keywords; we do not post content for the student, which keeps the service scope tight and the turnaround time under 48 hours.",
+    "No interview preparation or mock interviews: We strictly limit the offering to resume and LinkedIn profile optimization; adding interview prep would dilute the brand promise, increase delivery time, and require the founder to become an interview coach, which is outside the core 'profile audit' value proposition."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "WhatsApp Business",
+     "why": "Delivery channel for the 48-hour review — free app, students already live there, quick replies and catalogue for the offer"
+    },
+    {
+     "name": "Google Docs",
+     "why": "Line-by-line resume edits with Suggesting mode and comments; free with a Google account, shared via WhatsApp link"
+    },
+    {
+     "name": "Google Drive",
+     "why": "Store client resumes, LinkedIn screenshots and finished audit docs in one folder per student; free"
+    },
+    {
+     "name": "Carrd",
+     "why": "One-page site with the offer, sample audit and Razorpay link — Pro Lite at ₹71/mo is enough"
+    },
+    {
+     "name": "Razorpay",
+     "why": "UPI + payment links for one-time ₹ fees, standard 2% + GST, no setup fee"
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Track leads, paid pilots, turnaround time and testimonials from day one; free"
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Drafts the line-by-line audit: ATS keyword gaps, bullet rewrites, LinkedIn headline/about fixes — founder reviews and sends, cutting per-client time from hours to ~30 minutes"
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Second opinion on keyword matching against a specific job description the student is applying to; free tier covers volume"
+    },
+    {
+     "name": "Gemini",
+     "why": "Indian university students get Google AI Plus free for a year (redeem by 31 Dec 2026) — use it inside Google Docs for in-place resume edits"
+    }
+   ],
+   "mvp_features": [
+    "Starter Resume Audit (₹ one-time): ATS keyword scan against 1 target role, line-by-line rewrite of every bullet with comments, one-page Google Doc delivered in 48 hours via WhatsApp",
+    "Complete Placement Pack (₹ one-time): everything in Starter plus full LinkedIn profile audit (headline, about, experience, skills, featured) with rewritten copy, plus a 1-page 'fix list' checklist ordered by impact",
+    "Discounted Pilot (first 5 clients): same Complete Placement Pack at a launch price in exchange for a testimonial and permission to show an anonymised before/after sample on the Carrd page"
+   ],
+   "tool_costs": [
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free with Google account",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Carrd",
+     "plan": "Pro Lite",
+     "monthly_cost": 71.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://carrd.com/pro ($9/year, converted to rupees)"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Pro",
+     "monthly_cost": 1900.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing ($20/month, converted to rupees)"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "Gemini",
+     "plan": "Google AI Plus (free for Indian university students, 1 year)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Domain",
+     "plan": "in domain",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/",
+     "added_by_code": true
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/",
+     "added_by_code": true
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/",
+     "added_by_code": true
+    }
+   ],
+   "mvp_build_cost": 4500.0,
+   "first_10_steps": [
+    "Pick one niche tonight: final-year students at 2 Tier-2/Tier-3 engineering colleges whose placement drive starts in the next 6 weeks — write the college names down in Google Sheets",
+    "Open a Google Drive folder and build 1 anonymised sample audit: take a weak engineering resume, run it through Claude, and produce a before/after Google Doc with 15 line-level fixes and a LinkedIn headline rewrite",
+    "Build the Carrd one-page site in one sitting: offer, 48-hour promise, sample before/after, 3 WhatsApp contact buttons, Razorpay payment link",
+    "Create the Razorpay payment link for the Complete Placement Pack and test it with a ₹1 UPI payment to yourself",
+    "Write the 3-message WhatsApp Business sequence: (1) free 3-line resume verdict, (2) offer + link, (3) 48-hour delivery promise + FAQ",
+    "Recruit 5 discounted pilots: DM 30 batchmates and 2 college WhatsApp groups with the free 3-line verdict hook; first 5 get the launch price in exchange for a testimonial",
+    "Set up a Google Sheet tracker with columns: name, college, paid ₹, received date, delivered date, testimonial status — log every lead",
+    "Record a 45-second Instagram Reel on a phone showing a real before/after resume line (blurred names) using VN Video Editor, post with WhatsApp link in bio",
+    "Ask 2 batchmates to each refer 1 paying student this week in exchange for a ₹ referral cut — note their names in the tracker",
+    "Deliver the first pilot within 48 hours of payment, ask for a 3-line WhatsApp testimonial, and paste it onto the Carrd page the same day"
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Starter Resume Audit",
+     "monthly_price": 499.0,
+     "billing": "one_time",
+     "features": [
+      "ATS keyword scan against 1 target role",
+      "Line-by-line rewrite of every bullet with comments",
+      "One-page Google Doc delivered in 48 hours via WhatsApp"
+     ]
+    },
+    {
+     "name": "Complete Placement Pack",
+     "monthly_price": 999.0,
+     "billing": "one_time",
+     "features": [
+      "Everything in Starter Resume Audit",
+      "Full LinkedIn profile audit (headline, about, experience, skills, featured)",
+      "Rewritten LinkedIn copy",
+      "1-page 'fix list' checklist ordered by impact"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 999.0,
+   "delivery_cost_per_customer": 100.0,
+   "burn_line_items": [
+    {
+     "item": "Carrd Pro Lite",
+     "monthly_cost": 71.0
+    },
+    {
+     "item": "Domain (.in)",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "Claude Pro",
+     "monthly_cost": 1900.0
+    },
+    {
+     "item": "Marketing Budget",
+     "monthly_cost": 2000.0
+    }
+   ],
+   "monthly_burn": 4046.0,
+   "marketing_budget": 2000.0,
+   "starting_capital": 10000.0,
+   "external_funding": 0.0,
+   "runway_months": 2.5,
+   "break_even_customers": 5,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 4995.0,
+     "notes": "5 discounted pilots at 999 INR each. Break-even reached (5 customers > 4.05 threshold)."
+    },
+    {
+     "day": 60,
+     "paying_customers": 8,
+     "mrr": 7992.0,
+     "notes": "8 total customers. 3 new at full price, 5 pilots retained. Capacity: 8 clients x ~1.5h = 12h/week, fits within 15h/week."
+    },
+    {
+     "day": 90,
+     "paying_customers": 11,
+     "mrr": 10989.0,
+     "notes": "11 total customers. 3 new at full price, 8 existing retained. Capacity: 11 clients x ~1.5h = ~16.5h/week, at the ceiling of the 15h/week budget, so 11 is the hard cap without hiring."
+    }
+   ],
+   "key_assumptions": [
+    "Students will pay 999 INR one-time for a 48-hour human-in-the-loop review, as it is significantly cheaper than the 3000-10000 INR local career coaching centers.",
+    "Delivery cost per customer (100 INR) is cash-only (data/phone/Razorpay fee buffer); the founder's ~1.5 hours per client is unpaid opportunity cost, which is why targets are capped at 11 customers by Day 90 to fit the 15 hours/week constraint.",
+    "The 48-hour turnaround and WhatsApp delivery format will convert leads at a rate sufficient to reach 5 paying customers within the first 30 days of launch.",
+    "The 2% + GST Razorpay fee is absorbed into the delivery cost and does not require a separate line item in the monthly burn calculation."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Campus WhatsApp groups + hostel/class broadcast (primary channel)",
+     "tactic": "Join 30 final-year placement WhatsApp groups across Tier-2/Tier-3 colleges (class groups, T&P cell groups, hostel batches). Post 1 message/day in each group at 9 PM: a free 3-line ATS sample review of a public resume with the hook 'DM me your resume, free 3-line ATS scan in 24h'. Reply personally to every 'how' within 10 minutes. Run a refer-a-batchmate loop: pay ₹999, get ₹200 UPI back for every batchmate who pays (reward, not spend). Target 15 personal WhatsApp conversations/day, 4-5 paid in the month.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Instagram Reels + small LinkedIn DM follow-up (secondary channel)",
+     "tactic": "Post 1 Instagram Reel/day (CapCut + ChatGPT script) showing a real before/after bullet rewrite with ATS keywords hidden, caption 'Comment ATS for a free 3-line scan'. Reply to every comment/DM within 30 minutes and move the conversation to WhatsApp. Additionally DM 8 final-year students/day on LinkedIn (filter: batch 2025, Tier-2/3 colleges, 'open to work') with the 3-line cold message — capped at 8/day so it stays sustainable alongside delivery. Budget ₹2,000/month = ₹1,000 Instagram Boost on top 6 Reels + ₹1,000 Canva Pro. Target 2 paid in the month.",
+     "monthly_spend": 2000.0,
+     "new_customers_per_month": 2,
+     "cac": 1000.0
+    }
+   ],
+   "first_10_customers": [
+    "Week 1: Ask 3 batchmates in your own T&P WhatsApp group for their resume; do 3 full audits free (48h, Google Doc + WhatsApp) and ask each for a 2-line WhatsApp testimonial + permission to forward the doc. These 3 become your proof.",
+    "Week 1-2: Post the anonymised before/after of one free audit as an Instagram Reel and a LinkedIn post; reply to every comment with the free 3-line scan offer. DM 8 final-year students/day on LinkedIn with the cold message.",
+    "Week 2: Offer 5 'pilot' slots at ₹999 to the first 5 who reply, framed as 'founding price, 48h delivery, full refund if the fix list doesn't help you rewrite 5+ bullets'. Collect via Razorpay payment link or UPI.",
+    "Week 3: In every delivered Google Doc, add a last line: 'If 2 of your batchmates buy, your next refresh is free' — this is the referral loop that carries you from 5 to 10.",
+    "Week 3-4: Message 5 college T&P coordinators / placement club leads you know personally on WhatsApp; offer 1 free audit for the club to share as a 'placement prep' resource in their official group in exchange for a group post.",
+    "Week 4: Follow up personally on WhatsApp with everyone who asked 'price kya hai' but didn't pay — send the Razorpay link again with 'pilot price valid till Sunday'. 2 of your first 10 will come from this list."
+   ],
+   "cold_message": "Hi [name], saw you're final-year at [college] and applying to placements — most resumes I scan fail the ATS screen on 3-4 fixable lines (weak verbs, missing keywords like 'DSA', 'REST API'). Send me your resume and I'll reply with a free 3-line ATS scan in 24 hours, no strings. If the fixes look useful, my full 48-hour line-by-line audit is ₹999.",
+   "objections": [
+    {
+     "objection": "₹999 is too much, I can just use ChatGPT for free",
+     "response": "You can — but ChatGPT gives generic advice and won't know that TCS/Infosys screening filters look for 'REST API', 'SDLC', 'stakeholder' in your exact bullet format. My ₹999 audit is a human-checked, line-by-line rewrite against Indian campus ATS patterns, delivered in 48 hours with a fix list ordered by impact. If I don't rewrite at least 5 bullets you'd actually use, I refund the ₹999."
+    },
+    {
+     "objection": "I'll do it later, placement season is still 3 weeks away",
+     "response": "HR screens open the week drives are announced, not the week of the drive — and the top 200 resumes get shortlisted before you even hear back. Send me your resume today for a free 3-line scan; if it already passes, I'll tell you that honestly and you've lost nothing."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent, well-scoped service business that stays true to the startup idea: a 48-hour human-in-the-loop resume and LinkedIn audit for final-year Indian engineering students, delivered via WhatsApp at ₹499-₹999, which fits the bootstrapped student-founder constraints and campus-first channel. Pricing, tools and burn are realistic and the growth playbook is concrete enough to start within an hour. The main weakness is that delivery cost per customer (₹100) understates the real work — the founder's ~1.5 hours per client is the actual cost, and at 11 clients/week the plan already exceeds the 15-hour cap once free 3-line scans and DMs are counted.",
+  "biggest_risk": "Demand generation: the plan assumes the founder can convert cold WhatsApp/Instagram/LinkedIn outreach into 5 paying customers in 30 days with zero prior brand or track record, but free 3-line scans and DMs typically produce very low paid conversion in the first month, risking a stalled pipeline before any testimonial proof exists.",
+  "adherence_score": 0.92
+ },
+ "seconds": 155.6,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1301,
+   "out": 596,
+   "thinking": 0,
+   "total": 1897
+  },
+  {
+   "role": "builder",
+   "in": 2914,
+   "out": 965,
+   "thinking": 0,
+   "total": 3879
+  },
+  {
+   "role": "economics",
+   "in": 3763,
+   "out": 790,
+   "thinking": 0,
+   "total": 4553
+  },
+  {
+   "role": "growth",
+   "in": 2066,
+   "out": 988,
+   "thinking": 0,
+   "total": 3054
+  },
+  {
+   "role": "critic",
+   "in": 4682,
+   "out": 508,
+   "thinking": 0,
+   "total": 5190
+  },
+  {
+   "role": "economics",
+   "in": 4454,
+   "out": 660,
+   "thinking": 0,
+   "total": 5114
+  },
+  {
+   "role": "economics",
+   "in": 5204,
+   "out": 663,
+   "thinking": 0,
+   "total": 5867
+  },
+  {
+   "role": "growth",
+   "in": 3314,
+   "out": 1037,
+   "thinking": 0,
+   "total": 4351
+  },
+  {
+   "role": "critic",
+   "in": 4764,
+   "out": 449,
+   "thinking": 0,
+   "total": 5213
+  }
+ ],
+ "tokens": {
+  "in": 32462,
+  "out": 6656,
+  "thinking": 0,
+  "total": 39118
+ }
+}

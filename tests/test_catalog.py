@@ -44,7 +44,7 @@ def test_builder_prices_are_replaced_and_uncosted_tools_are_added():
     assert by_tool["Carrd"]["verified"] and by_tool["Carrd"]["monthly_cost"] == 127
     assert by_tool["Razorpay Payment Links"]["verified"] and "2% + GST" in by_tool["Razorpay Payment Links"]["price_note"]
     # Recommended but never costed: a catalog tool gets its free plan, an unknown one is flagged.
-    assert by_tool["Google Workspace"]["monthly_cost"] == 0 and by_tool["Google Workspace"]["verified"]
+    assert by_tool["Google Sheets"]["monthly_cost"] == 0 and by_tool["Google Sheets"]["verified"]
     assert by_tool["Canva"]["plan"] == "Free"
     assert by_tool["Notion AI Wizard"]["verified"] is False
 
@@ -73,3 +73,9 @@ def test_starting_capital_outside_the_founders_budget_is_flagged(slices, profile
     assert any("starting_capital" in f["problem"] for f in check_plan(slices, profile))
     profile["capital_range"] = [slices["economics"]["starting_capital"], None]
     assert not any("starting_capital" in f["problem"] for f in check_plan(slices, profile))
+
+
+def test_a_catalog_alias_counts_as_costed():
+    from tool_catalog import is_costed
+    costs = [{"tool": "Google Workspace", "plan": "Free", "monthly_cost": 0}]
+    assert is_costed("Google Sheets", costs, CATALOG) and not is_costed("Canva", costs, CATALOG)

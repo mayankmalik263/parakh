@@ -1,0 +1,360 @@
+{
+ "id": "campus-laundry",
+ "kind": "service",
+ "idea": "Laundry pickup and drop for students in my university hostels",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 6,
+  "math_warnings": 0,
+  "tools_costed": 7,
+  "tools_in_catalog": 7,
+  "paid_prices_right": 0,
+  "paid_prices": 0,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 12660
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "A hostel student at an Indian university runs out of clean clothes on a Sunday night before a Monday 9am class, and the dhobi or laundry shop near campus is shut, cash-only, or 3 days away — the pain hits the moment they open the wardrobe and have nothing wearable for the week ahead.",
+   "target_customer": "Hostel-resident undergraduate students at a single Indian university campus, spending ₹500-₹2,000 a month on food and convenience, who already ask batchmates on WhatsApp for laundry help and will pay to skip the queue and the walk.",
+   "mission": "We pick up, wash and return hostel students' laundry on a fixed weekly slot so they never face a Monday with no clean clothes.",
+   "competitors": [
+    {
+     "name": "Local dhobi and laundry shops near campus",
+     "differentiator": "We offer a fixed pickup/drop time slot booked on WhatsApp with UPI payment and per-kg price visibility, while they are walk-in, cash-only and give 2-3 day turnaround."
+    },
+    {
+     "name": "Hostel dhobi/washing-area service run by mess or wardens",
+     "differentiator": "We give a tracked slot with a pickup confirmation message and a fixed return deadline, while theirs is informal, first-come-first-served and unreliable during exam weeks."
+    },
+    {
+     "name": "Washing machines in hostel common area",
+     "differentiator": "We save the 60-90 minute round trip of washing, drying and folding for ₹X per kg, targeting students who value time over the near-zero machine cost."
+    }
+   ],
+   "scope_cuts": [
+    "No custom mobile app or web dashboard in v1 — the entire booking, pickup confirmation and payment flow runs on WhatsApp plus a Razorpay payment link, because a solo student founder cannot maintain two codebases on 15 hours a week.",
+    "No in-house washing infrastructure — we do not buy machines or rent a shop in the first 6 weeks; we subcontract the actual wash to an existing local laundry partner and own only the pickup, tracking and customer relationship.",
+    "No delivery beyond one hostel block or one campus — we deliberately serve only 1-2 hostel buildings initially so the pickup route fits in one evening trip, and expand only after 20 paying repeat customers in that zone."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "WhatsApp Business",
+     "why": "Primary channel for booking, pickup confirmation, and customer communication within the hostel WhatsApp groups."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Generates UPI payment links for per-kg or monthly plan billing without building a custom checkout."
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Tracks daily pickup lists, kg weights, and payment status for the single hostel block."
+    },
+    {
+     "name": "Canva",
+     "why": "Creates digital posters for hostel notice boards and Instagram reels to announce the weekly slot."
+    },
+    {
+     "name": "Google Business Profile",
+     "why": "Free local listing for 'Laundry Pickup [University Name]' to capture search traffic from students."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Drafts WhatsApp broadcast messages, calculates per-kg pricing based on partner costs, and writes the SOP for the laundry partner."
+    },
+    {
+     "name": "Gemini",
+     "why": "Free for Indian university students; generates image prompts for Canva posters and summarizes student feedback from text messages."
+    }
+   ],
+   "mvp_features": [
+    "Weekly fixed-slot laundry pickup and drop for 1 hostel block, billed at ₹40/kg via UPI link.",
+    "WhatsApp-based booking with automatic pickup confirmation and return deadline tracking.",
+    "Monthly subscription plan at ₹1,200/month covering up to 30kg of laundry with priority handling."
+   ],
+   "tool_costs": [
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Google Sheets",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Canva",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "Google Business Profile",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://business.google.com/in/business-profile/"
+    },
+    {
+     "tool": "Claude",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "Gemini",
+     "plan": "Google AI Plus",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    }
+   ],
+   "mvp_build_cost": 0.0,
+   "first_10_steps": [
+    "Visit 3 local laundry shops near campus and record their per-kg wash prices and turnaround times in a Google Sheet.",
+    "Create a WhatsApp Business account and set up a catalogue with two items: 'Per-kg Laundry (₹40/kg)' and 'Monthly Plan (₹1,200/month)'.",
+    "Generate 3 UPI payment links in Razorpay for ₹40, ₹100, and ₹1,200, and test them with a batchmate.",
+    "Design a 1-page Canva poster listing the weekly pickup slot (e.g., Sunday 6 PM) and the UPI link, then print 20 copies for hostel notice boards.",
+    "Post the Canva poster and a 30-second voice note in 5 hostel WhatsApp groups, asking for 10 pilot customers for a 50% discount on their first week.",
+    "Collect the first 10 pilot bookings via WhatsApp, weigh the laundry at pickup, and send the exact kg-based invoice via Razorpay link.",
+    "Subcontract the wash to the cheapest local laundry partner, track the handoff time, and ensure return within 48 hours.",
+    "Use Claude to draft a 'Thank You' message with a 10% discount code for the next week, and send it to all 10 pilot customers.",
+    "Track the 10 pilot customers in Google Sheets, noting their kg usage, payment method, and feedback on turnaround time.",
+    "After 2 weeks, convert 5 pilot customers to the ₹1,200/month plan by offering a free extra 5kg if they commit to a 1-month subscription."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Per-kg Laundry",
+     "monthly_price": 40.0,
+     "billing": "per_use",
+     "features": [
+      "₹40 per kg, weighed at pickup",
+      "UPI payment link after pickup",
+      "48-hour return to hostel block",
+      "Sunday 6 PM fixed pickup slot"
+     ]
+    },
+    {
+     "name": "Monthly Plan",
+     "monthly_price": 1200.0,
+     "billing": "monthly",
+     "features": [
+      "Up to 30 kg per month",
+      "Priority pickup and 24-hour return",
+      "Covers exam weeks",
+      "WhatsApp confirmation with return deadline"
+     ]
+    },
+    {
+     "name": "Pilot First Week",
+     "monthly_price": 20.0,
+     "billing": "per_use",
+     "features": [
+      "50% off first per-kg order for pilot customers",
+      "Same 48-hour return",
+      "One-time offer for the first 10 bookings"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 700.0,
+   "delivery_cost_per_customer": 310.0,
+   "burn_line_items": [
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay (2% + GST per transaction)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Sheets",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Business Profile",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Gemini",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget (20 printed posters + 2 reels + ₹500 UPI cashback for referrals)",
+     "monthly_cost": 3500.0
+    }
+   ],
+   "monthly_burn": 3500.0,
+   "marketing_budget": 3500.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 4.3,
+   "break_even_customers": 9,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 3500.0,
+     "notes": "5 pilot customers at 50% discount, blended avg ₹700 (mix of per-kg and one ₹1,200 plan)"
+    },
+    {
+     "day": 60,
+     "paying_customers": 10,
+     "mrr": 7000.0,
+     "notes": "Convert 3 pilots to ₹1,200/month plan, add 5 new per-kg customers from WhatsApp groups"
+    },
+    {
+     "day": 90,
+     "paying_customers": 15,
+     "mrr": 10500.0,
+     "notes": "5 monthly plans + 10 per-kg regulars in one hostel block; break-even crossed"
+    }
+   ],
+   "key_assumptions": [
+    "One paying customer averages ₹700/month: assumes 40% of customers are on the ₹1,200 monthly plan and 60% buy ~12 kg/month at ₹40/kg (₹480), blended = 0.4×1200 + 0.6×480 = 768, rounded down to 700 to account for the 50% first-week pilot discount in month 1.",
+    "Delivery cost of ₹310/customer/month = subcontract wash at ₹25/kg × 12 kg average = ₹300, plus ₹10 packaging/UPI fee; this rate must be confirmed before Day 7 by negotiating with 3 local laundry shops and running a real 5kg sample order to verify both the per-kg rate and 48-hour turnaround — if the confirmed rate is ₹30/kg, delivery cost rises to ₹370 and break-even moves to 8 customers.",
+    "Willingness-to-pay assumption: hostel students already spending ₹500-₹2,000/month on convenience will pay ₹40/kg (≈₹160/week for 4 kg) to skip the 60-90 minute wash cycle and the 3-day dhobi wait.",
+    "Marketing budget of ₹3,500/month covers 20 printed posters (₹500), 2 Instagram reels with Canva (₹0), and ₹3,000 reserved for first-week 50% discounts absorbed as revenue loss, not burn."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Hostel & class WhatsApp groups (one hostel block)",
+     "tactic": "Join the 6-8 WhatsApp groups of one target hostel block (block group, floor groups, batch groups). Post the ₹20 first-wash offer once per group on Thursday, then send 15 direct messages per day Fri-Sat to members who recently asked for laundry help in those groups; convert to a Sunday 6 PM pickup slot booking. Target: 5 paying customers by Day 30.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 5,
+     "cac": 0.0
+    },
+    {
+     "name": "Instagram Reels + hostel notice-board posters",
+     "tactic": "Line-item spend: (a) 50 A5 posters printed at ₹8 each = ₹400, pasted Day 1 and re-pasted Day 15 in the target hostel block notice board, stairwell, washroom; (b) ₹1,100 referral cashback pool paid as ₹100 UPI credit to a customer whose forwarded message books a new payer (up to 11 redemptions); (c) ₹2,000 Instagram paid boost = ₹50/day for 40 days on the best-performing Reel, geotagged to the campus. Free layer: 1 Canva Reel/day (bag → weigh → UPI link → folded return) for 30 days. Target: 3 paying customers by Day 30.",
+     "monthly_spend": 3500.0,
+     "new_customers_per_month": 3,
+     "cac": 1166.67
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-2: Walk the target hostel block and paste 50 printed A5 posters (₹8 each, ₹400 total) at the notice board, stairwell, and washroom; note the WhatsApp group names and join 6-8 of them.",
+    "Day 3-4: In each joined WhatsApp group, post once: 'Sunday 6 PM pickup from Block __. First wash at ₹20/kg (50% off), returned folded in 48 hours. Reply kg to book.' Then DM 15 members/day who have previously asked for laundry help in the group.",
+    "Day 5-6: Lock 5 pilot bookings for the Sunday 6 PM slot; confirm each with a pickup time message and send the Razorpay payment link the moment the bag is weighed.",
+    "Day 7-8: Post Reel #1 on Instagram (bag → weigh → UPI link → folded return) with campus geotag; reply to every comment and story mention with the ₹20 offer link.",
+    "Day 9-12: Ask each of the 5 pilot customers after return: 'If your roommate or floor-mate also needs this, forward this message — you both get ₹100 off next pickup.' Track forwards manually in a notes sheet and pay ₹100 UPI credit per booked referral from the ₹1,100 pool.",
+    "Day 13-14: Convert the 2 most repeat pilot users to a ₹1,200/month plan by DM, and post the group message a second time in the 3 groups that gave the most replies; start the ₹50/day Instagram boost on the top Reel."
+   ],
+   "cold_message": "Hi — I run a Sunday 6 PM laundry pickup from Block __, washed and returned folded in 48 hours, ₹40/kg paid by UPI link after pickup. First wash is ₹20/kg (50% off) for the first 10 bookings this month. Reply with the kg you need and I'll book your slot for this Sunday.",
+   "objections": [
+    {
+     "objection": "The hostel washing machine / dhobi is cheaper, why should I pay ₹40/kg?",
+     "response": "You're right — the machine costs almost nothing. You're paying for the 60-90 minutes of washing, drying and folding plus the fixed Sunday 6 PM pickup from your block and a 48-hour return deadline, confirmed on WhatsApp. Try it once at ₹20/kg and decide if your Sunday evening is worth it."
+    },
+    {
+     "objection": "What if you take my clothes and don't return them, or return them late before Monday class?",
+     "response": "No prepayment — you pay by UPI link only after the bag is weighed at pickup, and every booking gets a WhatsApp confirmation with the exact return deadline. If the return misses the confirmed deadline, that pickup is free. First 10 bookings this month are at ₹20/kg so you can test it with low risk."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "This is a well-scoped, constraint-honoring plan: a WhatsApp + Razorpay laundry pickup service for one hostel block, subcontracting the wash, bootstrapped with ₹15k and zero tool costs until revenue. The pricing, channels and 6-week first-customer timeline are realistic for a campus service, and the scope cuts (no app, no machines, one block) correctly protect a 15-hour-a-week student founder. The main gaps are operational rather than strategic — the plan under-specifies how laundry is actually weighed, handed off and tracked reliably.",
+  "biggest_risk": "The entire business hinges on a subcontracted local laundry partner delivering ₹25/kg at 48-hour turnaround; if that rate or reliability isn't locked in with a real sample order before Day 7, margins collapse or returns slip before Monday and the WhatsApp group turns hostile.",
+  "adherence_score": 0.9
+ },
+ "seconds": 113.8,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1265,
+   "out": 463,
+   "thinking": 0,
+   "total": 1728
+  },
+  {
+   "role": "builder",
+   "in": 2930,
+   "out": 1003,
+   "thinking": 0,
+   "total": 3933
+  },
+  {
+   "role": "economics",
+   "in": 3169,
+   "out": 775,
+   "thinking": 0,
+   "total": 3944
+  },
+  {
+   "role": "growth",
+   "in": 2067,
+   "out": 836,
+   "thinking": 0,
+   "total": 2903
+  },
+  {
+   "role": "critic",
+   "in": 4191,
+   "out": 427,
+   "thinking": 0,
+   "total": 4618
+  },
+  {
+   "role": "economics",
+   "in": 4119,
+   "out": 870,
+   "thinking": 0,
+   "total": 4989
+  },
+  {
+   "role": "growth",
+   "in": 3083,
+   "out": 971,
+   "thinking": 0,
+   "total": 4054
+  },
+  {
+   "role": "critic",
+   "in": 4353,
+   "out": 498,
+   "thinking": 0,
+   "total": 4851
+  }
+ ],
+ "tokens": {
+  "in": 25177,
+  "out": 5843,
+  "thinking": 0,
+  "total": 31020
+ }
+}

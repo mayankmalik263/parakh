@@ -1,0 +1,392 @@
+{
+ "id": "candles-insta",
+ "kind": "physical",
+ "idea": "Handmade scented candles sold on Instagram, made in my hostel room",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 6,
+  "math_warnings": 1,
+  "tools_costed": 10,
+  "tools_in_catalog": 10,
+  "paid_prices_right": 0,
+  "paid_prices": 0,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 13367
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "physical",
+   "problem": "The specific pain is the lack of affordable, aesthetically pleasing, and low-maintenance ambient lighting for small, cluttered hostel rooms. The exact moment the user feels it is late at night (11 PM - 2 AM) when they are studying or relaxing, the overhead fluorescent light is harsh and causes eye strain, and they cannot afford or fit a decorative table lamp or smart lighting system in their limited space.",
+   "target_customer": "Female college students aged 19-22 living in hostels in Tier-1 and Tier-2 Indian cities, with a monthly pocket money of ₹3,000-₹5,000, who actively follow Instagram lifestyle and studygram accounts and purchase small, giftable items under ₹500 for room decor or self-care.",
+   "mission": "To provide hostel students with affordable, hand-poured scented candles that transform their small living spaces into calming, personalized environments without requiring electricity or complex setup.",
+   "competitors": [
+    {
+     "name": "Local artisan candle sellers on Instagram (e.g., Delhi/Mumbai-based micro-brands)",
+     "differentiator": "We win on price and relatability by pricing candles under ₹350 (vs. their ₹500-₹800) and using student-specific language and visuals that resonate with hostel life, rather than generic luxury aesthetics."
+    },
+    {
+     "name": "Mass-market candle brands on Amazon India (e.g., Bath & Body Works, The Man Company)",
+     "differentiator": "We win on customization and local trust by offering small-batch, hand-poured candles with scents chosen by student polls, and by leveraging direct WhatsApp/Instagram community trust from batchmates, avoiding the generic, one-size-fits-all mass-market options."
+    },
+    {
+     "name": "DIY candle kits sold on Etsy or local craft stores",
+     "differentiator": "We win on convenience and time by selling ready-to-light, finished products, saving students the 2-3 hours of setup, cleanup, and learning curve associated with DIY kits, which is critical for students with limited free time."
+    }
+   ],
+   "scope_cuts": [
+    "No custom packaging or branded boxes in the first 30 days; we use plain kraft paper and handwritten labels to keep per-unit cost under ₹15 and avoid inventory waste.",
+    "No website or e-commerce platform; we sell exclusively via Instagram DMs and Razorpay payment links to eliminate hosting costs and technical setup time, focusing only on direct human interaction.",
+    "No expansion to multiple scent lines or colors; we launch with exactly 2 scents (Lavender and Vanilla) and 1 color (white) to minimize wax and fragrance oil inventory, reducing the risk of unsold stock."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Instagram Business account",
+     "why": "Sole storefront per scope cut — DMs and catalogue only, zero hosting cost, matches where the target audience already is"
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Order confirmation, shipping updates and repeat-buyer chats on the free app; no Cloud API spend until scale"
+    },
+    {
+     "name": "Razorpay",
+     "why": "Payment links for one-time UPI/card checkout without a website; 2% + GST only charged when a customer pays"
+    },
+    {
+     "name": "Shiprocket",
+     "why": "Lite free plan at ~₹45/shipment to ship candles pan-India from a hostel room"
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Free order, inventory and pre-order tracker shared with a part-time batchmate helper"
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Writes DM scripts, product captions, handwritten-label copy and pre-order reply templates; Claude Code can cut and caption the pour-process Reel with ffmpeg"
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Generates scent-poll poll questions, FAQ replies and Razorpay payment-link message drafts"
+    },
+    {
+     "name": "Canva",
+     "why": "Free plan for Instagram post templates, story polls and kraft-paper label designs"
+    },
+    {
+     "name": "VN Video Editor",
+     "why": "Free, no-watermark mobile editor for the 15-second candle-lighting Reel shot in the hostel room"
+    }
+   ],
+   "mvp_features": [
+    "SKU 1: 'Hostel Wind-Down' Lavender candle — 120g soy wax in a reusable glass tumbler, ~30 hour burn, kraft-paper sleeve + handwritten label, single wick",
+    "SKU 2: 'Midnight Library' Vanilla candle — 120g soy wax, same tumbler and packaging, single wick",
+    "Bundle: 'Room Reset Duo' — both scents together with a handwritten note card, sold via one Razorpay payment link"
+   ],
+   "tool_costs": [
+    {
+     "tool": "Instagram",
+     "plan": "Business account",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://help.instagram.com/502981923235522"
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Shiprocket",
+     "plan": "Lite (free plan)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "free plan, about Rs 45 per shipment on average. Price checked 2026-11-02 on https://www.shiprocket.in/pricing/"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free with Google account",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "VN Video Editor",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.vlognow.me/"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/",
+     "added_by_code": true
+    }
+   ],
+   "mvp_build_cost": 8500.0,
+   "first_10_steps": [
+    "Message 3 Instagram candle-supply sellers on Instagram and IndiaMART for soy wax, fragrance oil (lavender + vanilla), wicks and glass tumblers; get per-unit quotes for a 20-unit first batch",
+    "Order a ₹1,500 sample kit (500g wax, 2 fragrance oils, 10 wicks, 4 tumblers) and pour 4 test candles in the hostel room over one weekend",
+    "Post a 15-second pour-process Reel edited in VN Video Editor and a Canva carousel announcing 2 scents, tagging 10 studygram accounts you already follow",
+    "Open a Google Form pre-order for the 2 SKUs and the Duo bundle, cap it at 10 pre-orders, and share the link in your class and hostel WhatsApp groups",
+    "Collect pre-order payments by generating one Razorpay payment link per buyer and confirming each order in WhatsApp Business within 10 minutes",
+    "Buy the first 20-unit inventory batch (wax, 2 fragrance oils, 20 tumblers, wicks) only after 5 pre-orders are paid",
+    "Assemble kraft sleeves and handwritten labels for the 10 pre-orders; keep per-unit packaging under ₹15",
+    "Book the 10 pre-order parcels on Shiprocket Lite (~₹45 each) and hand them to the pickup agent from the hostel",
+    "Send a WhatsApp Business shipping-update message with the tracking number to each of the 10 buyers on dispatch day",
+    "Ask each delivered buyer for one WhatsApp testimonial and one Instagram story tag, then repost the best 3 on your Instagram grid before opening the next batch of 10 orders"
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Hostel Wind-Down Lavender 120g",
+     "monthly_price": 299.0,
+     "billing": "one_time",
+     "features": [
+      "120g soy wax in reusable glass tumbler",
+      "~30 hour burn, single wick",
+      "Kraft sleeve + handwritten label",
+      "Shipped via Shiprocket ~₹45"
+     ]
+    },
+    {
+     "name": "Midnight Library Vanilla 120g",
+     "monthly_price": 299.0,
+     "billing": "one_time",
+     "features": [
+      "120g soy wax in reusable glass tumbler",
+      "~30 hour burn, single wick",
+      "Kraft sleeve + handwritten label",
+      "Shipped via Shiprocket ~₹45"
+     ]
+    },
+    {
+     "name": "Room Reset Duo bundle",
+     "monthly_price": 549.0,
+     "billing": "one_time",
+     "features": [
+      "Both Lavender + Vanilla candles",
+      "Handwritten note card",
+      "Saves ₹49 vs buying separately",
+      "One Razorpay payment link"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 349.0,
+   "delivery_cost_per_customer": 145.0,
+   "burn_line_items": [
+    {
+     "item": "Instagram Business account",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "WhatsApp Business app",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay (2% + GST, per-payment only)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Shiprocket Lite plan (free, ~₹45/shipment billed per order)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Sheets / Google Workspace free tier",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "ChatGPT free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "VN Video Editor free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget (Instagram promotion of 3 Reels @ ₹400 each + ₹800 sample/seed-candle gifting)",
+     "monthly_cost": 2000.0
+    }
+   ],
+   "monthly_burn": 2000.0,
+   "marketing_budget": 2000.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 7.5,
+   "break_even_customers": 10,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 1745.0,
+     "notes": "10 pre-orders capped, 5 confirmed paid via Razorpay links; revenue counted as one purchase per buyer in month 1"
+    },
+    {
+     "day": 60,
+     "paying_customers": 14,
+     "mrr": 4886.0,
+     "notes": "Batch 2 of 10 opens after testimonials reposted; 4 buyers from batch 1 repeat-buy the Duo"
+    },
+    {
+     "day": 90,
+     "paying_customers": 25,
+     "mrr": 8725.0,
+     "notes": "Batch 3 + 1 hostel club/fest bulk order of 8 units; repeat rate held at ~30%"
+    }
+   ],
+   "key_assumptions": [
+    "Target buyer pays ₹299-₹549 for a one-time candle purchase; assumes willingness to pay under ₹500 for room decor as stated in the strategy brief (monthly pocket money ₹3,000-₹5,000).",
+    "Blended avg_revenue_per_customer of ₹349 assumes a mix of 60% single-candle buyers at ₹299 and 40% Duo buyers at ₹549.",
+    "delivery_cost_per_customer of ₹145 = goods + packaging (~₹100 for wax, fragrance, tumbler, kraft label at 20-unit batch scale) + ₹45 Shiprocket per shipment; assumes 1 shipment per paying customer per month.",
+    "Razorpay 2% + GST on ₹349 ≈ ₹8 per order is absorbed inside the ₹145 delivery cost, not billed monthly."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Instagram Reels & Story Polls",
+     "tactic": "Post 3 Reels/day (pouring process, 15-sec burn test, 'hostel room before/after') with text overlay 'Hostel wind-down, no electricity needed'. Post 2 Story polls/day asking 'Lavender or Vanilla?'. DM every user who votes, comments, or shares the reel with the Razorpay link within 1 hour. Volume: 3 Reels + 2 Story polls + 30 DMs/day.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 8,
+     "cac": 0.0
+    },
+    {
+     "name": "Hostel WhatsApp Groups & Direct DMs",
+     "tactic": "Send a 3-line cold message to 50 female batchmates, hostel-mates, and seniors in private WhatsApp chats daily (not group broadcasts). Offer a free 20g sample candle to the first 10 who reply. Volume: 50 DMs/day.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 7,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Pour 10 candles (5 Lavender, 5 Vanilla) using ₹2,000 of the starting capital for soy wax, fragrance oil, wicks, and glass tumblers. Label them by hand on kraft paper.",
+    "Day 4-5: Send the 3-line cold message to 50 female batchmates and hostel-mates via WhatsApp DM. Explicitly offer a free 20g sample candle to the first 10 who reply, with no purchase required.",
+    "Day 6-7: Follow up with the 10 sample recipients. Ask them to light the sample and share a 15-second video of the flame in their room. Immediately offer to ship the full 120g candle for ₹299 if they like the scent, using a Razorpay payment link sent in the same chat.",
+    "Day 8-12: Post the 15-second sample videos as Instagram Stories with a 'Link in bio' CTA. DM every follower who reacts to the story with the direct Razorpay link for the ₹299 candle or ₹549 Duo bundle.",
+    "Day 13-20: Ask the 10 sample recipients to forward the Instagram post to 3 other female friends in their hostel. Track who clicks the link and DM them personally to close the sale.",
+    "Day 21-30: Ship the first 10 orders via Shiprocket. Include a handwritten note card asking for a 1-star Instagram tag. Use these tags in the next 3 Reels to drive the next batch of 10 pre-orders."
+   ],
+   "cold_message": "Hey [Name], I'm making small-batch scented candles in my hostel room for late-night study sessions. I'd love to send you a free 20g sample (Lavender or Vanilla) to see if it fits your space. No purchase needed, just want your honest take on the scent.",
+   "objections": [
+    {
+     "objection": "I don't have ₹299 for a candle right now.",
+     "response": "Totally understand. I can hold a spot for you in the next batch, or you can start with the ₹299 single candle instead of the ₹549 Duo. I also offer a 7-day no-questions-asked refund if the scent doesn't work for your room."
+    },
+    {
+     "objection": "Will it smell too strong for a small hostel room?",
+     "response": "The 120g size is designed for 10-15 sq ft spaces. It burns for ~30 hours total, so you only need to light it for 1-2 hours a day. The soy wax burns clean without harsh chemical fumes, so it won't overpower the room."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan stays true to the original idea — hand-poured scented candles sold via Instagram from a hostel room — with correct physical-product sourcing, samples, and campus-first channels. Pricing at ₹299-₹549 fits Indian student purchasing power and the bootstrapped budget, and the free-tool stack respects the hard rules. The main gaps are in growth execution realism and a couple of internal inconsistencies that could stall the founder.",
+  "biggest_risk": "The plan depends on converting strangers into ₹299-₹549 buyers through cold DMs and sample gifting with zero established trust or track record; if the free-sample funnel doesn't convert at a meaningful rate within the first 30 days, the founder burns inventory and time without revenue.",
+  "adherence_score": 0.85
+ },
+ "seconds": 137.0,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1308,
+   "out": 623,
+   "thinking": 0,
+   "total": 1931
+  },
+  {
+   "role": "builder",
+   "in": 2705,
+   "out": 889,
+   "thinking": 0,
+   "total": 3594
+  },
+  {
+   "role": "economics",
+   "in": 3574,
+   "out": 780,
+   "thinking": 0,
+   "total": 4354
+  },
+  {
+   "role": "growth",
+   "in": 2226,
+   "out": 893,
+   "thinking": 0,
+   "total": 3119
+  },
+  {
+   "role": "critic",
+   "in": 4527,
+   "out": 432,
+   "thinking": 0,
+   "total": 4959
+  },
+  {
+   "role": "growth",
+   "in": 3270,
+   "out": 922,
+   "thinking": 0,
+   "total": 4192
+  },
+  {
+   "role": "critic",
+   "in": 4568,
+   "out": 455,
+   "thinking": 0,
+   "total": 5023
+  }
+ ],
+ "tokens": {
+  "in": 22178,
+  "out": 4994,
+  "thinking": 0,
+  "total": 27172
+ }
+}

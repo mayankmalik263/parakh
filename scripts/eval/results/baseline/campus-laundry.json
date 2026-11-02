@@ -13,7 +13,6 @@
   "paid_prices_right": 0,
   "paid_prices": 1,
   "hidden_costs": [
-   "Google Forms + Google Sheets (free) — order log, per-kg weight sheet, weekly route sheet for pickup runner",
    "ChatGPT Free / Gemini Free — draft WhatsApp order scripts, reminder templates, price-list copy in Hinglish",
    "Claude / ChatGPT Free — weekly P&L summary from Google Sheets CSV",
    "Google Gemini Free — route optimisation suggestion for 8-12 pickup points in 1km radius"

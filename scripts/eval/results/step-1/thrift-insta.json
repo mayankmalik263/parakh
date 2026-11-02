@@ -1,0 +1,31 @@
+{
+ "id": "thrift-insta",
+ "kind": "physical",
+ "idea": "A thrift clothing store on Instagram selling secondhand jackets and jeans",
+ "model": "qwen-3.8-27b",
+ "ok": false,
+ "error": "RuntimeError: [strategist] could not produce valid JSON: 1 validation error for StrategySlice\n  Invalid JSON: trailing characters at line 1 column 1883 [type=json_invalid, input_value='{\"business_type\":\"physic...s are done.\"]}parameter', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid",
+ "seconds": 20.3,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1271,
+   "out": 434,
+   "thinking": 0,
+   "total": 1705
+  },
+  {
+   "role": "strategist",
+   "in": 1795,
+   "out": 432,
+   "thinking": 0,
+   "total": 2227
+  }
+ ],
+ "tokens": {
+  "in": 3066,
+  "out": 866,
+  "thinking": 0,
+  "total": 3932
+ }
+}

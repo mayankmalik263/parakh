@@ -199,3 +199,13 @@ def test_empty_reply_twice_gives_a_readable_error(monkeypatch):
     monkeypatch.setattr(r, "_get_client", lambda: _fake_client([""], []))
     with pytest.raises(r.EmptyReplyError, match="The growth agent got no answer"):
         r.call_llm("hi", role="growth")
+
+
+def test_stray_text_after_the_json_is_cut_instead_of_retried(monkeypatch):
+    # BharatCode's Qwen sometimes ends a valid reply with "parameter" after the closing brace.
+    from agents import llm_router as r
+    from models import Objection
+    calls = []
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client(['{"objection": "Too pricey", "response": "It pays for itself."}parameter'], calls))
+    assert r.call_llm_json("hi", Objection, role="growth").response == "It pays for itself."
+    assert len(calls) == 1

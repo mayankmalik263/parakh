@@ -58,6 +58,11 @@ def prose_fields(slices: dict) -> list[tuple[str, str]]:
     return out
 
 
+def _catalog_text() -> str:
+    data = json.loads((ROOT / "tool_catalog.json").read_text(encoding="utf-8"))
+    return json.dumps([[p.get("usage", "") for p in t["plans"]] + [t.get("use_for", "")] for t in data["tools"]]).replace(" ", "")
+
+
 def invented_stats(slices: dict, founder_text: str) -> list[dict]:
     """Stat-like claims in prose whose number the founder never mentioned."""
     given = set(re.findall(r"\d[\d,.]*", founder_text))
@@ -74,16 +79,20 @@ def invented_stats(slices: dict, founder_text: str) -> list[dict]:
                 continue
             if m.group(0).startswith("100") and "%" in m.group(0):
                 continue
+            # Fees from Parakh's checked price list ("2% + GST" for Razorpay) are sourced, not invented.
+            if m.group(0).replace(" ", "") in _catalog_text():
+                continue
             hits.append({"where": where, "claim": m.group(0)})
     return hits
 
 
 def hidden_costs(slices: dict) -> list[str]:
     """Recommended tools (stack + AI tools) with no line in tool_costs."""
+    import tool_catalog as tc
     b = slices.get("builder", {})
-    costed = [t.get("tool", "") for t in b.get("tool_costs", [])]
+    costs = b.get("tool_costs", [])
     named = [t.get("name", "") for t in b.get("stack", []) + b.get("ai_tools", [])]
-    return [n for n in named if _words(n) and not any(same_tool(n, c) for c in costed)]
+    return [n for n in named if _words(n) and not tc.is_costed(n, costs)]
 
 
 def correct_prices(slices: dict, profile: dict) -> tuple[int, int, int, int]:

@@ -1,0 +1,346 @@
+{
+ "id": "hostel-tiffin",
+ "kind": "physical / food",
+ "idea": "Home-style tiffin delivery for hostel students in Bidholi, Dehradun",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 5,
+  "math_warnings": 0,
+  "tools_costed": 6,
+  "tools_in_catalog": 6,
+  "paid_prices_right": 0,
+  "paid_prices": 0,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 12628
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "physical",
+   "problem": "A hostel student in Bidholi finishes class at 6:30 PM, walks out and finds the mess food cold or the mess closed, and the nearby dhaba options are oily or ₹150+ per plate — the pain hits at dinner time when they're tired and don't want to decide or travel for food.",
+   "target_customer": "Undergraduate and postgraduate students (18-24) living in private hostels and PGs around UPES Bidholi campus in Dehradun, with ₹8,000-15,000 monthly personal spend, who currently order Swiggy/Zomato or eat at a local dhaba 4-6 nights a week and would prepay a monthly plan for reliable home-style meals delivered to their hostel gate.",
+   "mission": "Deliver affordable, home-cooked daily tiffin meals on a monthly subscription to hostel students near UPES Bidholi so they get consistent, hygienic dinner without deciding or travelling each night.",
+   "competitors": [
+    {
+     "name": "Local dhabas and small restaurants around Bidholi/RISE area",
+     "differentiator": "We win on a fixed monthly price, predictable delivery to the hostel gate, and a rotating home-style menu instead of oily à-la-carte ordering each night."
+    },
+    {
+     "name": "Swiggy and Zomato delivery near UPES",
+     "differentiator": "We win on per-meal cost under a monthly plan and on consistency of taste and hygiene, since they're ordering from a rotating set of unknown kitchens."
+    },
+    {
+     "name": "Hostel/PG in-house mess or tiffin providers run by local aunties in Bidholi",
+     "differentiator": "We win on a simple digital subscription with UPI payment links, fixed delivery slots and menu variety, versus word-of-mouth-only messes with irregular billing."
+    }
+   ],
+   "scope_cuts": [
+    "No custom mobile app or web ordering platform — a WhatsApp broadcast plus a Razorpay/UPI payment link handles ordering and collection until 50+ subscribers justify an app.",
+    "No in-house cooking kitchen or rented commercial space in month 1 — partner with one existing home-cook/tiffin service in the area on a per-meal rate so the founder never leaves classes to cook.",
+    "No delivery fleet or hired riders — the first 30 deliveries run on a single bicycle/scooter route done by the founder and one part-time batchmate, and we cut any multi-drop routing software until demand exceeds one route."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "WhatsApp Business",
+     "why": "Handles ordering, menu updates, and delivery confirmations directly in the students' existing chat app without a custom app."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Generates UPI payment links for monthly subscription collection, processing payments with a 2% + GST fee and no setup cost."
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Tracks the daily menu, subscriber list, and delivery route inventory using the free tier of Google Workspace."
+    },
+    {
+     "name": "Canva",
+     "why": "Designs the weekly menu cards and WhatsApp status updates for the hostel groups using the free tier."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Gemini",
+     "why": "Uses the free Google AI Plus student offer to draft WhatsApp menu messages and calculate per-meal food costs in Google Sheets."
+    },
+    {
+     "name": "Claude",
+     "why": "Uses the free tier to write the standard operating procedure for the part-time batchmate handling the bicycle delivery route."
+    }
+   ],
+   "mvp_features": [
+    "Lunch Tiffin: 1 rice, 2 seasonal vegetables, 1 dal, 1 seasonal fruit in a 750ml steel container",
+    "Dinner Tiffin: 2 rotis, 1 seasonal vegetable, 1 dal, 1 curd in a 750ml steel container",
+    "Monthly Subscription: 26 working days of delivery to the hostel gate with a fixed UPI payment link"
+   ],
+   "tool_costs": [
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Google Sheets",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "Gemini",
+     "plan": "Google AI Plus",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    }
+   ],
+   "mvp_build_cost": 15000.0,
+   "first_10_steps": [
+    "Walk to 3 home-cook tiffin providers in the Bidholi area and negotiate a per-meal rate of ₹45 for a 750ml steel container with 1 rice, 2 vegetables, 1 dal, and 1 fruit.",
+    "Create a free WhatsApp Business account and set up a catalogue with 2 items: 'Lunch Tiffin' and 'Dinner Tiffin', including the exact ingredients and delivery time.",
+    "Generate a Razorpay payment link for a ₹2,600 monthly subscription (26 days x ₹100 per meal) and test it with a ₹10 UPI payment to verify the 2% + GST fee structure.",
+    "Use Canva free tier to design a 1080x1920 pixel menu card showing the 4-week rotating home-style menu and the ₹100 per meal price point.",
+    "Share the menu card and WhatsApp Business link in 5 UPES Bidholi hostel WhatsApp groups, targeting 50 students for a 7-day trial week.",
+    "Collect 10 pre-orders for the 7-day trial week (₹700 per student) via UPI to validate the ₹45 per-meal food cost and the ₹100 selling price.",
+    "Pick up the 70 tiffin containers from the home-cook partner at 1:00 PM and 6:00 PM, and deliver them to 3 specific hostel gates using a single bicycle route.",
+    "Use Claude free tier to write a 1-page SOP for the part-time batchmate detailing the exact pickup times, delivery sequence, and how to handle cold food complaints.",
+    "Track the 7-day trial in Google Sheets, recording the exact food cost, delivery time, and 3 customer feedback points per day to calculate the gross margin.",
+    "Convert the 10 trial students to a monthly subscription by sending a new Razorpay payment link for ₹2,600 on the 7th day, targeting 5 full subscriptions by week 6."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "7-Day Trial Week",
+     "monthly_price": 700.0,
+     "billing": "one_time",
+     "features": [
+      "7 dinners delivered to hostel gate",
+      "750ml steel container tiffin",
+      "UPI payment link, no app needed",
+      "Validates taste and delivery before monthly commit"
+     ]
+    },
+    {
+     "name": "Monthly Dinner Tiffin",
+     "monthly_price": 2600.0,
+     "billing": "monthly",
+     "features": [
+      "26 working days of dinner delivery",
+      "2 rotis, 1 seasonal veg, 1 dal, 1 curd",
+      "Fixed delivery slot at hostel gate",
+      "Rotating 4-week home-style menu"
+     ]
+    },
+    {
+     "name": "Monthly Lunch + Dinner",
+     "monthly_price": 4900.0,
+     "billing": "monthly",
+     "features": [
+      "26 lunch + 26 dinner deliveries",
+      "Lunch: rice, 2 veg, dal, seasonal fruit",
+      "Dinner: 2 rotis, veg, dal, curd",
+      "Priority delivery slot and menu requests"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 2600.0,
+   "delivery_cost_per_customer": 52.0,
+   "burn_line_items": [
+    {
+     "item": "WhatsApp Business app",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay (2% + GST on collections, no fixed fee)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Sheets / Workspace free tier",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva free tier",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Gemini (Google AI Plus student offer)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude free tier",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget (menu card printing, WhatsApp group entry, ₹10 trial payments)",
+     "monthly_cost": 4500.0
+    }
+   ],
+   "monthly_burn": 4500.0,
+   "marketing_budget": 4500.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 3.3,
+   "break_even_customers": 2,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 13000.0,
+     "notes": "10 trial students at ₹700 in week 1-2, 5 convert to ₹2,600 monthly by day 30; rest of trial revenue counted as one-time and not in MRR."
+    },
+    {
+     "day": 60,
+     "paying_customers": 10,
+     "mrr": 26000.0,
+     "notes": "Second cohort from 5 more hostel WhatsApp groups; founder + 1 batchmate on one bicycle route still within capacity."
+    },
+    {
+     "day": 90,
+     "paying_customers": 18,
+     "mrr": 46800.0,
+     "notes": "3 hostels covered, 18 full monthly subscribers; 2 on lunch+dinner blended into avg. Break-even already passed at 1 customer."
+    }
+   ],
+   "key_assumptions": [
+    "Students near UPES Bidholi will prepay ₹2,600/month (₹100 per dinner) for 26 days — assumption based on target customer currently spending ₹150+ per plate at dhabas 4-6 nights a week, so monthly plan is a discount to current spend.",
+    "Home-cook partner delivers a 750ml tiffin at ₹45/meal landed cost including container, giving ₹55 gross margin per ₹100 meal before delivery labour.",
+    "delivery_cost_per_customer of ₹52 = ₹45 food+container + ₹7 per-customer share of bicycle wear, phone data and packaging tape. Delivery labour (founder's bicycle route and batchmate's help) is NOT deducted per-unit: founder is unpaid (own time, no stipend out of ₹15,000 capital) and the batchmate is paid in-kind with one free daily tiffin, whose ₹45 food cost is already inside the ₹45 goods line, so no separate cash burn line exists for delivery labour.",
+    "Razorpay 2% + GST fee is passed into the ₹45 food-cost line as a rounding allowance rather than a separate burn line since no fixed monthly fee exists."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "WhatsApp hostel/PG groups + broadcast near UPES Bidholi",
+     "tactic": "Join 12 named hostel and PG WhatsApp groups in Bidholi/RISE area (ask wardens and batchmates for invites), post the trial-week offer once per group on Sunday and Wednesday at 8 PM, then DM every reply individually with a Razorpay payment link for the ₹700 trial week; target 15 personal DMs/day and 3 trial signups/week from groups.",
+     "monthly_spend": 1500.0,
+     "new_customers_per_month": 4,
+     "cac": 375.0
+    },
+    {
+     "name": "Instagram Reels + First Dinner Free offer",
+     "tactic": "Post 1 Instagram Reel per day (15-second dinner tiffin pack-and-ride clip, CapCut free, caption with UPI link) targeting Bidholi student accounts, plus 3 evenings/week post a 'First Dinner Free' offer in 5 hostel WhatsApp groups for the first 5 students to claim; 30 DMs/day to interested students on sampling days.",
+     "monthly_spend": 3000.0,
+     "new_customers_per_month": 3,
+     "cac": 1000.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-2: List every hostel and PG within 2km of UPES Bidholi from Google Maps, walk into 6 of them, and ask the warden for the student WhatsApp group link; join at least 6 groups before posting anything.",
+    "Day 3: Post the trial-week message in all 6 groups at 8 PM, then reply personally to every 'price?' or 'veg?' question within 5 minutes; send the ₹700 Razorpay payment link to each person who engages.",
+    "Day 4-7: Deliver the first trial dinners yourself on a bicycle; ask each trial customer at the gate: 'If dinner is good tonight, will you take the ₹2,600 monthly plan on day 8?' — get the yes/no before they finish the trial week.",
+    "Day 8-10: Convert trial customers to monthly via UPI payment link; offer any student who refers a friend who pays ₹700 a free dinner on their next plan (revenue reduction, not spend).",
+    "Day 11-18: Walk into 4 more hostels, repeat the group-join + post + DM loop; personally call (not DM) the 8 students who replied but didn't pay and ask what stopped them.",
+    "Day 19-30: Post 1 Reel/day, run 3 gate sampling evenings, and push every paying monthly customer to add one batchmate from their own room floor — target 5 monthly subscribers by day 30."
+   ],
+   "cold_message": "Hi, I'm a UPES student starting a home-style dinner tiffin for hostels in Bidholi — 2 rotis, veg, dal, curd delivered to your gate by 8 PM, ₹2,600/month for 26 dinners (way under Swiggy). First week is a ₹700 trial so you can check the taste before committing. Want me to send the UPI link for a trial week starting tomorrow?",
+   "objections": [
+    {
+     "objection": "₹2,600/month is too much, I can manage with the mess or Swiggy.",
+     "response": "Compare per dinner: ₹2,600/26 = ₹100 a night delivered to your gate, versus ₹150+ per dhaba plate or ₹200+ Swiggy orders 4-6 nights a week. Start with the ₹700 trial week — if you don't like the taste after 3 dinners, I refund the rest, no questions."
+    },
+    {
+     "objection": "I don't know if the food will be good or hygienic — how do I trust you?",
+     "response": "Don't commit monthly yet. Take the ₹700 trial week: 7 dinners delivered to your hostel gate, and I'll share the home-cook's kitchen photos and this week's exact menu on WhatsApp before you pay. If dinner 1 isn't hot and fresh, I replace it that night free."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "This is a coherent, tightly-scoped plan that stays true to the home-style tiffin idea for UPES hostel students, with a realistic trial-week funnel, a credible ₹100/meal price point, and a founder-friendly stack of WhatsApp + Razorpay + Sheets. The scope cuts (no app, no kitchen, no delivery fleet) and the ₹15,000 bootstrapped capital are respected, and the campus-first WhatsApp channel matches the hard rules. The main open questions are around delivery capacity scaling and whether the trial-to-monthly conversion rate assumed is realistic without social proof.",
+  "biggest_risk": "The single biggest risk is that the founder's own bicycle delivery of 70+ tiffins/day (10 trial customers) plus classes exceeds the ~15 hours/week budget, causing late or cold deliveries in week 1 and killing word-of-mouth before any monthly subscriptions convert.",
+  "adherence_score": 0.9
+ },
+ "seconds": 128.4,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1290,
+   "out": 511,
+   "thinking": 0,
+   "total": 1801
+  },
+  {
+   "role": "builder",
+   "in": 2750,
+   "out": 1062,
+   "thinking": 0,
+   "total": 3812
+  },
+  {
+   "role": "economics",
+   "in": 3298,
+   "out": 750,
+   "thinking": 0,
+   "total": 4048
+  },
+  {
+   "role": "growth",
+   "in": 2200,
+   "out": 888,
+   "thinking": 0,
+   "total": 3088
+  },
+  {
+   "role": "critic",
+   "in": 4374,
+   "out": 430,
+   "thinking": 0,
+   "total": 4804
+  },
+  {
+   "role": "economics",
+   "in": 4227,
+   "out": 860,
+   "thinking": 0,
+   "total": 5087
+  },
+  {
+   "role": "growth",
+   "in": 3301,
+   "out": 1002,
+   "thinking": 0,
+   "total": 4303
+  },
+  {
+   "role": "critic",
+   "in": 4388,
+   "out": 424,
+   "thinking": 0,
+   "total": 4812
+  }
+ ],
+ "tokens": {
+  "in": 25828,
+  "out": 5927,
+  "thinking": 0,
+  "total": 31755
+ }
+}

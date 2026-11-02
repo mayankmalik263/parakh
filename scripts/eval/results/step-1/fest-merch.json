@@ -1,0 +1,417 @@
+{
+ "id": "fest-merch",
+ "kind": "physical",
+ "idea": "Custom printed T-shirts and hoodies for college fests and clubs",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 5,
+  "math_warnings": 0,
+  "tools_costed": 11,
+  "tools_in_catalog": 11,
+  "paid_prices_right": 1,
+  "paid_prices": 1,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 15904
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "physical",
+   "problem": "Club heads and fest committees face a 2-week deadline before their event to source 50-200 custom printed garments, but local print shops charge premium rates for small batches and often miss delivery dates, forcing them to scramble for last-minute, low-quality alternatives or cancel merchandise entirely.",
+   "target_customer": "Student club heads and fest committee members at Indian universities with 50-200 member bases who are actively planning events 3-4 weeks out and need to bulk order branded merchandise within a fixed budget.",
+   "mission": "Deliver high-quality, custom-printed T-shirts and hoodies to college clubs and fests in 7 days with transparent bulk pricing and 50% advance payment security.",
+   "competitors": [
+    {
+     "name": "Local college-area print shops",
+     "differentiator": "We offer 7-day guaranteed delivery and digital design approval via WhatsApp, whereas local shops have 10-14 day lead times and no digital preview process."
+    },
+    {
+     "name": "Printrove and similar online print-on-demand platforms",
+     "differentiator": "We provide dedicated human support for design iterations and bulk discounts for 50+ units, whereas online platforms have automated, limited support and higher per-unit costs for small batches."
+    },
+    {
+     "name": "Freelance designers on Fiverr/Upwork",
+     "differentiator": "We handle the entire process from design to physical delivery, whereas freelancers only provide digital files, leaving the customer to find a separate printer and manage logistics."
+    }
+   ],
+   "scope_cuts": [
+    "No custom software or app for order management; we use WhatsApp and Google Sheets to track orders, designs, and payments to save development time and cost.",
+    "No in-house printing or equipment purchase; we partner with 2-3 existing local print shops on a per-order basis to avoid capital expenditure and inventory risk.",
+    "No retail or single-unit sales; we focus exclusively on bulk orders of 25+ units to maintain margins and simplify logistics for a solo founder."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "WhatsApp Business",
+     "why": "Order intake, design approvals and delivery updates with club heads happen in WhatsApp groups and DMs already; catalogue and quick replies replace a custom app."
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Track every order, size breakdown, design version and 50% advance status in one shared sheet with the part-time helper; no order-management software to build."
+    },
+    {
+     "name": "Razorpay Payment Links",
+     "why": "Collect the 50% advance and final balance via UPI from fest treasurers; 2% + GST only when a customer pays, no setup fee."
+    },
+    {
+     "name": "Google Sites",
+     "why": "Free one-page storefront with bulk price list, size chart and sample photos; enough to send a link to a fest committee."
+    },
+    {
+     "name": "Instagram Business account",
+     "why": "Club heads judge print quality visually; posts and DMs of past bulk orders feed directly into WhatsApp quotes."
+    },
+    {
+     "name": "Google Workspace",
+     "why": "Free Gmail + Drive + Sheets on a Google account holds quotes, artwork files and the order tracker."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Writes quote messages, size-chart copy, follow-up scripts and the supplier negotiation email; Claude Code drafts the Google Sites HTML and Canva-sized asset copy."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Generates and iterates club/fest logo mockup concepts and print-ready artwork descriptions to send to the print partner before sampling."
+    },
+    {
+     "name": "Canva",
+     "why": "Free tier designs the T-shirt front/back mockups, WhatsApp catalogue images and the one-page price poster."
+    },
+    {
+     "name": "Gemini",
+     "why": "Free Google AI Plus (Indian students: free for a year, redeem by 31 Dec 2026) helps with Sheets formulas for order and margin tracking."
+    }
+   ],
+   "mvp_features": [
+    "SKU 1: Club Tee — 180 GSM 100% cotton round-neck, 1-colour front logo + 1-colour back text, sizes S-XXL, minimum 25 units, bulk tier pricing on the Google Sites price list.",
+    "SKU 2: Fest Tee — 180 GSM cotton, 2-colour front graphic + full-back event name print, sizes S-XXL, minimum 50 units, includes 1 free design revision via WhatsApp.",
+    "SKU 3: Hoodie Bundle — 320 GSM fleece-lined pullover hoodie, 1-colour chest logo + back print, sizes S-XXL, minimum 25 units, ordered only after the first tee order is confirmed."
+   ],
+   "tool_costs": [
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free with Google account",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Google Sites",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://support.google.com/sites/answer/98081?hl=en"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Instagram",
+     "plan": "Business account free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://help.instagram.com/502981923235522"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "Gemini",
+     "plan": "Google AI Plus (student free 1 year)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Domain",
+     "plan": "in domain",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/",
+     "added_by_code": true
+    }
+   ],
+   "mvp_build_cost": 11500.0,
+   "first_10_steps": [
+    "List 3 college-area print shops within 5 km and WhatsApp each asking for per-unit rates at 25, 50 and 100 units for 180 GSM tee and 320 GSM hoodie, plus exact lead time.",
+    "Order 2 sample T-shirts (1 club-style, 1 fest-style) from the cheapest responsive shop, paying under ₹1,200 total, to check print and fabric quality in hand.",
+    "Open a free Google Sheet with columns for order ID, club name, event date, SKU, size breakdown, unit price, 50% advance received, balance due, print partner, delivery date.",
+    "Build the one-page Google Sites storefront with the bulk price list, size chart, 7-day delivery promise and 3 sample photos; buy the ₹75/mo .in domain.",
+    "Create the free WhatsApp Business catalogue with the 3 SKUs and set quick replies for the quote request, size chart and 50% advance payment message.",
+    "Generate the logo mockups in ChatGPT and lay them out in Canva free; export 3 mockup images for the Instagram grid and WhatsApp catalogue.",
+    "Post the first 3 Instagram posts and send the Google Sites link plus a sample photo to 10 club heads and fest committee members you already know, asking for a 25-unit quote request.",
+    "Send a Razorpay payment link for 50% advance on the first confirmed order and record it in the Google Sheet the same day.",
+    "Confirm the print slot with the chosen print partner by WhatsApp for the first order's delivery date, sharing the approved artwork file from Google Drive.",
+    "Deliver the first bulk order, take 5 photos of the shirts on students, post them on Instagram and ask that club head for one referral to another club."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Club Tee (25+ units)",
+     "monthly_price": 349.0,
+     "billing": "per_use",
+     "features": [
+      "180 GSM 100% cotton round-neck",
+      "1-colour front logo + 1-colour back text",
+      "Sizes S-XXL, minimum 25 units",
+      "7-day delivery guarantee",
+      "WhatsApp design approval"
+     ]
+    },
+    {
+     "name": "Fest Tee (50+ units)",
+     "monthly_price": 329.0,
+     "billing": "per_use",
+     "features": [
+      "180 GSM cotton, 2-colour front graphic",
+      "Full-back event name print",
+      "Sizes S-XXL, minimum 50 units",
+      "1 free design revision via WhatsApp",
+      "7-day delivery guarantee"
+     ]
+    },
+    {
+     "name": "Hoodie Bundle (25+ units)",
+     "monthly_price": 899.0,
+     "billing": "per_use",
+     "features": [
+      "320 GSM fleece-lined pullover hoodie",
+      "1-colour chest logo + back print",
+      "Sizes S-XXL, minimum 25 units",
+      "Ordered after first tee order confirmed",
+      "7-day delivery guarantee"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 10875.0,
+   "delivery_cost_per_customer": 7900.0,
+   "burn_line_items": [
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Workspace",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Sites",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Instagram Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "ChatGPT",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Gemini",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Domain (.in)",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 3500.0
+    }
+   ],
+   "monthly_burn": 3575.0,
+   "marketing_budget": 3500.0,
+   "starting_capital": 20000.0,
+   "external_funding": 0.0,
+   "runway_months": 5.6,
+   "break_even_customers": 2,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 1,
+     "mrr": 10875.0,
+     "notes": "One-time project revenue: first 50-unit Fest Tee order from a club head already contacted; 50% advance collected via Razorpay; this is a per-order project payment, not recurring MRR"
+    },
+    {
+     "day": 60,
+     "paying_customers": 2,
+     "mrr": 21750.0,
+     "notes": "One-time project revenue: second bulk order from a referral by the first club head; hoodie upsell starts; each order is a separate project payment"
+    },
+    {
+     "day": 90,
+     "paying_customers": 3,
+     "mrr": 32625.0,
+     "notes": "One-time project revenue: one order per month from fest committee + club; reorder assumption — same club reorders next fest cycle (~1 per quarter), so ~1 of the 3 Day-90 orders is a repeat rather than a new customer"
+    }
+   ],
+   "key_assumptions": [
+    "One bulk order = 50 units x ₹349 avg unit price = ₹17,450 order value; a typical paying customer (one club/fest) pays ₹10,875 in a typical month across tiers — but these are one-time project payments per order, not recurring MRR; reorder assumption: each club/fest reorders once per fest cycle (~1 per quarter)",
+    "Delivery cost per customer = goods COGS (~60% of order value ≈ ₹6,500) + print partner coordination + 2 helper hours (₹400) + packaging/shipping (₹1,000) = ₹7,900 per order served",
+    "Willingness to pay: fest treasurers already budget ₹300-₹400 per tee for 50+ units from local shops; ₹329-₹349 undercuts them while guaranteeing 7-day delivery",
+    "Only 1 order per month is realistic for a student founder at 15 hrs/week during term; break-even is 2 orders because fixed burn is ₹3,575 and per-order margin is ₹2,975 after COGS and fees"
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "WhatsApp club & fest committee outreach (campus-first, zero spend)",
+     "tactic": "Pre-week-1: land 1 warm pilot order from a batchmate-run club or your own class fest at cost (₹349/unit Club Tee, 25 units) with 1 free design revision, to generate the first real delivery photo + 2-line WhatsApp testimonial before any cold outreach. Then join 15 college fest/club WhatsApp groups (tech fest, cultural fest, literary club, robotics, sports meet) via batchmates and seniors; post 1 message per group per week. DM 10 club heads/fest convenors per day on WhatsApp + Instagram with the 3-line cold message and a Canva mockup of THEIR club logo on a tee, attaching the pilot delivery photo as proof. Follow up day 3 and day 7. Target: 70 DMs/week, 15 conversations/week.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 1,
+     "cac": 0.0
+    },
+    {
+     "name": "Instagram DM + boosted reel proof (club merch showcase)",
+     "tactic": "Post 4 reels/month on Instagram (Canva mockups → WhatsApp design-approval screenshots → pilot delivery photos). Run 10 DMs/day to club/fest Instagram handles found via #<college>fest, #<college>club. Hold the ₹3,500 boost until AFTER the first organic order closes: then put the full ₹3,500 into ONE boost on the single reel that already produced a WhatsApp reply, CTA button = 'Send WhatsApp message', audience = 18-24 year olds within 10km of campus, interest targets = college fests + streetwear. Cap it at 7 days; count a conversion only as a WhatsApp thread that reaches a mockup request — if 0 mockup requests in 7 days, stop and return to organic DMs.",
+     "monthly_spend": 3500.0,
+     "new_customers_per_month": 1,
+     "cac": 3500.0
+    }
+   ],
+   "first_10_customers": [
+    "Pre-week-1 (before any cold outreach): close 1 warm pilot — a batchmate-run club or your own class fest, 25-unit Club Tee at ₹349/unit with 1 free design revision, 7-day delivery guarantee in writing, 50% advance via Razorpay link. Deliver flawlessly, collect 1 delivery photo + a 2-line WhatsApp testimonial. This is your only proof asset for cold outreach.",
+    "Week 1: List 30 clubs/fests at your own college and 2 neighbouring colleges in a Google Sheet (name, head, WhatsApp, Instagram, last event date, expected units). Message 10/day starting with juniors and batchmates who run clubs.",
+    "Week 1-2: Send the 3-line cold message + a Canva mockup of THEIR club logo on a tee to 10 club heads/day on WhatsApp, attaching the pilot delivery photo as proof. Log every reply in the Sheet. Follow up day 3 and day 7 with 'want me to send a free digital mockup of your exact design?'",
+    "Week 2-3: Convert customer #2 with a locked-in pilot: 50-unit Fest Tee order, 7-day delivery guarantee written on WhatsApp, 50% advance via Razorpay. Ask for a 2-line WhatsApp testimonial + referral to one other club head.",
+    "Week 3-4: Ask every existing contact (batchmates, hostel WhatsApp groups, seniors in fest committees) for 1 warm intro to a club head. Post 1 Instagram reel of the delivered order with the college tag. Target 3 intros/week.",
+    "Week 4-6: Chase orders 3-5 via referrals from customers #1 and #2 (offer 1 free hoodie on their next order as a referral reward — reduces revenue, not spend). Run the ₹3,500 reel boost only after order #2 closes. Lock Day-30 target of 1 paying customer (50-unit Fest Tee, 50% advance via Razorpay) plus a pipeline of 3 warm conversations for Day-60."
+   ],
+   "cold_message": "Hi [Name], I saw [Club/Fest] is coming up on [date] — do you already have T-shirts sorted for your team/volunteers? I print 50+ unit club and fest orders (180 GSM, 2-colour design) with a 7-day delivery guarantee and 50% advance, and I'll send you a free mockup of your own logo on the tee today if you share the design. Want me to send it over?",
+   "objections": [
+    {
+     "objection": "Local print shop near college quoted me cheaper / I can get it done for less.",
+     "response": "Ask what their lead time and revision policy are — most college-area shops quote 10-14 days with no digital preview, and one missed date kills your merch plan. My quote is ₹329/unit for 50+ with a 7-day delivery guarantee written on WhatsApp, 1 free design revision, and a digital mockup approved before printing. If they beat that with a written date, I'll match it — otherwise you're betting your event on a shop that can't commit."
+    },
+    {
+     "objection": "I need to check with my committee / budget isn't approved yet.",
+     "response": "Totally fair — I can hold your slot for 48 hours with no payment. Send me your logo and event name and I'll send a free mockup within 2 hours so your committee sees exactly what they're approving. Once approved, it's just a Razorpay link for 50% advance and we start printing — you only pay the balance on delivery."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a faithful, well-scoped execution of the stated idea: bulk custom-printed tees and hoodies for college clubs and fests in India, bootstrapped by a student founder. Tools, channels, pricing and payment flow all fit the HARD RULES (campus-first, UPI/Razorpay, near-zero burn, 15 hrs/week). The main viability question is whether a no-track-record founder can reliably close 1-2 bulk orders per month at these price points within the first 60 days.",
+  "biggest_risk": "The founder has no delivery track record and no samples in hand, so club heads and fest treasurers — who are accountable for their event's merch — may simply not trust an unknown student with a 50% advance and a hard event deadline, stalling the pipeline past the 6-week window.",
+  "adherence_score": 0.92
+ },
+ "seconds": 139.2,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1308,
+   "out": 476,
+   "thinking": 0,
+   "total": 1784
+  },
+  {
+   "role": "builder",
+   "in": 2558,
+   "out": 1083,
+   "thinking": 0,
+   "total": 3641
+  },
+  {
+   "role": "economics",
+   "in": 3655,
+   "out": 799,
+   "thinking": 0,
+   "total": 4454
+  },
+  {
+   "role": "growth",
+   "in": 2047,
+   "out": 975,
+   "thinking": 0,
+   "total": 3022
+  },
+  {
+   "role": "critic",
+   "in": 4826,
+   "out": 487,
+   "thinking": 0,
+   "total": 5313
+  },
+  {
+   "role": "economics",
+   "in": 4619,
+   "out": 911,
+   "thinking": 0,
+   "total": 5530
+  },
+  {
+   "role": "growth",
+   "in": 3325,
+   "out": 1212,
+   "thinking": 0,
+   "total": 4537
+  },
+  {
+   "role": "critic",
+   "in": 5122,
+   "out": 421,
+   "thinking": 0,
+   "total": 5543
+  }
+ ],
+ "tokens": {
+  "in": 27460,
+  "out": 6364,
+  "thinking": 0,
+  "total": 33824
+ }
+}

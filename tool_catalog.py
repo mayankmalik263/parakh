@@ -134,7 +134,7 @@ def price_build(build: dict, profile: dict, catalog: dict | None = None) -> list
 
     named = [t.get("name", "") for t in build.get("stack", []) + build.get("ai_tools", [])]
     for name in named:
-        if not _words(name) or any(_same(name, c.get("tool", "")) for c in costs):
+        if not _words(name) or is_costed(name, costs, catalog):
             continue
         tool = find_tool(name, catalog)
         plan = _default_plan(tool) if tool else None
@@ -143,9 +143,18 @@ def price_build(build: dict, profile: dict, catalog: dict | None = None) -> list
             costs.append({"tool": name, "plan": "not stated", "monthly_cost": 0, "verified": False,
                           "price_note": "Recommended without a price. Check whether it is free before you rely on it."})
         else:
-            costs.append({"tool": tool["name"], "plan": plan["plan"], "monthly_cost": price, "verified": True,
+            costs.append({"tool": name, "plan": plan["plan"], "monthly_cost": price, "verified": True,
                           "price_note": _note(tool, plan, profile), "added_by_code": True})
     return fixes
+
+
+def is_costed(name: str, costs: list[dict], catalog: dict | None = None) -> bool:
+    """A recommended tool is costed if a cost line names it, or names the same catalog product
+    ("Google Sheets" is covered by a "Google Workspace" line)."""
+    if any(_same(name, c.get("tool", "")) for c in costs):
+        return True
+    tool = find_tool(name, catalog)
+    return bool(tool) and any(find_tool(c.get("tool", ""), catalog) is tool for c in costs)
 
 
 def market_findings(slices: dict, profile: dict, catalog: dict | None = None) -> list[dict]:

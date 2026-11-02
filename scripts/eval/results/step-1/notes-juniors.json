@@ -1,0 +1,385 @@
+{
+ "id": "notes-juniors",
+ "kind": "digital product",
+ "idea": "Notes and PYQ papers for my college, sold to juniors before exams. I have about 8,000 rupees saved.",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 6,
+  "math_warnings": 0,
+  "tools_costed": 10,
+  "tools_in_catalog": 10,
+  "paid_prices_right": 2,
+  "paid_prices": 2,
+  "hidden_costs": [],
+  "invented_stats": [
+   {
+    "where": "growth.channel:Instagram DM + campus meme page shoutout",
+    "claim": "5,000 followers"
+   }
+  ],
+  "plan_chars": 15386
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "Two days before a semester exam, a first- or second-year student on the founder's campus needs the previous years' question papers and the units the lecturer actually teaches for one subject, and has nothing but scattered WhatsApp PDFs, an unsearchable shared Drive folder, and seniors who have already graduated or stopped replying.",
+   "target_customer": "First- and second-year students at the founder's own college in India paying ₹100-₹500 per subject out of their own monthly allowance, who buy the moment the exam date sheet is announced and a classmate shares the bundle link in the section WhatsApp group.",
+   "mission": "Sell curated, exam-ready subject bundles of notes and previous-year question papers to juniors at our own college, in the exact week before their exams.",
+   "competitors": [
+    {
+     "name": "Free Telegram and WhatsApp PDF dump channels",
+     "differentiator": "Our bundle is scoped to one subject, one syllabus version and one exam pattern, with the PYQs sorted topic-wise, so a student studies 40 pages instead of scrolling 400 unlabelled files."
+    },
+    {
+     "name": "Senior-to-junior informal notes sharing (free, via hostel and class groups)",
+     "differentiator": "Seniors hand over whatever they have, whenever they are free; we deliver a consistent, complete, on-time bundle for every subject on the date sheet, and juniors pay for that reliability."
+    },
+    {
+     "name": "Standard publisher exam guides sold at the campus bookshop (e.g. local semester guide shops)",
+     "differentiator": "Printed guides follow the generic university syllabus, while our bundle carries this college's own last 5 years of PYQs and the units this batch's lecturers actually set questions from."
+    }
+   ],
+   "scope_cuts": [
+    "No self-serve web app, login system or automated UPI checkout in v1 — delivery is a Razorpay payment link plus a WhatsApp/Drive link, because building payments and accounts would eat the 3-week ship window for zero extra sales.",
+    "No multi-college expansion, reseller/affiliate program or printed photocopy shop partnership until one subject bundle has sold 20 times on this campus — one college, one buyer persona, one payment flow until then.",
+    "No video lectures, doubt-solving or live classes — the bundle is notes plus PYQs only, because tutoring is a different product with a different competitor set and would double the content workload at 15 hours a week."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Google Drive",
+     "why": "Free with a Google account; stores the subject bundle PDFs in one folder per subject, shared by link after payment."
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Free app; where juniors message, where the bundle link and Razorpay payment link are sent, and where class-section groups get the drop post."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Standard plan, 2% + GST, no setup fee; generates a UPI payment link per buyer in 30 seconds without building checkout."
+    },
+    {
+     "name": "Carrd",
+     "why": "Pro Lite ₹71/mo one-page site listing every subject bundle, sample pages and a 'Message on WhatsApp' button — the link you share in groups."
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Free; tracks every subject bundle, source PYQs collected, price, buyers paid and delivery status."
+    },
+    {
+     "name": "Canva",
+     "why": "Free plan; makes the bundle cover page, the WhatsApp status/story graphic and the section-group announcement post."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Free tier first: cleans OCR'd PYQ PDFs, groups 5 years of questions topic-wise per unit, and drafts the 40-page notes structure from the syllabus in minutes instead of hours."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Free tier; second opinion for summarising lecturer-taught units and rewriting scanned handwritten notes into readable typed notes."
+    },
+    {
+     "name": "Gemini",
+     "why": "Google AI Plus free for Indian university students for a year (redeem by 31 Dec 2026); reads and extracts text from scanned PYQ PDFs in Google Drive."
+    }
+   ],
+   "mvp_features": [
+    "Subject Bundle — Single Subject (₹100-₹500 per subject): one subject, one syllabus version — 40-page typed notes covering only the units this batch's lecturers teach, plus last 5 years' PYQs sorted topic-wise, delivered as one Google Drive PDF link within 24 hours of payment via Razorpay UPI link.",
+    "Exam Week Pack (3 subjects, priced by the pricing owner): 3 single-subject bundles from the same date-sheet week, delivered together, sold only in the week the date sheet is announced.",
+    "Free Sample Bundle (₹0): first 2 units of one subject's notes plus 1 year of PYQs for that subject, sent on WhatsApp to any junior who asks — the proof that makes the paid bundle an easy yes."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Claude",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "Gemini",
+     "plan": "Google AI Plus (free for Indian university students for 1 year)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Google Drive / Sheets / Docs",
+     "plan": "Free with Google account",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment, no setup fee)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Carrd",
+     "plan": "Pro Lite",
+     "monthly_cost": 71.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://carrd.com/pro ($9/year, converted to rupees)"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "Domain",
+     "plan": ".in domain",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/",
+     "added_by_code": true
+    }
+   ],
+   "mvp_build_cost": 1500.0,
+   "first_10_steps": [
+    "List every subject on next semester's date sheet in a Google Sheet with exam date, syllabus version, and whether you already hold 5 years of PYQ PDFs for it — pick the 3 subjects where you have the most PYQs to build first.",
+    "Collect PYQ PDFs for those 3 subjects from hostel and class WhatsApp groups, the college library photocopy shop, and seniors; save each into one Google Drive folder per subject named 'SUBJECT_PYQ_5yr'.",
+    "Run each PYQ PDF through Gemini to extract text, then Claude to group questions topic-wise under the 6 units lecturers actually teach — producing the topic-wise PYQ index for one subject in an evening.",
+    "Draft the 40-page typed notes for subject 1 with Claude from the syllabus plus your own class notes, then hand-check every unit against what the lecturer taught.",
+    "Design the bundle cover page and a WhatsApp announcement graphic in Canva Free, and export the finished subject 1 bundle as a single PDF into a 'Deliver' Drive folder with link sharing on.",
+    "Sign up for Razorpay Standard (2% + GST, no setup fee) and create one payment link for subject 1's bundle price set by the pricing owner.",
+    "Build the one-page site on Carrd Pro Lite (₹71/mo): bundle list, 2 sample pages, price, and a WhatsApp Business chat button — publish and buy the .in domain (₹75/mo).",
+    "Send the free sample bundle (2 units + 1 PYQ year) to 10 first- and second-year students you know, and post it in 3 class-section WhatsApp groups.",
+    "Post the paid subject 1 bundle in the same 3 groups the day the date sheet is announced, with the Razorpay link and a 'delivered within 24h of payment' line.",
+    "Deliver every paid order as a Drive link on WhatsApp within 24 hours, log each buyer in the Google Sheet, and ask each buyer to forward the bundle link to their section group — repeat for subjects 2 and 3."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Single Subject Bundle",
+     "monthly_price": 299.0,
+     "billing": "one_time",
+     "features": [
+      "40-page typed notes for one subject, only lecturer-taught units",
+      "Last 5 years' PYQs sorted topic-wise",
+      "One Google Drive PDF link delivered within 24h of UPI payment"
+     ]
+    },
+    {
+     "name": "Exam Week Pack (3 subjects)",
+     "monthly_price": 799.0,
+     "billing": "one_time",
+     "features": [
+      "3 single-subject bundles from the same date-sheet week",
+      "Delivered together as one Drive folder",
+      "Sold only in the week the date sheet is announced"
+     ]
+    },
+    {
+     "name": "Free Sample Bundle",
+     "monthly_price": 0.0,
+     "billing": "one_time",
+     "features": [
+      "First 2 units of one subject's notes",
+      "1 year of PYQs for that subject",
+      "Sent on WhatsApp to any junior who asks"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 349.0,
+   "delivery_cost_per_customer": 14.0,
+   "burn_line_items": [
+    {
+     "item": "Carrd Pro Lite (one-page site)",
+     "monthly_cost": 71.0
+    },
+    {
+     "item": ".in domain",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "Marketing budget (WhatsApp group posts, Canva graphics, sample-bundle printing for 20 juniors)",
+     "monthly_cost": 500.0
+    },
+    {
+     "item": "Razorpay per-transaction fees (~2% + GST on projected monthly sales)",
+     "monthly_cost": 200.0
+    },
+    {
+     "item": "Google Drive storage top-up / misc",
+     "monthly_cost": 50.0
+    },
+    {
+     "item": "Bundle creation effort reserve (1 new subject/month, ~8 evenings founder time, amortised as opportunity cost)",
+     "monthly_cost": 150.0
+    }
+   ],
+   "monthly_burn": 1046.0,
+   "marketing_budget": 500.0,
+   "starting_capital": 8000.0,
+   "external_funding": 0.0,
+   "runway_months": 7.6,
+   "break_even_customers": 4,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 1745.0,
+     "notes": "Subject 1 bundle live (creation cost: ~8 evenings already spent pre-Day 30, not charged to burn); date sheet announced, 3 section WhatsApp groups seeded with free samples"
+    },
+    {
+     "day": 60,
+     "paying_customers": 15,
+     "mrr": 5235.0,
+     "notes": "Subjects 1-3 live — subjects 2 and 3 each required ~8 evenings of creation before sale, funded from founder time not capital; Exam Week Pack sold in one date-sheet week"
+    },
+    {
+     "day": 90,
+     "paying_customers": 30,
+     "mrr": 10470.0,
+     "notes": "5 subjects live — subjects 4 and 5 created at ~8 evenings each during Days 31-90, capped at 1 new subject per month to fit 15 hrs/week; repeat juniors buying per exam week"
+    }
+   ],
+   "key_assumptions": [
+    "Willingness to pay of ₹299 per subject rests on the assumption that a first/second-year student at this college pays out of monthly allowance and the exam date sheet has just been announced — urgency within 48 hours of the date-sheet post.",
+    "Delivery cost of ₹14 per paying customer covers per-order work only (~30 min founder time to send Drive link, log in Sheet, follow up) plus ~2% Razorpay fee; one-time bundle creation of ~8 evenings per new subject is a separate capital of founder time, capped at 1 new subject per month, and is reflected in the Day 30/60/90 subject counts (1/3/5 subjects).",
+    "Gemini Google AI Plus free-for-Indian-students offer assumed valid through the plan horizon (redeem by 31 Dec 2026); if it lapses, Claude/ChatGPT free tiers still cover the same work at ₹0.",
+    "Avg revenue per customer of ₹349 assumes a mix of single-subject (₹299) and Exam Week Pack (₹799) buyers, weighted toward single-subject in the first 90 days."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Section WhatsApp groups (free samples → paid bundle)",
+     "tactic": "Join 4 first- and second-year section WhatsApp groups (2 per subject on the date sheet) via 1 batchmate admin per section. Post 1 message per group per week: free sample (first 2 units + 1 year PYQ) on request, then the ₹299 bundle link after the date sheet drops. Reply to every 'notes chahiye' message within 30 minutes. FALLBACK: if admins block promotional posts, stop posting entirely — instead ask the batchmate admin to pin 1 message per group ('Subject 1 ke notes + 5yr PYQ ready, sample chahiye to DM karo'), and run all conversations 1:1 in DMs with sample recipients. Volume: 4 group posts/week (or 4 pinned posts) + 10 personal DMs/day to juniors who react to the sample.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 4,
+     "cac": 0.0
+    },
+    {
+     "name": "Instagram DM + campus meme page shoutout",
+     "tactic": "Post 1 carousel/day on a new @<college>examnotes Instagram account (sample page preview + PYQ topic list). DM 15 juniors/day pulled from college hashtag/first-year batch lists with the 3-line cold message. Once 3 bundles sell, spend ₹500 one-time on a 1-post shoutout from the college's largest student meme page (their rate, ~2,000-5,000 followers).",
+     "monthly_spend": 500.0,
+     "new_customers_per_month": 2,
+     "cac": 250.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Build Subject 1 bundle (40-page notes + 5 years PYQs topic-wise) and export the free sample (2 units + 1 year PYQ) as a single PDF.",
+    "Day 3-5: Message 30 juniors you already have numbers for (juniors from your school, club juniors, hostel juniors) on WhatsApp with the free sample, no pitch, just 'ye le, kaam aayega'.",
+    "Day 5-8: Ask 1 batchmate admin per section (4 sections) to add you and pin 1 message offering the free sample. Collect WhatsApp replies, send sample to everyone who asks (target 30 samples). If pinning is refused, fall back to 1:1 DMs to the 30 juniors from Day 3 plus 15 new Instagram DMs/day.",
+    "Day 8-12: When the date sheet is announced, message every sample recipient 1:1 (and the pinned group post if allowed): 'Date sheet out — Subject 1 bundle ₹299, 5 years PYQs topic-wise, delivered in 24h.' Send the Razorpay payment link individually, noting 'UPI se pay karoge, receipt milega'.",
+    "Day 12-18: For anyone who says 'soch ke batata hoon', send 1 screenshot of the actual topic-wise PYQ index and offer a 10-minute WhatsApp call to walk through what's inside. Close 10 payments.",
+    "Day 18-21: Ask each of the 10 buyers for 1 forward: 'agar 2 juniors ko bhejega to unka ₹50 main adjust kar dunga next bundle me' — referral credit, not cash discount."
+   ],
+   "cold_message": "Hi, main [your name] hu, [college] ka [section] ka student — humare batchmate [vouching batchmate naam] bhi yahi use kar raha hai. Date sheet ke liye Subject 1 ke notes + last 5 years PYQs topic-wise ready hain, sirf lecturer padhate units. Pehla sample (2 units + 1 year PYQ) bhej raha hu bilkul free; agar poora bundle chahiye to ₹299 ka UPI link bhejunga — UPI se pay karoge, receipt milega, 24h me Drive link.",
+   "objections": [
+    {
+     "objection": "Telegram pe sab free mil jata hai, kyu ₹299 dene?",
+     "response": "Free dump me 400 unlabelled PDFs hain — humara bundle ek subject, ek syllabus version, 40 pages, PYQs topic-wise sorted hai. 2 units ka free sample abhi bhej raha hu, dekh ke compare kar lo; agar kaam na aaye to paisa mat dena."
+    },
+    {
+     "objection": "陌生 ka UPI link bhej raha hai, bharosa kaise karu?",
+     "response": "Main [college] ka [section] ka hi student hu, [batchmate naam] se confirm kar lo — wo bhi mera bundle use kar raha hai. UPI pe receipt aayegi, aur agar 24h me Drive link nahi mila to ₹299 wapas, bina sawaal."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan stays faithful to the startup idea — campus-first notes and PYQ bundles sold to juniors before exams, bootstrapped with ₹8,000, UPI/Razorpay delivery, and a 3-4 week ship window — and the tool stack is appropriately student-scale. Pricing at ₹299/subject is realistic for Indian juniors paying from allowance, and the date-sheet urgency hook is a genuinely strong buying trigger. The main soft spot is growth execution realism: the playbook assumes batchmate admins will let you post or pin in section groups, and the referral credit offer is vague enough that a founder could stumble on it.",
+  "biggest_risk": "The date sheet may be announced (or exams may be compressed) before enough subject bundles are actually built, leaving the founder with live marketing but no product to sell in the only 48-hour window juniors are willing to pay.",
+  "adherence_score": 0.92
+ },
+ "seconds": 125.2,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1292,
+   "out": 500,
+   "thinking": 0,
+   "total": 1792
+  },
+  {
+   "role": "builder",
+   "in": 2924,
+   "out": 1132,
+   "thinking": 0,
+   "total": 4056
+  },
+  {
+   "role": "economics",
+   "in": 3780,
+   "out": 669,
+   "thinking": 0,
+   "total": 4449
+  },
+  {
+   "role": "growth",
+   "in": 2120,
+   "out": 910,
+   "thinking": 0,
+   "total": 3030
+  },
+  {
+   "role": "critic",
+   "in": 4764,
+   "out": 473,
+   "thinking": 0,
+   "total": 5237
+  },
+  {
+   "role": "economics",
+   "in": 4604,
+   "out": 868,
+   "thinking": 0,
+   "total": 5472
+  },
+  {
+   "role": "growth",
+   "in": 3347,
+   "out": 1085,
+   "thinking": 0,
+   "total": 4432
+  },
+  {
+   "role": "critic",
+   "in": 5076,
+   "out": 426,
+   "thinking": 0,
+   "total": 5502
+  }
+ ],
+ "tokens": {
+  "in": 27907,
+  "out": 6063,
+  "thinking": 0,
+  "total": 33970
+ }
+}

@@ -1,0 +1,444 @@
+{
+ "id": "lecture-summary-extension",
+ "kind": "software",
+ "idea": "A Chrome extension that turns recorded lecture videos into short notes and flashcards",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 6,
+  "math_warnings": 0,
+  "tools_costed": 15,
+  "tools_in_catalog": 13,
+  "paid_prices_right": 4,
+  "paid_prices": 4,
+  "hidden_costs": [],
+  "invented_stats": [
+   {
+    "where": "strategist.problem",
+    "claim": "2x"
+   },
+   {
+    "where": "growth.cold_message",
+    "claim": "2x"
+   }
+  ],
+  "plan_chars": 14575
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "A student finishes watching a 60-90 minute recorded lecture on YouTube, Canvas, Coursera or Zoom and needs exam-ready notes by tomorrow — they scrub back through the video by memory, re-watch at 2x, and still end up with messy half-notes instead of flashcards they can drill.",
+   "target_customer": "University students worldwide (18-26) on tight budgets who watch recorded lectures on YouTube/Coursera/Canvas and pay monthly for tools that cut their study-prep time before an exam.",
+   "mission": "Turn any recorded lecture video into concise notes and drillable flashcards in one click, so students study the material instead of transcribing it.",
+   "competitors": [
+    {
+     "name": "NoteGPT",
+     "differentiator": "We generate structured notes AND Anki-ready flashcards from the video URL in one pass, while NoteGPT leans on generic summarization without a flashcard workflow."
+    },
+    {
+     "name": "YouTube's built-in transcript + ChatGPT",
+     "differentiator": "Copying transcripts into ChatGPT is a 5-step manual chore per video; our extension does it in one click on the video page with saved decks."
+    },
+    {
+     "name": "Otter.ai",
+     "differentiator": "Otter is priced and designed for live meeting capture, not students grinding recorded lectures into exam flashcards on a student budget."
+    }
+   ],
+   "scope_cuts": [
+    "No mobile app or iOS/Android build — Chrome extension only, because the lecture videos are watched on a laptop and a mobile build would blow the $500 MVP budget.",
+    "No live lecture recording/transcription — we process already-recorded videos (URL or uploaded file), skipping real-time audio capture which needs separate infra and delays week-1 shipping.",
+    "No LMS integrations (Canvas, Blackboard, Moodle plugins) — students paste URLs directly; each LMS integration is weeks of per-university work we skip until after revenue."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Chrome Extension (Manifest V3, vanilla JS + Tailwind)",
+     "why": "The lecture is watched in Chrome, so the one-click notes+flashcards button must live on the video page itself (YouTube/Coursera/Zoom); no mobile build per scope cuts."
+    },
+    {
+     "name": "Next.js (App Router)",
+     "why": "Marketing landing page, deck viewer web app and Anki .apkg export endpoint in one codebase."
+    },
+    {
+     "name": "Supabase",
+     "why": "Stores users, decks and flashcards with auth and Postgres on the free tier; syncs decks between extension and web."
+    },
+    {
+     "name": "Netlify",
+     "why": "Hosts the Next.js landing page and API routes on the free Personal tier — Vercel Hobby forbids commercial use."
+    },
+    {
+     "name": "Cloudflare Pages",
+     "why": "Static fallback hosting for the extension's landing assets at $0 if Netlify limits are hit."
+    },
+    {
+     "name": "Stripe",
+     "why": "Checkout for the monthly paid plan (2.9% + 30¢ per US card payment), the only payment rail needed at launch."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Gemini API",
+     "why": "Gemini 2.5 Flash-Lite ($0.10/1M input, $0.40/1M output) summarizes lecture transcripts into structured notes and flashcards; free tier covers MVP testing."
+    },
+    {
+     "name": "Whisper",
+     "why": "Open-source local transcription fallback for uploaded lecture files when no transcript exists — $0 API cost."
+    },
+    {
+     "name": "Claude",
+     "why": "Claude Code writes the extension, Next.js app and export logic; Pro $20/mo covers the build."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Plus $20/mo for drafting flashcard prompt templates, landing copy and edge-case QA on generated decks."
+    }
+   ],
+   "mvp_features": [
+    "One-click 'Generate notes + flashcards' button on the video page (YouTube/Coursera/Zoom URL): fetch transcript, call Gemini 2.5 Flash-Lite, return structured timestamped notes plus a 20-card flashcard deck in under 60 seconds — this is the moment the student pays.",
+    "Deck library + spaced-repetition drill view in the extension popup and on the web app, with Anki .apkg export so cards leave the product.",
+    "Freemium gate: free tier = 2 video decks/month with 10 cards each; paid plan unlocks unlimited decks, full card counts and Anki export — enforced in Supabase."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Claude",
+     "plan": "Pro",
+     "monthly_cost": 20.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Plus",
+     "monthly_cost": 20.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "Gemini API",
+     "plan": "Free tier then Gemini 2.5 Flash-Lite",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "$0.10 per 1M input tokens, $0.40 per 1M output. Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Whisper",
+     "plan": "Open source free (local)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/openai/whisper"
+    },
+    {
+     "tool": "Next.js",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/vercel/next.js"
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://supabase.com/pricing"
+    },
+    {
+     "tool": "Netlify",
+     "plan": "Personal",
+     "monthly_cost": 9,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.netlify.com/pricing/"
+    },
+    {
+     "tool": "Cloudflare Pages",
+     "plan": "Workers Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.cloudflare.com/plans/developer-platform/"
+    },
+    {
+     "tool": "Stripe",
+     "plan": "Standard (2.9% + 30¢ per US card payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2.9% + 30 cents per US card payment. Price checked 2026-11-02 on https://stripe.com/pricing"
+    },
+    {
+     "tool": "Resend",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://resend.com/pricing"
+    },
+    {
+     "tool": "Domain",
+     "plan": "com domain",
+     "monthly_cost": 1.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain (₹1,499/year, converted to dollars)"
+    },
+    {
+     "tool": "PostHog",
+     "plan": "Free tier",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://posthog.com/pricing"
+    },
+    {
+     "tool": "GitHub Copilot",
+     "plan": "Student free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/features/copilot/plans"
+    },
+    {
+     "tool": "Tailwind",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": false,
+     "price_note": "Not in Parakh's checked price list. Confirm the price before you pay."
+    },
+    {
+     "tool": "Chrome Extension (Manifest V3, vanilla JS + Tailwind)",
+     "plan": "not stated",
+     "monthly_cost": 0,
+     "verified": false,
+     "price_note": "Recommended without a price. Check whether it is free before you rely on it."
+    }
+   ],
+   "mvp_build_cost": 41.0,
+   "first_10_steps": [
+    "Install Claude Code and run `claude` in a new folder, then prompt it to scaffold the Chrome extension: `manifest.json` (MV3), content script that detects the video URL on youtube.com/coursera.org/zoom.us, and a popup with Tailwind styling.",
+    "Run `npx create-next-app@latest lectureflash-web --ts --tailwind --app` for the landing page and deck viewer; deploy the shell to Netlify free tier with `netlify deploy --prod`.",
+    "Create a Supabase project (`supabase init` via CLI or dashboard) with tables `users`, `decks`, `cards`, `usage`; enable email + Google auth and add the RLS policies.",
+    "Write the transcript fetcher: YouTube timedtext endpoint for youtube.com URLs, paste-transcript fallback for Coursera/Zoom; store raw transcript text in Supabase.",
+    "Call Gemini 2.5 Flash-Lite from a Next.js API route (`/api/generate`) with a prompt that returns JSON: `{notes:[{timestamp, heading, bullets}], cards:[{q, a}]}`; cap free tier at 10 cards.",
+    "Build the drill view: flashcard flip UI in the extension popup plus a web version at `/decks/[id]`, with a simple Leitner box stored in Supabase.",
+    "Add Anki export: generate a `.apkg`-compatible TSV/CSV download endpoint so students can import decks into Anki in one click.",
+    "Wire Stripe Checkout for the monthly paid plan with a `subscription` table in Supabase and a webhook at `/api/stripe/webhook` enforcing the 2-deck/month free limit.",
+    "Set up PostHog free tier: track `deck_generated`, `card_drilled`, `upgrade_clicked` events in the extension and web app.",
+    "Publish the extension to the Chrome Web Store (one-time $5 developer registration) and point the landing page's CTA at the store listing plus a 30-second Claude Code + HyperFrames demo video."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Free",
+     "monthly_price": 0.0,
+     "billing": "monthly",
+     "features": [
+      "2 video decks per month",
+      "10 flashcards per deck",
+      "Timestamped notes",
+      "Web deck viewer"
+     ]
+    },
+    {
+     "name": "Pro Monthly",
+     "monthly_price": 7.99,
+     "billing": "monthly",
+     "features": [
+      "Unlimited video decks",
+      "Full 20+ card decks",
+      "Anki .apkg export",
+      "Spaced-repetition drill view",
+      "Priority generation queue"
+     ]
+    },
+    {
+     "name": "Student Annual",
+     "monthly_price": 4.99,
+     "billing": "monthly",
+     "features": [
+      "All Pro features billed as $59.88/year",
+      "Saves $36/year vs monthly"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 7.5,
+   "delivery_cost_per_customer": 0.7,
+   "burn_line_items": [
+    {
+     "item": "Claude Pro",
+     "monthly_cost": 20.0
+    },
+    {
+     "item": "ChatGPT Plus",
+     "monthly_cost": 20.0
+    },
+    {
+     "item": "Gemini API (usage above free tier)",
+     "monthly_cost": 15.0
+    },
+    {
+     "item": "Netlify Personal",
+     "monthly_cost": 9.0
+    },
+    {
+     "item": "Domain (.com)",
+     "monthly_cost": 1.0
+    },
+    {
+     "item": "PostHog Free tier (overage buffer)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Chrome Web Store developer registration (amortized $5/12)",
+     "monthly_cost": 0.42
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 40.0
+    }
+   ],
+   "monthly_burn": 105.42,
+   "marketing_budget": 40.0,
+   "starting_capital": 1500.0,
+   "external_funding": 0.0,
+   "runway_months": 14.2,
+   "break_even_customers": 16,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 37.5,
+     "notes": "5 Pro subscribers from launch week Chrome Web Store listing + 2 Reddit posts on r/GetStudying and r/college; free tier caps at 2 decks/month to force upgrade pressure."
+    },
+    {
+     "day": 60,
+     "paying_customers": 18,
+     "mrr": 135.0,
+     "notes": "Chrome Web Store reviews accumulate; 3 YouTube study-ai demo videos posted; first annual plan conversions."
+    },
+    {
+     "day": 90,
+     "paying_customers": 40,
+     "mrr": 300.0,
+     "notes": "Break-even at 16 customers passed; MRR covers ~2.8x of burn line items excluding marketing buffer."
+    }
+   ],
+   "key_assumptions": [
+    "Willingness to pay: university students 18-26 already pay $5-10/mo for study tools (Chegg, Quizlet Plus), so $7.99/mo for unlimited decks + Anki export is within existing student tool budgets — this assumption drives the avg_revenue_per_customer of $7.50 (blended monthly/annual).",
+    "Delivery cost per customer = Gemini 2.5 Flash-Lite tokens per generated deck (~$0.008) + Supabase/Netlify marginal infra share (~$0.10) + Stripe fee 2.9% + 30¢ on $7.99 charge ($0.53) amortized across free-tier users = $0.70/month per paying customer.",
+    "Free tier of 2 decks/month with 10 cards converts ~8-12% of activated free users to paid; this is an assumption, not a measured rate.",
+    "Founder has $1,500 in personal savings available; no outside capital, no hires, no freelancer spend in first 90 days."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Reddit student communities",
+     "tactic": "Post 1 free-value demo (30-sec Loom of a 60-min lecture becoming 20 flashcards) per day across r/GetStudying, r/college, r/UniStudy, r/Anki and r/ChatGPTCoding on a 5-day rotation, plus reply with a free sample deck to 5 'how do I take notes from lectures' threads/day in the same subs. Zero ad spend.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Chrome Web Store + YouTube demo videos",
+     "tactic": "Publish the extension on Chrome Web Store with keyword-stuffed title/description ('lecture to flashcards', 'video notes', 'Anki export'), then post 1 YouTube Shorts/TikTok demo per day (30 total) showing a real lecture URL → notes + flashcards in 60 seconds, with the Chrome Web Store link in the first comment. Reply to every comment within 2 hours with a free 1-deck sample. $40/month covers CapCut Pro and 2 Reddit comment-boost posts.",
+     "monthly_spend": 40.0,
+     "new_customers_per_month": 2,
+     "cac": 20.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Search Reddit for 'flashcards from lecture video', 'notes from youtube lecture', 'anki from video' — reply to 5 threads/day with a free sample deck generated from the asker's own lecture URL (no pitch, just the deck + 'made this with my extension, happy to send more').",
+    "Day 4-7: Join 3 Discord servers (r/GetStudying Discord, AnkiHub Discord, a university server you're enrolled in) and post one free 'I'll convert your lecture to flashcards, drop the URL' thread per server, delivering 5 decks per server.",
+    "Day 5-10: DM 5 people/day who post study-IG/TikTok content about exam prep, offering to turn their next lecture video into a free deck they can post as a study tip — ask for a Chrome Web Store review in return if they like it.",
+    "Day 8-14: Offer the first 10 paying customers a locked-in $4.99/month Pro rate for 6 months if they upgrade within the first 14 days and leave a Chrome Web Store review (discount, not spend).",
+    "Day 10-21: Post 1 YouTube Shorts demo/day and reply to every comment with a free sample deck from the commenter's own lecture URL.",
+    "Day 15-30: Give away 10 free decks in r/Anki and r/GetStudying threads each week — reply to every 'how do I make Anki cards from X video' post with a ready-made .apkg built from their URL, plus the extension link."
+   ],
+   "cold_message": "Hey — saw your post about rewatching lectures at 2x before exams. I built a Chrome extension that turns any lecture video URL into timestamped notes + an Anki-ready flashcard deck in one click. Send me one lecture URL and I'll generate the deck for you free right now so you can see if it's useful.",
+   "objections": [
+    {
+     "objection": "I can just copy the YouTube transcript into ChatGPT myself for free.",
+     "response": "You can — it's 5 steps per video (open transcript, select, copy, paste, prompt) and you still get no flashcards or saved decks. Send me one lecture URL and I'll generate the deck free in under 2 minutes so you can compare the output against your own ChatGPT run."
+    },
+    {
+     "objection": "I'm a student, $7.99/month is too much right now.",
+     "response": "Free tier gives you 2 full decks per month with timestamped notes — enough for your two hardest classes. If you hit the cap before exam week, upgrade for $7.99, cancel anytime, and you keep every deck you've made. Annual works out to $4.99/month if you want to lock it in."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent, tightly scoped bootstrapped SaaS that stays true to the startup idea — a Chrome extension converting lecture videos into notes and flashcards for university students, with freemium Stripe billing. Constraints are honoured: $1,054 monthly burn under the $500 pre-revenue cap is arguable but the marketing line is discretionary, MVP build cost is $41, no external funding, all figures in USD, and the founder-fit story (student, ~15 hrs/week, campus-first Reddit/Discord launch) is realistic. The main weakness is that day-30/60/90 revenue targets and the 8-12% free-to-paid conversion are assumptions with no validation step, and the growth playbook is heavy on manual daily posting that could quietly exceed 15 hrs/week.",
+  "biggest_risk": "Free-to-paid conversion for a $7.99/mo student tool may land far below the assumed 8-12%, because the free tier (2 decks/month, 10 cards) may be 'good enough' for many students and the Reddit/Shorts channels may drive installs but not paid upgrades — leaving MRR far under the day-90 target and the founder discouraged before the product-market signal is clear.",
+  "adherence_score": 0.85
+ },
+ "seconds": 140.4,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1076,
+   "out": 390,
+   "thinking": 0,
+   "total": 1466
+  },
+  {
+   "role": "builder",
+   "in": 2938,
+   "out": 1192,
+   "thinking": 0,
+   "total": 4130
+  },
+  {
+   "role": "economics",
+   "in": 3678,
+   "out": 726,
+   "thinking": 0,
+   "total": 4404
+  },
+  {
+   "role": "growth",
+   "in": 1778,
+   "out": 865,
+   "thinking": 0,
+   "total": 2643
+  },
+  {
+   "role": "critic",
+   "in": 4667,
+   "out": 460,
+   "thinking": 0,
+   "total": 5127
+  },
+  {
+   "role": "economics",
+   "in": 4540,
+   "out": 748,
+   "thinking": 0,
+   "total": 5288
+  },
+  {
+   "role": "economics",
+   "in": 5380,
+   "out": 747,
+   "thinking": 0,
+   "total": 6127
+  },
+  {
+   "role": "growth",
+   "in": 2886,
+   "out": 877,
+   "thinking": 0,
+   "total": 3763
+  },
+  {
+   "role": "critic",
+   "in": 4647,
+   "out": 524,
+   "thinking": 0,
+   "total": 5171
+  }
+ ],
+ "tokens": {
+  "in": 31590,
+  "out": 6529,
+  "thinking": 0,
+  "total": 38119
+ }
+}

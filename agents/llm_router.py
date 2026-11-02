@@ -168,7 +168,10 @@ def _extract_json(text: str) -> str:
     """The JSON object in a reply, without markdown fences or chatter around it."""
     text = text.strip()
     if text.startswith("{"):
-        return text
+        # BharatCode's Qwen sometimes appends a stray word after the closing brace ("...]}parameter").
+        # Cut after the last brace instead of asking the model again.
+        end = text.rfind("}")
+        return text[:end + 1] if end != -1 else text
     fenced = re.search(r"```(?:json)?\s*(\{.*\})\s*```", text, re.DOTALL)
     if fenced:
         return fenced.group(1)
