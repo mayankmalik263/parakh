@@ -106,7 +106,7 @@ def correct_prices(slices: dict, profile: dict) -> tuple[int, int, int, int]:
         tool = tc.find_tool(line.get("tool", ""))
         plan = tc.find_plan(tool, f"{line.get('tool', '')} {line.get('plan', '')}", stated) if tool else None
         price = tc.monthly_cost(plan, profile) if plan else None
-        ok = price is not None and abs(stated - price) <= max(1, 0.02 * price)
+        ok = price is not None and abs(stated - price) <= tc._tolerance(price, profile)
         right += ok
         # Paid lines are the ones that matter: a free tool at 0 is easy to get right.
         if stated > 0 or (price or 0) > 0:

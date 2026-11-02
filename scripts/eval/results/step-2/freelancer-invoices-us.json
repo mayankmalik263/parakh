@@ -1,0 +1,362 @@
+{
+ "id": "freelancer-invoices-us",
+ "kind": "software",
+ "idea": "Invoicing and late-payment reminders for freelance designers in the US",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 0,
+  "issues_raised": 2,
+  "math_warnings": 0,
+  "tools_costed": 12,
+  "tools_in_catalog": 10,
+  "paid_prices_right": 2,
+  "paid_prices": 3,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 10600
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "A freelance designer in the US sends an invoice, waits 30+ days past terms, and manually chases the client over email while cash flow stalls and awkwardness builds.",
+   "target_customer": "US-based freelance graphic/UI designers billing $3k–$15k/month to 3–10 retainer clients, who feel the pain the day an invoice crosses its due date unpaid.",
+   "mission": "Automate invoice follow-up and late-payment chasing so freelance designers get paid on time without awkward client emails.",
+   "competitors": [
+    {
+     "name": "FreshBooks",
+     "differentiator": "We are purpose-built for designer freelancers' reminder cadence, not a full small-business accounting suite they'd pay more for."
+    },
+    {
+     "name": "Wave (free invoicing)",
+     "differentiator": "Wave sends generic reminders; we win with designer-tuned, escalating, tone-matched chase sequences."
+    },
+    {
+     "name": "Stripe Invoicing",
+     "differentiator": "Stripe handles payment rails but lacks friendly multi-step relationship-aware chasing freelancers actually want."
+    }
+   ],
+   "scope_cuts": [
+    "Skip time tracking, expense management, and full double-entry accounting — we only do invoicing plus reminders.",
+    "Skip a native mobile app at launch; responsive web app covers the invoice-send-and-chase workflow.",
+    "Skip multi-currency and non-US tax logic at launch; US-only, USD-only to ship in 2-4 weeks."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Next.js",
+     "why": "App Router + Server Actions handle invoice pages, reminder scheduling cron, and Stripe webhooks in one deployable app."
+    },
+    {
+     "name": "Supabase",
+     "why": "Postgres stores invoices, clients, and reminder sequences; built-in auth covers designer sign-in without a separate auth service."
+    },
+    {
+     "name": "Tailwind CSS",
+     "why": "Invoice and dashboard UI ships fast with utility classes; designer-facing product needs clean visuals without a component library tax."
+    },
+    {
+     "name": "Cloudflare Pages",
+     "why": "Free tier hosts the commercial Next.js app legally, unlike Vercel Hobby; Workers cron can trigger reminder emails."
+    },
+    {
+     "name": "Resend",
+     "why": "Transactional email API sends invoice and escalating late-reminder emails with open tracking; free tier covers launch volume."
+    },
+    {
+     "name": "Stripe",
+     "why": "Collects the USD subscription via Checkout and Billing; 2.9% + $0.30 US card fee is the standard rail."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Claude Code writes the Next.js + Supabase invoice and reminder-cron codebase in the 2-4 week window."
+    },
+    {
+     "name": "Cursor",
+     "why": "AI code editor for iterating invoice UI and reminder-sequence screens alongside Claude Code."
+    },
+    {
+     "name": "OpenAI API",
+     "why": "gpt-6-luna drafts tone-matched escalating reminder email copy per client relationship at $0.10/$0.50 per 1M tokens."
+    },
+    {
+     "name": "v0",
+     "why": "Generates the invoice form and dashboard UI components quickly before hand-writing them in Next.js."
+    }
+   ],
+   "mvp_features": [
+    "Create and send a USD invoice with Net-15/Net-30 terms, then auto-send an escalating 3-step late-reminder sequence (day 1, 7, 14 past due) with tone-matched copy the designer approves before each send.",
+    "Client dashboard showing every unpaid invoice, days overdue, and the next scheduled reminder with one-click pause or manual nudge.",
+    "Stripe Checkout subscription gate: free for 3 invoices, then paywall the reminder automation behind the monthly plan."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Next.js",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/vercel/next.js"
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://supabase.com/pricing"
+    },
+    {
+     "tool": "Tailwind",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": false,
+     "price_note": "Not in Parakh's checked price list. Confirm the price before you pay."
+    },
+    {
+     "tool": "Cloudflare Pages",
+     "plan": "Workers Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.cloudflare.com/plans/developer-platform/"
+    },
+    {
+     "tool": "Resend",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://resend.com/pricing"
+    },
+    {
+     "tool": "Stripe",
+     "plan": "Standard (2.9% + 30 cents per US card payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2.9% + 30 cents per US card payment. Price checked 2026-11-02 on https://stripe.com/pricing"
+    },
+    {
+     "tool": "Clerk",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://clerk.com/pricing"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Pro",
+     "monthly_cost": 20.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "Cursor",
+     "plan": "Plus",
+     "monthly_cost": 8.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.cursor.com/pricing"
+    },
+    {
+     "tool": "OpenAI API",
+     "plan": "gpt-6-luna pay-per-token (assumed $15/mo at launch volume)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "$0.10 per 1M input tokens, $0.50 per 1M output. Price checked 2026-11-02 on https://developers.openai.com/api/docs/pricing"
+    },
+    {
+     "tool": "v0",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://v0.app/pricing"
+    },
+    {
+     "tool": "Domain",
+     "plan": "com domain",
+     "monthly_cost": 1.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain (₹1,499/year, converted to dollars)"
+    }
+   ],
+   "mvp_build_cost": 44.0,
+   "first_10_steps": [
+    "Register a .com domain at $1/mo via Cloudflare Registrar and point nameservers to Cloudflare.",
+    "Run npx create-next-app@latest with TypeScript, Tailwind, App Router in a new repo.",
+    "Create a Supabase project; run SQL migrations for clients, invoices, reminder_events, subscriptions tables.",
+    "Scaffold auth with Clerk; gate /dashboard behind sign-in.",
+    "Build the invoice create/send flow: USD amount, Net-15/30 terms, PDF or hosted invoice link emailed via Resend.",
+    "Implement a Cloudflare Workers cron (daily 6am ET) that queries overdue invoices and enqueues reminder emails at day 1/7/14 past due.",
+    "Call OpenAI gpt-6-luna to draft each reminder's body with tone presets (friendly, firm, final), queued for designer approval in-app.",
+    "Wire Stripe Checkout + Billing webhook to flip accounts from free (3 invoices) to subscribed, unlocking automated reminders.",
+    "Deploy to Cloudflare Pages, connect domain, verify Resend domain SPF/DKIM, send 10 test invoices end-to-end.",
+    "Record a 90-second Loom-style demo with Claude Code + HyperFrames showing an invoice going overdue and reminders firing."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Free",
+     "monthly_price": 0.0,
+     "billing": "monthly",
+     "features": [
+      "Create and send up to 3 invoices per month",
+      "Manual email reminders only"
+     ]
+    },
+    {
+     "name": "Pro",
+     "monthly_price": 19.0,
+     "billing": "monthly",
+     "features": [
+      "Unlimited USD invoices",
+      "Automated 3-step escalating late-payment reminders",
+      "Tone-matched AI reminder drafts",
+      "Client dashboard with overdue tracking"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 19.0,
+   "delivery_cost_per_customer": 0.15,
+   "burn_line_items": [
+    {
+     "item": "Claude Pro",
+     "monthly_cost": 20.0
+    },
+    {
+     "item": "Cursor Plus",
+     "monthly_cost": 8.0
+    },
+    {
+     "item": "OpenAI API",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Domain",
+     "monthly_cost": 1.0
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 100.0
+    }
+   ],
+   "monthly_burn": 129.0,
+   "marketing_budget": 100.0,
+   "starting_capital": 500.0,
+   "external_funding": 0.0,
+   "runway_months": 3.9,
+   "break_even_customers": 7,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 95.0,
+     "notes": "Founding designers from Dribbble and Twitter"
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 228.0,
+     "notes": "Referrals from first 5 users"
+    },
+    {
+     "day": 90,
+     "paying_customers": 25,
+     "mrr": 475.0,
+     "notes": "Content marketing and community posts"
+    }
+   ],
+   "key_assumptions": [
+    "US freelance designers will pay $19/month to avoid awkward late-payment emails.",
+    "5 paying customers can be acquired in 30 days via direct outreach on Dribbble and Twitter.",
+    "OpenAI API costs remain negligible at launch volume under $1/month.",
+    "Marketing spend of $100/month yields 3-5 new paying customers per month."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Dribbble + X designer DMs",
+     "tactic": "Send 30 DMs/day (15 on Dribbble to US freelance designers posting client work, 15 on X to designers complaining about late payments) with a free overdue-invoice audit of their last invoice.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 4,
+     "cac": 0.0
+    },
+    {
+     "name": "r/freelance and r/graphic_design Reddit",
+     "tactic": "Comment daily on 10 threads about late payments with a concrete reminder-email teardown, then DM the 5 most frustrated posters offering to draft their next chase sequence free.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Search Dribbble for US designers with 'available for work' tags; DM 30/day offering to write their next overdue-invoice chase email free, no signup required.",
+    "Day 4-7: Post 5 overdue-invoice email teardowns on X tagging the designer who shared the invoice; reply daily to 10 'client hasn't paid' tweets with the 3-step sequence.",
+    "Day 8-12: Sort r/freelance and r/graphic_design by 'late payment' flair; comment on 10 threads/day, DM the 5 angriest posters with a free reminder-sequence draft.",
+    "Day 13-18: Join 3 Dribbble Slack/Discord servers for freelance designers; answer every 'invoice' or 'unpaid' message within 1 hour, DM the asker a free audit.",
+    "Day 19-24: Offer the first 10 designers 3 months of Pro free in exchange for a 15-minute call where they set up their first invoice live on Zoom.",
+    "Day 25-30: Ask each of the 10 for 1 named designer referral; DM the referral the same free overdue-invoice audit offer."
+   ],
+   "cold_message": "Saw your post about a client ghosting your invoice — I built a tool that sends day 1/7/14 escalating reminders so you never send that awkward email. Want me to draft the 3-step chase sequence for your current overdue invoice, free, no signup? Reply and I'll send it in 10 minutes.",
+   "objections": [
+    {
+     "objection": "\"I can just set calendar reminders and email clients myself.\"",
+     "response": "You can — this is for the 2am 'did they see it?' spiral. Try it free on your next 3 invoices; if the first reminder doesn't go out, you've lost nothing."
+    },
+    {
+     "objection": "\"I already use Wave/FreshBooks for free.\"",
+     "response": "Those send one generic nudge. Show me your last 3 overdue invoices and I'll draft the tone-matched 3-step sequence for each — free, whether or not you sign up."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent bootstrapped SaaS for US freelance designers with a clear problem, realistic $19 pricing, and channels that fit a solo founder's constraints. The build stack, free-tier tooling, and 2-4 week ship window all respect the hard rules. The main uncertainty is whether direct DM outreach converts fast enough to hit 5 paying customers in 30 days.",
+  "biggest_risk": "Cold DMs to designers on Dribbble/X converting to paid subscriptions at the assumed rate — cold outreach to creative professionals typically converts far below 1-2%, so 5 paying customers in 30 days may not materialize.",
+  "adherence_score": 0.95
+ },
+ "seconds": 80.6,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 988,
+   "out": 306,
+   "thinking": 0,
+   "total": 1294
+  },
+  {
+   "role": "builder",
+   "in": 2644,
+   "out": 939,
+   "thinking": 0,
+   "total": 3583
+  },
+  {
+   "role": "economics",
+   "in": 2626,
+   "out": 654,
+   "thinking": 0,
+   "total": 3280
+  },
+  {
+   "role": "growth",
+   "in": 2642,
+   "out": 656,
+   "thinking": 0,
+   "total": 3298
+  },
+  {
+   "role": "critic",
+   "in": 3200,
+   "out": 329,
+   "thinking": 0,
+   "total": 3529
+  }
+ ],
+ "tokens": {
+  "in": 12100,
+  "out": 2884,
+  "thinking": 0,
+  "total": 14984
+ }
+}

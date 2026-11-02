@@ -1,6 +1,6 @@
 # Eval: baseline
 
-scored 2026-11-02 09:24 UTC · model `qwen-3.8-27b` · 12/12 plans finished
+scored 2026-11-02 13:09 UTC · model `qwen-3.8-27b` · 12/12 plans finished
 
 | | Average per plan |
 |---|---|

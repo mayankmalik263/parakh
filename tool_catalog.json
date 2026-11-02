@@ -1502,6 +1502,28 @@
    "source": "https://www.cloudflare.com/products/registrar/",
    "checked_on": "2026-11-02",
    "india": true
+  },
+  {
+   "name": "Chrome Web Store",
+   "category": "distribution",
+   "for": [
+    "software"
+   ],
+   "use_for": "Publish a Chrome extension.",
+   "plans": [
+    {
+     "plan": "Developer registration",
+     "period": "one_time",
+     "usage": "one-time registration fee, not monthly (amount shown at sign-up)"
+    }
+   ],
+   "source": "https://developer.chrome.com/docs/webstore/register",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Chrome Extension",
+    "Chrome Web Store developer"
+   ]
   }
  ]
 }

@@ -1,0 +1,384 @@
+{
+ "id": "candles-insta",
+ "kind": "physical",
+ "idea": "Handmade scented candles sold on Instagram, made in my hostel room",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 6,
+  "math_warnings": 0,
+  "tools_costed": 9,
+  "tools_in_catalog": 9,
+  "paid_prices_right": 0,
+  "paid_prices": 0,
+  "hidden_costs": [],
+  "invented_stats": [
+   {
+    "where": "growth.channel:Instagram DM hustle to engaged followers",
+    "claim": "15 followers"
+   }
+  ],
+  "plan_chars": 10593
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "physical",
+   "problem": "A college student in India wants a small, affordable, good-smelling gift or room upgrade for a friend's birthday or hostel room, but local shops only stock generic dhoop and imported candles cost ₹500+ on Amazon.",
+   "target_customer": "Indian college students aged 18-24 across metro and tier-2 cities with ₹300-800 of monthly discretionary spend, who already buy aesthetic room decor and gifts through Instagram DMs and UPI.",
+   "mission": "Make hand-poured, hostel-made scented candles affordable and Instagram-buyable for Indian students who currently overpay for imported brands.",
+   "competitors": [
+    {
+     "name": "Local candle brands on Instagram (e.g. small home-candle businesses in Delhi, Mumbai, Bangalore)",
+     "differentiator": "They price for adult buyers at ₹400-800 plus shipping; we cut to hostel-scale batches and campus pickup to hit student budgets."
+    },
+    {
+     "name": "Amazon/Flipkart imported and mass-market candles (Yankee Candle, Homecentre, local agarbatti brands)",
+     "differentiator": "They win on trust and delivery speed but lose on price, personalization, and the 'made by a student like me' story that shares well in hostel WhatsApp groups."
+    },
+    {
+     "name": "Homemade candle-making classmates and DIY kits",
+     "differentiator": "DIY kits cost more in time and materials than one finished candle; classmates lack consistent scent quality and repeat supply."
+    }
+   ],
+   "scope_cuts": [
+    "No custom e-commerce website or app — sell through Instagram DMs plus Razorpay payment links until 50 orders prove demand.",
+    "No subscription or monthly candle box — one-time gift and room-use purchases only, since student budgets are irregular.",
+    "No wholesale to shops or corporate gifting in the first 6 weeks — direct campus buyers only, to keep inventory and cash simple."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Instagram Business account",
+     "why": "Sell through DMs and Reels where the founder's existing followers already are; free storefront."
+    },
+    {
+     "name": "Razorpay Payment Links",
+     "why": "UPI payment links sent in Instagram DMs, no website needed, 2% + GST only on paid orders."
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Free app for order confirmation, catalogue, quick replies and shipping updates with buyers."
+    },
+    {
+     "name": "Shiprocket Lite",
+     "why": "Free plan, ~₹45 per parcel, ships candles pan-India from a hostel room."
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Free order, inventory and SKU tracker synced with the founder's Google account."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Writes product captions, DM reply scripts, SKU descriptions and Reel hooks in Hinglish."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Generates scent names, bundle ideas and cost-per-unit calculations from supplier quotes."
+    },
+    {
+     "name": "Canva",
+     "why": "Free plan makes Instagram post templates, price cards and packaging labels."
+    },
+    {
+     "name": "VN Video Editor",
+     "why": "Free mobile editor to cut candle-pouring Reels without watermark."
+    }
+   ],
+   "mvp_features": [
+    "SKU 1: Single 100g soy candle in glass jar, 1 of 3 scents (Vanilla, Sandalwood, Lavender), ₹249 price point set by pricing agent.",
+    "SKU 2: Gift pair bundle — two 100g candles in a kraft box with a handwritten note card, for birthdays.",
+    "SKU 3: Hostel starter single 50g tin candle, lowest entry price, for room-use trial buyers."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Instagram",
+     "plan": "Business account",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://help.instagram.com/502981923235522"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Shiprocket",
+     "plan": "Lite (free plan)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "free plan, about Rs 45 per shipment on average. Price checked 2026-11-02 on https://www.shiprocket.in/pricing/"
+    },
+    {
+     "tool": "Google Sheets",
+     "plan": "Google Workspace free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "VN Video Editor",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.vlognow.me/"
+    }
+   ],
+   "mvp_build_cost": 9500.0,
+   "first_10_steps": [
+    "Message 3 soy wax and 3 fragrance-oil suppliers on IndiaMart and Instagram; collect per-kg quotes and MOQs.",
+    "Order ₹2,000 of sample materials: 2kg soy wax, 100ml each of 3 fragrance oils, 10 glass jars, wicks, thermometer.",
+    "Pour 6 test candles at home, photograph 3 best in daylight, and post them as an Instagram carousel within 7 days.",
+    "DM 20 followers who liked the post asking if they'd pre-order; log yes/no in Google Sheets.",
+    "Take 10 pre-orders via Razorpay payment links before buying bulk wax for the first batch.",
+    "Buy the first bulk batch (10kg wax, 50 jars, 5 fragrance oils) only after 10 pre-orders confirm.",
+    "Set up WhatsApp Business catalogue with the 3 SKUs and quick replies for price, scent and delivery time.",
+    "List the 3 SKUs on Shiprocket Lite and run one test parcel to a batchmate to verify ₹45 rate and packaging safety.",
+    "Record 3 Reels of the pour-and-pack process using VN Video Editor; schedule 1 per week on Instagram.",
+    "Open a Google Sheet order log with columns: date, SKU, UPI ID, shipping status, repeat buyer flag."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Hostel Starter 50g tin candle",
+     "monthly_price": 149.0,
+     "billing": "one_time",
+     "features": [
+      "50g soy tin candle, 1 scent of 3, self-pickup on campus or ₹45 shipping"
+     ]
+    },
+    {
+     "name": "Single 100g jar candle",
+     "monthly_price": 249.0,
+     "billing": "one_time",
+     "features": [
+      "100g soy candle in glass jar, 1 of 3 scents, ₹45 shipping extra or free campus pickup"
+     ]
+    },
+    {
+     "name": "Gift pair bundle",
+     "monthly_price": 499.0,
+     "billing": "one_time",
+     "features": [
+      "Two 100g candles in kraft box with handwritten note card, ₹45 shipping extra"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 280.0,
+   "delivery_cost_per_customer": 135.0,
+   "burn_line_items": [
+    {
+     "item": "Instagram Business account",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay (2% + GST per paid order)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "WhatsApp Business app",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Shiprocket Lite plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Sheets",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "ChatGPT free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "VN Video Editor",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget (₹60 Instagram Boost on 2 Reels + ₹400 bulk wax/jar restock samples)",
+     "monthly_cost": 460.0
+    },
+    {
+     "item": "Hostel room electricity share for pouring (fixed student contribution)",
+     "monthly_cost": 300.0
+    }
+   ],
+   "monthly_burn": 760.0,
+   "marketing_budget": 460.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 19.7,
+   "break_even_customers": 6,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 1400.0,
+     "notes": "10 pre-orders taken, 5 convert to paid after sample batch ships"
+    },
+    {
+     "day": 60,
+     "paying_customers": 14,
+     "mrr": 3920.0,
+     "notes": "2 Reels boosted, 3 batchmate resellers in hostel WhatsApp groups"
+    },
+    {
+     "day": 90,
+     "paying_customers": 25,
+     "mrr": 7000.0,
+     "notes": "Gift pair bundle lifts avg order; repeat buyers from Day 30 cohort"
+    }
+   ],
+   "key_assumptions": [
+    "Delivery cost per customer = ₹90 goods (wax, jar, wick, fragrance, box) + ₹45 Shiprocket Lite parcel; campus-pickup buyers offset courier buyers.",
+    "Avg revenue per customer ₹280 assumes 70% single 100g buyers at ₹249, 20% gift pairs at ₹499, 10% 50g tins at ₹149.",
+    "Willingness to pay rests on the strategist's assumption that students spend ₹300-800 monthly on decor and gifts via Instagram DM + UPI.",
+    "One purchase per customer per month; repeat purchase rate not yet proven, so MRR targets count only distinct paying buyers."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Instagram DM hustle to engaged followers",
+     "tactic": "DM 15 followers who liked/commented on the last 5 candle posts daily in Hinglish with the cold message + Razorpay link; 120 DMs/month, target 3 buyers.",
+     "monthly_spend": 60.0,
+     "new_customers_per_month": 3,
+     "cac": 20.0
+    },
+    {
+     "name": "Hostel WhatsApp group seeding",
+     "tactic": "Post 1 carousel + price card in 6 named hostel/college WhatsApp groups per week (24 posts/month) with campus-pickup offer; target 2 buyers.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 2,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-2: List 40 followers who liked your last 5 candle posts in Google Sheets; DM all 40 with the cold message.",
+    "Day 3-5: Hand-deliver 3 free 50g test candles to hostel floor-mates who reply yes; ask each for a Story tag.",
+    "Day 6-8: Post their Story reposts + your carousel into 6 named hostel and class WhatsApp groups with campus-pickup price.",
+    "Day 9-12: Send Razorpay payment links to every 'price?' reply within 10 minutes; log yes/no in Google Sheets.",
+    "Day 13-16: Offer 2 batchmates a free handwritten note card if they pre-order gift pairs for friends' birthdays.",
+    "Day 17-21: Call (not DM) the 5 warmest replies personally to close the last 3 of the 10."
+   ],
+   "cold_message": "Hey! I hand-pour soy candles in my hostel room — Vanilla, Sandalwood, Lavender at ₹249 (₹149 for the 50g tin), free pickup on campus.\nI'm taking 10 pre-orders this week only; want me to hold one for you?\nI'll send a Razorpay UPI link and a photo of your actual candle before I pour it.",
+   "objections": [
+    {
+     "objection": "\"I can get candles cheaper on Amazon.\"",
+     "response": "₹249 here is a 100g soy jar with your choice of 3 scents, poured this week, free campus pickup — Amazon's ₹200 options are 30g paraffin with no scent choice."
+    },
+    {
+     "objection": "\"How do I know it'll smell good / arrive safe?\"",
+     "response": "I'll send a photo of your exact candle plus a 10-second sniff-test Reel before shipping, and I re-ship free if the jar arrives cracked."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent, constraint-honest campus-first candle business: physical product, sourcing steps, UPI/Razorpay payments, and a savings-sized budget all line up with the HARD RULES. Pricing (₹149-499) sits plausibly in the stated student discretionary range, and the DM + WhatsApp + campus-pickup motion is realistic for a student founder. The main gaps are in growth realism and a missing repeat-purchase story, but nothing that would strand the founder.",
+  "biggest_risk": "Repeat purchase rate is unproven and all revenue targets count only distinct new buyers — if one-time gift buyers don't come back, the ₹7,000 Day-90 target depends entirely on continuous cold DM conversion, which is fragile at 15 hours/week.",
+  "adherence_score": 0.9
+ },
+ "seconds": 205.2,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1182,
+   "out": 402,
+   "thinking": 0,
+   "total": 1584
+  },
+  {
+   "role": "builder",
+   "in": 2372,
+   "out": 860,
+   "thinking": 0,
+   "total": 3232
+  },
+  {
+   "role": "economics",
+   "in": 2726,
+   "out": 704,
+   "thinking": 0,
+   "total": 3430
+  },
+  {
+   "role": "growth",
+   "in": 3097,
+   "out": 602,
+   "thinking": 0,
+   "total": 3699
+  },
+  {
+   "role": "critic",
+   "in": 3622,
+   "out": 398,
+   "thinking": 0,
+   "total": 4020
+  },
+  {
+   "role": "growth",
+   "in": 3744,
+   "out": 567,
+   "thinking": 0,
+   "total": 4311
+  },
+  {
+   "role": "critic",
+   "in": 3600,
+   "out": 486,
+   "thinking": 0,
+   "total": 4086
+  }
+ ],
+ "tokens": {
+  "in": 20343,
+  "out": 4019,
+  "thinking": 0,
+  "total": 24362
+ }
+}

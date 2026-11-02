@@ -1,0 +1,371 @@
+{
+ "id": "jee-planner",
+ "kind": "software",
+ "idea": "An AI study planner app for JEE aspirants that adjusts the timetable after every mock test",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 7,
+  "math_warnings": 0,
+  "tools_costed": 11,
+  "tools_in_catalog": 11,
+  "paid_prices_right": 2,
+  "paid_prices": 2,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 10323
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "A JEE aspirant finishes a mock test, sees a score drop, and has no idea which chapters to reschedule — the weekly timetable they made on Sunday is already stale by Monday morning.",
+   "target_customer": "Parents of class 11 and 12 JEE aspirants in Indian metros and tier-2 cities, household income ₹6-25 lakh, who already pay ₹1,000-3,000/month for coaching and buy anything that makes their child's study hours accountable.",
+   "mission": "Turn every mock test result into a revised, dated study timetable for JEE aspirants so parents can see their child's plan adapt instead of going stale.",
+   "competitors": [
+    {
+     "name": "Coaching institute in-house study planners (Allen, FIITJEE, Aakash doubt and progress portals)",
+     "differentiator": "Their portals log attendance and marks but don't rewrite a dated weekly timetable; we regenerate the plan within minutes of each mock."
+    },
+    {
+     "name": "Generic AI timetable apps and Notion/Excel study planner templates",
+     "differentiator": "They take manual input and never touch mock scores; we ingest the test result and auto-rebalance chapter slots."
+    },
+    {
+     "name": "Personal tutors and academic mentors in India",
+     "differentiator": "A tutor costs ₹2,000-10,000/month for one subject; we cover PCM with an always-on replan at a fraction of that."
+    }
+   ],
+   "scope_cuts": [
+    "Skip building a question bank or mock test engine — students already write mocks on coaching portals and PyQ apps; we only ingest the score sheet.",
+    "Skip a native Android/iOS build in v1; ship a mobile-web app first so a solo student founder can ship inside 4 weeks.",
+    "Skip doubt-solving, video lectures and chat with peers — those are coaching products, not the replan loop we're selling."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Next.js",
+     "why": "App Router + Tailwind for a mobile-web planner that regenerates dated timetables after each mock."
+    },
+    {
+     "name": "Supabase",
+     "why": "Postgres stores student profiles, mock scores and timetable slots; auth handles parent/student login on free tier."
+    },
+    {
+     "name": "Netlify",
+     "why": "Free tier hosts the Next.js app commercially without Vercel Pro cost."
+    },
+    {
+     "name": "Razorpay",
+     "why": "UPI + payment links for ₹-denominated monthly parent subscriptions in India."
+    },
+    {
+     "name": "Resend",
+     "why": "Free tier sends parent-facing weekly plan summary and replan emails."
+    },
+    {
+     "name": "Domain",
+     "why": "One .in address for the landing page parents land on from WhatsApp."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Gemini API",
+     "why": "Gemini 2.5 Flash-Lite free tier parses mock score sheets and rewrites chapter-wise timetable slots cheaply."
+    },
+    {
+     "name": "Claude",
+     "why": "Free tier writes replan prompts, landing copy and onboarding scripts for the solo student founder."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Free tier drafts JEE chapter taxonomy and timetable templates the app seeds from."
+    }
+   ],
+   "mvp_features": [
+    "Upload or paste a mock test score sheet; app auto-rebalances the next 7-day dated chapter timetable within minutes (core paid moment).",
+    "Parent dashboard showing this week's plan, last mock score and what changed after replan.",
+    "Razorpay subscription checkout with UPI payment link and webhook-gated access."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Next.js",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/vercel/next.js"
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://supabase.com/pricing"
+    },
+    {
+     "tool": "Netlify",
+     "plan": "Personal",
+     "monthly_cost": 855.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.netlify.com/pricing/ ($9/month, converted to rupees)"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Resend",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://resend.com/pricing"
+    },
+    {
+     "tool": "Domain",
+     "plan": "in domain",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    },
+    {
+     "tool": "Gemini API",
+     "plan": "Free tier",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Claude",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "PostHog",
+     "plan": "Free tier",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://posthog.com/pricing"
+    }
+   ],
+   "mvp_build_cost": 75.0,
+   "first_10_steps": [
+    "Run `npx create-next-app@latest jee-replan --ts --tailwind --app` and push to a GitHub repo.",
+    "Create a Supabase project; add tables `students`, `mock_tests`, `chapter_scores`, `timetable_slots`.",
+    "Sign up for Gemini API free tier; write a prompt that maps a score sheet JSON to a 7-day chapter timetable.",
+    "Build the score-sheet upload form and call Gemini to render the revised timetable on `/dashboard`.",
+    "Add Supabase Auth email login for student and parent roles on one shared household.",
+    "Build the parent view showing last mock score, old plan vs new plan diff.",
+    "Sign up for Razorpay Standard; create a ₹ subscription plan and a payment link; wire the webhook to unlock replan.",
+    "Send the Resend email template: weekly plan summary to parent every Sunday 8 PM IST.",
+    "Deploy to Netlify free tier; connect the .in domain bought at ₹75/mo.",
+    "Post the live link in 3 class and hostel WhatsApp groups and DM 10 batchmate parents with the Razorpay link."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Free (student)",
+     "monthly_price": 0.0,
+     "billing": "monthly",
+     "features": [
+      "1 mock score upload per week",
+      "Read-only 7-day timetable"
+     ]
+    },
+    {
+     "name": "Parent Plus",
+     "monthly_price": 399.0,
+     "billing": "monthly",
+     "features": [
+      "Unlimited mock uploads and auto-replan",
+      "Parent dashboard with plan diff after each mock",
+      "Sunday 8 PM IST Resend plan email"
+     ]
+    },
+    {
+     "name": "Parent Plus Quarterly",
+     "monthly_price": 999.0,
+     "billing": "one_time",
+     "features": [
+      "3 months of Parent Plus at ₹333/month",
+      "Same replan and parent dashboard features"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 399.0,
+   "delivery_cost_per_customer": 25.0,
+   "burn_line_items": [
+    {
+     "item": "Netlify Personal hosting",
+     "monthly_cost": 855.0
+    },
+    {
+     "item": ".in domain",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "Marketing budget (WhatsApp groups, Instagram, campus DMs)",
+     "monthly_cost": 1500.0
+    }
+   ],
+   "monthly_burn": 2430.0,
+   "marketing_budget": 1500.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 6.2,
+   "break_even_customers": 7,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 1995.0,
+     "notes": "5 batchmate/parent conversions from WhatsApp groups and DMs."
+    },
+    {
+     "day": 60,
+     "paying_customers": 15,
+     "mrr": 5985.0,
+     "notes": "2 coaching-class WhatsApp broadcasts plus Instagram reel series."
+    },
+    {
+     "day": 90,
+     "paying_customers": 30,
+     "mrr": 11970.0,
+     "notes": "Referral offer: 1 free month for referrer, not counted in revenue."
+    }
+   ],
+   "key_assumptions": [
+    "Parents of class 11-12 JEE students already paying ₹1,000-3,000/month for coaching will pay ₹399/month for accountable replanning — assumption from strategist target_customer.",
+    "Delivery cost of ₹25/customer = Gemini Flash-Lite replan calls (~₹15) plus Resend emails (~₹10) at free/low tiers.",
+    "Founder contributes 15 hours/week personally; no freelancer cost counted in delivery.",
+    "Free-tier Supabase, Resend, Gemini, PostHog, WhatsApp Business, ChatGPT, Claude cover all usage below 30 paying customers."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Class 11/12 JEE parent WhatsApp groups + DMs",
+     "tactic": "Join 10 parent WhatsApp groups (school alumni, coaching batch parents, society groups); post 1 replan demo screenshot + Razorpay link to 3 groups/day; DM 10 parents/day from group rosters.",
+     "monthly_spend": 500.0,
+     "new_customers_per_month": 3,
+     "cac": 166.67
+    },
+    {
+     "name": "Instagram reels to JEE parent audience in metros/tier-2",
+     "tactic": "Post 1 reel/day showing old plan vs replanned timetable after a mock; reply to 20 comments/DMs daily; ₹500/day Boost on the top 3 reels only.",
+     "monthly_spend": 1000.0,
+     "new_customers_per_month": 2,
+     "cac": 500.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Ask 5 relatives/family friends with class 11-12 kids for their parent's WhatsApp number; send the cold message and offer a free 2-week replan pilot on their child's last mock score.",
+    "Day 4-7: Join 3 coaching-class parent broadcast groups via a batchmate in Allen/FIITJEE/Aakash; post one before/after timetable screenshot with the Razorpay ₹399 link.",
+    "Day 8-14: DM 10 parents per day on Instagram from JEE-related reels comments; offer a free replan of one real score sheet as proof before asking for payment.",
+    "Day 15-21: Call the 5 pilot parents, show their child's week-2 replan diff, ask for ₹399 monthly directly via UPI payment link.",
+    "Day 22-30: Ask each paying parent to forward the link to 2 parents in their coaching batch; give referrer 1 free month (revenue reduction, not spend)."
+   ],
+   "cold_message": "Namaste, I'm a student building an app that rewrites your child's 7-day JEE timetable within minutes of every mock test score.\nSend me one recent mock score sheet — I'll send back a revised dated plan free, no payment.\nIf it's useful, it's ₹399/month with UPI; cancel anytime.",
+   "objections": [
+    {
+     "objection": "Coaching already gives my child a study plan.",
+     "response": "Their plan is fixed at admission; ours rewrites chapter slots within minutes of each mock score sheet — send one score sheet and see the diff free."
+    },
+    {
+     "objection": "₹399/month is too much on top of coaching fees.",
+     "response": "It's ₹13/day, less than a single doubt-class handout; first 2 weeks are free on your child's real mock so you pay only after seeing the replan work."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan stays true to the AI study planner for JEE aspirants with a parent-paid subscription, and the build stack, free tiers and bootstrapped budget all fit the hard rules. The biggest weak spot is realism: converting 15 paying parents in 60 days through cold WhatsApp/Instagram outreach with no track record is optimistic, and the ₹399 price point is untested with this audience. Overall it's a coherent, shippable plan with a plausible path to first revenue but aggressive growth targets.",
+  "biggest_risk": "Cold WhatsApp and Instagram outreach to parents who don't know the founder may yield far fewer than 15 paying customers by day 60, leaving the plan below break-even longer than the 6.2-month runway assumes.",
+  "adherence_score": 0.85
+ },
+ "seconds": 165.9,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1187,
+   "out": 437,
+   "thinking": 0,
+   "total": 1624
+  },
+  {
+   "role": "builder",
+   "in": 3023,
+   "out": 846,
+   "thinking": 0,
+   "total": 3869
+  },
+  {
+   "role": "economics",
+   "in": 2694,
+   "out": 589,
+   "thinking": 0,
+   "total": 3283
+  },
+  {
+   "role": "growth",
+   "in": 2876,
+   "out": 611,
+   "thinking": 0,
+   "total": 3487
+  },
+  {
+   "role": "growth",
+   "in": 3631,
+   "out": 627,
+   "thinking": 0,
+   "total": 4258
+  },
+  {
+   "role": "critic",
+   "in": 3423,
+   "out": 465,
+   "thinking": 0,
+   "total": 3888
+  },
+  {
+   "role": "growth",
+   "in": 3545,
+   "out": 594,
+   "thinking": 0,
+   "total": 4139
+  },
+  {
+   "role": "critic",
+   "in": 3407,
+   "out": 469,
+   "thinking": 0,
+   "total": 3876
+  }
+ ],
+ "tokens": {
+  "in": 23786,
+  "out": 4638,
+  "thinking": 0,
+  "total": 28424
+ }
+}

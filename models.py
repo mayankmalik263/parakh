@@ -1,7 +1,7 @@
 import re
-from typing import Annotated, List, Literal
+from typing import Annotated, List, Literal, Optional
 
-from pydantic import BaseModel, BeforeValidator, Field
+from pydantic import BaseModel, BeforeValidator, Field, model_validator
 
 
 def _to_number(value):
@@ -105,7 +105,14 @@ class Channel(BaseModel):
     tactic: str = Field(description="Exact platform, action, volume, e.g. 'DM 40 clinic owners/day on LinkedIn'")
     monthly_spend: Money
     new_customers_per_month: Count
-    cac: Money = Field(description="monthly_spend / new_customers_per_month")
+    cac: Optional[Money] = Field(default=None, description="monthly_spend / new_customers_per_month")
+
+    @model_validator(mode="after")
+    def _fill_cac(self):
+        # Code can work this out; a missing cac shouldn't cost a retry.
+        if self.cac is None:
+            self.cac = round(self.monthly_spend / self.new_customers_per_month, 2) if self.new_customers_per_month else 0.0
+        return self
 
 
 class Objection(BaseModel):

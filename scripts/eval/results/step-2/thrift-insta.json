@@ -1,0 +1,354 @@
+{
+ "id": "thrift-insta",
+ "kind": "physical",
+ "idea": "A thrift clothing store on Instagram selling secondhand jackets and jeans",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 7,
+  "math_warnings": 0,
+  "tools_costed": 7,
+  "tools_in_catalog": 7,
+  "paid_prices_right": 0,
+  "paid_prices": 0,
+  "hidden_costs": [],
+  "invented_stats": [
+   {
+    "where": "growth.channel:Instagram thrift community DM outreach",
+    "claim": "30 followers"
+   }
+  ],
+  "plan_chars": 10377
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "physical",
+   "problem": "A Delhi NCR college student needs a warm, good-fitting jacket or jeans before winter or a fest, but local thrift pages are untrustworthy, sizes are unclear, and payment feels risky.",
+   "target_customer": "College students in Delhi NCR aged 18-24 spending ₹300-₹1,200 per thrift item, who already follow thrift pages on Instagram and pay via UPI per item.",
+   "mission": "Sell verified, measured secondhand jackets and jeans to Delhi NCR students over Instagram with transparent sizing and UPI-per-item trust.",
+   "competitors": [
+    {
+     "name": "Instagram thrift pages run by other Delhi students",
+     "differentiator": "We win with exact garment measurements, condition photos and UPI payment links per item instead of vague DM haggling."
+    },
+    {
+     "name": "Local Sunday flea markets (Shahpur Jat, Sarojini Nagar)",
+     "differentiator": "We win on time and sizing certainty — no travel, no digging, measurements posted before payment."
+    },
+    {
+     "name": "Meesho / Flipkart resale of cheap new jackets",
+     "differentiator": "We win on unique branded pieces at ₹300-₹1,200 that a student can't find on mass-market apps."
+    }
+   ],
+   "scope_cuts": [
+    "Skip building a website or app — Instagram DMs plus Razorpay payment links handle the first 100 orders.",
+    "Skip menswear以外 categories like shoes, bags and accessories — jackets and jeans only until 50 items sell.",
+    "Skip paid ads and a rented stall — batchmate referrals and class WhatsApp groups only until ₹10,000 in sales."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Instagram",
+     "why": "Free business account where Delhi NCR students already browse thrift pages; DMs plus posts are the entire storefront for the first 100 orders."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Payment links per item via UPI, so a student pays ₹300-₹1,200 without trusting a random UPI ID in DMs."
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Free app for order confirmations, size Q&A, and quick replies to Instagram DMs without switching apps."
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Free inventory log: item ID, brand, measurements, condition grade, price, sold/unsold status across nights and weekends."
+    },
+    {
+     "name": "Canva",
+     "why": "Free plan to make measurement-overlay post templates and story graphics with consistent branding for every SKU."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Writes item descriptions, measurement charts, DM reply templates and caption drafts in Hinglish before every post batch."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Free tier to draft size-chart templates and generate condition-grading checklists for each jacket and jeans SKU."
+    },
+    {
+     "name": "Canva",
+     "why": "Free plan with AI-assisted layout to overlay chest/length/inseam numbers on flat-lay photos for sizing transparency."
+    }
+   ],
+   "mvp_features": [
+    "SKU-1: 10 branded winter jackets (H&M, Zara, Uniqlo, Decathlon), sizes M-XL, condition A/B, ₹400-₹1,200, each with flat-lay + on-model photo and exact chest/shoulder/sleeve/length in cm.",
+    "SKU-2: 10 denim jeans (Levi's, Wrangler, H&M), waist 30-34, inseam measured, condition A/B, ₹300-₹800, each with waist/inseam/hip measurements and fade/tear close-ups.",
+    "SKU-3: 'Fest Ready Bundle' — 1 jacket + 1 jeans picked together, ₹600-₹1,600, sold as a pre-styled pair via one Razorpay payment link."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Instagram",
+     "plan": "Business account free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://help.instagram.com/502981923235522"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Google Sheets",
+     "plan": "Google Workspace free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Canva free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Claude free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "ChatGPT free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    }
+   ],
+   "mvp_build_cost": 9500.0,
+   "first_10_steps": [
+    "Visit Sarojini Nagar and Shahpur Jat wholesale racks this Sunday, shortlist 3 vendors selling branded jackets and jeans by weight or piece.",
+    "Order 5 sample pieces (3 jackets, 2 jeans) for ₹1,500-₹2,000 total, photograph each flat-lay with a measuring tape showing chest, length, inseam.",
+    "Create a Google Sheet inventory with columns: item ID, brand, size, measurements, condition grade, cost price, listed price, sold status.",
+    "Open Instagram Business account, set handle and bio with 'Delhi NCR thrift · exact measurements · UPI per item', design 1 Canva post template.",
+    "Post first 3 items with measurement overlays, ask 10 batchmates in class WhatsApp group to share or comment.",
+    "Sign up for Razorpay Standard, complete KYC, create first payment link for a ₹500 jacket and send to a DM enquiry.",
+    "Run a pre-order test: offer 5 items at ₹100 discount to first 5 DMs, require UPI payment link confirmation before reordering stock.",
+    "Reorder only the sizes that pre-sold, budget ₹5,000 for 15 more pieces from the same vendor.",
+    "Ship first 3 orders via Shiprocket Lite or hand-deliver on campus, ask each buyer for an Instagram story tag.",
+    "Post 3 items every Tuesday and Friday at 8 PM, track which brands and sizes sell in the Sheet, cut what doesn't move in 2 weeks."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Single Item (Jacket or Jeans)",
+     "monthly_price": 650.0,
+     "billing": "one_time",
+     "features": [
+      "One measured jacket or jeans with condition grade, paid via Razorpay UPI link"
+     ]
+    },
+    {
+     "name": "Fest Ready Bundle",
+     "monthly_price": 1100.0,
+     "billing": "one_time",
+     "features": [
+      "One jacket + one jeans pre-styled pair, ₹200 cheaper than buying separately"
+     ]
+    },
+    {
+     "name": "Campus Drop Add-On (Local Hand-Delivery)",
+     "monthly_price": 0.0,
+     "billing": "one_time",
+     "features": [
+      "Free hand-delivery on campus; Shiprocket Lite at actuals for off-campus orders"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 750.0,
+   "delivery_cost_per_customer": 430.0,
+   "burn_line_items": [
+    {
+     "item": "Instagram Business account",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay Standard (2% + GST per transaction)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "WhatsApp Business app",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Sheets (free tier)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "ChatGPT free plan",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget (campus WhatsApp shares, ₹500 Instagram Boost on 2 posts)",
+     "monthly_cost": 3000.0
+    }
+   ],
+   "monthly_burn": 3000.0,
+   "marketing_budget": 3000.0,
+   "starting_capital": 20000.0,
+   "external_funding": 0.0,
+   "runway_months": 6.7,
+   "break_even_customers": 10,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 3750.0,
+     "notes": "5 single-item sales at ₹750 avg from batchmates and class WhatsApp groups"
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 9000.0,
+     "notes": "2 bundles + 10 single items; Razorpay links repeatable, stock reorders only on pre-sold sizes"
+    },
+    {
+     "day": 90,
+     "paying_customers": 20,
+     "mrr": 15000.0,
+     "notes": "3-4 bundles + 16-17 single items; Tuesday/Friday 8 PM post cadence steady"
+    }
+   ],
+   "key_assumptions": [
+    "Delivery cost of ₹430 per customer = ₹350 average goods cost (₹1,500 buy of 5 pieces resold at ₹750 avg) + ₹80 Shiprocket Lite/hand-delivery share for off-campus orders.",
+    "Avg revenue of ₹750 assumes 80% of buyers purchase a single item at ₹650 and 20% buy a ₹1,100 bundle, blended.",
+    "Student willingness to pay ₹300-₹1,200 per thrift item rests on the strategist's stated target customer spending range.",
+    "Razorpay 2% + GST (~2.36% effective) is absorbed in delivery cost, not billed separately to the customer."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Class and hostel WhatsApp groups + batchmate DMs",
+     "tactic": "Post 3 measured items in 6 college WhatsApp groups and DM 20 batchmates/seniors/juniors on Instagram daily, 25 days/month",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Instagram thrift community DM outreach",
+     "tactic": "DM 30 followers of Delhi thrift pages and comment on 15 fest/outfit posts daily, 25 days/month, with measurement screenshots",
+     "monthly_spend": 1000.0,
+     "new_customers_per_month": 2,
+     "cac": 500.0
+    }
+   ],
+   "first_10_customers": [
+    "Message 10 batchmates in your class WhatsApp group with 3 flat-lay photos and measurements, ask them to forward to their hostel group",
+    "DM 20 Instagram friends who already follow thrift pages, offer first 5 buyers a ₹100 off valid only on a Razorpay link sent today",
+    "Walk your hostel floor on Saturday with 2 sample jackets, let people try on, take UPI payment link on the spot",
+    "Post the same 3 items in 6 Delhi NCR college confession/outfit Instagram pages' comment sections and reply to every comment within 10 minutes",
+    "Offer your college club/fest convenor 1 jacket at cost price in exchange for a story tag to their 500+ member page",
+    "Ask each of the first 5 buyers to post an unboxing story and tag you; reply with a ₹100-off code for their friend's first order"
+   ],
+   "cold_message": "Hi! I'm a [your college] student starting a Delhi NCR thrift page — jackets and jeans with exact chest/length/inseam measurements posted, no guessing.\nPay by UPI link only after you've seen the photos, campus hand-delivery free.\nSending you 3 pieces under ₹800 — want me to drop the measurements here?",
+   "objections": [
+    {
+     "objection": "How do I know you're not a scam? I'll pay and never get the jacket.",
+     "response": "Pay only through a Razorpay UPI link with buyer protection, and I hand-deliver on campus so you try it before the payment clears."
+    },
+    {
+     "objection": "Thrift sizes never fit me; I'd have to return it.",
+     "response": "Every post has chest, length, sleeve and inseam in cm against a tape measure — send me your best-fitting jacket's measurements and I'll match within 2 cm."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent, constraint-respecting thrift flip business: campus-first sourcing in Sarojini Nagar, Instagram storefront, UPI payment links, and a 20-item starting inventory all fit a student founder with ₹20,000. Pricing (₹650 single, ₹1,100 bundle) and the ₹750 blended AOV sit inside the stated ₹300-₹1,200 student spend range and should convert at batchmate level. The main open questions are whether the stated delivery cost truly covers goods + shipping at scale and whether the growth channels can actually deliver 5 customers in 30 days without paid ads.",
+  "biggest_risk": "Stock risk: buying 20 unbranded-weight thrift pieces before pre-orders means dead inventory if the sizes/brands don't match Delhi student demand, eating the ₹20,000 starting capital before revenue starts.",
+  "adherence_score": 0.9
+ },
+ "seconds": 120.5,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1181,
+   "out": 363,
+   "thinking": 0,
+   "total": 1544
+  },
+  {
+   "role": "builder",
+   "in": 2326,
+   "out": 1000,
+   "thinking": 0,
+   "total": 3326
+  },
+  {
+   "role": "economics",
+   "in": 2796,
+   "out": 750,
+   "thinking": 0,
+   "total": 3546
+  },
+  {
+   "role": "growth",
+   "in": 3115,
+   "out": 567,
+   "thinking": 0,
+   "total": 3682
+  },
+  {
+   "role": "critic",
+   "in": 3603,
+   "out": 543,
+   "thinking": 0,
+   "total": 4146
+  },
+  {
+   "role": "growth",
+   "in": 3778,
+   "out": 649,
+   "thinking": 0,
+   "total": 4427
+  },
+  {
+   "role": "critic",
+   "in": 3584,
+   "out": 588,
+   "thinking": 0,
+   "total": 4172
+  }
+ ],
+ "tokens": {
+  "in": 20383,
+  "out": 4460,
+  "thinking": 0,
+  "total": 24843
+ }
+}

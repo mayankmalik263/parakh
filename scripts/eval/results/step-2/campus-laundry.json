@@ -1,0 +1,358 @@
+{
+ "id": "campus-laundry",
+ "kind": "service",
+ "idea": "Laundry pickup and drop for students in my university hostels",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 9,
+  "math_warnings": 0,
+  "tools_costed": 7,
+  "tools_in_catalog": 7,
+  "paid_prices_right": 0,
+  "paid_prices": 0,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 10232
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "Hostel student at 11pm realizes they have no clean clothes for an 8am class or placement interview, and the nearest dhobi won't collect or return laundry on their schedule.",
+   "target_customer": "Hostel residents at a mid-size Indian university paying ₹5,000-₹15,000 monthly, too busy with classes and fests to wash clothes themselves and willing to pay to never think about laundry.",
+   "mission": "Pick up, wash and deliver hostel students' laundry on a fixed weekly schedule so they never run out of clean clothes during term.",
+   "competitors": [
+    {
+     "name": "Local dhobi/washerman near campus",
+     "differentiator": "We give fixed pickup-delivery slots, per-kg pricing shown upfront and WhatsApp tracking instead of drop-off queues and cash haggling."
+    },
+    {
+     "name": "Hostel washing machines and common bathrooms",
+     "differentiator": "We save 3-4 hours a week of washing, drying and folding in shared, often crowded or broken machines."
+    },
+    {
+     "name": "Urban Company / local laundry apps in the city",
+     "differentiator": "We only serve this campus, so pickup is same-day within hostel blocks and there's no app download or surge pricing."
+    }
+   ],
+   "scope_cuts": [
+    "No custom mobile app — a WhatsApp number and a Google Form for pickup requests cover the first 50 customers.",
+    "No dry-cleaning, ironing-only or bulk institutional contracts — only wash-and-fold per kg for hostel students until one route is profitable.",
+    "No hiring delivery staff — founder and one batchmate run pickup and drop on bicycles for the first term."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "WhatsApp Business",
+     "why": "Primary channel for pickup requests, slot confirmation, and delivery updates via quick replies and catalogue."
+    },
+    {
+     "name": "Google Forms",
+     "why": "Collects pickup address, kg estimate, and UPI payment link without building a custom app."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Generates UPI payment links for per-kg billing and monthly plans directly in WhatsApp."
+    },
+    {
+     "name": "Notion",
+     "why": "Tracks daily pickup routes, kg weights, and payment status for the founder and batchmate."
+    },
+    {
+     "name": "Canva",
+     "why": "Creates WhatsApp status posters and hostel notice board flyers for fixed weekly slots."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "ChatGPT",
+     "why": "Drafts WhatsApp quick replies, pricing explanations, and handles student queries instantly."
+    },
+    {
+     "name": "Claude",
+     "why": "Writes the one-page service description and generates Canva-ready text for promotional posts."
+    }
+   ],
+   "mvp_features": [
+    "Per-kg wash-and-fold service with same-day pickup and next-day delivery for hostel blocks.",
+    "Monthly unlimited laundry plan with fixed weekly pickup and drop slots for 5 kg per week.",
+    "WhatsApp-based order tracking with automated payment link generation for every pickup request."
+   ],
+   "tool_costs": [
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Google Forms",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Notion",
+     "plan": "Plus for students free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.notion.com/pricing"
+    },
+    {
+     "tool": "Canva",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "Claude",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    }
+   ],
+   "mvp_build_cost": 500.0,
+   "first_10_steps": [
+    "Set up a WhatsApp Business account with a catalogue listing per-kg rates and monthly plan details.",
+    "Create a Google Form for pickup requests that includes address, kg estimate, and a Razorpay payment link field.",
+    "Generate 5 UPI payment links in Razorpay for common kg ranges (2kg, 5kg, 10kg) to share via WhatsApp.",
+    "Draft 3 WhatsApp quick replies for order confirmation, pickup time, and delivery status using ChatGPT.",
+    "Design a 2-page Canva flyer showing the weekly pickup schedule and pricing for hostel notice boards.",
+    "Recruit one batchmate to help with pickup and drop on bicycles for the first two weeks.",
+    "Post the flyer and service details in 3 hostel WhatsApp groups and 2 class groups with a 20% discount for the first 10 orders.",
+    "Collect the first 10 laundry pickups, weigh the clothes, and send the exact payment link via WhatsApp.",
+    "Track all pickups, weights, and payments in a Notion database to calculate the actual cost per kg.",
+    "Review the first week's data to adjust the per-kg price and confirm the most popular pickup time slot."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Per-kg wash and fold",
+     "monthly_price": 50.0,
+     "billing": "per_use",
+     "features": [
+      "₹50 per kg, minimum 3 kg per pickup (₹150 minimum order)",
+      "Same-day pickup, next-day delivery in hostel blocks",
+      "WhatsApp tracking and UPI payment link"
+     ]
+    },
+    {
+     "name": "Monthly 5kg plan",
+     "monthly_price": 999.0,
+     "billing": "monthly",
+     "features": [
+      "5 kg every week, fixed pickup slot",
+      "Covers a full month of hostel laundry",
+      "Priority slot booking on WhatsApp"
+     ]
+    },
+    {
+     "name": "Monthly 10kg plan",
+     "monthly_price": 1899.0,
+     "billing": "monthly",
+     "features": [
+      "10 kg every week for heavy users",
+      "Two pickup slots per week",
+      "Free re-wash on any complaint"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 850.0,
+   "delivery_cost_per_customer": 340.0,
+   "burn_line_items": [
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Forms",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Notion",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "ChatGPT",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 1500.0
+    }
+   ],
+   "monthly_burn": 1500.0,
+   "marketing_budget": 1500.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 10.0,
+   "break_even_customers": 3,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 4250.0,
+     "notes": "First 10 orders at 20% discount; mostly per-kg users at ₹50/kg with 3kg minimum from 3 hostel groups."
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 10200.0,
+     "notes": "3 monthly plan subscribers plus 9 per-kg users; batchmate on second bicycle route."
+    },
+    {
+     "day": 90,
+     "paying_customers": 25,
+     "mrr": 21250.0,
+     "notes": "8 monthly plan subscribers plus 17 per-kg users; one route profitable, second route started."
+    }
+   ],
+   "key_assumptions": [
+    "Hostel students will pay ₹50/kg with a 3kg minimum because the nearest dhobi charges ₹30-₹50/kg with no fixed slot (assumption, unverified).",
+    "delivery_cost_per_customer of ₹340 = ₹180 goods/route labour share + ₹160 for 2 hours of founder+batchmate time at ₹80/hour, to be validated against minute-logged times from the first 10 pickups.",
+    "Average paying customer pays ₹850/month blended across tiers, giving ₹510 gross margin per customer after delivery cost.",
+    "Founder puts in ₹15,000 of savings; no external funding."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Hostel WhatsApp Groups",
+     "tactic": "Post a 150-word service description with a 20% discount code for the first 10 orders in 5 specific hostel resident groups (2 per block) and 2 class groups, then DM every person who replies 'interested' within 2 hours to schedule a pickup.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Physical Notice Boards",
+     "tactic": "Print 50 A5 flyers on Canva (₹50 ink/paper) and pin them on the notice boards of 4 hostel messes and 2 common rooms, including a QR code to the Google Form and a 'First 10 get 20% off' offer.",
+     "monthly_spend": 50.0,
+     "new_customers_per_month": 2,
+     "cac": 25.0
+    }
+   ],
+   "first_10_customers": [
+    "Walk to the 3 nearest hostel blocks and ask the warden or senior for permission to pin flyers on the notice board and share the service in the block WhatsApp group.",
+    "DM 20 batchmates and 10 juniors in class groups with the cold message, offering a free 2kg wash-and-fold pilot to the first 3 who reply.",
+    "Set up a WhatsApp Business catalogue with the per-kg rate and monthly plan, and share the catalogue link in the 5 hostel groups with the discount code.",
+    "Personally pick up the first 5 laundry loads from the mess area at 10am, wash them at the local dhobi (negotiate a bulk rate for 10kg+), and deliver them back by 6pm the next day.",
+    "Send a WhatsApp status update with photos of the folded clothes in bags to all 50 contacts in the hostel groups to show proof of delivery.",
+    "Ask the first 3 pilot users for a 1-line testimonial and share it in the hostel groups to convert the remaining 7 paying customers."
+   ],
+   "cold_message": "Hey, I noticed you're in [Hostel Name] and probably hate washing clothes in the common bathroom.\nI'm a student here too, and I'm offering same-day laundry pickup and next-day delivery for ₹40/kg, with a 20% discount for the first 10 orders.\nWant me to pick up your laundry tomorrow at 10am? Just reply with your room number and I'll send the UPI link.",
+   "objections": [
+    {
+     "objection": "I don't trust you with my clothes; what if you lose them or damage them?",
+     "response": "I'm a student in the same hostel, so I can't afford to lose your trust. I'll give you a free 2kg pilot wash first—if you're happy with the quality and timing, you can pay for the next pickup. I'll also send photos of your folded clothes before I deliver them."
+    },
+    {
+     "objection": "The local dhobi is cheaper and I already use them.",
+     "response": "The dhobi charges ₹30-₹50/kg but you have to drop off and pick up yourself, which takes 30-45 minutes each way. I pick up from your room at 10am and deliver by 6pm the next day, so you save 1-2 hours a week. Plus, my pricing is fixed at ₹40/kg with no haggling, and you get a WhatsApp tracking link for every pickup."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a credible campus-first laundry service with realistic pricing, free tooling and a founder-sized workload. It stays faithful to the pickup-and-drop idea and fits the bootstrapped student constraints well. Main gaps are around delivery cost realism and the growth playbook's reliance on unproven dhobi outsourcing.",
+  "biggest_risk": "The founder has no proven laundry partner or own washing setup, so the first pickups depend on negotiating an untested bulk rate with a local dhobi — if that rate or turnaround fails, delivery cost and next-day promise both collapse before the first 10 customers.",
+  "adherence_score": 0.9
+ },
+ "seconds": 237.0,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1175,
+   "out": 351,
+   "thinking": 0,
+   "total": 1526
+  },
+  {
+   "role": "builder",
+   "in": 2608,
+   "out": 728,
+   "thinking": 0,
+   "total": 3336
+  },
+  {
+   "role": "economics",
+   "in": 2474,
+   "out": 620,
+   "thinking": 0,
+   "total": 3094
+  },
+  {
+   "role": "growth",
+   "in": 2778,
+   "out": 789,
+   "thinking": 0,
+   "total": 3567
+  },
+  {
+   "role": "critic",
+   "in": 3404,
+   "out": 707,
+   "thinking": 0,
+   "total": 4111
+  },
+  {
+   "role": "economics",
+   "in": 3979,
+   "out": 679,
+   "thinking": 0,
+   "total": 4658
+  },
+  {
+   "role": "growth",
+   "in": 3577,
+   "out": 756,
+   "thinking": 0,
+   "total": 4333
+  },
+  {
+   "role": "critic",
+   "in": 3435,
+   "out": 517,
+   "thinking": 0,
+   "total": 3952
+  }
+ ],
+ "tokens": {
+  "in": 23430,
+  "out": 5147,
+  "thinking": 0,
+  "total": 28577
+ }
+}

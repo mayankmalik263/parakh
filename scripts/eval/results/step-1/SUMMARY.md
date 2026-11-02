@@ -1,6 +1,6 @@
 # Eval: step-1
 
-scored 2026-11-02 09:24 UTC · model `qwen-3.8-27b` · 11/12 plans finished
+scored 2026-11-02 13:09 UTC · model `qwen-3.8-27b` · 11/12 plans finished
 
 | | Average per plan |
 |---|---|
@@ -10,8 +10,8 @@ scored 2026-11-02 09:24 UTC · model `qwen-3.8-27b` · 11/12 plans finished
 | Time | 140s |
 | Revision rounds | 1.00 |
 | Unfixed math errors | 0.09 |
-| Paid tool prices matching the checked list | 27/27 |
-| All tool prices matching the checked list | 112/117 |
+| Paid tool prices matching the checked list | 24/27 |
+| All tool prices matching the checked list | 110/117 |
 | Recommended tools missing from costs | 0.0 |
 | Stats with no source | 0.3 |
 

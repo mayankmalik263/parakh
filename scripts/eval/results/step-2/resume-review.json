@@ -1,0 +1,356 @@
+{
+ "id": "resume-review",
+ "kind": "service",
+ "idea": "Resume and LinkedIn review for final-year engineering students before placements",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 0,
+  "issues_raised": 2,
+  "math_warnings": 0,
+  "tools_costed": 9,
+  "tools_in_catalog": 9,
+  "paid_prices_right": 1,
+  "paid_prices": 1,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 11248
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "Final-year engineering student in India, 2-6 weeks before campus placements, gets zero interview calls after applying because their resume and LinkedIn profile don't pass the recruiter or ATS scan.",
+   "target_customer": "Final-year B.Tech student at an Indian engineering college with campus placements starting within 8 weeks, who has already sent 10+ applications with no callbacks and can pay a one-time ₹300-₹800 fee from savings or pocket money.",
+   "mission": "Give final-year engineering students a recruiter-ready resume and LinkedIn profile before their placement drive starts, so their application gets shortlisted instead of filtered out.",
+   "competitors": [
+    {
+     "name": "Free AI resume tools (ChatGPT, Gemini, Kickresume, Rezi free tiers)",
+     "differentiator": "We review against actual Indian campus placement and recruiter expectations, with a human pass and campus-specific fixes, not generic AI output."
+    },
+    {
+     "name": "Freelance resume writers on Fiverr/Upwork",
+     "differentiator": "We know Indian engineering placement formats and campus drive requirements; they write generic international resumes and charge in dollars with slow turnaround."
+    },
+    {
+     "name": "College training and placement cell (TPO) resume workshops",
+     "differentiator": "TPO sessions are one-size-fits-all group lectures with no per-student rewrite; we deliver a reviewed, edited resume and LinkedIn profile for one student."
+    }
+   ],
+   "scope_cuts": [
+    "No custom resume-builder SaaS or web app — a service with manual review ships in 3-4 weeks; software would blow the ₹15,000 build budget.",
+    "No interview prep, aptitude training, or mock interview service line — resume and LinkedIn review only until one paying customer converts.",
+    "No hiring of designers or writers — founder plus one part-time batchmate handles reviews manually at first."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Carrd",
+     "why": "One-page portfolio site to display 3 pilot reviews and host a Razorpay payment link for ₹300-₹800 fees."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Generates UPI payment links for one-time resume review fees without needing a full e-commerce setup."
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Free app to manage client chats, send edited PDFs, and handle quick replies for 15-hour/week capacity."
+    },
+    {
+     "name": "Google Docs",
+     "why": "Free collaborative editor for students to share resume drafts and for the founder to make tracked changes."
+    },
+    {
+     "name": "Canva",
+     "why": "Free tier to create simple LinkedIn banner images and visual resume templates for students who need design help."
+    },
+    {
+     "name": "Notion",
+     "why": "Free student plan to track 10+ client reviews, deadlines, and feedback loops in a simple database."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Free tier to draft resume bullet points, optimize LinkedIn summaries, and check ATS keyword density for Indian placements."
+    },
+    {
+     "name": "Gemini",
+     "why": "Free tier to analyze specific Indian campus placement job descriptions and suggest role-specific skill keywords."
+    }
+   ],
+   "mvp_features": [
+    "Resume Review: 1-page PDF rewrite with 10 tracked changes, ATS keyword optimization, and 15-minute voice note explanation.",
+    "LinkedIn Profile Audit: 5 specific headline and summary rewrites plus 3 connection request templates for target recruiters.",
+    "Combined Placement Pack: Resume rewrite + LinkedIn audit + 1-page 'About Me' script for placement cell interviews."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Carrd",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://carrd.com/pro"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Google Docs",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "Notion",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.notion.com/pricing"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "Gemini",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Domain",
+     "plan": "in domain",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    }
+   ],
+   "mvp_build_cost": 75.0,
+   "first_10_steps": [
+    "Register a free Carrd account and build a one-page site titled 'Resume Review for Final Year Engineers' with a placeholder for 3 case studies.",
+    "Buy a .in domain for ₹75 and connect it to the Carrd site to look professional for college seniors and juniors.",
+    "Create a free Razorpay account and generate a ₹500 payment link for the 'Resume Review' service to test UPI checkout.",
+    "Recruit 3 batchmates for free pilot reviews in exchange for testimonials and before/after screenshots of their resumes.",
+    "Use Claude free tier to rewrite the 3 pilot resumes, focusing on Indian placement keywords like 'Campus Drive' and 'Core Engineering'.",
+    "Post the 3 before/after resume screenshots in 5 college WhatsApp groups with the caption 'Got 3 interviews after this rewrite'.",
+    "Set up a Notion database with columns for 'Student Name', 'College', 'Review Status', and 'Payment Link Sent' to track 10 clients.",
+    "Draft a 3-bullet WhatsApp template message: 'Hi [Name], I review resumes for [College] placements. ₹500 for a 1-page rewrite + LinkedIn fix. Link here.'",
+    "Send the WhatsApp template to 20 final-year students in your hostel and class groups, offering the first 2 reviews at ₹300 to get initial cash flow.",
+    "Deliver the first 2 paid reviews within 48 hours, ask for a 2-sentence testimonial, and update the Carrd site with the new proof."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Resume Review",
+     "monthly_price": 500.0,
+     "billing": "one_time",
+     "features": [
+      "1-page resume rewrite with 10 tracked changes in Google Docs",
+      "ATS keyword optimization for Indian campus placements",
+      "15-minute WhatsApp voice note explaining each change"
+     ]
+    },
+    {
+     "name": "Combined Placement Pack",
+     "monthly_price": 800.0,
+     "billing": "one_time",
+     "features": [
+      "Resume rewrite + LinkedIn headline and summary audit",
+      "3 recruiter connection request templates",
+      "1-page 'About Me' script for placement cell interviews"
+     ]
+    },
+    {
+     "name": "LinkedIn Profile Audit (standalone)",
+     "monthly_price": 300.0,
+     "billing": "one_time",
+     "features": [
+      "5 headline and summary rewrites",
+      "3 connection request templates for target recruiters",
+      "Delivered within 48 hours on WhatsApp"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 550.0,
+   "delivery_cost_per_customer": 45.0,
+   "burn_line_items": [
+    {
+     "item": "Carrd (Free plan)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay (Standard, per-transaction fee budgeted in delivery cost)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "WhatsApp Business (free app)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Docs (free)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva (free tier)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Notion (free student plan)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude (free tier)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Gemini (free tier)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": ".in domain renewal (₹75 one-time, amortized)",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "Marketing budget (WhatsApp group posts, ₹100 Instagram boost per campaign, 3 campaigns/month)",
+     "monthly_cost": 1500.0
+    }
+   ],
+   "monthly_burn": 1575.0,
+   "marketing_budget": 1500.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 9.5,
+   "break_even_customers": 4,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 2750.0,
+     "notes": "3 free pilots converted + 2 hostel referrals at ₹500-₹800 one-time fees."
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 6600.0,
+     "notes": "One batchmate joins part-time for delivery; WhatsApp template scaled to 5 college groups."
+    },
+    {
+     "day": 90,
+     "paying_customers": 20,
+     "mrr": 11000.0,
+     "notes": "Placement season peak; Carrd site updated with 10+ before/after case studies pulling organic LinkedIn inbound."
+    }
+   ],
+   "key_assumptions": [
+    "Target customer pays ₹300-₹800 one-time from savings because placement season is a high-stakes, one-shot event (stated in strategist target_customer).",
+    "Blended avg_revenue_per_customer of ₹550 assumes 60% buy the ₹500 Resume Review, 25% buy the ₹800 Pack, 15% buy the ₹300 LinkedIn Audit.",
+    "delivery_cost_per_customer of ₹45 covers Razorpay ~2% transaction fee plus amortized Canva/Claude heavy-use months; founder time is not paid.",
+    "Founder can commit ₹15,000 of savings (mid of ₹5,000-₹25,000 range) as starting capital."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Campus WhatsApp groups (hostel, class, branch and final-year batches)",
+     "tactic": "Post one before/after resume screenshot with a ₹300 offer link in 5 named college WhatsApp groups daily, plus reply to every placement-related message in those groups.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 4,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "Ask 5 batchmates for their current resume, rewrite one page free, send back the tracked-changes Google Doc, and request a 2-sentence testimonial plus permission to post the screenshot.",
+    "Post the before/after screenshot in 5 named hostel and class WhatsApp groups with the ₹300 Razorpay link, once per group per day for 7 days.",
+    "DM 20 final-year students from your own college's placement WhatsApp broadcast list individually with the 3-line cold message.",
+    "Offer the first 2 paid reviews at ₹300 (discount, not spend) in exchange for a WhatsApp video testimonial you can post as a Reel.",
+    "Ask each paying customer to forward your Carrd link to 3 batchmates who are also in placement season; give them a free LinkedIn headline rewrite as thanks.",
+    "Repeat the WhatsApp group post with a new before/after screenshot every week until 10 paying customers are delivered."
+   ],
+   "cold_message": "Hi [Name], saw you're in final year at [College] — placement drives usually filter resumes on ATS keywords before a human reads them. I'll rewrite your 1 page resume + LinkedIn headline for ₹300, delivered in 48 hours on WhatsApp, and you only pay after I send the before/after draft. Want me to send a free sample rewrite of your current resume's top 2 bullet points first?",
+   "objections": [
+    {
+     "objection": "I can just use ChatGPT for free.",
+     "response": "ChatGPT gives generic output; I rewrite against actual Indian campus drive JDs and send you a free sample of 2 bullet points so you can compare before paying ₹300."
+    },
+    {
+     "objection": "I'll do it later, placements are still 6 weeks away.",
+     "response": "The first shortlist rounds fill before Day 0 — sending me your resume this week means you're in the first batch of applicants, not scrambling after the drive starts."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is highly realistic and strictly adheres to the bootstrapped, student-founder constraints, utilizing a zero-cost tech stack and campus-first distribution. The revenue model is sound for the Indian student market, with pricing that reflects the low willingness-to-pay for one-time services. The primary weakness is the aggressive assumption that organic WhatsApp reach will consistently convert at a scale sufficient to meet the 90-day targets without paid amplification.",
+  "biggest_risk": "The growth strategy relies entirely on organic reach in college WhatsApp groups, which often suffers from high noise and low conversion; if the 'before/after' posts do not generate immediate viral traction or referrals, the founder will hit a customer acquisition wall before reaching the 20-customer target by Day 90.",
+  "adherence_score": 0.95
+ },
+ "seconds": 63.1,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1175,
+   "out": 422,
+   "thinking": 0,
+   "total": 1597
+  },
+  {
+   "role": "builder",
+   "in": 2649,
+   "out": 1004,
+   "thinking": 0,
+   "total": 3653
+  },
+  {
+   "role": "economics",
+   "in": 2713,
+   "out": 837,
+   "thinking": 0,
+   "total": 3550
+  },
+  {
+   "role": "growth",
+   "in": 3107,
+   "out": 481,
+   "thinking": 0,
+   "total": 3588
+  },
+  {
+   "role": "critic",
+   "in": 3568,
+   "out": 434,
+   "thinking": 0,
+   "total": 4002
+  }
+ ],
+ "tokens": {
+  "in": 13212,
+  "out": 3178,
+  "thinking": 0,
+  "total": 16390
+ }
+}

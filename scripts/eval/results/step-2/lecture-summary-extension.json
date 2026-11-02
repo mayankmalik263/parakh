@@ -1,0 +1,409 @@
+{
+ "id": "lecture-summary-extension",
+ "kind": "software",
+ "idea": "A Chrome extension that turns recorded lecture videos into short notes and flashcards",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 5,
+  "math_warnings": 0,
+  "tools_costed": 12,
+  "tools_in_catalog": 10,
+  "paid_prices_right": 2,
+  "paid_prices": 4,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 10863
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "A student finishes a 90-minute recorded lecture and needs to revise for an exam within 48 hours, but rewatching is too slow and they have no notes to study from.",
+   "target_customer": "University students worldwide, including those on tight budgets, who watch recorded lectures on YouTube, Canvas or Zoom and buy tools that cut exam revision time.",
+   "mission": "Turn any recorded lecture video into short revision notes and flashcards in minutes so students can study without rewatching.",
+   "competitors": [
+    {
+     "name": "NoteGPT",
+     "differentiator": "We generate flashcards directly from the video timeline with timestamps, not just a generic summary."
+    },
+    {
+     "name": "Glasp YouTube summarizer",
+     "differentiator": "We output exam-ready flashcards and spaced-repetition notes, not just a paragraph summary."
+    },
+    {
+     "name": "Manual note-taking in Notion or Google Docs",
+     "differentiator": "We produce the notes and cards in under 5 minutes from a URL, versus 45+ minutes of manual transcription."
+    }
+   ],
+   "scope_cuts": [
+    "No live lecture capture or in-class recording; we only process already-recorded video URLs and files.",
+    "No native mobile app in v1; ship the Chrome extension plus a web viewer first.",
+    "No LMS integrations (Canvas, Moodle, Blackboard) at launch; paste a video link instead."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Chrome Extension (Manifest V3)",
+     "why": "The product lives where the video plays; capture YouTube/Canvas/Zoom URLs and timestamps directly in the browser tab."
+    },
+    {
+     "name": "Next.js",
+     "why": "Web viewer for generated notes and flashcards, plus API routes to proxy AI calls and keep API keys off the client."
+    },
+    {
+     "name": "Supabase",
+     "why": "Stores users, video jobs, notes and flashcards with auth and row-level security on the free tier."
+    },
+    {
+     "name": "Netlify",
+     "why": "Hosts the Next.js web viewer free tier; Vercel Hobby forbids commercial use so it would force a paid plan."
+    },
+    {
+     "name": "Stripe",
+     "why": "Handles global card payments for the monthly paid plan at 2.9% + 30 cents per US card."
+    },
+    {
+     "name": "Resend",
+     "why": "Transactional email for sign-in links, job completion alerts and receipts."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Gemini API",
+     "why": "Gemini 2.5 Flash transcribes the lecture audio and generates timestamped notes and flashcards from the transcript."
+    },
+    {
+     "name": "Claude",
+     "why": "Writes the prompt templates for notes/flashcards and builds the extension code via Claude Code."
+    },
+    {
+     "name": "FFmpeg",
+     "why": "Extracts audio from uploaded lecture files before sending to Gemini for transcription."
+    },
+    {
+     "name": "PostHog",
+     "why": "Tracks which videos users convert on and where the free-to-paid funnel drops."
+    }
+   ],
+   "mvp_features": [
+    "Paste a lecture video URL or upload a file in the extension; Gemini transcribes it and returns timestamped revision notes in under 5 minutes (the moment users pay).",
+    "Generate 10-20 exam-ready flashcards per lecture with source timestamps, clickable back to the video moment.",
+    "Web viewer at your domain listing all saved lectures, notes and flashcards, synced to the user's Supabase account."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Chrome Extension",
+     "plan": "Chrome Web Store one-time developer registration",
+     "monthly_cost": 5.0,
+     "verified": false,
+     "price_note": "Not in Parakh's checked price list. Confirm the price before you pay."
+    },
+    {
+     "tool": "Next.js",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/vercel/next.js"
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://supabase.com/pricing"
+    },
+    {
+     "tool": "Netlify",
+     "plan": "Personal",
+     "monthly_cost": 9.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.netlify.com/pricing/"
+    },
+    {
+     "tool": "Stripe",
+     "plan": "Standard (2.9% + 30 cents per US card payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2.9% + 30 cents per US card payment. Price checked 2026-11-02 on https://stripe.com/pricing"
+    },
+    {
+     "tool": "Resend",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://resend.com/pricing"
+    },
+    {
+     "tool": "Gemini API",
+     "plan": "Free tier",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ai.google.dev/gemini-api/docs/pricing"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Pro",
+     "monthly_cost": 20.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "FFmpeg",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ffmpeg.org/legal.html"
+    },
+    {
+     "tool": "PostHog",
+     "plan": "Free tier",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://posthog.com/pricing"
+    },
+    {
+     "tool": "Domain",
+     "plan": "com domain",
+     "monthly_cost": 1.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain (₹1,499/year, converted to dollars)"
+    },
+    {
+     "tool": "Cursor",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.cursor.com/pricing"
+    }
+   ],
+   "mvp_build_cost": 125.0,
+   "first_10_steps": [
+    "Register a Chrome Web Store developer account for $5 and buy a .com domain for $1/month at Cloudflare Registrar.",
+    "Run `npx create-next-app@latest lecturecards` with TypeScript, Tailwind and App Router, then deploy to Netlify Personal.",
+    "Run `supabase init`, create tables `videos`, `notes`, `flashcards` and enable Supabase Auth email magic links.",
+    "Run `npx create-chrome-extension@latest` (or scaffold Manifest V3 manually) and load unpacked in `chrome://extensions`.",
+    "Call Gemini 2.5 Flash from a Next.js API route: pass the lecture YouTube URL or uploaded audio, prompt for timestamped notes.",
+    "Build the extension popup: paste video URL, POST to `/api/convert`, show a progress state until notes return.",
+    "Generate 15 flashcards per lecture in the same Gemini call as JSON `{question, answer, timestamp}` and store in Supabase.",
+    "Build the web viewer page `/lectures/[id]` rendering notes and a flip-card flashcard deck with timestamp links.",
+    "Wire Stripe Checkout for the monthly paid plan via a `/api/checkout` route and gate free-tier limits in Supabase row-level security.",
+    "Publish the extension to the Chrome Web Store, install PostHog, and DM 20 university study-server admins with a free lecture link to try."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Free",
+     "monthly_price": 0.0,
+     "billing": "monthly",
+     "features": [
+      "3 video conversions per month",
+      "10 flashcards per lecture",
+      "Web viewer access"
+     ]
+    },
+    {
+     "name": "Pro",
+     "monthly_price": 9.0,
+     "billing": "monthly",
+     "features": [
+      "Unlimited video conversions",
+      "20 flashcards per lecture with timestamps",
+      "Spaced-repetition review scheduler",
+      "PDF export of notes"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 9.0,
+   "delivery_cost_per_customer": 0.5,
+   "burn_line_items": [
+    {
+     "item": "Chrome Web Store developer registration",
+     "monthly_cost": 5.0
+    },
+    {
+     "item": "Next.js hosting",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Supabase database",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Netlify hosting",
+     "monthly_cost": 9.0
+    },
+    {
+     "item": "Stripe payment processing",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Resend email service",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Gemini API transcription",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude Pro subscription",
+     "monthly_cost": 20.0
+    },
+    {
+     "item": "FFmpeg audio processing",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "PostHog analytics",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Domain registration",
+     "monthly_cost": 1.0
+    },
+    {
+     "item": "Cursor IDE",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 50.0
+    }
+   ],
+   "monthly_burn": 85.0,
+   "marketing_budget": 50.0,
+   "starting_capital": 500.0,
+   "external_funding": 0.0,
+   "runway_months": 5.9,
+   "break_even_customers": 10,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 45.0,
+     "notes": "First 5 paying users from 20 DMs to study-server admins"
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 108.0,
+     "notes": "Referral loop from initial users; 12 total paying customers"
+    },
+    {
+     "day": 90,
+     "paying_customers": 25,
+     "mrr": 225.0,
+     "notes": "Organic Chrome Web Store discovery; 25 total paying customers"
+    }
+   ],
+   "key_assumptions": [
+    "University students will pay $9/month for lecture-to-flashcard conversion, matching typical student tool pricing.",
+    "Gemini API free tier handles 100% of transcription volume for the first 90 days without hitting rate limits.",
+    "50% of free users who convert 3+ videos will upgrade to Pro within 14 days of hitting the limit.",
+    "Chrome Web Store organic discovery provides 5 new paying users per week after Day 60."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Reddit + Discord university study servers (organic DMs)",
+     "tactic": "Post a free sample conversion in r/GetStudying and r/University, and DM 30 students/day in 10 university Discord study servers who ask about lecture notes.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Chrome Web Store listing + TikTok demo clips",
+     "tactic": "Publish extension listing with 5 keyword-rich screenshots; post 1 TikTok/day screen-recording a 90-minute lecture becoming 15 flashcards in under 5 minutes.",
+     "monthly_spend": 30.0,
+     "new_customers_per_month": 2,
+     "cac": 15.0
+    }
+   ],
+   "first_10_customers": [
+    "Convert one real 90-minute lecture yourself and screenshot the notes plus 15 flashcards as your proof asset.",
+    "Post that free sample in r/GetStudying and r/University with a comment offer: 'paste any lecture URL, I'll convert it free today'.",
+    "Join 10 university Discord servers (MIT, Stanford, NYU, Waterloo, UCL study channels) and DM 30 students/day who mention exams or lectures.",
+    "Reply to every r/GetStudying and r/College post asking how to revise from recorded lectures with a free conversion link.",
+    "Send the free conversion to each of your own classmates who have recorded lectures, then ask for $9/month Pro after they use it twice.",
+    "Offer the first 10 users a free Pro month in exchange for a 2-sentence quote you can put on the Chrome Web Store listing."
+   ],
+   "cold_message": "Hey — I built a Chrome extension that turns a 90-minute lecture video into timestamped notes and 15 flashcards in under 5 minutes.\nPaste any lecture URL and I'll convert one free today so you can see it before your next exam.\nIf it saves you rewatching, it's $9/month; if not, keep the free 3 conversions a month.",
+   "objections": [
+    {
+     "objection": "I can just use ChatGPT or NoteGPT for free.",
+     "response": "Paste your lecture URL here — I'll convert it free so you see the timestamped flashcards linking back to the exact video minute; keep the free 3/month if you don't upgrade."
+    },
+    {
+     "objection": "I'm a broke student, I can't pay $9/month.",
+     "response": "Free plan gives 3 conversions and 10 flashcards every month forever — upgrade only if you hit that limit during exam season."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent bootstrapped Chrome extension for university students with realistic tooling, pricing and a campus-first launch that fits a student founder's constraints. The strategy, build and growth sections all describe the same product for the same customer, and the $9/month freemium price is credible for students. The main uncertainty is whether the free-tier Gemini API and organic channels can sustain the projected growth without hitting limits or stalling.",
+  "biggest_risk": "Gemini API free-tier rate limits or quality issues on long 90-minute lecture audio could stall conversions exactly when the first paying users arrive, forcing an unplanned API cost or degraded output that kills the value proposition.",
+  "adherence_score": 0.9
+ },
+ "seconds": 83.4,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 986,
+   "out": 275,
+   "thinking": 0,
+   "total": 1261
+  },
+  {
+   "role": "builder",
+   "in": 2633,
+   "out": 1011,
+   "thinking": 0,
+   "total": 3644
+  },
+  {
+   "role": "economics",
+   "in": 2584,
+   "out": 905,
+   "thinking": 0,
+   "total": 3489
+  },
+  {
+   "role": "growth",
+   "in": 2749,
+   "out": 580,
+   "thinking": 0,
+   "total": 3329
+  },
+  {
+   "role": "critic",
+   "in": 3246,
+   "out": 362,
+   "thinking": 0,
+   "total": 3608
+  },
+  {
+   "role": "growth",
+   "in": 3367,
+   "out": 539,
+   "thinking": 0,
+   "total": 3906
+  },
+  {
+   "role": "critic",
+   "in": 3224,
+   "out": 409,
+   "thinking": 0,
+   "total": 3633
+  }
+ ],
+ "tokens": {
+  "in": 18789,
+  "out": 4081,
+  "thinking": 0,
+  "total": 22870
+ }
+}

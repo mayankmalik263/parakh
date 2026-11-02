@@ -88,6 +88,11 @@ def monthly_cost(plan: dict, profile: dict, catalog: dict | None = None) -> floa
     return round(amount, 0 if want_inr else 2)
 
 
+def _tolerance(price: float, profile: dict) -> float:
+    """How far a stated price may be off before code corrects it: 2%, but at least ₹1 or $0.05."""
+    return max(1 if profile.get("currency") == "INR" else 0.05, 0.02 * price)
+
+
 def _default_plan(tool: dict) -> dict | None:
     """Free if there is a free plan, else usage-based, else the cheapest fixed plan."""
     for kind in ("free", "usage"):
@@ -126,7 +131,7 @@ def price_build(build: dict, profile: dict, catalog: dict | None = None) -> list
             line["verified"] = False
             line["price_note"] = "Not in Parakh's checked price list. Confirm the price before you pay."
             continue
-        if abs((line.get("monthly_cost") or 0) - price) > max(1, 0.02 * price):
+        if abs((line.get("monthly_cost") or 0) - price) > _tolerance(price, profile):
             fixes.append({"label": f"{line['tool']} ({plan['plan']})", "unit": "money", "before": line.get("monthly_cost") or 0, "after": price})
             line["monthly_cost"] = price
         line["verified"] = True

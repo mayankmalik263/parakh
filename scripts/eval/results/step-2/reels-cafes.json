@@ -1,0 +1,437 @@
+{
+ "id": "reels-cafes",
+ "kind": "service",
+ "idea": "Instagram reels editing for cafes near campus in Dehradun",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 8,
+  "math_warnings": 0,
+  "tools_costed": 13,
+  "tools_in_catalog": 13,
+  "paid_prices_right": 2,
+  "paid_prices": 2,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 11345
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "Cafe owner near a Dehradun campus has no reels for the week, realizes it Wednesday evening when the evening rush is quiet and students scroll past competitors' pages instead.",
+   "target_customer": "Owner of a 10-30 seat cafe within 3 km of a Dehradun college, spending ₹15,000-₹60,000 monthly on rent, who already posts on Instagram but hasn't uploaded a reel in 7+ days.",
+   "mission": "We edit and schedule weekly Instagram reels for campus-adjacent Dehradun cafes so the owner never has to open a video editor between orders.",
+   "competitors": [
+    {
+     "name": "Local Dehradun social media agencies",
+     "differentiator": "They bill ₹15,000+/month retainers with 2-week onboarding; we start at cafe-owner budgets with a 48-hour first-reel turnaround."
+    },
+    {
+     "name": "Freelance editors on Fiverr/Upwork",
+     "differentiator": "They need briefs, source files and English back-and-forth; we sit in the cafe, shoot on our phone, and deliver ready-to-post reels."
+    },
+    {
+     "name": "A junior in-house hire or the owner's nephew",
+     "differentiator": "A part-time hire costs ₹8,000-₹12,000/month and quits by exam season; we are a fixed monthly line item with no supervision needed."
+    }
+   ],
+   "scope_cuts": [
+    "No custom scheduling software or client dashboard — deliver reels via Google Drive and post manually, because building a tool delays the first paying cafe.",
+    "No paid ads management or influencer outreach for clients — only reel editing, since ad buying needs budget the cafe won't commit to yet.",
+    "No hires or subcontract editors — founder edits with CapCut and ChatGPT until 5+ paying cafes justify a part-time helper."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "VN Video Editor",
+     "why": "Free mobile editor with no watermark for cutting and captioning reels on the founder's phone between classes."
+    },
+    {
+     "name": "InShot",
+     "why": "Free India-available mobile editor replacing CapCut for quick trims, text overlays and 9:16 exports."
+    },
+    {
+     "name": "Google Drive",
+     "why": "Deliver finished reels and collect raw footage via shared folders; free and familiar to cafe owners."
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Cafe owners in Dehradun already live here; use it for briefs, approvals and delivery pings."
+    },
+    {
+     "name": "Carrd",
+     "why": "One-page portfolio showing 3 sample reels and pricing; Pro Lite is enough."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Payment links for UPI-based monthly packages and per-reel payments from Indian cafe owners."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Writes reel hooks, captions, hashtags and cafe-owner proposals; Claude Code with FFmpeg and Whisper can batch-caption and cut clips."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Free tier for quick caption variants and script rewrites when Claude's quota runs out."
+    },
+    {
+     "name": "Whisper",
+     "why": "Open-source local speech-to-text for accurate auto-captions on reels at zero cost."
+    },
+    {
+     "name": "FFmpeg",
+     "why": "Free command-line trimming, resizing to 9:16 and exporting reels for delivery."
+    }
+   ],
+   "mvp_features": [
+    "Starter Reel Pack: 4 edited reels/month, captions and hashtags, delivered via Google Drive within 48 hours of raw footage.",
+    "Growth Reel Pack: 8 edited reels/month, 2 on-site 30-minute shoots at the cafe, captions, hashtags, and posting calendar in a Google Sheet.",
+    "Per-Reel Trial: 1 reel at a discounted pilot rate so a skeptical cafe owner can test quality before a monthly package."
+   ],
+   "tool_costs": [
+    {
+     "tool": "VN Video Editor",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.vlognow.me/"
+    },
+    {
+     "tool": "InShot",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://inshot.com/"
+    },
+    {
+     "tool": "Google Drive",
+     "plan": "Google Workspace free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Instagram",
+     "plan": "Business account free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://help.instagram.com/502981923235522"
+    },
+    {
+     "tool": "Carrd",
+     "plan": "Pro Lite",
+     "monthly_cost": 71.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://carrd.com/pro ($9/year, converted to rupees)"
+    },
+    {
+     "tool": "Domain",
+     "plan": "in domain",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard (2% + GST per payment)",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/"
+    },
+    {
+     "tool": "Whisper",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/openai/whisper"
+    },
+    {
+     "tool": "FFmpeg",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://ffmpeg.org/legal.html"
+    },
+    {
+     "tool": "Notion",
+     "plan": "Plus for students free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.notion.com/pricing"
+    }
+   ],
+   "mvp_build_cost": 6500.0,
+   "first_10_steps": [
+    "List every cafe within 3 km of campus in a Notion sheet: name, Instagram handle, last reel date, seats, walking time.",
+    "Shoot 3 sample reels at 2 friendly nearby cafes or your own hostel mess, edited in VN Video Editor with InShot captions.",
+    "Build a Carrd one-page portfolio embedding the 3 sample reels and a WhatsApp contact button; register a ₹75/mo .in domain.",
+    "Write a one-page proposal and a simple per-reel/monthly contract in Notion, reviewed by a senior or a friend.",
+    "Set up a Razorpay account and create two payment links: one per-reel trial, one monthly package.",
+    "DM or walk into 10 cafes with the portfolio link and offer 1 discounted pilot reel at a fixed trial price.",
+    "Deliver the first pilot reel within 48 hours of receiving footage, via Google Drive link in WhatsApp.",
+    "Ask the pilot cafe owner for a 2-line testimonial and permission to post the reel as a case study.",
+    "Convert the pilot into a monthly package using the Razorpay payment link; target first paying cafe by week 6.",
+    "Line up 1-2 batchmates as part-time overflow editors, paid per reel from client revenue, with a shared InShot template."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Per-Reel Trial",
+     "monthly_price": 499.0,
+     "billing": "per_use",
+     "features": [
+      "1 edited reel delivered in 48 hours from raw footage shot on your phone"
+     ]
+    },
+    {
+     "name": "Starter Reel Pack",
+     "monthly_price": 2999.0,
+     "billing": "monthly",
+     "features": [
+      "4 edited reels/month, captions, hashtags, Google Drive delivery in 48 hours"
+     ]
+    },
+    {
+     "name": "Growth Reel Pack",
+     "monthly_price": 5999.0,
+     "billing": "monthly",
+     "features": [
+      "8 edited reels/month, 2 on-site 30-minute shoots, captions, hashtags, posting calendar in Google Sheet; capped at 2 Growth cafes until MRR ≥ ₹20,000"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 3499.0,
+   "delivery_cost_per_customer": 600.0,
+   "burn_line_items": [
+    {
+     "item": "VN Video Editor",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "InShot",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Drive",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Instagram",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Carrd Pro Lite",
+     "monthly_cost": 71.0
+    },
+    {
+     "item": ".in Domain",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "Razorpay",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "ChatGPT",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Whisper",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "FFmpeg",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Notion Plus for students",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 1500.0
+    }
+   ],
+   "monthly_burn": 1646.0,
+   "marketing_budget": 1500.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 9.1,
+   "break_even_customers": 1,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 2,
+     "mrr": 6998.0,
+     "notes": "2 Starter packs from pilot conversions at cafes within 3 km of campus."
+    },
+    {
+     "day": 60,
+     "paying_customers": 4,
+     "mrr": 13996.0,
+     "notes": "Mix of Starter and one Growth pack; 2 pilot reels converted to monthly."
+    },
+    {
+     "day": 90,
+     "paying_customers": 6,
+     "mrr": 20994.0,
+     "notes": "6 monthly cafes; batchmate overflow editors paid per reel from revenue, not from burn."
+    }
+   ],
+   "key_assumptions": [
+    "Target customer (₹15,000-₹60,000 monthly rent cafe) will pay ₹2,999-₹5,999/month for content that saves them editing time, per strategist's competitor gap vs ₹15,000+ agency retainers.",
+    "delivery_cost_per_customer of ₹600 = 3 hours of batchmate overflow editing at ₹200/hour paid per reel from client revenue; founder's own shoot/coordination hours on Growth packs are absorbed within the 15 hrs/week budget, so Growth pack sales are capped at 2 until MRR ≥ ₹20,000.",
+    "Blended avg_revenue_per_customer of ₹3,499 assumes 70% of paying cafes on Starter and 30% on Growth, with occasional per-reel trials.",
+    "Founder's ₹15,000 savings is the full starting capital; no external funding."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Walk-in cafe pitch within 3 km of campus",
+     "tactic": "Walk into 5 cafes/day with phone playing 1 sample reel, leave Carrd link + WhatsApp Business follow-up same evening; 100 cafes/month",
+     "monthly_spend": 500.0,
+     "new_customers_per_month": 2,
+     "cac": 250.0
+    },
+    {
+     "name": "Instagram DM to Dehradun cafe handles",
+     "tactic": "DM 25 cafe owners/day on Instagram with 3-line pitch + free sample reel offer; 600 DMs/month, follow up on WhatsApp",
+     "monthly_spend": 1000.0,
+     "new_customers_per_month": 2,
+     "cac": 500.0
+    }
+   ],
+   "first_10_customers": [
+    "List 30 cafes within 3 km of campus in Notion with Instagram handle and last reel date; walk into the top 10 first.",
+    "Shoot 3 free sample reels at 2 friendly cafes or hostel mess, deliver within 48 hours as proof before asking for money.",
+    "Offer 5 cafe owners a ₹499 per-reel pilot via Razorpay payment link, no monthly commitment, delivered in 48 hours.",
+    "Convert each pilot that posts the reel into a Starter pack (₹2,999/month) within 7 days of delivery.",
+    "Ask every paying cafe owner for 2 referrals in their cafe-owner WhatsApp group; offer them the same ₹499 pilot.",
+    "Repeat walk-ins + DMs weekly until 10 paying cafes; batchmate handles overflow editing paid per reel from revenue."
+   ],
+   "cold_message": "Hi [cafe name] — I noticed your last reel was [date]. I edit 4 reels/month for cafes near campus and deliver in 48 hours. Want 1 free sample reel this week? No commitment.",
+   "objections": [
+    {
+     "objection": "I already post reels myself / my nephew does it.",
+     "response": "Send me your last 3 reels — I'll edit one free this week so you can compare side by side before deciding."
+    },
+    {
+     "objection": "₹2,999/month is too much for me right now.",
+     "response": "Start with one ₹499 pilot reel, delivered in 48 hours; if it doesn't look better than your last post, you pay nothing more."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "This is a coherent, well-scoped service plan that fits a student founder's constraints: free tools, campus-first walk-ins, UPI payments, and a pilot-to-package funnel. Pricing at ₹499/₹2,999/₹5,999 is realistic for Dehradun cafes and undercuts the agency competitor the strategist identified. The main gap is whether 15 hours a week plus batchmate overflow can actually deliver 8 reels + 2 on-site shoots per Growth cafe without slipping the 48-hour promise.",
+  "biggest_risk": "Delivery load: if 4-6 cafes convert, the founder plus part-time batchmates must shoot, edit, caption and coordinate 16-30 reels/month within 15 hrs/week around classes — the 48-hour turnaround promise breaks first, and one late delivery to a small-town cafe owner likely churns the whole package.",
+  "adherence_score": 0.92
+ },
+ "seconds": 131.0,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1191,
+   "out": 411,
+   "thinking": 0,
+   "total": 1602
+  },
+  {
+   "role": "builder",
+   "in": 2634,
+   "out": 1064,
+   "thinking": 0,
+   "total": 3698
+  },
+  {
+   "role": "economics",
+   "in": 2870,
+   "out": 683,
+   "thinking": 0,
+   "total": 3553
+  },
+  {
+   "role": "growth",
+   "in": 3220,
+   "out": 522,
+   "thinking": 0,
+   "total": 3742
+  },
+  {
+   "role": "critic",
+   "in": 3672,
+   "out": 555,
+   "thinking": 0,
+   "total": 4227
+  },
+  {
+   "role": "builder",
+   "in": 4864,
+   "out": 912,
+   "thinking": 0,
+   "total": 5776
+  },
+  {
+   "role": "economics",
+   "in": 4193,
+   "out": 799,
+   "thinking": 0,
+   "total": 4992
+  },
+  {
+   "role": "growth",
+   "in": 3803,
+   "out": 522,
+   "thinking": 0,
+   "total": 4325
+  },
+  {
+   "role": "critic",
+   "in": 3693,
+   "out": 675,
+   "thinking": 0,
+   "total": 4368
+  }
+ ],
+ "tokens": {
+  "in": 30140,
+  "out": 6143,
+  "thinking": 0,
+  "total": 36283
+ }
+}
