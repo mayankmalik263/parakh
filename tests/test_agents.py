@@ -209,3 +209,36 @@ def test_stray_text_after_the_json_is_cut_instead_of_retried(monkeypatch):
     monkeypatch.setattr(r, "_get_client", lambda: _fake_client(['{"objection": "Too pricey", "response": "It pays for itself."}parameter'], calls))
     assert r.call_llm_json("hi", Objection, role="growth").response == "It pays for itself."
     assert len(calls) == 1
+
+
+def test_capitalised_json_keys_are_accepted_without_a_retry(monkeypatch):
+    from pydantic import BaseModel
+    from agents import llm_router
+
+    class Channel(BaseModel):
+        name: str
+        tactic: str
+
+    class Plan(BaseModel):
+        channels: list[Channel]
+
+    sent = []
+    def reply(role, messages, json_mode, max_tokens):
+        sent.append(messages)
+        return '{"Channels": [{"Name": "WhatsApp groups", "Tactic": "Post the free sample PDF"}]}'
+    monkeypatch.setattr(llm_router, "_complete_with_fallback", reply)
+    plan = llm_router.call_llm_json("plan", Plan, role="growth")
+    assert plan.channels[0].tactic == "Post the free sample PDF"
+    assert len(sent) == 1
+
+
+def test_broken_json_still_gets_one_retry(monkeypatch):
+    from pydantic import BaseModel
+    from agents import llm_router
+
+    class Small(BaseModel):
+        name: str
+
+    replies = iter(['{"name": ', '{"name": "ok"}'])
+    monkeypatch.setattr(llm_router, "_complete_with_fallback", lambda *a, **k: next(replies))
+    assert llm_router.call_llm_json("x", Small).name == "ok"

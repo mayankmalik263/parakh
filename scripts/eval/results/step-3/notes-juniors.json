@@ -1,0 +1,386 @@
+{
+ "id": "notes-juniors",
+ "kind": "digital product",
+ "idea": "Notes and PYQ papers for my college, sold to juniors before exams. I have about 8,000 rupees saved.",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 0,
+  "issues_raised": 3,
+  "math_warnings": 0,
+  "tools_costed": 10,
+  "tools_in_catalog": 10,
+  "paid_prices_right": 4,
+  "paid_prices": 4,
+  "hidden_costs": [],
+  "invented_stats": [],
+  "plan_chars": 10671
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "A first or second year student at an Indian college, 3-7 days before an exam, cannot find their own college's previous-year question papers or a senior's notes and scrambles across WhatsApp groups and library photocopies.",
+   "target_customer": "First and second year undergraduates at the founder's own college in India, spending ₹100-500 from a tight monthly budget, who panic-buy subject-wise notes and PYQ papers days before an exam.",
+   "mission": "Give students at one college exam-ready notes and previous-year question papers for a single subject, delivered over WhatsApp before the exam.",
+   "competitors": [
+    {
+     "name": "Free Telegram and WhatsApp PYQ group dumps",
+     "differentiator": "We curate and structure by subject and semester for one college; free dumps are unsorted and stale."
+    },
+    {
+     "name": "Photocopy shops near campus selling past papers",
+     "differentiator": "We deliver instantly over WhatsApp with organized notes bundled in; the shop requires a physical trip and sells only raw papers."
+    },
+    {
+     "name": "Generic national platforms like Examveda or Collegedunia question banks",
+     "differentiator": "They carry standardised content; ours is the exact syllabus and paper pattern of this founder's college."
+    }
+   ],
+   "scope_cuts": [
+    "No mobile app or web platform with logins in v1 — deliver PDFs via WhatsApp and a Razorpay payment link until 50 paying students prove demand.",
+    "No multi-college expansion or white-labelling to other colleges — one campus only until the founder's own college converts repeat buyers.",
+    "No video lectures, doubt-solving or live classes — notes and PYQ papers only, since those require daily founder time the student founder does not have."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Next.js",
+     "why": "App Router site with a public subject-bundle catalog and a Razorpay checkout page, one deploy."
+    },
+    {
+     "name": "Supabase",
+     "why": "Stores subjects, bundles, orders and buyer WhatsApp numbers; free Postgres plus storage for PDFs."
+    },
+    {
+     "name": "Netlify",
+     "why": "Free tier hosts the Next.js site commercially, unlike Vercel Hobby."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Payment links with UPI for ₹100-500 subject bundles, settled to an Indian bank account."
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Free app delivers the paid PDF bundle to the buyer's number after payment confirmation."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude",
+     "why": "Writes and edits the notes PDFs and the Next.js pages; Claude Code runs ffmpeg for PDF-to-image assets."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Structures PYQ papers into syllabus-topic lists and answer outlines for each subject bundle."
+    },
+    {
+     "name": "Canva",
+     "why": "Free tier designs the Instagram poster and WhatsApp catalogue cover for each subject."
+    }
+   ],
+   "mvp_features": [
+    "Subject bundle page listing included notes and PYQ PDFs with a Razorpay payment link; on payment the buyer sends the receipt on WhatsApp and receives the PDFs within 10 minutes.",
+    "WhatsApp order flow: buyer messages the subject name, receives the bundle page link, pays by UPI, and gets PDFs plus a free sample PYQ before paying.",
+    "Catalog page of 5 first-semester subjects with syllabus coverage, paper pattern and a 1-page free sample PDF per subject."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Next.js",
+     "plan": "Open source free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://github.com/vercel/next.js"
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://supabase.com/pricing"
+    },
+    {
+     "tool": "Netlify",
+     "plan": "Personal",
+     "monthly_cost": 855.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.netlify.com/pricing/ ($9/month, converted to rupees)"
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "App free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing"
+    },
+    {
+     "tool": "Claude",
+     "plan": "Pro",
+     "monthly_cost": 1900.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://claude.com/pricing ($20/month, converted to rupees)"
+    },
+    {
+     "tool": "ChatGPT",
+     "plan": "Plus",
+     "monthly_cost": 1900.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://openai.com/chatgpt/pricing/ ($20/month, converted to rupees)"
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.canva.com/en_in/pricing/"
+    },
+    {
+     "tool": "Domain",
+     "plan": "in domain",
+     "monthly_cost": 75.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://www.godaddy.com/en-in/tlds/in-domain"
+    },
+    {
+     "tool": "Google Workspace",
+     "plan": "free",
+     "monthly_cost": 0.0,
+     "verified": true,
+     "price_note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+    }
+   ],
+   "mvp_build_cost": 15000.0,
+   "first_10_steps": [
+    "Run `npx create-next-app@latest notes-pyq --ts --tailwind` and push the repo to GitHub.",
+    "Sign up at supabase.com free tier and create tables: subjects, bundles, orders(id, subject, amount, razorpay_id, whatsapp, status).",
+    "Register a Razorpay Standard account and enable UPI payment links; note the 2% + GST fee in the pricing sheet.",
+    "Collect 5 first-semester syllabi and 3 years of PYQ PDFs per subject from the college library and seniors; scan with CamScanner free.",
+    "Use Claude Pro to rewrite each PYQ paper into a topic-tagged index and draft 20-page notes per subject; review every page yourself.",
+    "Build the subject bundle page in Next.js with a Razorpay checkout button and a Supabase orders row on success webhook.",
+    "Deploy to Netlify free Personal tier and connect a ₹75/month .in domain.",
+    "Create a WhatsApp Business catalogue with 5 subject bundles and a quick reply sending the free sample PYQ PDF.",
+    "Design one Instagram poster per subject in Canva free and post to the college hashtag plus class WhatsApp groups.",
+    "Message 20 first-year students directly with the free sample PDF and the bundle link; log every reply in a Google Sheet."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Single subject bundle (notes + 3 years PYQ)",
+     "monthly_price": 199.0,
+     "billing": "one_time",
+     "features": [
+      "20-page notes PDF per subject",
+      "3 years of PYQ papers with topic tags",
+      "1-page free sample before payment",
+      "Delivered on WhatsApp within 10 minutes"
+     ]
+    },
+    {
+     "name": "Semester pack (5 subjects)",
+     "monthly_price": 799.0,
+     "billing": "one_time",
+     "features": [
+      "All 5 first-semester subject bundles",
+      "Syllabus coverage and paper pattern sheet",
+      "Priority WhatsApp delivery",
+      "Valid for the full exam season"
+     ]
+    },
+    {
+     "name": "Free sample",
+     "monthly_price": 0.0,
+     "billing": "one_time",
+     "features": [
+      "1-page sample PYQ PDF per subject",
+      "Sent over WhatsApp on request"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 199.0,
+   "delivery_cost_per_customer": 8.0,
+   "burn_line_items": [
+    {
+     "item": "Netlify Personal hosting",
+     "monthly_cost": 855.0
+    },
+    {
+     "item": "Claude Pro",
+     "monthly_cost": 1900.0
+    },
+    {
+     "item": "ChatGPT Plus",
+     "monthly_cost": 1900.0
+    },
+    {
+     "item": "Domain (.in)",
+     "monthly_cost": 75.0
+    },
+    {
+     "item": "Marketing budget (Canva free, WhatsApp groups, Instagram, ₹500 print samples)",
+     "monthly_cost": 500.0
+    },
+    {
+     "item": "Razorpay 2% + GST on ₹199 average order",
+     "monthly_cost": 5.0
+    }
+   ],
+   "monthly_burn": 5235.0,
+   "marketing_budget": 500.0,
+   "starting_capital": 8000.0,
+   "external_funding": 0.0,
+   "runway_months": 1.5,
+   "break_even_customers": 28,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 995.0,
+     "notes": "Direct WhatsApp messages to 20 first-year students; 25% close on the ₹199 single-subject bundle."
+    },
+    {
+     "day": 60,
+     "paying_customers": 15,
+     "mrr": 2985.0,
+     "notes": "Exam-week push plus 3 semester packs at ₹799 blended into the average."
+    },
+    {
+     "day": 90,
+     "paying_customers": 30,
+     "mrr": 5970.0,
+     "notes": "Repeat second-semester buyers and referrals from Day 60 cohort."
+    }
+   ],
+   "key_assumptions": [
+    "Willingness to pay ₹199 per subject rests on the strategist's stated ₹100-500 panic-buy budget 3-7 days before an exam.",
+    "Delivery cost of ₹8 per customer covers WhatsApp Business free tier, Supabase free storage bandwidth and Razorpay per-transaction fees.",
+    "Founder contributes 15 hours weekly; no freelancer or paid labour cost is included in delivery.",
+    "Razorpay 2% + GST is charged per transaction and counted as delivery cost, not a separate burn line beyond the ₹5 estimate."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Class and hostel WhatsApp groups + direct DMs",
+     "tactic": "Post the free 1-page sample PYQ PDF in 6 first-year class/hostel WhatsApp groups each week and DM 15 named first-years daily with the sample plus bundle link",
+     "monthly_spend": 500.0,
+     "new_customers_per_month": 5,
+     "cac": 100.0
+    },
+    {
+     "name": "Instagram Reels to college hashtag",
+     "tactic": "Post 1 Canva-made Reel per subject per week (4/month) to the college hashtag and college Instagram page tags, DM every commenter the free sample",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 2,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "List 20 first-year batchmates and juniors from your own class rosters and hostel floor WhatsApp groups by name.",
+    "Send each of them the free 1-page sample PYQ PDF on WhatsApp with the cold message below; log replies in a Google Sheet.",
+    "Offer the first 5 buyers a ₹99 founding price on the ₹199 single-subject bundle via a Razorpay payment link (discount, not spend).",
+    "Ask every paying buyer to forward the bundle page link into their own class group and reply with a 1-line review you can screenshot.",
+    "Walk into the 2 biggest first-year hostel floors at 9pm and demo the sample PDF on your phone; take UPI QR payments on the spot.",
+    "Convert 3 buyers to the ₹799 semester pack by bundling their 4 remaining first-semester subjects before exam week starts."
+   ],
+   "cold_message": "Hi [name], I'm compiling this semester's PYQ papers + 20-page notes for [subject] in one PDF.\nSending you a free 1-page sample right now so you can check the paper pattern yourself.\nIf it matches your syllabus, ₹199 gets the full bundle on WhatsApp in 10 minutes — want the link?",
+   "objections": [
+    {
+     "objection": "I can get PYQ papers free on Telegram groups.",
+     "response": "Those dumps are unsorted and not filtered to our college's paper pattern; my sample PDF shows the topic tags for our syllabus — check it free first."
+    },
+    {
+     "objection": "₹199 is too much days before an exam.",
+     "response": "Take the free 1-page sample now, and if the full bundle doesn't match your syllabus after payment, I refund via UPI the same day."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent campus-first, bootstrapped student business that stays faithful to the original idea of selling notes and PYQ papers to juniors at the founder's own college. Pricing, channels and delivery fit the Indian student market and the 15-hour-a-week constraint, with a realistic WhatsApp-plus-Razorpay flow. The main weakness is that revenue targets and CAC assume a smooth conversion that exam-week panic buying may not deliver on schedule.",
+  "biggest_risk": "Demand is highly exam-seasonal and the plan's Day 30/60 targets assume conversions during a narrow window; if exam dates shift or the founder's sample PDFs don't match the actual paper pattern, sales stall and the 1.5-month runway runs out before revenue arrives.",
+  "adherence_score": 0.9
+ },
+ "seconds": 86.6,
+ "calls": [
+  {
+   "role": "strategist",
+   "provider": "bharatcode",
+   "model": "qwen-3.8-27b",
+   "in": 1202,
+   "out": 369,
+   "thinking": 0,
+   "cached": 1152,
+   "total": 1571,
+   "seconds": 15.1
+  },
+  {
+   "role": "builder",
+   "provider": "bharatcode",
+   "model": "qwen-3.8-27b",
+   "in": 3029,
+   "out": 804,
+   "thinking": 0,
+   "cached": 0,
+   "total": 3833,
+   "seconds": 15.1
+  },
+  {
+   "role": "economics",
+   "provider": "bharatcode",
+   "model": "qwen-3.8-27b",
+   "in": 2708,
+   "out": 607,
+   "thinking": 0,
+   "cached": 1024,
+   "total": 3315,
+   "seconds": 15.0
+  },
+  {
+   "role": "growth",
+   "provider": "bharatcode",
+   "model": "qwen-3.8-27b",
+   "in": 2982,
+   "out": 548,
+   "thinking": 0,
+   "cached": 1792,
+   "total": 3530,
+   "seconds": 17.8
+  },
+  {
+   "role": "growth",
+   "provider": "bharatcode",
+   "model": "qwen-3.8-27b",
+   "in": 3621,
+   "out": 550,
+   "thinking": 0,
+   "cached": 2944,
+   "total": 4171,
+   "seconds": 13.2
+  },
+  {
+   "role": "critic",
+   "provider": "bharatcode",
+   "model": "qwen-3.8-27b",
+   "in": 3432,
+   "out": 420,
+   "thinking": 0,
+   "cached": 0,
+   "total": 3852,
+   "seconds": 10.1
+  }
+ ],
+ "tokens": {
+  "in": 16974,
+  "out": 3298,
+  "thinking": 0,
+  "total": 20272
+ }
+}

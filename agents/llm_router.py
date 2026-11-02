@@ -501,6 +501,31 @@ def _schema_hint(schema: type[BaseModel]) -> str:
     return _shape(js, js.get("$defs", {}))
 
 
+def _snake_keys(value):
+    """{"Tactic": ...} -> {"tactic": ...}, all the way down. Every schema field is lower snake_case,
+    and models sometimes capitalise a key, which would otherwise cost a whole retry."""
+    if isinstance(value, dict):
+        return {(k.strip().lower().replace(" ", "_").replace("-", "_") if isinstance(k, str) else k): _snake_keys(v)
+                for k, v in value.items()}
+    if isinstance(value, list):
+        return [_snake_keys(v) for v in value]
+    return value
+
+
+def _validate(schema: type[T], text: str) -> T:
+    try:
+        return schema.model_validate_json(text)
+    except ValidationError as first:
+        try:
+            data = json.loads(text)
+        except ValueError:
+            raise first from None
+        fixed = _snake_keys(data)
+        if fixed == data:
+            raise
+        return schema.model_validate(fixed)  # still invalid: this error goes back to the model
+
+
 def _user_content(prompt: str, shared: str | None):
     """The user message: plain text, or the shared opening (cache-marked) followed by this call's own part."""
     if not shared:
@@ -551,7 +576,7 @@ def call_llm_json(
     for attempt in (1, 2):
         try:
             raw = _complete_with_fallback(role, messages, json_mode=True, max_tokens=max_tokens)
-            return schema.model_validate_json(_extract_json(raw))
+            return _validate(schema, _extract_json(raw))
         except ValidationError as e:
             last_error = e
             logger.warning("[%s] JSON failed validation (attempt %d): %s", role, attempt, e.errors()[:3])
