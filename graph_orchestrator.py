@@ -21,6 +21,7 @@ from evaluation_engine import autofix_math, check_plan
 from report_generator import build_display_plan, render_report
 from save_report import save_state
 from state import StartupState, create_state
+from tool_catalog import market_findings, price_build
 
 AGENT_CHAIN = ["strategist", "builder", "economics", "growth"]
 LABELS = {"strategist": "Strategist", "builder": "Builder", "economics": "Economics", "growth": "Growth"}
@@ -75,6 +76,12 @@ def _agent_node(owner: str):
         event_bus.publish(job_id, {"type": "agent_start", "agent": label, "round": round_num})
 
         data = RUNNERS[owner](state).model_dump()
+        if owner == "builder":
+            # Swap remembered prices for checked ones, and cost every tool the plan names.
+            fixes = price_build(data, state["profile"])
+            if fixes:
+                print(f"[Builder] code corrected {len(fixes)} price(s): " + "; ".join(f"{f['label']} {f['before']:,.0f} -> {f['after']:,.0f}" for f in fixes))
+                event_bus.publish(job_id, {"type": "math_fixed", "round": round_num, "symbol": state["profile"]["symbol"], "fixes": fixes})
         state["slices"][owner] = data
         state["input_keys"][owner] = key
         state["messages"].append({"agent": label, "round": state["revision"], "message": json.dumps(data, ensure_ascii=False)})
@@ -99,7 +106,7 @@ def critic_node(state: StartupState) -> StartupState:
         print(f"[Critic] code corrected {len(fixed)} number(s): " + "; ".join(f"{f['label']} {f['before']:,.1f} -> {f['after']:,.1f}" for f in fixed))
         # The moment the auto-repair happens, made visible: the agent's number and the one code computed.
         event_bus.publish(job_id, {"type": "math_fixed", "round": round_num, "symbol": state["profile"]["symbol"], "fixes": fixed})
-    math = check_plan(state["slices"], state["profile"])
+    math = check_plan(state["slices"], state["profile"]) + market_findings(state["slices"], state["profile"])
     try:
         result = critic.run(state, math)
         critic_issues = [{**i.model_dump(), "source": "critic"} for i in result.issues[:4]]

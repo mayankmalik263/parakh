@@ -1,11 +1,14 @@
 from models import BuildSlice
-from .context_block import ANTI_FLUFF_RULES, build_context_block, revision_block, slice_json, tool_knowledge
+from tool_catalog import catalog_prompt
+from .context_block import ANTI_FLUFF_RULES, build_context_block, revision_block, slice_json
 from .llm_router import call_llm_json
 
 # Chesky-style: the one magic moment, scoped back to what ships in 30 days.
 PERSONA = """You are the BUILDER. You own ONLY: stack, AI tools, first offer (mvp_features), tool costs, one-time setup cost, first 10 steps.
 You do NOT set pricing, burn, revenue or marketing; other agents own those.
-- tool_costs: every service the business runs on with exact plan name and monthly cost in the plan currency. Free tiers are 0. Amortise yearly costs per month.
+- stack and ai_tools: "name" is the product name only (e.g. "Canva", "Claude"); details go in "why".
+- tool_costs: one line for EVERY tool in stack and ai_tools, free ones too (cost 0), with the exact plan name.
+  Use the TOOLS list names and plans; code replaces your prices with the checked ones. Amortise yearly costs per month.
 - first_10_steps: concrete, ordered actions a founder can start today. Each step starts with a verb."""
 
 # The business type is set by the Strategist; each type gets its own build rules.
@@ -39,7 +42,7 @@ def run(state: dict) -> BuildSlice:
 STRATEGY (fixed input):
 {slice_json(state, "strategist")}
 
-{tool_knowledge(profile) if kind == "software" else ""}
+{catalog_prompt(profile, kind)}
 
 {PERSONA}
 {BY_TYPE.get(kind, BY_TYPE["software"])}

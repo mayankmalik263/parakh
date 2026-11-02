@@ -27,9 +27,9 @@ const TOC = [
 ];
 
 const STEPS = [
-  ['help', 'Clarify', "You type the idea and answer six multiple-choice questions: three fixed ones (where your customers are, who's building it, how you'll fund it) and three a model writes about your idea."],
+  ['help', 'Clarify', "You type the idea and answer seven multiple-choice questions: five fixed ones (where your customers are, who's building it, how you'll fund it, how much you can put in, which AI you already pay for) and two a model writes about your idea."],
   ['explore', 'Strategist', 'Customer, problem, real competitors, and what to leave out.'],
-  ['construction', 'Builder', 'Stack or delivery setup with plan names and prices, MVP features, first ten steps.'],
+  ['construction', 'Builder', 'Stack or delivery setup, MVP features, first ten steps. It picks tools; code puts in their checked prices.'],
   ['payments', 'Economics', 'Pricing, cost to serve one customer, burn, runway, break-even, Day 30/60/90 targets.'],
   ['campaign', 'Growth', 'Channels with spend and expected customers, a cold message, objection replies.'],
   ['calculate', 'Math check', 'Plain code recomputes the numbers and fixes what it can.'],
@@ -163,20 +163,27 @@ export default function DocsPage() {
               customers than the target needs, or a price below the cost to serve. Those go to the Critic, and if they
               survive the last round they stay in your plan as warnings.
             </P>
+            <P>
+              Tool prices work the same way. Parakh keeps a list of tools with each plan&apos;s price, the page it was
+              read from and the date it was checked. When the Builder names a tool on that list, code writes in the
+              checked price and converts it to rupees or dollars. Every tool the plan recommends gets a cost line, free
+              ones included. Tools that aren&apos;t on the list are marked &quot;not verified&quot; in your plan, and a tool
+              you can&apos;t use where you are (CapCut is banned in India) goes back to the Builder.
+            </P>
           </Section>
 
           <Section id="plan" eyebrow="Your plan" title="What's in your plan">
             <Reveal className="grid gap-2 sm:grid-cols-2">
-              {['Mission, problem and who pays', 'Pricing tiers', 'Burn, runway, break-even', 'Day 30, 60 and 90 targets', 'MVP build checklist', 'First-customers checklist', 'Competitors and how you differ', "The Critic's verdict and open issues", 'The full written report', 'A saved follow-up chat'].map((t, n) => (
-                <div key={t} className="flex items-center gap-3 rounded-2xl bg-surface px-4 py-3" style={i(n)}>
+              {['Mission, problem and who pays', 'Pricing tiers', 'Burn, runway, break-even', 'Day 30, 60 and 90 targets', 'MVP build checklist', 'First-customers checklist', 'Competitors and how you differ', 'Tools with checked prices', "The Critic's verdict and open issues", 'The full written report', 'A saved follow-up chat'].map((t, n) => (
+                <div key={t} className="flex items-center gap-3 rounded-2xl border-2 border-ink bg-surface px-4 py-3 font-semibold" style={i(n)}>
                   <span className="text-primary">✓</span>
                   {t}
                 </div>
               ))}
             </Reveal>
             <P>
-              Want to see one? The <Link href="/#sample" className="text-primary-fixed-dim underline">sample plan</Link> on
-              the home page is a real run, unedited.
+              Want to see one? The <Link href="/#example" className="text-primary-fixed-dim underline">example plan</Link> on
+              the home page shows the layout. It was written by hand, and its numbers pass the same math check.
             </P>
           </Section>
 

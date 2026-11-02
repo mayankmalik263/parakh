@@ -40,6 +40,15 @@ export interface Competitor {
   differentiator: string;
 }
 
+/** A tool the plan runs on. verified = its price came from Parakh's checked price list. */
+export interface PlanTool {
+  name: string;
+  plan: string;
+  monthly_cost: string;
+  verified: boolean;
+  note?: string;
+}
+
 export interface BusinessPlan {
   startup_idea: string;
   mission: string;
@@ -51,6 +60,7 @@ export interface BusinessPlan {
   product_mvp: string[];
   revenue_targets: RevenueTarget[];
   competition?: Competitor[];
+  tools?: PlanTool[];
   key_conflicts: Conflict[];
   final_verdict: string;
 }

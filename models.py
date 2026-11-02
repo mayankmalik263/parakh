@@ -62,7 +62,9 @@ class BuildSlice(BaseModel):
 
 class PricingTier(BaseModel):
     name: str = Field(min_length=2, max_length=50)
-    monthly_price: Money = Field(description="Price per customer per month in plan currency; 0 for a free tier")
+    # Kept as monthly_price so saved plans still load; with billing it is the price of one billing unit.
+    monthly_price: Money = Field(description="Price in plan currency: per month, per purchase or per use (see billing); 0 for a free tier")
+    billing: Literal["monthly", "one_time", "per_use"] = Field(default="monthly", description="monthly subscription, one_time purchase, or per_use (per order, per kg, per session)")
     features: List[str] = Field(min_length=1)
 
 
@@ -156,6 +158,14 @@ class Conflict(BaseModel):
     description: str
 
 
+class DisplayTool(BaseModel):
+    name: str
+    plan: str
+    monthly_cost: str
+    verified: bool = False
+    note: str = ""
+
+
 class StartupBusinessPlan(BaseModel):
     startup_idea: str
     mission: str
@@ -167,6 +177,7 @@ class StartupBusinessPlan(BaseModel):
     product_mvp: List[str]
     revenue_targets: List[DisplayRevenueTarget]
     competition: List[Competitor] = Field(default_factory=list)
+    tools: List[DisplayTool] = Field(default_factory=list)
     key_conflicts: List[Conflict] = Field(default_factory=list)
     final_verdict: str
 

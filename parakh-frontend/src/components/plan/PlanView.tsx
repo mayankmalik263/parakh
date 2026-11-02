@@ -236,14 +236,42 @@ function Money({ plan }: { plan: BusinessPlan }) {
             </ul>
           </Reveal>
         )}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 content-start gap-3">
           <Stat i={0} label="Starting money" value={fs.funding_needed} />
           <Stat i={1} label="Runway" value={fs.runway} />
           <Stat i={2} label="Break-even" value={fs.break_even_target} />
           <Stat i={3} label="Burn" value={fs.monthly_burn} tone="text-tertiary" />
         </div>
       </div>
+
+      {!!plan.tools?.length && <ToolPrices tools={plan.tools} />}
     </div>
+  );
+}
+
+function ToolPrices({ tools }: { tools: NonNullable<BusinessPlan['tools']> }) {
+  const unchecked = tools.filter((t) => !t.verified).length;
+  return (
+    <Reveal self className="card p-6">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <div className="eyebrow">Tools and what they cost</div>
+        <div className="text-sm font-semibold muted">
+          {unchecked ? `${unchecked} price${unchecked > 1 ? 's' : ''} not verified` : 'Every price checked'}
+        </div>
+      </div>
+      <ul className="m-0 mt-4 flex list-none flex-col gap-2 p-0">
+        {tools.map((t) => (
+          <li key={`${t.name}-${t.plan}`} className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border-2 border-ink bg-surface-container-low px-3 py-2" title={t.note}>
+            <span className="font-bold">{t.name}</span>
+            <span className="text-sm muted">{t.plan}</span>
+            <span className="ml-auto font-mono text-sm tabular-nums">{t.monthly_cost}</span>
+            <span className={`rounded-full border-2 border-ink px-2 py-0.5 text-xs font-extrabold ${t.verified ? 'bg-marigold text-ink' : 'bg-primary-fixed text-on-primary-fixed'}`}>
+              {t.verified ? 'Checked' : 'Not verified'}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </Reveal>
   );
 }
 

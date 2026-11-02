@@ -1,0 +1,539 @@
+{
+ "checked_on": "2026-11-02",
+ "usd_to_inr": {
+  "rate": 88,
+  "source": "TODO",
+  "as_of": "TODO"
+ },
+ "tools": [
+  {
+   "name": "Claude",
+   "aliases": [
+    "Claude Code",
+    "claude.ai",
+    "Anthropic Claude"
+   ],
+   "category": "ai_assistant",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Writing, research, coding; with Claude Code plus ffmpeg, Whisper and HyperFrames it can cut and caption short videos.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Pro",
+     "usd": 20,
+     "period": "month",
+     "note": "$17/mo if billed yearly ($200); includes Claude Code"
+    },
+    {
+     "plan": "Max",
+     "usd": 100,
+     "period": "month"
+    }
+   ],
+   "source": "https://claude.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "ChatGPT",
+   "aliases": [
+    "OpenAI ChatGPT"
+   ],
+   "category": "ai_assistant",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Writing, research, images, quick data work.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Plus",
+     "usd": 20,
+     "period": "month"
+    }
+   ],
+   "source": "https://openai.com/chatgpt/pricing/",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Google One",
+   "aliases": [
+    "Google AI Pro",
+    "Google AI Plus"
+   ],
+   "category": "ai_assistant",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Extra Drive storage; AI Pro adds Gemini Pro.",
+   "plans": [
+    {
+     "plan": "Basic 100 GB",
+     "usd": 1.99,
+     "period": "month"
+    },
+    {
+     "plan": "Google AI Plus",
+     "usd": 9.99,
+     "period": "month"
+    },
+    {
+     "plan": "Google AI Pro",
+     "usd": 19.99,
+     "period": "month"
+    }
+   ],
+   "source": "https://one.google.com/about/plans",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "notes": "Page showed USD; Indian prices may differ."
+  },
+  {
+   "name": "CapCut",
+   "category": "video",
+   "for": [
+    "service",
+    "physical",
+    "software"
+   ],
+   "use_for": "Mobile and desktop video editing.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Pro",
+     "usd": 19.99,
+     "period": "month",
+     "note": "reference price; varies by region"
+    }
+   ],
+   "source": "https://www.capcut.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": false,
+   "india_note": "banned in India since 29 June 2020 (fluxnote.io, June 2026)"
+  },
+  {
+   "name": "HyperFrames",
+   "aliases": [
+    "HeyGen HyperFrames"
+   ],
+   "category": "video",
+   "for": [
+    "service",
+    "software",
+    "physical"
+   ],
+   "use_for": "Open-source HTML-to-MP4 renderer; Claude Code plugin writes and renders videos. Needs Node 22+ and FFmpeg.",
+   "plans": [
+    {
+     "plan": "Open source",
+     "period": "free",
+     "note": "Apache 2.0, no per-render fees"
+    }
+   ],
+   "source": "https://github.com/heygen-com/hyperframes",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "ElevenLabs",
+   "category": "video",
+   "for": [
+    "service",
+    "software"
+   ],
+   "use_for": "AI voiceovers.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Starter",
+     "usd": 6,
+     "period": "month",
+     "note": "first month $1 offer seen"
+    },
+    {
+     "plan": "Creator",
+     "usd": 22,
+     "period": "month",
+     "note": "first month 50% off seen"
+    }
+   ],
+   "source": "https://elevenlabs.io/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "OpusClip",
+   "aliases": [
+    "Opus Clip",
+    "Opus"
+   ],
+   "category": "video",
+   "for": [
+    "service"
+   ],
+   "use_for": "Cuts long videos into short clips.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "60 credits/mo, watermark"
+    },
+    {
+     "plan": "Starter",
+     "usd": 15,
+     "period": "month"
+    },
+    {
+     "plan": "Pro",
+     "usd": 29,
+     "period": "month",
+     "note": "$14.50/mo billed yearly"
+    }
+   ],
+   "source": "https://www.opus.pro/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Canva",
+   "aliases": [
+    "Canva Pro",
+    "Canva Magic Write"
+   ],
+   "category": "design",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Posters, social posts, thumbnails, decks.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Pro",
+     "inr": 4000,
+     "period": "year"
+    },
+    {
+     "plan": "Business",
+     "inr": 6800,
+     "period": "year",
+     "note": "per person"
+    }
+   ],
+   "source": "https://www.canva.com/en_in/pricing/",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "notes": "A Rs 1,590/year individual tier was also listed without a readable name."
+  },
+  {
+   "name": "Carrd",
+   "category": "website",
+   "for": [
+    "service",
+    "software",
+    "physical"
+   ],
+   "use_for": "One-page site or portfolio.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Pro Lite",
+     "usd": 9,
+     "period": "year"
+    },
+    {
+     "plan": "Pro Standard",
+     "usd": 19,
+     "period": "year"
+    },
+    {
+     "plan": "Pro Plus",
+     "usd": 49,
+     "period": "year"
+    }
+   ],
+   "source": "https://carrd.com/pro",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Notion",
+   "category": "ops",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Docs, SOPs, trackers.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Plus",
+     "usd": 10,
+     "period": "month",
+     "note": "per member"
+    }
+   ],
+   "source": "https://www.notion.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Supabase",
+   "aliases": [
+    "Supabase Auth"
+   ],
+   "category": "backend",
+   "for": [
+    "software"
+   ],
+   "use_for": "Postgres database, auth and storage.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "500 MB DB, 50k MAU; pauses after 1 week inactive"
+    },
+    {
+     "plan": "Pro",
+     "usd": 25,
+     "period": "month"
+    }
+   ],
+   "source": "https://supabase.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Vercel",
+   "category": "hosting",
+   "for": [
+    "software"
+   ],
+   "use_for": "Hosting for Next.js.",
+   "plans": [
+    {
+     "plan": "Hobby",
+     "period": "free",
+     "note": "personal, non-commercial use only"
+    },
+    {
+     "plan": "Pro",
+     "usd": 20,
+     "period": "month"
+    }
+   ],
+   "source": "https://vercel.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Resend",
+   "category": "email",
+   "for": [
+    "software"
+   ],
+   "use_for": "Transactional email API.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "3,000 emails/mo, 100/day"
+    },
+    {
+     "plan": "Pro",
+     "usd": 20,
+     "period": "month",
+     "note": "50,000 emails"
+    }
+   ],
+   "source": "https://resend.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Razorpay",
+   "aliases": [
+    "Razorpay Payment Links",
+    "Razorpay Payment Pages"
+   ],
+   "category": "payments",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "UPI, cards and payment links in India.",
+   "plans": [
+    {
+     "plan": "Standard",
+     "period": "usage",
+     "usage": "2% + GST per payment, no setup fee or AMC"
+    }
+   ],
+   "source": "https://razorpay.com/pricing/",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Stripe",
+   "category": "payments",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Card payments outside India.",
+   "plans": [
+    {
+     "plan": "Standard",
+     "period": "usage",
+     "usage": "2.9% + 30 cents per US card payment"
+    }
+   ],
+   "source": "https://stripe.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": null
+  },
+  {
+   "name": "Cursor",
+   "category": "ai_coding",
+   "for": [
+    "software"
+   ],
+   "use_for": "AI code editor.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Plus",
+     "usd": 8,
+     "period": "month"
+    },
+    {
+     "plan": "Premium",
+     "usd": 30,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.cursor.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "v0",
+   "aliases": [
+    "v0.dev",
+    "v0.app"
+   ],
+   "category": "ai_coding",
+   "for": [
+    "software"
+   ],
+   "use_for": "AI UI generator from Vercel.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Business",
+     "usd": 100,
+     "period": "month",
+     "note": "per user"
+    }
+   ],
+   "source": "https://v0.app/pricing",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "notes": "Plus price was unreadable ($30 or $90) so it is left out."
+  },
+  {
+   "name": "Shiprocket",
+   "category": "shipping",
+   "for": [
+    "physical"
+   ],
+   "use_for": "Courier aggregator for Indian shipping.",
+   "plans": [
+    {
+     "plan": "Lite",
+     "period": "usage",
+     "usage": "free plan, about Rs 45 per shipment on average"
+    },
+    {
+     "plan": "Business",
+     "inr": 199,
+     "period": "month",
+     "note": "about Rs 41/shipment"
+    },
+    {
+     "plan": "Advanced",
+     "inr": 499,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.shiprocket.in/pricing/",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Shopify",
+   "category": "storefront",
+   "for": [
+    "physical"
+   ],
+   "use_for": "Online store.",
+   "plans": [
+    {
+     "plan": "Basic",
+     "inr": 1499,
+     "period": "month",
+     "note": "billed yearly; Rs 1,994 if monthly; 2% third-party payment fee"
+    },
+    {
+     "plan": "Grow",
+     "inr": 5599,
+     "period": "month",
+     "note": "billed yearly"
+    }
+   ],
+   "source": "https://www.shopify.com/in/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  }
+ ]
+}

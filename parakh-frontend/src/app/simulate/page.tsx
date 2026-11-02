@@ -36,7 +36,7 @@ const EXAMPLES = [
 type Phase = 'form' | 'clarify' | 'running' | 'done' | 'error';
 
 /**
- * Reads the three fixed clarify questions (CLARIFY_FIXED in api.py) into the market and the
+ * Reads the fixed clarify questions (CLARIFY_FIXED in api.py) into the market and the Budget, AI,
  * "Funding:" / "Founder:" markers the backend's build_profile trusts over keyword guessing.
  * Only the chosen answers are read, never the question text, which names every option.
  */
@@ -45,13 +45,35 @@ function profileFromAnswers(pairs: [string, string][]): { market: string; marker
   const where = answer('Where are your first customers?');
   const who = answer("Who's building this?");
   const money = answer('How will you fund the start?');
+  const budget = answer('How much money can you put in to start?');
+  const ai = answer('Which AI assistant do you already pay for?');
 
   const market = where.startsWith('outside india') ? 'Global' : where ? 'India' : '';
   const markers = [
     money.includes('investors') ? 'Funding: Venture' : money ? 'Funding: Bootstrapped' : '',
     who.includes('student') ? 'Founder: Student' : who.includes('full time') ? 'Founder: Full-time' : who.includes('job') ? 'Founder: Professional' : '',
+    budgetMarker(budget),
+    aiMarker(ai),
   ].filter(Boolean).join('. ');
   return { market, markers };
+}
+
+/** "₹5,000 to ₹20,000 ($55 to $225)" -> "Budget: 5000-20000". Rupee figures only; the $ part is a hint. */
+function budgetMarker(answer: string): string {
+  if (!answer) return '';
+  if (answer.startsWith('nothing')) return 'Budget: 0-0';
+  const rupees = [...answer.matchAll(/₹\s*([\d,]+)/g)].map((m) => Number(m[1].replace(/,/g, '')));
+  if (answer.startsWith('up to') && rupees[0] !== undefined) return `Budget: 0-${rupees[0]}`;
+  if (answer.startsWith('more than') && rupees[0] !== undefined) return `Budget: ${rupees[0]}+`;
+  return rupees.length >= 2 ? `Budget: ${rupees[0]}-${rupees[1]}` : '';
+}
+
+/** Which AI the founder already pays for, as the "AI:" marker build_profile reads. */
+function aiMarker(answer: string): string {
+  if (!answer) return '';
+  if (answer.startsWith('none')) return 'AI: none';
+  if (answer.startsWith('more than one')) return 'AI: several';
+  return `AI: ${['chatgpt', 'claude', 'gemini'].filter((n) => answer.includes(n)).join(', ') || 'none'}`;
 }
 
 export default function SimulatePage() {

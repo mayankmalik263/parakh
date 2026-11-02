@@ -4,7 +4,7 @@ give the same answer on any machine.
 
 What each number means:
 - math_warnings: arithmetic problems code could not fix (should be 0).
-- catalog_share: share of costed tools that are in tool_knowledge.json, i.e. whose price we could check.
+- catalog_share: share of costed tools whose price is in tool_catalog.json, i.e. checked.
 - hidden_costs: tools the Builder recommends (stack + AI tools) that never appear in tool_costs.
 - invented_stats: percentages, view counts and "N x faster" style claims in prose that the founder
   never gave us. Not every hit is wrong, but each one is a number with no source.
@@ -43,9 +43,10 @@ def same_tool(a: str, b: str) -> bool:
     return wa[:n] == wb[:n]
 
 
-def catalog_names(path: Path = ROOT / "tool_knowledge.json") -> list[str]:
-    kb = json.loads(path.read_text(encoding="utf-8"))
-    return [t["name"] for cat in kb.get("categories", {}).values() for t in cat.get("tools", [])]
+def catalog_names(path: Path = ROOT / "tool_catalog.json") -> list[str]:
+    """Every tool name and alias in Parakh's checked price list."""
+    catalog = json.loads(path.read_text(encoding="utf-8"))
+    return [n for t in catalog["tools"] for n in [t["name"], *t.get("aliases", [])]]
 
 
 def prose_fields(slices: dict) -> list[tuple[str, str]]:
@@ -92,7 +93,12 @@ def hidden_costs(slices: dict) -> list[str]:
 def catalog_share(slices: dict, catalog: list[str]) -> tuple[int, int]:
     """(costed tools found in the catalog, costed tools)."""
     costs = slices.get("builder", {}).get("tool_costs", [])
-    return sum(1 for t in costs if any(same_tool(t.get("tool", ""), c) for c in catalog)), len(costs)
+    # Plans made since Step 1 carry the flag code set when it priced the tool; older ones are matched by name.
+    if any("verified" in t for t in costs):
+        checked = sum(1 for t in costs if t.get("verified"))
+    else:
+        checked = sum(1 for t in costs if any(same_tool(t.get("tool", ""), c) for c in catalog))
+    return checked, len(costs)
 
 
 def score(final_state: dict, founder_text: str, catalog: list[str]) -> dict:

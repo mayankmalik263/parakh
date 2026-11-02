@@ -61,6 +61,15 @@ class ClarifyRequest(BaseModel):
     tier: str = "free"  # ignored; kept so older clients don't 422
 
 
+def _budget_options() -> list[str]:
+    """Rupee bands with a rough dollar figure for founders outside India (catalog exchange rate)."""
+    from tool_catalog import load_catalog
+    rate = load_catalog()["usd_to_inr"]["rate"]
+    usd = lambda inr: f"${inr / rate:,.0f}"  # noqa: E731
+    return ["Nothing, ₹0", f"Up to ₹5,000 (about {usd(5000)})", f"₹5,000 to ₹20,000 ({usd(5000)} to {usd(20000)})",
+            f"₹20,000 to ₹1,00,000 ({usd(20000)} to {usd(100000)})", f"More than ₹1,00,000 ({usd(100000)}+)"]
+
+
 # The first clarify questions are fixed, because the frontend maps their answers to market, funding and
 # founder markers that build_profile reads. Keep the option wording in sync with simulate/page.tsx.
 CLARIFY_FIXED = [
@@ -70,6 +79,10 @@ CLARIFY_FIXED = [
      "options": ["Me, a student (nights and weekends)", "Me, full time", "Me, alongside a job"]},
     {"question": "How will you fund the start?",
      "options": ["My own savings or pocket money", "Friends and family", "I'm raising from investors"]},
+    {"question": "How much money can you put in to start?",
+     "options": _budget_options()},
+    {"question": "Which AI assistant do you already pay for?",
+     "options": ["None, I use the free versions", "ChatGPT (Go or Plus)", "Claude Pro", "Gemini (Google AI Pro)", "More than one of these"]},
 ]
 
 HINGLISH_RULE = """
@@ -83,7 +96,7 @@ class ClarifyQuestion(BaseModel):
 
 
 class ClarifyResponse(BaseModel):
-    questions: list[ClarifyQuestion] = Field(min_length=3, max_length=10)
+    questions: list[ClarifyQuestion] = Field(min_length=2, max_length=10)
 
 class ChatMessage(BaseModel):
     role: str
@@ -181,12 +194,12 @@ def clarify_idea(req: ClarifyRequest, user_id: str = Depends(get_current_user)):
     prompt = f"""You help student founders in India sharpen a raw startup idea before planning. The idea:
 "{req.idea}"
 
-Market, funding and who is building it are already asked separately. Write exactly 3 more multiple-choice questions,
+Market, funding, who is building it, their budget and their AI tools are already asked separately. Write exactly 2 more multiple-choice questions,
 specific to THIS idea, each with 3-4 short, distinct options, in plain words a first-time founder understands:
-1. who exactly pays, 2. how they pay (one-time, monthly, per use, commission), 3. the one thing the idea must get right.
+1. who exactly pays, 2. how they pay (one-time, monthly, per use, commission).
 Options should be concrete for the Indian market where that fits."""
     try:
-        extra = call_llm_json(prompt, ClarifyResponse, role="clarify").questions[:3]
+        extra = call_llm_json(prompt, ClarifyResponse, role="clarify").questions[:2]
         return {"questions": CLARIFY_FIXED + [q.model_dump() for q in extra]}
     except BharatCodeAccessError as e:
         # No point asking questions for a run that can't call the model. Say so before the run starts.

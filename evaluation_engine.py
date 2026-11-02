@@ -127,6 +127,16 @@ def check_plan(slices: Dict[str, Any], profile: Dict[str, Any]) -> List[Dict[str
                 add("economics", f"MRR drops at Day {t['day']}.", "Targets must be non-decreasing.")
             last_mrr = t["mrr"]
 
+    rng = profile.get("capital_range")
+    if rng:
+        lo, hi = rng
+        # A single figure ("about 15,000") is a rough number: allow 10% either way.
+        slack = 0.1 * lo if hi == lo else 1
+        if econ["starting_capital"] < lo - slack or (hi is not None and econ["starting_capital"] > hi + slack):
+            told = f"{s}{lo:,.0f}" + ("" if hi == lo else f" to {s}{hi:,.0f}" if hi is not None else "+")
+            add("economics", f"starting_capital {s}{econ['starting_capital']:,.0f} is not what the founder can put in ({told}).",
+                "Use the founder's stated budget as starting_capital and recompute runway.")
+
     if profile["funding"] == "bootstrapped":
         if econ["external_funding"] > 0:
             add("economics", f"Plan raises {s}{econ['external_funding']:,.0f} externally but the founder is bootstrapped.",

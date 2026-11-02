@@ -69,9 +69,10 @@ def test_clarify_uses_llm_json(monkeypatch):
     canned = ClarifyResponse(questions=[{"question": f"Q{i}?", "options": ["A", "B", "C"]} for i in range(10)])
     monkeypatch.setattr(api, "call_llm_json", lambda prompt, schema, role: canned)
     data = client.post("/clarify", json={"idea": "A CRM for pet sitters"}).json()
-    # The fixed market/founder/funding questions come first, word for word, then 3 idea-specific ones.
-    assert data["questions"][:3] == api.CLARIFY_FIXED
-    assert [q["question"] for q in data["questions"][3:]] == ["Q0?", "Q1?", "Q2?"]
+        # The fixed market/founder/funding/budget/AI questions come first, word for word, then 2 idea-specific ones.
+    n = len(api.CLARIFY_FIXED)
+    assert data["questions"][:n] == api.CLARIFY_FIXED
+    assert [q["question"] for q in data["questions"][n:]] == ["Q0?", "Q1?"]
 
 
 def test_clarify_falls_back_when_llm_fails(monkeypatch):
@@ -79,7 +80,7 @@ def test_clarify_falls_back_when_llm_fails(monkeypatch):
         raise RuntimeError("bharatcode down")
     monkeypatch.setattr(api, "call_llm_json", boom)
     data = client.post("/clarify", json={"idea": "A CRM for pet sitters"}).json()
-    assert data["questions"][:3] == api.CLARIFY_FIXED and len(data["questions"]) == 4
+    assert data["questions"][:len(api.CLARIFY_FIXED)] == api.CLARIFY_FIXED and len(data["questions"]) == len(api.CLARIFY_FIXED) + 1
 
 
 def test_simulate_endpoint_queues_job_only_its_owner_can_see(monkeypatch):

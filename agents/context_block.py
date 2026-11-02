@@ -3,22 +3,23 @@ Shared context for all Parakh agents.
 
 - build_profile(state): parses market/funding ONCE into a small dict (currency, caps).
 - build_context_block(state): a short (~300 token) brief every agent receives.
-- tool_knowledge(profile): the curated tool/price KB, sent to the Builder only.
 """
 
 import json
-import os
 import re
 
-_TOOL_KB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "tool_knowledge.json")
 
 # Shared once via the system message instead of repeated self-check blocks per agent.
 ANTI_FLUFF_RULES = """You are part of Parakh, a team that turns a startup idea into a build plan a solo founder can start tonight.
 Rules for everything you write:
 - No generic phrases ("build an MVP", "do market research", "run social media ads", "leverage", "increase awareness"). Name the tool, the platform, the action and the number.
-- Every tool is a real 2026 product with its real plan name and price. If unsure of a price, say "price not verified".
-- Exact numbers everywhere a number belongs. Never "some", "a few", "several".
-- A solo founder with AI coding tools (Cursor, v0, Claude Code) ships what a 5-person team did in 2020. Size plans accordingly.
+- Every tool is a real product that exists today. Prices come from the TOOLS list when the tool is on it.
+- Exact numbers for the founder's own plan (prices, budgets, targets, steps). Never "some", "a few", "several".
+- Never state an outside fact you were not given (conversion rates, view counts, market size, "% faster", "saves N hours")
+  as if it were true. If the plan depends on such a number, put it in key_assumptions as an assumption.
+- AI first: ChatGPT, Claude and Gemini now write, design, code and even edit short videos (Claude Code with ffmpeg,
+  Whisper and HyperFrames). Use the founder's AI assistant before a paid specialist tool, and add the specialist
+  only for what the assistant can't do.
 - Stay inside your own section. Other agents own the other sections; use their numbers as fixed inputs."""
 
 _INDIA = re.compile(
@@ -35,6 +36,11 @@ _VENTURE = re.compile(r"\b(venture|vc|seed|angel|series a|funded)\b", re.I)
 # free-text context also carries the question wording ("Bootstrapped or Venture Backed?").
 _FUNDING_MARK = re.compile(r"\bfunding:\s*(bootstrapped|venture)", re.I)
 _FOUNDER_MARK = re.compile(r"\bfounder:\s*(student|full-time|professional)", re.I)
+# "AI: chatgpt, claude" / "AI: none" and "Budget: 5000-20000" (rupees) from the questions step,
+# or a budget the founder typed ("Budget: about 15,000 rupees").
+_AI_MARK = re.compile(r"\bAI:\s*([a-z ,]+)", re.I)
+_BUDGET_MARK = re.compile(r"\bbudget:\s*(?:about\s*|around\s*|rs\.?\s*|₹\s*)?([\d,]+)\s*(?:-|to)?\s*([\d,]+)?\+?", re.I)
+_AI_NAMES = {"chatgpt": "ChatGPT", "claude": "Claude", "gemini": "Gemini"}
 _NOT_STUDENT = re.compile(r"\b(not a student|full[- ]time founder|working professional|side project from my job)\b", re.I)
 
 # Caps for a bootstrapped founder before revenue, in the plan currency. A student funds the start from
@@ -96,7 +102,44 @@ def build_profile(state: dict) -> dict:
     if funding == "bootstrapped":
         tier = "global" if not is_india else ("student_india" if student else "india")
         profile.update(CAPS[tier])
+
+    # What the founder already pays for: plans use it and don't count it again.
+    ai = _AI_MARK.search(constraints)
+    if ai and "several" in ai.group(1).lower():
+        profile["ai_paid"] = ["more than one AI assistant (ChatGPT, Claude or Gemini)"]
+    else:
+        profile["ai_paid"] = [v for k, v in _AI_NAMES.items() if k in ai.group(1).lower()] if ai else None
+
+    # Starting money the founder named, in rupees, converted for a $ plan.
+    budget = _BUDGET_MARK.search(constraints)
+    if budget:
+        lo = float(budget.group(1).replace(",", ""))
+        hi = float(budget.group(2).replace(",", "")) if budget.group(2) else (None if budget.group(0).rstrip().endswith("+") else lo)
+        if not is_india:
+            from tool_catalog import load_catalog
+            rate = load_catalog()["usd_to_inr"]["rate"]
+            lo, hi = round(lo / rate), (round(hi / rate) if hi is not None else None)
+        profile["capital_range"] = [lo, hi]
+    else:
+        profile["capital_range"] = None
     return profile
+
+
+def _money_rules(profile: dict) -> list[str]:
+    s, rules = profile["symbol"], []
+    rng = profile.get("capital_range")
+    if rng:
+        lo, hi = rng
+        span = f"{s}{lo:,.0f} to {s}{hi:,.0f}" if hi is not None and hi != lo else (f"{s}{lo:,.0f}" if hi == lo else f"more than {s}{lo:,.0f}")
+        rules.append(f"Starting money: the founder can put in {span}. starting_capital must be in this range. "
+                     + ("With no money, the plan must cost nothing until the first customer pays." if hi == 0 else ""))
+    paid = profile.get("ai_paid")
+    if paid:
+        rules.append(f"The founder already pays for {', '.join(paid)}. Use it where it fits and cost it at 0 (already paid).")
+    elif paid == []:
+        rules.append("The founder pays for no AI assistant. Use free tiers of ChatGPT, Claude or Gemini; "
+                     "add a paid AI plan only if the plan clearly needs it, and cost it.")
+    return [r.strip() for r in rules]
 
 
 def _rules(profile: dict) -> list[str]:
@@ -104,11 +147,12 @@ def _rules(profile: dict) -> list[str]:
     rules = [f"All money in {profile['currency']} ({s}). " + (
         "Indian benchmarks: UPI, Razorpay, Indian pricing power." if profile["is_india"]
         else "Global/US benchmarks: Stripe, US pricing power.")]
+    rules += _money_rules(profile)
     if profile.get("student"):
         rules += [
             "Founder: a student in India, building nights and weekends (about 15 hours a week) around classes and exams. "
             "No VC, no hires, no office. Batchmates or a friend can help part time.",
-            f"Money: starting capital is the founder's own savings, usually {s}5,000-{s}25,000 unless they said otherwise. "
+            ("" if profile.get("capital_range") else f"Money: starting capital is the founder's own savings, usually {s}5,000-{s}25,000. ") +
             f"MVP build cost under {s}{profile['mvp_cap']:,}. Monthly burn under {s}{profile['burn_cap']:,} before revenue.",
             "Free tiers and student offers first (GitHub Student Developer Pack, Supabase and Netlify free tiers, Canva free). "
             "Pay for a tool only once a customer pays.",
@@ -189,34 +233,4 @@ def revision_block(state: dict, owner: str) -> str:
     else:
         lines.append("An upstream section changed. Keep your choices unless the new inputs force a change.")
     lines.append("Change only what is needed. Return the full corrected section.")
-    return "\n".join(lines)
-
-
-def tool_knowledge(profile: dict) -> str:
-    """Compact curated tool/price list. Only the Builder needs it."""
-    try:
-        with open(_TOOL_KB_PATH, "r", encoding="utf-8") as f:
-            kb = json.load(f)
-    except Exception as e:
-        print(f"[CONTEXT] Failed to load tool knowledge base: {e}")
-        return ""
-
-    india = profile["is_india"]
-    lines = [f"CURATED TOOLS & PRICES (updated {kb.get('last_updated', '?')}). Prefer these; quote these prices."]
-    for cat in kb.get("categories", {}).values():
-        default = cat.get("recommended_default") or cat.get(
-            "recommended_default_india" if india else "recommended_default_global", "")
-        lines.append(f"{cat.get('label')} (default: {default})")
-        # Only the default picks: the full list costs ~1,600 tokens per Builder call on the free tier.
-        tools = cat.get("tools", [])
-        picks = [t for t in tools if re.split(r"[ .]", t["name"])[0].lower() in default.lower()] or tools[:1]
-        for tool in picks:
-            price = f"free: {tool.get('free_tier') or '-'}"
-            paid = tool.get("paid_tier") or tool.get("transaction_fee")
-            if paid:
-                price += f"; paid: {paid}"
-            if india and tool.get("pricing_inr"):
-                price += f"; INR: {tool['pricing_inr']}"
-            cmd = f" [{tool['setup_command']}]" if tool.get("setup_command") and tool["name"] in default else ""
-            lines.append(f"  - {tool['name']}: {price}{cmd}")
     return "\n".join(lines)

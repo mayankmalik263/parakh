@@ -26,6 +26,13 @@ _HEADINGS = {
 }
 
 
+_BILLING = {"monthly": "/mo", "one_time": " one-time", "per_use": " per use"}
+
+
+def _tier_price(m, tier: dict) -> str:
+    return f"{m(tier['monthly_price'])}{_BILLING.get(tier.get('billing', 'monthly'), '/mo')}"
+
+
 def build_display_plan(state: dict) -> StartupBusinessPlan:
     """The plan shape the frontend renders (strings), derived from the slices."""
     p = state["profile"]
@@ -39,7 +46,7 @@ def build_display_plan(state: dict) -> StartupBusinessPlan:
         problem=s["problem"],
         target_customer=s["target_customer"],
         business_model=[
-            {"name": t["name"], "price": f"{m(t['monthly_price'])}/mo", "features": t["features"]}
+            {"name": t["name"], "price": _tier_price(m, t), "features": t["features"]}
             for t in e["pricing"]
         ],
         financial_snapshot={
@@ -56,6 +63,8 @@ def build_display_plan(state: dict) -> StartupBusinessPlan:
             for t in sorted(e["revenue_targets"], key=lambda t: t["day"])
         ],
         competition=s["competitors"],
+        tools=[{"name": t["tool"], "plan": t["plan"], "monthly_cost": f"{m(t['monthly_cost'])}/mo",
+                "verified": bool(t.get("verified")), "note": t.get("price_note", "")} for t in b["tool_costs"]],
         key_conflicts=[
             {"title": f"{c['owner'].title()}: {c['problem'][:120]}", "description": f"{c['problem']} Fix: {c['fix']}"}
             for c in state["conflicts"]
@@ -95,8 +104,12 @@ def render_report(state: dict) -> str:
         f"- **Total monthly burn: {m(e['monthly_burn'])}**",
         f"- {setup_label}: {m(b['mvp_build_cost'])}",
         "",
+        "**Tool prices:**",
+        *[f"- {t['tool']} ({t['plan']}): {m(t['monthly_cost'])}/mo, "
+          + ("checked" if t.get("verified") else "price not verified") for t in b["tool_costs"]],
+        "",
         "## 5. Pricing & Unit Economics",
-        *[f"- **{t['name']}** {m(t['monthly_price'])}/mo: {', '.join(t['features'])}" for t in e["pricing"]],
+        *[f"- **{t['name']}** {_tier_price(m, t)}: {', '.join(t['features'])}" for t in e["pricing"]],
         f"- Avg revenue per paying customer: {m(e['avg_revenue_per_customer'])}/mo",
         f"- Delivery cost per customer: {m(e['delivery_cost_per_customer'])}/mo",
         f"- Break-even: {_customers(e['break_even_customers'])}",
