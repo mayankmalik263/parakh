@@ -5,10 +5,10 @@ import Interactions from "@/components/motion/Interactions";
 import "./globals.css";
 
 // Headlines: Anton, a condensed poster face, always uppercase.
-const anton = Anton({ variable: "--font-anton", subsets: ["latin"], weight: "400" });
+const anton = Anton({ variable: "--font-anton", subsets: ["latin", "latin-ext"], weight: "400" });
 
 // Body copy and UI.
-const dmSans = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin"] });
+const dmSans = DM_Sans({ variable: "--font-dm-sans", subsets: ["latin", "latin-ext"] });
 
 // Numbers, formulas and code.
 const dmMono = DM_Mono({ variable: "--font-dm-mono", subsets: ["latin"], weight: ["400", "500"] });
