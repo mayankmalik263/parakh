@@ -1,0 +1,329 @@
+{
+ "id": "candles-insta",
+ "kind": "physical",
+ "idea": "Handmade scented candles sold on Instagram, made in my hostel room",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 5,
+  "math_warnings": 0,
+  "tools_costed": 6,
+  "tools_in_catalog": 3,
+  "hidden_costs": [
+   "ChatGPT (Free Tier)"
+  ],
+  "invented_stats": [
+   {
+    "where": "growth.channel:Instagram Reels & DM Funnel",
+    "claim": "15 followers"
+   }
+  ],
+  "plan_chars": 9653
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "physical",
+   "problem": "Urban students and young professionals in hostels and small apartments lack a low-cost, non-toxic sensory ritual to decompress after a high-stress day, specifically at 9:00 PM when they need to transition from study mode to sleep without the chemical smell of mass-market synthetic candles.",
+   "target_customer": "Urban students and early-career professionals aged 18-24 living in hostels or 1BHKs in Tier 1 Indian cities (Mumbai, Delhi, Bengaluru), who spend ₹500-₹1,500 monthly on self-care and impulse-buy aesthetic lifestyle products via Instagram DMs.",
+   "mission": "Provide affordable, hand-poured soy-wax candles with distinct, non-overpowering scents that transform cramped hostel rooms into calming personal spaces for students.",
+   "competitors": [
+    {
+     "name": "The Candle Box",
+     "differentiator": "We win on price point (₹300-₹500 vs their ₹800+) and hyper-local relevance, offering scents tailored to Indian humidity and small room sizes rather than generic luxury imports."
+    },
+    {
+     "name": "Local Instagram candle vendors in Delhi/Mumbai",
+     "differentiator": "We win on consistency and speed; unlike one-off local vendors who disappear after a festival, we maintain a steady monthly drop schedule and reliable 2-day shipping within the city."
+    },
+    {
+     "name": "Mass-market synthetic candles (e.g., Wick & Whisker retail lines)",
+     "differentiator": "We win on health and authenticity; we use 100% soy wax and cotton wicks, avoiding the paraffin and chemical dyes that cause headaches in poorly ventilated hostel rooms."
+    }
+   ],
+   "scope_cuts": [
+    "No custom packaging design beyond a simple kraft paper box and a branded sticker; we skip expensive rigid boxes to keep COGS under ₹100 per unit and avoid inventory waste.",
+    "No subscription model or recurring revenue app; we operate strictly on one-time purchases via Instagram DMs and WhatsApp to avoid the complexity of managing recurring payments and customer retention infrastructure.",
+    "No expansion to other scented products (diffusers, room sprays) in the first 6 weeks; we focus exclusively on 3 specific candle scents to streamline the pouring process and minimize wax waste during the learning curve."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Instagram Business Profile + WhatsApp Business",
+     "why": "Primary storefront and DM channel for the 18-24 target audience who impulse-buy via social media."
+    },
+    {
+     "name": "Razorpay Payment Links",
+     "why": "Enables UPI and card payments directly in WhatsApp/Instagram DMs without a complex checkout page."
+    },
+    {
+     "name": "Shiprocket",
+     "why": "Aggregates multiple courier partners to find the most reliable pickup slot for residential hostel addresses in Tier 1 cities."
+    },
+    {
+     "name": "Google Sheets",
+     "why": "Zero-cost inventory and order tracking for a solo founder managing 3 SKUs."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Canva Free",
+     "why": "Creates branded stickers, product mockups, and Instagram Reels templates without a designer."
+    },
+    {
+     "name": "ChatGPT (Free Tier)",
+     "why": "Drafts scent descriptions, customer service replies, and WhatsApp order confirmations."
+    }
+   ],
+   "mvp_features": [
+    "SKU 1: 'Midnight Study' - 150g soy wax candle, Lavender & Vanilla scent, cotton wick, 25-hour burn time, in a 100ml amber glass jar.",
+    "SKU 2: 'Monsoon Break' - 150g soy wax candle, Jasmine & Rain scent, cotton wick, 25-hour burn time, in a 100ml amber glass jar.",
+    "SKU 3: 'Hostel Reset' - 150g soy wax candle, Sandalwood & Cedar scent, cotton wick, 25-hour burn time, in a 100ml amber glass jar."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Instagram Business Profile",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Payment Links (2.9% + GST per transaction, no monthly fee)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Google Sheets",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Shiprocket",
+     "plan": "Free (pay per shipment)",
+     "monthly_cost": 0.0
+    }
+   ],
+   "mvp_build_cost": 12500.0,
+   "first_10_steps": [
+    "Order 1kg of 100% soy wax, 10 cotton wicks, and 10 100ml amber glass jars from a local supplier or IndiaMART for under ₹3,000.",
+    "Purchase 3 distinct fragrance oils (Lavender, Jasmine, Sandalwood) at 8% concentration for the 1kg wax batch, costing approximately ₹1,500.",
+    "Pour 10 test candles in the hostel room, documenting the process with a smartphone for Instagram Reels content.",
+    "Create 3 branded kraft paper boxes and 10 branded stickers using Canva Free and a local print shop for under ₹500.",
+    "Set up an Instagram Business Profile and WhatsApp Business account, linking them with a 'Shop' button and UPI payment link.",
+    "Post 3 Reels showing the candle-making process, targeting local college hashtags and geo-tags, to generate initial interest.",
+    "Share the Instagram link in 5 college WhatsApp groups and ask 10 batchmates to pre-order a candle for ₹450.",
+    "Collect pre-orders via Razorpay Payment Links to validate demand before pouring the final 20-candle batch.",
+    "Pour the final 20-candle batch based on pre-order numbers, ensuring zero inventory waste.",
+    "Pre-book a Shiprocket pickup slot for the specific hostel address or identify the nearest drop-off point within walking distance before the first batch ships, then ship the first 10 pre-ordered candles within 48 hours of payment, asking each customer for a photo review."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Single Candle",
+     "monthly_price": 450.0,
+     "features": [
+      "150g soy wax candle",
+      "25-hour burn time",
+      "Cotton wick",
+      "Amber glass jar",
+      "Shipping included within Tier 1 cities"
+     ]
+    },
+    {
+     "name": "Starter Trio",
+     "monthly_price": 1200.0,
+     "features": [
+      "3 distinct scents (Lavender, Jasmine, Sandalwood)",
+      "Free shipping within Tier 1 cities",
+      "Branded kraft packaging"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 450.0,
+   "delivery_cost_per_customer": 180.0,
+   "burn_line_items": [
+    {
+     "item": "Instagram Business Profile",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Sheets",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing Budget (Reels Boosting)",
+     "monthly_cost": 2000.0
+    }
+   ],
+   "monthly_burn": 2000.0,
+   "marketing_budget": 2000.0,
+   "starting_capital": 12500.0,
+   "external_funding": 0.0,
+   "runway_months": 6.2,
+   "break_even_customers": 8,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 2250.0,
+     "notes": "Initial pre-orders from batchmates and college WhatsApp groups"
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 5400.0,
+     "notes": "Repeat orders and referrals from first 10 customers"
+    },
+    {
+     "day": 90,
+     "paying_customers": 20,
+     "mrr": 9000.0,
+     "notes": "Growth via Instagram Reels and local college fest presence"
+    }
+   ],
+   "key_assumptions": [
+    "Customers pay a one-time price of ₹450 per candle, with no subscription model.",
+    "Delivery cost of ₹180 per customer includes ₹120 for materials (wax, wick, jar) and ₹60 for shipping via Delhivery; this cost is fully recovered from the customer as shipping is included in the ₹450 price.",
+    "Marketing budget of ₹2,000 is spent on boosting Instagram Reels to target local college hashtags.",
+    "All tools used are on free tiers, resulting in zero monthly tool costs."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Instagram Reels & DM Funnel",
+     "tactic": "Post 1 Reel/day (15s ASMR pouring/room transformation) targeting 'hostel life' and 'study aesthetic' hashtags; DM 15 followers who like/comment with a direct UPI payment link for the ₹450 candle.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Campus WhatsApp & Fest Booth",
+     "tactic": "Share a 3-line pitch + UPI link in 5 hostel/class WhatsApp groups/day; set up a 2-hour booth at the monthly college fest with 10 free mini-samples to convert to full candles.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 2,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "Pour 10 candles in the first 48 hours and photograph them in your actual hostel room at 9:00 PM with a laptop open to create the 'decompression' visual proof.",
+    "DM 10 batchmates and 5 seniors in your college WhatsApp group with the photo and a direct UPI link for ₹450, offering free shipping if they order within 24 hours.",
+    "Hand-deliver 3 free mini-samples (20g) to friends in the same hostel who complain about stress or bad smells, asking them to post a story tagging the account.",
+    "Set up a 2-hour table at the next college fest or club meeting with 5 full candles and 10 mini-samples; collect UPI payments on the spot for full candles.",
+    "Ask the first 3 customers to post an unboxing story within 2 days of delivery; screenshot their stories and pin them to the Instagram profile as social proof.",
+    "Follow up with every non-buyer from the WhatsApp group after 3 days with a 'last chance' discount of ₹50 off to close the remaining 2-3 spots."
+   ],
+   "cold_message": "Hey, I'm a student making hand-poured soy candles specifically for small hostel rooms (no chemical smell, just calming scents). I'm testing my first batch of 10 and offering free shipping if you grab one today via UPI. Want me to send you the payment link?",
+   "objections": [
+    {
+     "objection": "I've bought candles before and they smelled like chemicals.",
+     "response": "That's exactly why I switched to 100% soy wax and cotton wicks. I'm pouring them in my own hostel room, so if it smells bad here, it won't work for you. I'll refund you if you don't love the scent."
+    },
+    {
+     "objection": "I don't have space for another decorative item.",
+     "response": "The jar is 150g and fits on a standard hostel desk next to a laptop. It's designed to be a 25-hour ritual to help you transition from study to sleep, not just a decoration."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent, low-cost MVP for a physical product business that strictly adheres to the student founder and bootstrapped constraints. The use of free tools and a campus-first go-to-market strategy is realistic for the 15-hour/week limit. However, the financial model contains a critical logical error in the cost structure that renders the break-even analysis invalid.",
+  "biggest_risk": "The economics section incorrectly defines 'delivery_cost_per_customer' as the sum of materials and shipping, while ignoring the fact that shipping is already included in the customer price, leading to a false assumption that the business breaks even at 8 customers when it actually requires significantly more to cover fixed marketing and material costs.",
+  "adherence_score": 0.85
+ },
+ "seconds": 265.2,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1225,
+   "out": 543,
+   "thinking": 0,
+   "total": 1768
+  },
+  {
+   "role": "builder",
+   "in": 1611,
+   "out": 961,
+   "thinking": 0,
+   "total": 2572
+  },
+  {
+   "role": "economics",
+   "in": 2722,
+   "out": 710,
+   "thinking": 0,
+   "total": 3432
+  },
+  {
+   "role": "growth",
+   "in": 1864,
+   "out": 719,
+   "thinking": 0,
+   "total": 2583
+  },
+  {
+   "role": "critic",
+   "in": 3420,
+   "out": 407,
+   "thinking": 0,
+   "total": 3827
+  },
+  {
+   "role": "builder",
+   "in": 2451,
+   "out": 1036,
+   "thinking": 0,
+   "total": 3487
+  },
+  {
+   "role": "economics",
+   "in": 3367,
+   "out": 775,
+   "thinking": 0,
+   "total": 4142
+  },
+  {
+   "role": "growth",
+   "in": 2554,
+   "out": 727,
+   "thinking": 0,
+   "total": 3281
+  },
+  {
+   "role": "critic",
+   "in": 3473,
+   "out": 513,
+   "thinking": 0,
+   "total": 3986
+  }
+ ],
+ "tokens": {
+  "in": 22687,
+  "out": 6391,
+  "thinking": 0,
+  "total": 29078
+ }
+}

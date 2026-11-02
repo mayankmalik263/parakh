@@ -1,0 +1,354 @@
+{
+ "id": "freelancer-invoices-us",
+ "kind": "software",
+ "idea": "Invoicing and late-payment reminders for freelance designers in the US",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 2,
+  "issues_raised": 8,
+  "math_warnings": 1,
+  "tools_costed": 5,
+  "tools_in_catalog": 5,
+  "hidden_costs": [
+   "Next.js (App Router)",
+   "TailwindCSS + shadcn/ui",
+   "Cursor",
+   "v0.dev"
+  ],
+  "invented_stats": [],
+  "plan_chars": 10968
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "A freelance designer in the US sends invoice #3 for $4,200 to a studio client with Net-15 terms, day 22 passes with no payment, and they are too anxious and busy to send a follow-up email without sounding desperate — cash flow for rent and software subscriptions stalls while they keep doing client work.",
+   "target_customer": "Solo freelance graphic/UI designers in the US billing $3k–$12k/month to 3–10 repeat clients on Net-15/Net-30 terms, who feel the pain the moment an invoice passes its due date and they have to chase payment by hand over email.",
+   "mission": "Get freelance designers paid on time by turning overdue invoices into automatic, polite-but-firm reminder sequences so they never have to chase a client themselves.",
+   "competitors": [
+    {
+     "name": "FreshBooks",
+     "differentiator": "We win on price and focus: FreshBooks is a full small-business accounting suite at $19+/month, while we only do invoicing plus smart late-payment chasing for solo designers."
+    },
+    {
+     "name": "Wave",
+     "differentiator": "Wave is free but its reminder automation is shallow and its UX targets restaurants and trades; we win with designer-specific invoice templates and escalation logic tied to Net-15/Net-30 terms."
+    },
+    {
+     "name": "Manual email follow-up in Gmail",
+     "differentiator": "We win because the designer never has to draft the awkward 'just checking in' email — our sequence sends, tracks opens, and escalates automatically at day 1, 7, and 14 past due."
+    }
+   ],
+   "scope_cuts": [
+    "Skipping double-entry accounting, expense tracking, and tax reports — the goal is getting paid, not replacing QuickBooks; those features triple build time and delay revenue.",
+    "Skipping Stripe payment processing integration in v1 (invoice links out to PayPal/PayPal.Me or a 'pay by ACH' instruction) — a payments integration requires KYC, compliance review, and would blow the 2–4 week ship window.",
+    "Skipping multi-user teams, client portals, and a mobile app — the buyer is a solo freelancer checking overdue invoices on a laptop between design tasks."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Next.js (App Router)",
+     "why": "Full-stack React framework for building the invoice dashboard and reminder logic server-side."
+    },
+    {
+     "name": "Supabase",
+     "why": "Postgres database with built-in auth and row-level security for managing users, invoices, and reminder states."
+    },
+    {
+     "name": "TailwindCSS + shadcn/ui",
+     "why": "Rapid UI development for designer-focused, clean invoice templates and dashboard components."
+    },
+    {
+     "name": "Vercel",
+     "why": "Zero-config hosting for Next.js with commercial usage rights on the Pro plan."
+    },
+    {
+     "name": "Resend",
+     "why": "Transactional email API to send the automatic, polite-but-firm reminder sequences to clients."
+    },
+    {
+     "name": "Lemon Squeezy",
+     "why": "Merchant of record for handling global US subscription billing and tax compliance without KYC."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Cursor",
+     "why": "AI code editor to generate Next.js components, Supabase queries, and reminder logic rapidly."
+    },
+    {
+     "name": "v0.dev",
+     "why": "Generates production-ready React/Tailwind UI for the invoice creation and dashboard screens."
+    }
+   ],
+   "mvp_features": [
+    "Automatic late-payment reminder sequences (Day 1, 7, 14 past due) with open tracking and polite-but-firm copy.",
+    "Designer-specific invoice creation with Net-15/Net-30 terms and PayPal/PayPal.Me payment links.",
+    "Dashboard showing overdue invoices, upcoming due dates, and total outstanding balance."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Vercel",
+     "plan": "Pro",
+     "monthly_cost": 20.0
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Resend",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Lemon Squeezy",
+     "plan": "Free (transaction-based)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Cloudflare Registrar",
+     "plan": ".com domain",
+     "monthly_cost": 0.81
+    }
+   ],
+   "mvp_build_cost": 9.77,
+   "first_10_steps": [
+    "Run `npx create-next-app@latest invoice-chaser --typescript --tailwind --app` to scaffold the Next.js project.",
+    "Run `npx shadcn-ui@latest init` and install `button`, `card`, `input`, `table`, and `dialog` components for the UI.",
+    "Create a Supabase project, enable Auth, and write SQL for `users`, `invoices`, and `reminders` tables with RLS policies.",
+    "Use Cursor to generate the Supabase client, auth context, and database query functions for invoice CRUD operations.",
+    "Use v0.dev to generate the invoice creation form and dashboard table components, then integrate them into the Next.js App Router.",
+    "Implement the reminder logic in a Next.js API route that checks invoice due dates and triggers Resend email sequences.",
+    "Integrate Lemon Squeezy checkout links for the $19/month subscription and webhook handler to activate user accounts.",
+    "Deploy the application to Vercel Pro and connect the Supabase database URL and Resend API key as environment variables.",
+    "Test the full flow: create an invoice, mark it overdue, verify the Day 1 reminder email sends via Resend, and track the open.",
+    "Manually onboard 5 freelance designers from LinkedIn, provide them with the app URL, and collect feedback on the reminder copy."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Solo",
+     "monthly_price": 19.0,
+     "features": [
+      "Up to 15 active invoices per month",
+      "Automatic Day 1/7/14 past-due reminder sequences",
+      "Open tracking on reminder emails",
+      "PayPal/PayPal.Me payment links on invoices",
+      "Net-15/Net-30 terms and designer invoice templates"
+     ]
+    },
+    {
+     "name": "Studio",
+     "monthly_price": 39.0,
+     "features": [
+      "Unlimited active invoices",
+      "Automatic Day 1/7/14 past-due reminder sequences with open tracking",
+      "Custom reminder copy and sender name",
+      "Recurring invoices for repeat clients",
+      "Priority email support"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 24.0,
+   "delivery_cost_per_customer": 3.4,
+   "burn_line_items": [
+    {
+     "item": "Vercel Pro",
+     "monthly_cost": 20.0
+    },
+    {
+     "item": "Supabase Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Resend Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Lemon Squeezy Free (transaction-based)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Cloudflare Registrar .com domain",
+     "monthly_cost": 0.81
+    },
+    {
+     "item": "Cursor Pro",
+     "monthly_cost": 20.0
+    },
+    {
+     "item": "v0.dev Hobby",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 150.0
+    }
+   ],
+   "monthly_burn": 190.81,
+   "marketing_budget": 150.0,
+   "starting_capital": 6000.0,
+   "external_funding": 0.0,
+   "runway_months": 31.4,
+   "break_even_customers": 10,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 3,
+     "mrr": 72.0,
+     "notes": "3 designers converted from ~60 cold LinkedIn/DM outreach touches at ~5% close rate for a no-track-record founder selling $19/mo; avg blended $24 assumes 2 Solo + 1 Studio."
+    },
+    {
+     "day": 60,
+     "paying_customers": 14,
+     "mrr": 336.0,
+     "notes": "Path from 3 to 14 = 11 new customers via ~200 cumulative outreach touches, 3 referrals from the first 3, and posts in r/freedesign and DesignerNews; avg blended $24."
+    },
+    {
+     "day": 90,
+     "paying_customers": 25,
+     "mrr": 600.0,
+     "notes": "Break-even crossed at 10 customers; 25 pays for burn 3x over. Avg blended $24."
+    }
+   ],
+   "key_assumptions": [
+    "Solo US freelance designers billing $3k–$12k/month will pay $19/month to never write a follow-up email themselves — willingness-to-pay rests on a single avoided awkward email per month being worth less than one hour of their $75–$150/hr billing rate.",
+    "Blended avg revenue of $24/customer assumes the mix stays roughly 80% Solo ($19) / 20% Studio ($39).",
+    "Delivery cost of $3.40/customer/month = Resend free-tier overage headroom ($0.60) + Cloudflare domain amortized ($0.05) + pilot-phase labor: 30 min of founder time per pilot at an implied $75/hr = $37.50, amortized across 15 pilot customers in month 1 = $2.50, plus $0.25 ongoing support credit.",
+    "Marketing budget of $150/month is spent on ~60 cold outreach touches plus 1 LinkedIn post boost + 1 IndieHackers/DesignerNews sponsored post; no paid ads beyond that cap."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "LinkedIn Direct Outreach",
+     "tactic": "Send 10 templated connection requests/day to US-based freelance graphic/UI designers with 'Freelance' or 'Independent' in title; follow up with 1 DM after acceptance",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 4,
+     "cac": 0.0
+    },
+    {
+     "name": "Designer Slack/Discord + Newsletter Outreach",
+     "tactic": "DM 8 members/day in designer Slack/Discord communities (e.g. Designer Hangout, Freelance Design Hub, ADPList community Slack) with the 3-line message; plus 1 free community-allowed mention/week in designer newsletters like DesignerNews job board or freelance-focused newsletters (1 sponsored slot at $0 free tier or $50 one-off, price not verified)",
+     "monthly_spend": 50.0,
+     "new_customers_per_month": 2,
+     "cac": 25.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Identify 50 US freelance designers on LinkedIn by filtering for 'Freelance Graphic Designer' + 'United States' + 500-5,000 connections; export list to CSV",
+    "Day 4-7: Send 10 templated connection requests/day with note: 'Hi [Name], I'm building a tool that auto-chases overdue invoices for designers. No cost to try — want me to send you a sample reminder sequence for your next Net-30 invoice?'",
+    "Day 8-10: DM all accepted connections (target 10-15) with 3-line cold message; offer a 5-minute self-serve pilot: create free account, add one overdue invoice, see the Day 1 reminder scheduled",
+    "Day 11-14: DM 8 members/day in Designer Hangout and Freelance Design Hub Slack/Discord channels with the same 3-line message; follow up with 5 non-responders from LinkedIn via email scraped from portfolio sites",
+    "Day 15-18: Onboard first 3 pilots through the real app — they create an account, add an overdue invoice, and see the reminder sequence scheduled; collect a 1-sentence testimonial",
+    "Day 19-30: Convert pilots to $19/mo Solo tier; ask each for 2 referrals to other designers; repeat outreach to hit 5 paying customers"
+   ],
+   "cold_message": "Hi [Name], I'm building a tool that sends polite-but-firm payment reminders for overdue designer invoices — no more awkward 'just checking in' emails. You can set it up in 5 minutes: create an account, add one overdue invoice, and see your Day 1/7/14 reminders scheduled automatically. Want me to send you the link to try it free this week?",
+   "objections": [
+    {
+     "objection": "I already use FreshBooks/Wave and it's fine",
+     "response": "Fair — but their reminders are generic and you still have to draft the follow-up. Our tool is built only for designers: it knows Net-15/Net-30 terms, uses designer-specific templates, and escalates automatically at Day 1/7/14. Set up a free account in 5 minutes, add one overdue invoice, and see the sequence scheduled — if it doesn't save you 30+ minutes of awkward email drafting, cancel anytime."
+    },
+    {
+     "objection": "I don't have time to switch tools",
+     "response": "You don't switch — you layer. Keep your current invoicing tool; we just handle the late-payment chasing. Onboarding takes 5 minutes: create an account, add one overdue invoice, and the Day 1 reminder is scheduled. If it works, you're in for $19/mo; if not, no hard feelings."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is highly coherent and strictly adheres to the bootstrapped, low-burn constraints, leveraging a lean stack to solve a specific, painful problem for freelance designers. The scope cuts are appropriate for an MVP, and the revenue model is realistic for a solo founder. The primary weakness lies in the operational friction of the payment flow, which may undermine the core value proposition of 'effortless payment chasing.'",
+  "biggest_risk": "The decision to exclude native payment processing (Stripe/PayPal) in v1 forces designers to manually copy-paste PayPal links or ACH details into invoices, creating a high-friction onboarding step that may cause users to abandon the tool before seeing the value of the automated reminders.",
+  "adherence_score": 0.95
+ },
+ "seconds": 141.0,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 993,
+   "out": 446,
+   "thinking": 0,
+   "total": 1439
+  },
+  {
+   "role": "builder",
+   "in": 2481,
+   "out": 922,
+   "thinking": 0,
+   "total": 3403
+  },
+  {
+   "role": "economics",
+   "in": 2406,
+   "out": 672,
+   "thinking": 0,
+   "total": 3078
+  },
+  {
+   "role": "growth",
+   "in": 1726,
+   "out": 783,
+   "thinking": 0,
+   "total": 2509
+  },
+  {
+   "role": "critic",
+   "in": 3387,
+   "out": 388,
+   "thinking": 0,
+   "total": 3775
+  },
+  {
+   "role": "economics",
+   "in": 3223,
+   "out": 731,
+   "thinking": 0,
+   "total": 3954
+  },
+  {
+   "role": "growth",
+   "in": 2540,
+   "out": 794,
+   "thinking": 0,
+   "total": 3334
+  },
+  {
+   "role": "critic",
+   "in": 3418,
+   "out": 516,
+   "thinking": 0,
+   "total": 3934
+  },
+  {
+   "role": "economics",
+   "in": 3255,
+   "out": 770,
+   "thinking": 0,
+   "total": 4025
+  },
+  {
+   "role": "growth",
+   "in": 2625,
+   "out": 785,
+   "thinking": 0,
+   "total": 3410
+  },
+  {
+   "role": "critic",
+   "in": 3605,
+   "out": 419,
+   "thinking": 0,
+   "total": 4024
+  }
+ ],
+ "tokens": {
+  "in": 29659,
+  "out": 7226,
+  "thinking": 0,
+  "total": 36885
+ }
+}

@@ -1,0 +1,392 @@
+{
+ "id": "campus-laundry",
+ "kind": "service",
+ "idea": "Laundry pickup and drop for students in my university hostels",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 6,
+  "math_warnings": 0,
+  "tools_costed": 7,
+  "tools_in_catalog": 3,
+  "hidden_costs": [
+   "Google Forms + Google Sheets (free) — order log, per-kg weight sheet, weekly route sheet for pickup runner",
+   "ChatGPT Free / Gemini Free — draft WhatsApp order scripts, reminder templates, price-list copy in Hinglish",
+   "Claude / ChatGPT Free — weekly P&L summary from Google Sheets CSV",
+   "Google Gemini Free — route optimisation suggestion for 8-12 pickup points in 1km radius"
+  ],
+  "invented_stats": [],
+  "plan_chars": 13551
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "The student is standing in a 40-minute queue at the local laundromat on Sunday evening with a 10kg bag of wet clothes, having missed their 6 PM class to wait, and wants to hand it over and walk away immediately without negotiating prices or carrying heavy bags up 3 hostel floors.",
+   "target_customer": "Undergraduate students living in on-campus or adjacent hostels in Tier-1 or Tier-2 Indian cities who wash clothes weekly and currently spend 1-2 hours per week on laundry logistics.",
+   "mission": "To eliminate the physical effort and time cost of laundry for hostel students by providing a reliable, scheduled pickup-and-drop service within a 1km radius of the campus.",
+   "competitors": [
+    {
+     "name": "Local neighborhood laundromats",
+     "differentiator": "We remove the physical trip and queue time by coming to the hostel gate, whereas they require the student to transport heavy bags and wait in line."
+    },
+    {
+     "name": "UrbanClap / Sulekha laundry services",
+     "differentiator": "We offer hostel-specific drop-off points and student-friendly pricing, whereas they have high minimum order values and are designed for apartment complexes, not dense hostel corridors."
+    },
+    {
+     "name": "Senior batchmates doing informal laundry runs",
+     "differentiator": "We provide consistent weekly scheduling and transparent per-kg pricing via UPI, whereas informal services are unreliable, lack accountability, and have inconsistent hygiene standards."
+    }
+   ],
+   "scope_cuts": [
+    "Building a custom mobile app or website; we will use WhatsApp Business and Google Forms for orders to avoid development costs and user friction.",
+    "Hiring full-time staff or renting a dedicated laundry space; we will outsource the actual washing to existing local laundromats and only manage the logistics and customer relationship.",
+    "Expanding to multiple universities or off-campus apartments; we will focus exclusively on one specific hostel block to perfect the logistics loop before scaling."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "WhatsApp Business (free) — order intake, pickup reminders, delivery notifications",
+     "why": "Students already live in WhatsApp; no app to download, orders come in as messages with photos of the bag."
+    },
+    {
+     "name": "Google Forms + Google Sheets (free) — order log, per-kg weight sheet, weekly route sheet for pickup runner",
+     "why": "Zero-code order database the founder and 1 helper can both edit from a phone at the hostel gate."
+    },
+    {
+     "name": "Razorpay Payment Links (pay-as-you-go) — UPI collection per kg or monthly plan",
+     "why": "Indian students pay by UPI; payment link sent on WhatsApp after delivery, no card gateway needed."
+    },
+    {
+     "name": "Canva Free — hostel gate poster, WhatsApp status creative, price card",
+     "why": "Print-and-paste marketing at ₹0 design cost."
+    },
+    {
+     "name": "Google Business Profile (free) + one-page Google Sites page",
+     "why": "Lets students searching 'laundry near hostel name' find the service and see hours/pickup window."
+    },
+    {
+     "name": "Notion Free — SOP for pickup runner, laundromat vendor tracker, weekly P&L",
+     "why": "Keeps the logistics loop documented so a batchmate helper can run a pickup without the founder present."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "ChatGPT Free / Gemini Free — draft WhatsApp order scripts, reminder templates, price-list copy in Hinglish",
+     "why": "Cuts copywriting from 2 hours to 10 minutes per template."
+    },
+    {
+     "name": "Canva Magic Write (in Canva Free) — poster headline and caption variants",
+     "why": "Generates 5 poster variants in one pass for A/B testing at hostel gates."
+    },
+    {
+     "name": "Claude / ChatGPT Free — weekly P&L summary from Google Sheets CSV",
+     "why": "Turns raw weight sheet into a 5-line margin report in seconds."
+    },
+    {
+     "name": "Google Gemini Free — route optimisation suggestion for 8-12 pickup points in 1km radius",
+     "why": "Saves 15-20 minutes per evening route planning."
+    }
+   ],
+   "mvp_features": [
+    "Hostel Block A Weekly Pickup Pack — 1 pickup slot per week (fixed day, 6-8 PM), wash+fold up to 5 kg, delivered folded to hostel room within 48 hours, UPI payment link per order. Deliverables per month: 4 pickups, 4 deliveries, WhatsApp order thread, monthly weight summary.",
+    "Per-Kg On-Demand Run — pickup any day between 6-8 PM, per-kg wash+fold (pricing set by pricing agent), minimum 2 kg, delivered within 48 hours. Deliverables per month: unlimited runs, each with weight photo on WhatsApp + UPI link.",
+    "Exam-Week Bulk Pass — one 10-15 kg bulk pickup + press of shirts, scheduled 3 days before exam week, delivered in 72 hours. Deliverables per month: 1 bulk cycle, delivered 1 week before exams."
+   ],
+   "tool_costs": [
+    {
+     "tool": "WhatsApp Business",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Google Workspace (Forms + Sheets + Sites)",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Pay-as-you-go (2% + GST per transaction)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Canva",
+     "plan": "Canva Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Notion",
+     "plan": "Notion Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Domain (.in)",
+     "plan": ".in yearly ₹700-₹900 amortised",
+     "monthly_cost": 67.0
+    },
+    {
+     "tool": "Google Business Profile",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    }
+   ],
+   "mvp_build_cost": 9000.0,
+   "first_10_steps": [
+    "Pick ONE pilot zone: floors 1-3 of Hostel Block A (~150 rooms) and walk those 3 floors in one evening to count rooms and note gate timing.",
+    "Visit 3 laundromats within 1km of the hostel gate, get per-kg wholesale wash+fold quotes, and lock 1 as the washing vendor with a written rate on paper.",
+    "Print 40 A5 price posters on a Canva Free design at a local print shop (~₹400) and paste them at the Block A gate, lift lobby, and washroom notice boards for floors 1-3.",
+    "Create the Google Form order sheet with fields: name, room no, phone, kg estimate, pickup date, delivery date, payment status; share edit link with 1 helper.",
+    "Set up WhatsApp Business with business name, hours (6-8 PM pickup), away message, and 3 quick replies (price list, pickup slot, payment link).",
+    "Create a Razorpay account, complete KYC, and send a ₹1 test payment link to your own number to verify UPI collection works.",
+    "Run a discounted pilot with 5 batchmates on floors 1-3 of Block A: first pickup at 50% off in exchange for a WhatsApp testimonial photo of the folded bundle.",
+    "Confirm your helper's commitment in writing before anything else — get a WhatsApp message from them agreeing to help with pickups on X days per week — then write the 6-line SOP in Notion (gate timing, bag weighing photo, vendor drop, 48h return, room delivery, payment link) and hand it to the helper for a supervised trial run.",
+    "Collect 5 testimonials + 5 photos, design 1 WhatsApp status creative and 1 price card in Canva Free, and post daily for 7 days.",
+    "Send the same price card to 3 hostel WhatsApp groups (with admin permission) and to the mess committee, and book the first paid non-friend pickup for the coming Sunday 6 PM."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Block A Weekly Pickup Pack",
+     "monthly_price": 599.0,
+     "features": [
+      "1 fixed pickup slot per week (6-8 PM)",
+      "Wash+fold up to 5 kg per week",
+      "Folded delivery to hostel room within 48 hours",
+      "UPI payment link per order",
+      "Monthly weight summary on WhatsApp"
+     ]
+    },
+    {
+     "name": "Per-Kg On-Demand Run",
+     "monthly_price": 0.0,
+     "features": [
+      "Pickup any day 6-8 PM",
+      "₹40/kg wash+fold, minimum 2 kg",
+      "Weight photo on WhatsApp before billing",
+      "Delivery within 48 hours",
+      "UPI payment link per order",
+      "First pickup at 50% off for pilot students with WhatsApp testimonial"
+     ]
+    },
+    {
+     "name": "Exam-Week Bulk Pass",
+     "monthly_price": 499.0,
+     "features": [
+      "One 10-15 kg bulk pickup + press of shirts",
+      "Scheduled 3 days before exam week",
+      "Delivery in 72 hours",
+      "Delivered 1 week before exams",
+      "UPI payment link"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 450.0,
+   "delivery_cost_per_customer": 145.0,
+   "burn_line_items": [
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Workspace (Forms + Sheets + Sites)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay (pay-as-you-go, 2% + GST per transaction)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Notion Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Domain (.in) amortised",
+     "monthly_cost": 67.0
+    },
+    {
+     "item": "Google Business Profile",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget (40 A5 posters x ₹10 reprint + ₹300 WhatsApp status boost)",
+     "monthly_cost": 700.0
+    },
+    {
+     "item": "Runner helper stipend (1 batchmate, 6 hrs/week @ ₹60/hr)",
+     "monthly_cost": 1440.0
+    },
+    {
+     "item": "Laundry consumables (bags, hangers, weighing tape)",
+     "monthly_cost": 350.0
+    }
+   ],
+   "monthly_burn": 2557.0,
+   "marketing_budget": 700.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 5.9,
+   "break_even_customers": 9,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 2250.0,
+     "notes": "5 batchmates on 50% off pilot, 3 converted to paid Weekly Pack at ₹599, 2 on per-kg runs; blended ₹450. True delivery cost at 5 customers = ₹358/customer (₹1,440 stipend + ₹350 consumables + ~₹90 Razorpay MDR + ~₹185 vendor logistics, spread over 5) = ₹1,790 total; MRR ₹2,250 covers delivery cost with ₹460 left toward the ₹2,557 burn (founder absorbs the ₹2,097 gap from savings this month)."
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 5400.0,
+     "notes": "8 Weekly Pack subscribers + 4 per-kg regulars across Block A floors 1-3 after WhatsApp group push. True delivery cost at 12 customers = ₹145/customer (₹1,440 + ₹350 + ~₹216 MDR + ~₹444 vendor logistics, spread over 12) = ₹1,740 total; MRR ₹5,400 covers delivery cost and full ₹2,557 burn with ₹1,103 surplus."
+    },
+    {
+     "day": 90,
+     "paying_customers": 20,
+     "mrr": 9000.0,
+     "notes": "14 Weekly Pack + 6 per-kg/Exam Pass. True delivery cost at 20 customers = ₹104/customer (₹1,440 + ₹350 + ~₹360 MDR + ~₹740 vendor logistics, spread over 20) = ₹2,080 total; MRR ₹9,000 covers burn with ₹6,443 surplus, helper stipend self-funded."
+    }
+   ],
+   "key_assumptions": [
+    "Willingness to pay rests on the ₹599/month Weekly Pack being cheaper than 8 auto-rickshaw trips to the laundromat (₹40 x 8 = ₹320) plus 4-8 hours of queue/wash time saved per month at ₹40/hr student opportunity cost.",
+    "Blended avg_revenue_per_customer of ₹450 assumes 70% of paying customers are on the ₹599 Weekly Pack and 30% average ₹180/month on per-kg runs at 4.5 kg avg.",
+    "Delivery cost per customer scales with customer count because helper stipend (₹1,440) and consumables (₹350) are fixed: ₹358/customer at 5 customers (Day 30), ₹145 at 12 (Day 60), ₹104 at 20 (Day 90); Razorpay MDR ~₹18/order and vendor logistics ~₹37/order scale with usage.",
+    "Break-even of 9 customers uses the Day-60 blended delivery cost of ₹145: ceil(2557 / (450 - 145)) = 9; one helper can handle up to 25 customers/week (5 pickup runs x 5 bags) without adding headcount."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Hostel WhatsApp groups + floor knocking (Block A floors 1-3)",
+     "tactic": "~6 hrs/week total: 3 evenings/week 7-9 PM knock on 10 rooms/floor across floors 1-3 (30 rooms/evening) with A4 price sheet; 2 posts/week in the 6 Block A floor WhatsApp groups at 8:30 PM (photo of folded clothes + UPI link for 50% off first pickup); reply to every 'price?' within 10 min; 5 DMs/day to group members who react. No Reels, no flyering, no gate stall until Day 30.",
+     "monthly_spend": 400.0,
+     "new_customers_per_month": 6,
+     "cac": 66.67
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-2: Walk Block A floors 1-3 7-9 PM, knock on 30 rooms, note names + room numbers in a notebook, offer the first 5 people a ₹0 sample wash+fold of 2kg in exchange for a WhatsApp testimonial",
+    "Day 3-4: Ask 3 batchmates already in Block A to forward a 3-line message into their floor groups; personally DM the 10 people who react with 'interested' and lock a 6-8 PM pickup slot on the spot",
+    "Day 5-7: Run the first paid pickup for the 5 pilot students at 50% off; weigh on camera, send weight photo + Razorpay payment link on WhatsApp within 1 hour of pickup",
+    "Day 8-14: Post the 5 folded-clothes photos (with permission) in the floor groups and pin a message: '5 students in Block A already using this — ₹40/kg, min 2kg, delivered in 48h'; DM every person who thumbs-up the message",
+    "Day 15-21: Convert the 5 pilot students to the ₹599 Weekly Pack by sending a personal UPI payment link with a one-line summary of their monthly weight; ask each for 1 referral in their floor group",
+    "Day 22-30: Knock on 30 more rooms on floors 1-3 across 3 evenings; repeat the 50%-off first-pickup offer to hit 5 paying customers by Day 30"
+   ],
+   "cold_message": "Hi, I'm [name] from your block — I've started a laundry pickup for Block A: I come to your floor 6-8 PM, take your bag, and return it folded in 48 hours. ₹40/kg (min 2kg), UPI payment link after I send you a photo of the weight, first pickup at 50% off. Want me to pick up your bag tomorrow evening?",
+   "objections": [
+    {
+     "objection": "I can just wash my own clothes / use the hostel washing machine for free",
+     "response": "That's true for 2-3 shirts, but if you're spending 1-2 hours a week hauling a 10kg bag to the laundromat and missing evening classes, this costs you ₹40/kg only when you use it — no monthly commitment on the per-kg plan. Try one pickup at 50% off and compare the time."
+    },
+    {
+     "objection": "I don't trust you with my clothes — what if they get lost or mixed up",
+     "response": "I weigh your bag on camera at pickup and send you the weight photo on WhatsApp before billing, tag every bag with your room number, and deliver folded to your room in 48 hours — if anything is missing or damaged in the first month, I refund that order's full amount on UPI the same day."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is highly realistic and tightly constrained to the student founder's capabilities, leveraging low-cost tools and campus-specific channels effectively. The financial model is conservative and accounts for the high fixed costs of the helper relative to early volume. The primary weakness is the lack of a concrete mechanism to ensure the quality of the outsourced laundry vendor, which is the core value proposition.",
+  "biggest_risk": "The outsourced laundromat vendor fails to maintain hygiene or consistency (e.g., mixed clothes, stains, late delivery), causing a loss of trust that cannot be recovered in a small hostel community where reputation is everything.",
+  "adherence_score": 0.95
+ },
+ "seconds": 231.9,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1217,
+   "out": 460,
+   "thinking": 0,
+   "total": 1677
+  },
+  {
+   "role": "builder",
+   "in": 1586,
+   "out": 1167,
+   "thinking": 0,
+   "total": 2753
+  },
+  {
+   "role": "builder",
+   "in": 2844,
+   "out": 1155,
+   "thinking": 0,
+   "total": 3999
+  },
+  {
+   "role": "economics",
+   "in": 3033,
+   "out": 887,
+   "thinking": 0,
+   "total": 3920
+  },
+  {
+   "role": "economics",
+   "in": 4016,
+   "out": 842,
+   "thinking": 0,
+   "total": 4858
+  },
+  {
+   "role": "growth",
+   "in": 1921,
+   "out": 866,
+   "thinking": 0,
+   "total": 2787
+  },
+  {
+   "role": "critic",
+   "in": 4410,
+   "out": 592,
+   "thinking": 0,
+   "total": 5002
+  },
+  {
+   "role": "builder",
+   "in": 2892,
+   "out": 1189,
+   "thinking": 0,
+   "total": 4081
+  },
+  {
+   "role": "economics",
+   "in": 4114,
+   "out": 1220,
+   "thinking": 0,
+   "total": 5334
+  },
+  {
+   "role": "growth",
+   "in": 3242,
+   "out": 795,
+   "thinking": 0,
+   "total": 4037
+  },
+  {
+   "role": "growth",
+   "in": 4127,
+   "out": 794,
+   "thinking": 0,
+   "total": 4921
+  },
+  {
+   "role": "critic",
+   "in": 4727,
+   "out": 401,
+   "thinking": 0,
+   "total": 5128
+  }
+ ],
+ "tokens": {
+  "in": 38129,
+  "out": 10368,
+  "thinking": 0,
+  "total": 48497
+ }
+}

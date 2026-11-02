@@ -18,7 +18,7 @@ import io
 import json
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -73,7 +73,7 @@ def summary(label: str, records: list[dict]) -> str:
     lines = [
         f"# Eval: {label}",
         "",
-        f"{datetime.now():%Y-%m-%d %H:%M} · model `{records[0]['model'] if records else '?'}` · "
+        f"scored {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC · model `{records[0]['model'] if records else '?'}` · "
         f"{len(ok)}/{len(records)} plans finished",
         "",
         "| | Average per plan |",

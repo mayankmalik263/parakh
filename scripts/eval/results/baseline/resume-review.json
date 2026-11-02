@@ -1,0 +1,367 @@
+{
+ "id": "resume-review",
+ "kind": "service",
+ "idea": "Resume and LinkedIn review for final-year engineering students before placements",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 5,
+  "math_warnings": 0,
+  "tools_costed": 7,
+  "tools_in_catalog": 3,
+  "hidden_costs": [
+   "Google Docs",
+   "Claude (claude.ai)",
+   "ChatGPT"
+  ],
+  "invented_stats": [
+   {
+    "where": "growth.channel:LinkedIn DM sprint",
+    "claim": "1.5%"
+   }
+  ],
+  "plan_chars": 11538
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "A final-year engineering student in India opens the placement portal 3 days before the first on-campus drive closes applications and realises their resume has no measurable project outcomes, a generic objective line, and a LinkedIn profile with no headline — they get rejected in the resume-shortlist round and never reach the interview.",
+   "target_customer": "Final-year B.Tech/B.E. students at tier-2 and tier-3 Indian engineering colleges (NIRF-ranked or autonomous, 200-2000 placements/year) whose family income is ₹3-10 lakh/year, who are actively applying to on-campus drives and will pay a one-time fee the week a placement season starts.",
+   "mission": "Give final-year Indian engineering students a recruiter-ready resume and LinkedIn profile within 48 hours of payment, so they clear the resume-shortlist cut at campus placement drives.",
+   "competitors": [
+    {
+     "name": "Fiverr/Upwork freelance resume writers",
+     "differentiator": "We know Indian campus placement formats (1-page, no photo, CGPA/projects format, ATS keywords for TCS/Infosys/Wipro) and deliver in 48 hours in ₹, not in dollars with 5-7 day turnaround."
+    },
+    {
+     "name": "College placement cell resume workshops",
+     "differentiator": "Free but one-to-many: a 45-minute lecture for 200 students with no individual review of your actual resume or LinkedIn."
+    },
+    {
+     "name": "AI resume tools like Kickresume, Rezi, or Novoresume",
+     "differentiator": "They generate a template resume from inputs; we edit the student's existing content, rewrite weak bullets with metrics, and fix LinkedIn for Indian recruiter search behaviour — a human review, not a template fill."
+    }
+   ],
+   "scope_cuts": [
+    "No custom resume-builder SaaS or web app — the delivery is a reviewed, edited Google Doc + LinkedIn audit checklist done by the founder, because a product build burns the 15 hrs/week budget and delays first payment past week 6.",
+    "No interview prep, mock interviews, or aptitude training as extra service lines — one offering (resume + LinkedIn review) until 50 paying students prove demand.",
+    "No monthly subscriptions or retainer packages — the founder's model is one-time fee per review, so no billing portal, no tier management, no churn tooling."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Google Docs",
+     "why": "Native collaboration for resume editing and instant sharing with students without file conversion issues."
+    },
+    {
+     "name": "Canva",
+     "why": "Free tier allows creating branded PDF cover pages and LinkedIn audit checklists without design software costs."
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Primary communication channel for Indian students; supports quick replies for intake forms and payment links."
+    },
+    {
+     "name": "Razorpay Payment Links",
+     "why": "Zero-cost setup for one-time UPI/card payments, essential for the bootstrapped one-time fee model."
+    },
+    {
+     "name": "Notion",
+     "why": "Free tier manages client intake forms, review checklists, and delivery tracking in a single dashboard."
+    },
+    {
+     "name": "Carrd",
+     "why": "Low-cost one-page portfolio site to host the offer, testimonials, and payment link, avoiding complex web development."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude (claude.ai)",
+     "why": "Free tier used to rewrite weak resume bullets with metrics and generate ATS-optimized keywords for TCS/Infosys."
+    },
+    {
+     "name": "ChatGPT",
+     "why": "Assists in drafting LinkedIn headline variations and audit checklist points based on recruiter search behavior."
+    }
+   ],
+   "mvp_features": [
+    "Resume Rewrite: 1-page ATS-optimized resume with 3-5 measurable project outcomes and removed generic objective lines.",
+    "LinkedIn Audit: Custom checklist fixing headline, 'About' section, and skills to match Indian recruiter search filters.",
+    "48-Hour Delivery: Guaranteed turnaround from payment to final Google Doc and PDF delivery via WhatsApp."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Google Workspace",
+     "plan": "Free Personal Account",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "WhatsApp Business",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Payment Links (No monthly fee, 2% transaction fee per payment)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Notion",
+     "plan": "Free Personal",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Carrd",
+     "plan": "Pro",
+     "monthly_cost": 250.0
+    },
+    {
+     "tool": "Domain (.in)",
+     "plan": "GoDaddy India 1-year",
+     "monthly_cost": 50.0
+    }
+   ],
+   "mvp_build_cost": 2000.0,
+   "first_10_steps": [
+    "Create a Carrd one-page site with a clear headline 'Recruiter-Ready Resume in 48 Hours' and a Razorpay payment link for ₹499.",
+    "Build a Notion database with columns for Name, College, CGPA, Resume Link, LinkedIn Link, and Status to track 10 pilot clients.",
+    "Draft a 5-question WhatsApp intake form to collect resume PDF, LinkedIn URL, target companies, and CGPA before starting work.",
+    "Offer 3 batchmates a 50% discount (₹250) in exchange for a written testimonial and permission to use their before/after resume snippets.",
+    "Use Claude to create a 'Resume Audit Checklist' PDF with 10 common errors (e.g., 'No metrics in project description') to give away as a lead magnet.",
+    "Post the lead magnet and offer in 5 college WhatsApp groups and 2 LinkedIn groups specific to your city's engineering colleges.",
+    "Deliver the first 3 pilot reviews within 48 hours, ensuring each includes at least 3 rewritten bullets with specific numbers (e.g., 'Reduced load time by 40%').",
+    "Collect video testimonials from the 3 pilot clients and add them to the Carrd site and WhatsApp status.",
+    "Set up a WhatsApp Business quick reply for 'Payment Received' that automatically sends the intake form and delivery timeline.",
+    "Review the first 10 client interactions to identify the top 3 questions asked and add them to a FAQ section on the Carrd site."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Standard Review",
+     "monthly_price": 499.0,
+     "features": [
+      "1-page ATS resume rewrite with 3-5 measurable project bullets",
+      "LinkedIn headline, About and skills audit checklist",
+      "48-hour delivery via Google Doc + PDF on WhatsApp",
+      "1 round of revisions within 7 days"
+     ]
+    },
+    {
+     "name": "Priority Review",
+     "monthly_price": 799.0,
+     "features": [
+      "Everything in Standard Review",
+      "Delivery within 24 hours of intake form submission",
+      "2 rounds of revisions within 14 days",
+      "Target-company ATS keyword pass for TCS/Infosys/Wipro"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 549.0,
+   "delivery_cost_per_customer": 160.0,
+   "burn_line_items": [
+    {
+     "item": "Carrd Pro",
+     "monthly_cost": 250.0
+    },
+    {
+     "item": "Domain .in",
+     "monthly_cost": 50.0
+    },
+    {
+     "item": "Google Workspace",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Notion",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Claude",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "ChatGPT",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing budget",
+     "monthly_cost": 1500.0
+    }
+   ],
+   "monthly_burn": 1800.0,
+   "marketing_budget": 1500.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 8.3,
+   "break_even_customers": 5,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 2745.0,
+     "notes": "3 batchmates at ₹499 + 2 standard at ₹499"
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 6588.0,
+     "notes": "Blended ₹549/customer"
+    },
+    {
+     "day": 90,
+     "paying_customers": 25,
+     "mrr": 13725.0,
+     "notes": "Placement season drive; blended ₹549/customer"
+    }
+   ],
+   "key_assumptions": [
+    "Willingness to pay ₹499 one-time rests on the assumption that a final-year student facing a ₹3-10 lakh/year family income treats one placement-drive rejection as costing a ₹4-6 LPA offer, so ₹499 is under 1% of first-year salary",
+    "Delivery cost of ₹160/customer = 4 founder hours at ₹25/hr opportunity cost (nights-and-weekends student rate) + ₹60 AI credits (15 Claude/ChatGPT overage credits at ₹4 each) + ₹0 tool seats (all free tier)",
+    "Concurrent active reviews capped at 5 to protect the 48-hour SLA during placement weeks; at 4 hrs/review, 5 concurrent × 2 rounds/week = 40 hrs/week theoretical max, realistic sustained load ~15 hrs/week = 3 reviews/week",
+    "Razorpay 2% fee absorbed by founder, not passed to student, to keep UPI checkout friction-free"
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "WhatsApp placement groups + hostel/class groups",
+     "tactic": "Join 30 final-year WhatsApp groups (class groups, hostel blocks, T&P cell groups) at own college and 2 neighbouring tier-2 colleges; post the ₹499 offer + free 1-page sample rewrite every alternate day (15 posts/week) and reply to every 'how does it work' message within 30 minutes",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "LinkedIn DM sprint",
+     "tactic": "DM 15 final-year students/day on LinkedIn (filter: B.Tech 2026 batch, tier-2 colleges, <2000 employees) with the 3-line cold message; 15 DMs × 25 days = 375 DMs/month, target 1.5% close = 6 replies → 3 paying",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Post in own college's final-year WhatsApp class group and hostel block group — offer 3 batchmates a ₹499 Standard Review at ₹299 as founding-price pilot, in exchange for a 2-line honest reply on the delivered Google Doc (not a testimonial, just permission to show the before/after doc structure).",
+    "Day 4-7: Walk into the Training & Placement cell, ask the TPO for 5 minutes to share a 1-page 'resume checklist for the TCS drive' in the official final-year WhatsApp group — the TPO's forward is the highest-trust message available at ₹0.",
+    "Day 8-14: DM 15 students/day on LinkedIn filtered to 'B.Tech, Batch of 2026, <2000 employees college' — send the 3-line cold message, book 5 Google Meet slots/week of 10-minute free resume teardowns, convert 2 of those 5.",
+    "Day 15-21: Deliver the first 5 reviews inside 48 hours each, screenshot the before/after bullet rewrites (blurred names) and post as a 3-slide Instagram carousel + LinkedIn post; ask each of the 5 to forward the carousel to 1 batchmate applying to the same drive.",
+    "Day 22-30: Offer Priority Review at ₹799 to anyone whose drive closes in under 5 days — urgency converts; target 5 more paying customers to hit the Day 30 target of 5 paying / ₹2,745.",
+    "Ongoing: Give 1 free Standard Review per week to the TPO or a club convenor's own resume so they keep forwarding the offer to the next batch — 1 free review/week = ₹499 forgone, replaces ₹1,500 of ads."
+   ],
+   "cold_message": "Hi — saw you're in the 2026 batch at [college]; placement drives usually reject on the resume shortlist before the interview even starts. I'm doing 10 founding reviews this month: I rewrite your 1-page resume with measurable project bullets + fix your LinkedIn headline, delivered as a Google Doc in 48 hours for ₹499. Want me to send a free 3-bullet sample rewrite of your current resume first, no payment needed?",
+   "objections": [
+    {
+     "objection": "₹499 is too much right now, I'll do it myself",
+     "response": "Fair — you can. But the ₹499 buys 48-hour turnaround before your drive closes, plus 1 revision round in 7 days; a self-edit usually takes 2 weeks of second-guessing and still misses ATS keywords for TCS/Infosys. If I don't deliver the 3-5 measurable bullets in 48 hours, you don't pay."
+    },
+    {
+     "objection": "How do I know you'll actually deliver? You're a student, not a company",
+     "response": "You see the full before/after Google Doc before paying — I send a free 3-bullet sample rewrite of your current resume today, no payment. Payment is a one-time Razorpay/UPI link only after you approve the sample direction, and delivery is a tracked 48-hour commitment with 1 revision round."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "This plan is a tight, well-scoped service business that fits the bootstrapped student-founder constraints: free tools, one-time ₹499/₹799 fee, campus-first WhatsApp/LinkedIn channels, and a 48-hour delivery SLA the founder can realistically hit at 15 hrs/week. Pricing and positioning are credible for Indian final-year students facing placement drives, and the scope cuts (no SaaS build, no subscriptions, no extra service lines) are exactly right. The main gap is that the delivery cost and 48-hour SLA assume a smooth intake, but real resume reviews stall on students who don't send their LinkedIn URL or take a day to approve the sample — this can silently break the SLA promise.",
+  "biggest_risk": "The 48-hour delivery SLA breaks under real-world intake friction (students slow to send resume/LinkedIn/approve sample), turning the core promise into a refund or reputation problem during the exact placement weeks when volume spikes.",
+  "adherence_score": 0.95
+ },
+ "seconds": 174.1,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1184,
+   "out": 478,
+   "thinking": 0,
+   "total": 1662
+  },
+  {
+   "role": "strategist",
+   "in": 1752,
+   "out": 477,
+   "thinking": 0,
+   "total": 2229
+  },
+  {
+   "role": "builder",
+   "in": 1714,
+   "out": 1054,
+   "thinking": 0,
+   "total": 2768
+  },
+  {
+   "role": "economics",
+   "in": 2729,
+   "out": 800,
+   "thinking": 0,
+   "total": 3529
+  },
+  {
+   "role": "economics",
+   "in": 3721,
+   "out": 904,
+   "thinking": 0,
+   "total": 4625
+  },
+  {
+   "role": "growth",
+   "in": 1869,
+   "out": 934,
+   "thinking": 0,
+   "total": 2803
+  },
+  {
+   "role": "critic",
+   "in": 3907,
+   "out": 425,
+   "thinking": 0,
+   "total": 4332
+  },
+  {
+   "role": "economics",
+   "in": 3472,
+   "out": 669,
+   "thinking": 0,
+   "total": 4141
+  },
+  {
+   "role": "growth",
+   "in": 3020,
+   "out": 1028,
+   "thinking": 0,
+   "total": 4048
+  },
+  {
+   "role": "critic",
+   "in": 3917,
+   "out": 459,
+   "thinking": 0,
+   "total": 4376
+  }
+ ],
+ "tokens": {
+  "in": 27285,
+  "out": 7228,
+  "thinking": 0,
+  "total": 34513
+ }
+}

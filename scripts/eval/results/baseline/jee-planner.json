@@ -1,0 +1,330 @@
+{
+ "id": "jee-planner",
+ "kind": "software",
+ "idea": "An AI study planner app for JEE aspirants that adjusts the timetable after every mock test",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 7,
+  "math_warnings": 1,
+  "tools_costed": 7,
+  "tools_in_catalog": 6,
+  "hidden_costs": [
+   "Next.js (App Router)",
+   "shadcn/ui + TailwindCSS"
+  ],
+  "invented_stats": [
+   {
+    "where": "growth.objection:We already pay ₹15,000/month for coaching; why pay ₹499 more?",
+    "claim": "saves 2 hours"
+   }
+  ],
+  "plan_chars": 10485
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "The exact moment a JEE aspirant finishes a 3-hour mock test and sees a score of 120/300, they panic because their static, pre-made study plan from a coaching institute does not reflect their specific weak chapters, leading to wasted hours studying strong topics instead of the ones dragging their rank down.",
+   "target_customer": "Parents of Class 11 and 12 students in Tier 1 and Tier 2 Indian cities with a household income above ₹10L who are already paying ₹15,000+ monthly for coaching and will pay a small premium for a digital tool that objectively optimizes their child's 10-hour daily study routine.",
+   "mission": "To convert every mock test score into an instantly updated, AI-driven study timetable that eliminates guesswork for JEE aspirants.",
+   "competitors": [
+    {
+     "name": "Physics Wallah (PW)",
+     "differentiator": "PW offers static video lectures and general doubt-solving, but does not dynamically restructure a student's daily hour-by-hour schedule based on the specific error patterns of their latest mock test."
+    },
+    {
+     "name": "Unacademy",
+     "differentiator": "Unacademy provides live classes and test series, but the study plan remains a generic syllabus tracker; it does not use AI to adjust the remaining weeks' schedule in real-time after a single test performance."
+    },
+    {
+     "name": "Manual Excel/Notion Templates",
+     "differentiator": "Students currently use static spreadsheets that require 2 hours of manual data entry and analysis after every test; our app automates this analysis and schedule generation in under 10 seconds."
+    }
+   ],
+   "scope_cuts": [
+    "No video lectures or content creation: We are a planner, not a coaching institute. We do not teach the syllabus; we only tell the student what to study next based on their mock test data.",
+    "No live doubt-solving or community features: Building a real-time chat or forum requires moderation and high server costs. The core value is the automated schedule, not peer interaction.",
+    "No Android native app: We will ship a mobile-responsive web app first. This saves 2 weeks of development time and avoids the 2-week Play Store review process, allowing us to start collecting UPI payments via a simple link immediately."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Next.js (App Router)",
+     "why": "Server-side rendering for fast timetable generation and SEO for landing page, runs on free Vercel/Netlify tiers."
+    },
+    {
+     "name": "Supabase",
+     "why": "Postgres database for storing mock test scores and generated schedules, plus built-in auth for student/parent accounts."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Native UPI and card support for Indian parents, essential for collecting monthly subscriptions via payment links."
+    },
+    {
+     "name": "OpenAI API",
+     "why": "GPT-4o-mini for parsing mock test error patterns and generating dynamic study schedules in under 10 seconds."
+    },
+    {
+     "name": "shadcn/ui + TailwindCSS",
+     "why": "Rapid UI development for the dashboard and schedule view without custom CSS, ensuring mobile responsiveness for web-first launch."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Cursor Pro",
+     "why": "AI-assisted coding to build the Next.js frontend and Supabase backend logic in 15 hours/week."
+    },
+    {
+     "name": "v0.dev Pro",
+     "why": "Generates React component code for the study planner dashboard directly from text prompts."
+    }
+   ],
+   "mvp_features": [
+    "Mock Test Score Input & AI Schedule Generator: User enters chapter-wise scores from a mock test; AI analyzes weak areas and generates a 7-day hour-by-hour study timetable prioritizing high-weightage weak chapters.",
+    "Parent Dashboard & Payment Link: A simple view for parents to see the child's current schedule and a Razorpay payment link for the monthly subscription.",
+    "Weekly Schedule Refresh: Automated re-generation of the next week's plan based on the previous week's completion status and new mock test data."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Netlify",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Free (Per-transaction fee only)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Cloudflare Registrar",
+     "plan": "Free (Amortized .com domain)",
+     "monthly_cost": 68.0
+    },
+    {
+     "tool": "OpenAI API",
+     "plan": "Pay-as-you-go (GPT-4o-mini)",
+     "monthly_cost": 500.0
+    },
+    {
+     "tool": "Cursor",
+     "plan": "Pro",
+     "monthly_cost": 1680.0
+    },
+    {
+     "tool": "v0.dev",
+     "plan": "Pro",
+     "monthly_cost": 1680.0
+    }
+   ],
+   "mvp_build_cost": 3428.0,
+   "first_10_steps": [
+    "Register a .com domain on Cloudflare Registrar and connect it to a Netlify free tier account for deployment.",
+    "Create a Supabase project, enable email authentication, and set up tables for 'users', 'mock_tests', and 'schedules' using the Supabase SQL editor.",
+    "Run 'npx create-next-app@latest jee-planner' and install TailwindCSS and shadcn/ui to scaffold the frontend.",
+    "Integrate the OpenAI API key into a Next.js API route to parse mock test JSON input and return a structured 7-day study plan.",
+    "Build the 'Mock Test Input' form using shadcn/ui components, allowing users to enter chapter-wise scores and total time spent.",
+    "Develop the 'Schedule Dashboard' page to display the AI-generated timetable in a mobile-friendly grid view.",
+    "Create a Razorpay account and generate a payment link for a ₹499/month subscription, embedding the link in the parent dashboard.",
+    "Deploy the Next.js app to Netlify and test the full flow: login -> input score -> generate schedule -> view payment link.",
+    "Share the app link in 5 WhatsApp groups of JEE aspirants and 2 parent groups, asking for 10 free trials in exchange for feedback.",
+    "Monitor OpenAI API usage and Netlify bandwidth, ensuring costs stay under ₹1,000/month before scaling to paid users."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Parent Plan",
+     "monthly_price": 499.0,
+     "features": [
+      "AI-generated 7-day hour-by-hour study timetable after every mock test",
+      "Parent dashboard with schedule visibility and progress tracking",
+      "Weekly automated schedule refresh based on completion status",
+      "Access to 10 mock test analyses per month"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 499.0,
+   "delivery_cost_per_customer": 50.0,
+   "burn_line_items": [
+    {
+     "item": "Netlify (Free Tier)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Supabase (Free Tier)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay (Per-transaction fee only)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Cloudflare Registrar (.com domain)",
+     "monthly_cost": 68.0
+    },
+    {
+     "item": "OpenAI API (GPT-4o-mini)",
+     "monthly_cost": 500.0
+    },
+    {
+     "item": "Cursor Pro",
+     "monthly_cost": 1680.0
+    },
+    {
+     "item": "v0.dev Pro",
+     "monthly_cost": 1680.0
+    },
+    {
+     "item": "Marketing Budget (WhatsApp/Instagram Ads)",
+     "monthly_cost": 2000.0
+    }
+   ],
+   "monthly_burn": 5928.0,
+   "marketing_budget": 2000.0,
+   "starting_capital": 10000.0,
+   "external_funding": 0.0,
+   "runway_months": 1.7,
+   "break_even_customers": 14,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 2,
+     "mrr": 998.0,
+     "notes": "2 parents from initial WhatsApp group trials convert to paid after 2-3 weeks of evaluation and social proof from peers"
+    },
+    {
+     "day": 60,
+     "paying_customers": 8,
+     "mrr": 3992.0,
+     "notes": "6 new parents via referrals from first 2 users and 2 college fest demos"
+    },
+    {
+     "day": 90,
+     "paying_customers": 20,
+     "mrr": 9980.0,
+     "notes": "12 new parents via Instagram ads targeting Tier 1/2 cities and alumni network"
+    }
+   ],
+   "key_assumptions": [
+    "Parents of JEE aspirants in Tier 1/2 cities with household income >₹10L will pay ₹499/month for a tool that saves 2 hours of manual planning per week",
+    "2 paying customers by Day 30 is achievable through 10 free trials in 5 WhatsApp groups with a 20% conversion rate over a 3-4 week evaluation period",
+    "OpenAI API cost per customer is capped at ₹50/month assuming 10 mock test analyses per month at ~₹5 per analysis",
+    "Marketing budget of ₹2000/month covers Instagram ads and WhatsApp group promotions without exceeding bootstrapped constraints"
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Warm Referral via Coaching Institute Network",
+     "tactic": "Ask the founder's JEE coach or a trusted senior mentor to introduce the tool to 2 specific parent WhatsApp groups (50-100 members each) with a 1-sentence endorsement. Founder then sends personalized DMs to 10 parents in those groups daily who have active Class 11/12 students. Volume: 20 DMs/day, 400 unique parents reached/month.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Instagram Reels for JEE Parents",
+     "tactic": "Post 3 Reels/week targeting 'JEE 2026 preparation' and 'Coaching alternatives' with a hook: 'Stop wasting 2 hours analyzing mock tests.' Use 3 relevant hashtags (#JEE2026, #JEEPreparation, #CoachingInstitute). DM every commenter with a free sample schedule. Volume: 12 Reels/month, 50 DMs/week.",
+     "monthly_spend": 2000.0,
+     "new_customers_per_month": 2,
+     "cac": 1000.0
+    }
+   ],
+   "first_10_customers": [
+    "Identify 50 parents of Class 11/12 students in the founder's local coaching institute or college hostel WhatsApp groups.",
+    "Send a personalized voice note to 10 parents daily: 'Hi [Name], I built a tool that auto-generates a study plan after every mock test. I'm giving 10 parents a free 1-week trial this week. Want me to send a sample schedule for your child's last test score?'",
+    "For the 5 parents who reply, manually create a sample 7-day schedule using their last mock test score (input: score, weak chapters) and send it via PDF within 2 hours.",
+    "Follow up with a 5-minute phone call to explain the schedule logic and offer the ₹499/month plan for the next 30 days.",
+    "Ask each of the first 5 paying parents to forward the WhatsApp group invite to 2 other parents in their institute's parent group.",
+    "Collect 2 short video testimonials from the first 5 users to use in Instagram Reels and WhatsApp posts."
+   ],
+   "cold_message": "Hi [Parent Name], I built a tool that turns your child's mock test score into a 7-day study plan in 10 seconds. I'm offering 10 parents a free 1-week trial this week. Can I send you a sample schedule for your child's last test score?",
+   "objections": [
+    {
+     "objection": "We already pay ₹15,000/month for coaching; why pay ₹499 more?",
+     "response": "Coaching gives you lectures, but not a dynamic schedule. Our tool saves 2 hours/week of manual analysis and ensures your child studies weak topics first. It's a ₹499 premium for objective optimization, not another course."
+    },
+    {
+     "objection": "How do I know the AI schedule is accurate?",
+     "response": "I'll generate a free sample schedule for your child's last mock test score. Compare it with your current plan. If it doesn't clearly prioritize weak chapters, don't pay. No risk, no commitment."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is strategically sound and technically feasible for a student founder, correctly identifying the high-intent pain point of JEE aspirants and leveraging low-cost infrastructure. However, the financial model is fragile due to a critical mismatch between the aggressive marketing spend and the conservative revenue projections, which creates a negative cash flow trap in the early months. The growth strategy relies on a high-CAC channel (Instagram ads) that contradicts the bootstrapped, campus-first constraint and the low price point of the product.",
+  "biggest_risk": "The plan burns ₹2,000/month on Instagram ads to acquire customers at a CAC of ₹1,000, while projecting only ₹1,000 MRR in the first month, resulting in a net loss of ~₹7,000 in Month 1 that depletes the ₹10,000 starting capital before product-market fit is established.",
+  "adherence_score": 0.6
+ },
+ "seconds": 197.3,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1230,
+   "out": 536,
+   "thinking": 0,
+   "total": 1766
+  },
+  {
+   "role": "builder",
+   "in": 2845,
+   "out": 1042,
+   "thinking": 0,
+   "total": 3887
+  },
+  {
+   "role": "economics",
+   "in": 2758,
+   "out": 791,
+   "thinking": 0,
+   "total": 3549
+  },
+  {
+   "role": "growth",
+   "in": 1856,
+   "out": 769,
+   "thinking": 0,
+   "total": 2625
+  },
+  {
+   "role": "critic",
+   "in": 3593,
+   "out": 441,
+   "thinking": 0,
+   "total": 4034
+  },
+  {
+   "role": "economics",
+   "in": 3450,
+   "out": 839,
+   "thinking": 0,
+   "total": 4289
+  },
+  {
+   "role": "growth",
+   "in": 2702,
+   "out": 790,
+   "thinking": 0,
+   "total": 3492
+  },
+  {
+   "role": "critic",
+   "in": 3625,
+   "out": 675,
+   "thinking": 0,
+   "total": 4300
+  }
+ ],
+ "tokens": {
+  "in": 22059,
+  "out": 5883,
+  "thinking": 0,
+  "total": 27942
+ }
+}

@@ -1,0 +1,313 @@
+{
+ "id": "hostel-tiffin",
+ "kind": "physical / food",
+ "idea": "Home-style tiffin delivery for hostel students in Bidholi, Dehradun",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 6,
+  "math_warnings": 0,
+  "tools_costed": 4,
+  "tools_in_catalog": 4,
+  "hidden_costs": [
+   "Claude Code",
+   "v0"
+  ],
+  "invented_stats": [],
+  "plan_chars": 10410
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "physical",
+   "problem": "Hostel students in Bidholi face a 45-minute walk or ₹30-50 auto ride to reach the nearest decent restaurant, and by 8:00 PM on weekdays, they are either eating stale canteen food or skipping dinner due to fatigue and lack of affordable, home-cooked options within walking distance of their hostels.",
+   "target_customer": "UG and PG students residing in hostels within a 1.5 km radius of UPES Bidholi campus, aged 18-24, who spend ₹1,500-₹2,500 monthly on food and actively seek reliable, hot, home-style meals delivered to their hostel gates by 7:30 PM to avoid the hassle of finding external food vendors.",
+   "mission": "Deliver fresh, home-style tiffins directly to hostel gates in Bidholi by 7:30 PM daily, ensuring students get a nutritious, affordable meal without leaving their accommodation.",
+   "competitors": [
+    {
+     "name": "UPES Canteen and Mess Services",
+     "differentiator": "We offer varied, home-style recipes and on-demand flexibility, whereas the canteen serves repetitive, institutional food with fixed, often crowded, dining hours."
+    },
+    {
+     "name": "Swiggy and Zomato Delivery Partners",
+     "differentiator": "We eliminate ₹40-60 delivery fees and high platform commissions, offering a flat, predictable monthly subscription price for daily meals, which is significantly cheaper than ordering single items via apps."
+    },
+    {
+     "name": "Local Bidholi Street Food Vendors",
+     "differentiator": "We provide hygienic, packaged, and consistent home-cooked meals, whereas street vendors lack hygiene guarantees, consistent quality, and the convenience of direct hostel gate delivery."
+    }
+   ],
+   "scope_cuts": [
+    "Building a custom mobile app or website for ordering; we will use WhatsApp Business and Google Forms for initial subscriptions and menu selection to save development time and costs.",
+    "Offering breakfast or lunch services; we focus exclusively on dinner (7:00-8:00 PM) to streamline kitchen operations, reduce food waste, and match the peak hunger time for students returning from classes.",
+    "Expanding beyond the 1.5 km radius of UPES Bidholi; we restrict delivery to hostels within walking distance or short auto rides to maintain low logistics costs and ensure food arrives hot."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "WhatsApp Business",
+     "why": "Zero-cost, high-open-rate channel for daily menu updates and direct hostel gate delivery coordination."
+    },
+    {
+     "name": "Google Forms",
+     "why": "Free, structured tool for collecting weekly meal preferences and subscription sign-ups without building a custom app."
+    },
+    {
+     "name": "Razorpay Payment Links",
+     "why": "Instant, no-code UPI integration for collecting monthly ₹1,500-₹2,500 subscriptions directly in WhatsApp chats."
+    },
+    {
+     "name": "Canva Free",
+     "why": "Creates daily digital menu cards and WhatsApp status graphics without hiring a designer."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude Code",
+     "why": "Generates the exact WhatsApp Business auto-reply scripts and Google Form logic for the subscription flow."
+    },
+    {
+     "name": "v0",
+     "why": "Renders a simple, mobile-friendly HTML landing page for the subscription pitch if a link is needed outside WhatsApp."
+    }
+   ],
+   "mvp_features": [
+    "SKU 1: 30-Day Dinner Subscription (₹1,800/month) - 30x 350g home-style tiffins (1 sabzi, 2 rotis, 1 dal, 1 salad, 1 sweet), delivered to hostel gates by 7:30 PM daily.",
+    "SKU 2: 10-Day Trial Pack (₹650) - 10x 350g tiffins for students hesitant to commit to a full month, valid for 2 consecutive weeks.",
+    "SKU 3: Weekly Custom Menu Selection - Students use Google Forms every Sunday to choose from 3 rotating home-style recipes for the upcoming week."
+   ],
+   "tool_costs": [
+    {
+     "tool": "WhatsApp Business",
+     "plan": "Free Tier",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Google Forms",
+     "plan": "Free Tier",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Payment Links (2% + GST per transaction)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Canva",
+     "plan": "Free Tier",
+     "monthly_cost": 0.0
+    }
+   ],
+   "mvp_build_cost": 12500.0,
+   "first_10_steps": [
+    "Secure a compliant cooking space (e.g., a friend's PG with a kitchen or a local home-kitchen rental) and verify hostel rules regarding external food delivery to gates.",
+    "Set up a WhatsApp Business account on a dedicated phone number and configure the 'Quick Reply' feature with 5 pre-set messages for menu, pricing, and delivery times.",
+    "Create a Google Form titled 'UPES Bidholi Tiffin Subscription' with 4 fields: Name, Hostel Name, Meal Preference (Veg/Non-Veg), and Payment Status.",
+    "Design 3 digital menu cards using Canva Free, featuring high-resolution photos of the 3 rotating home-style recipes, and save them as 1080x1080 PNG files.",
+    "Visit 3 local vegetable and spice vendors in Dehradun's Sadar Bazaar to negotiate bulk weekly rates for 50kg of rice, 20kg of dal, and 10kg of paneer, securing a 10% discount for cash payments.",
+    "Purchase 500 units of 400ml eco-friendly disposable tiffin containers and 500 units of 200ml sauce cups from a local Dehradun packaging supplier for a total of ₹4,500.",
+    "Generate a Razorpay Payment Link for the ₹1,800 monthly subscription and the ₹650 10-day trial pack, testing the UPI flow with a ₹1 self-payment.",
+    "Post the Canva menu cards and the Google Form link in 5 active UPES hostel WhatsApp groups, offering a free 1-day trial tiffin to the first 10 respondents.",
+    "Cook and pack 15 sample tiffins (350g each) in the secured kitchen space on a Tuesday evening, delivering them personally to 3 different hostels within the 1.5 km radius by 7:30 PM to test logistics and food temperature.",
+    "Collect feedback from the 15 sample recipients via a 3-question WhatsApp voice note, adjusting the spice level and roti thickness based on their specific requests, and finalize the supplier order for the first 30-day batch of ingredients (approx. ₹8,000)."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "30-Day Dinner Subscription",
+     "monthly_price": 1800.0,
+     "features": [
+      "30x 350g home-style tiffins (1 sabzi, 2 rotis, 1 dal, 1 salad, 1 sweet)",
+      "Daily delivery to hostel gates by 7:30 PM",
+      "Weekly custom menu selection via Google Forms"
+     ]
+    },
+    {
+     "name": "10-Day Trial Pack",
+     "monthly_price": 650.0,
+     "features": [
+      "10x 350g tiffins",
+      "Valid for 2 consecutive weeks",
+      "No subscription commitment"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 1800.0,
+   "delivery_cost_per_customer": 1200.0,
+   "burn_line_items": [
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google Forms",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Razorpay",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Canva",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Kitchen Rent/Equipment",
+     "monthly_cost": 2000.0
+    },
+    {
+     "item": "Marketing Budget",
+     "monthly_cost": 1500.0
+    }
+   ],
+   "monthly_burn": 3500.0,
+   "marketing_budget": 1500.0,
+   "starting_capital": 15000.0,
+   "external_funding": 0.0,
+   "runway_months": 4.3,
+   "break_even_customers": 6,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 9000.0,
+     "notes": "Initial cohort from 3 hostels via WhatsApp groups and free trial tiffins"
+    },
+    {
+     "day": 60,
+     "paying_customers": 12,
+     "mrr": 21600.0,
+     "notes": "Expansion to 5 hostels, word-of-mouth and referral incentives"
+    },
+    {
+     "day": 90,
+     "paying_customers": 20,
+     "mrr": 36000.0,
+     "notes": "Stabilized base with 80% retention, added 2 new hostels"
+    }
+   ],
+   "key_assumptions": [
+    "Students are willing to pay ₹1,800/month for home-style tiffins, which is 20% cheaper than ordering 30 single meals via Swiggy/Zomato (approx ₹2,250 + delivery fees).",
+    "Food cost per tiffin is ₹40 (₹1,200/month), based on bulk purchasing from Sadar Bazaar vendors at negotiated rates.",
+    "Marketing spend of ₹1,500/month covers printed flyers, free trial tiffins for acquisition, and occasional WhatsApp broadcast boosts.",
+    "Delivery is handled by the founder and one part-time batchmate, costing ₹0 in direct cash outflow but consuming 2 hours daily."
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Hostel WhatsApp Group Seeding",
+     "tactic": "Post a 150-word offer with a free tiffin voucher in 5 active UPES Bidholi hostel WhatsApp groups (2 posts/week), targeting 50 unique students/week",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Student Ambassador Room-to-Room Sampling",
+     "tactic": "Recruit 1 student ambassador per target hostel (3 total) to distribute 10 free 100g tiffin samples to roommates between 6:00-6:30 PM daily, bypassing gate security restrictions",
+     "monthly_spend": 1500.0,
+     "new_customers_per_month": 2,
+     "cac": 750.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-2: Identify 3 hostels within 1.5km of UPES Bidholi (e.g., UPES Boys Hostel, nearby private PGs) and find the WhatsApp group admins or wardens via Instagram DMs or direct visits.",
+    "Day 3-4: Cook 10 free 350g tiffins and deliver them personally to 10 specific students in those hostels, asking for a 2-minute feedback call and a photo of the meal.",
+    "Day 5-7: Use the 10 photos and feedback to create a 15-second Instagram Reel and a WhatsApp status, tagging the hostels and asking for referrals.",
+    "Day 8-10: DM 20 students who engaged with the Reel or status, offering a ₹200 discount on the first 10-day trial pack if they subscribe within 48 hours.",
+    "Day 11-14: Follow up with the 10 initial free-tiffin recipients, converting them to paying 30-day subscribers by highlighting the consistency and the 7:30 PM gate delivery guarantee.",
+    "Day 15-21: Ask each of the first 5 paying customers to forward the offer to 2 friends in their hostel, offering a ₹100 credit for each new subscriber who completes a 10-day trial."
+   ],
+   "cold_message": "Hi [Name], I'm a UPES student delivering home-style tiffins to hostel gates by 7:30 PM. I'm offering a free 350g dinner tiffin today to 5 students in [Hostel Name]—want me to drop one at your gate? No cost, just want to ensure it's hot and tasty before you decide on a monthly plan.",
+   "objections": [
+    {
+     "objection": "I can just order from Swiggy or Zomato, why should I pay ₹1,800/month for a tiffin?",
+     "response": "Swiggy/Zomato charges ₹40-60 delivery fees per order, so 30 dinners cost you over ₹2,500 plus platform commissions. Our ₹1,800/month is a flat rate with zero delivery fees, and you get a consistent, home-cooked meal without the app hassle."
+    },
+    {
+     "objection": "I'm not sure I'll stick to a 30-day commitment, what if I don't like the food?",
+     "response": "Start with our 10-Day Trial Pack for ₹650. If you don't like it, you don't pay for the 30-day plan. We also offer a 'first tiffin free' guarantee for new subscribers—if your first delivery isn't hot and fresh, your next 3 days are on us."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is highly realistic and tightly constrained to the founder's student status and budget, avoiding common startup pitfalls like app development. The focus on a single SKU (dinner) and local logistics makes it executable within the 15-hour weekly limit. The primary weakness is the financial model, which underestimates the operational costs of a physical food business, leading to an optimistic runway calculation.",
+  "biggest_risk": "The plan assumes a monthly burn of only ₹3,500, which excludes the variable cost of goods (ingredients) and likely underestimates fixed costs like kitchen access; if actual burn is closer to ₹8,000-₹10,000, the ₹15,000 capital provides less than 2 months of runway before the first significant revenue, creating a cash-flow crisis if customer acquisition is slower than projected.",
+  "adherence_score": 0.9
+ },
+ "seconds": 292.8,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1243,
+   "out": 562,
+   "thinking": 0,
+   "total": 1805
+  },
+  {
+   "role": "builder",
+   "in": 1648,
+   "out": 1078,
+   "thinking": 0,
+   "total": 2726
+  },
+  {
+   "role": "economics",
+   "in": 2891,
+   "out": 783,
+   "thinking": 0,
+   "total": 3674
+  },
+  {
+   "role": "growth",
+   "in": 1954,
+   "out": 845,
+   "thinking": 0,
+   "total": 2799
+  },
+  {
+   "role": "critic",
+   "in": 3803,
+   "out": 554,
+   "thinking": 0,
+   "total": 4357
+  },
+  {
+   "role": "builder",
+   "in": 2642,
+   "out": 1104,
+   "thinking": 0,
+   "total": 3746
+  },
+  {
+   "role": "economics",
+   "in": 3617,
+   "out": 842,
+   "thinking": 0,
+   "total": 4459
+  },
+  {
+   "role": "growth",
+   "in": 2854,
+   "out": 866,
+   "thinking": 0,
+   "total": 3720
+  },
+  {
+   "role": "critic",
+   "in": 3825,
+   "out": 528,
+   "thinking": 0,
+   "total": 4353
+  }
+ ],
+ "tokens": {
+  "in": 24477,
+  "out": 7162,
+  "thinking": 0,
+  "total": 31639
+ }
+}

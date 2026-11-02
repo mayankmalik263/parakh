@@ -1,0 +1,364 @@
+{
+ "id": "reels-cafes",
+ "kind": "service",
+ "idea": "Instagram reels editing for cafes near campus in Dehradun",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 4,
+  "math_warnings": 0,
+  "tools_costed": 8,
+  "tools_in_catalog": 3,
+  "hidden_costs": [
+   "Adobe Firefly"
+  ],
+  "invented_stats": [
+   {
+    "where": "builder.ai_tools:Runway Gen-2",
+    "claim": "saving 30 minutes"
+   }
+  ],
+  "plan_chars": 11167
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "service",
+   "problem": "Cafe owners in Dehradun spend 2-3 hours every week manually editing raw phone footage into Instagram Reels, often resulting in inconsistent, low-quality content that fails to drive footfall from the nearby college crowd, causing them to miss out on potential weekend revenue.",
+   "target_customer": "Independent cafe owners within 3 km of the Dehradun campus who post at least 3 times a week on Instagram but lack the time or skill to edit professional-looking Reels, and who are currently spending their evenings on this task instead of managing their business.",
+   "mission": "To provide cafe owners in Dehradun with a consistent stream of high-quality, campus-trend-aware Instagram Reels that are ready to post, saving them 5 hours a week and increasing their local student engagement.",
+   "competitors": [
+    {
+     "name": "Local Dehradun social media agencies",
+     "differentiator": "We offer a productized, low-cost service specifically for cafes, avoiding the high monthly retainers (₹15,000+) and generic content strategies of full-service agencies."
+    },
+    {
+     "name": "Freelance video editors on Fiverr/Upwork",
+     "differentiator": "We provide a localized, face-to-face service with a deeper understanding of Dehradun's campus culture and trends, eliminating the communication friction and time zone delays of international freelancers."
+    },
+    {
+     "name": "In-house junior marketing hires",
+     "differentiator": "We offer a flexible, no-commitment service that is significantly cheaper than hiring a full-time junior employee (₹15,000-₹20,000/month) and requires no management overhead for the cafe owner."
+    }
+   ],
+   "scope_cuts": [
+    "Building a custom client portal or app for content submission; we will use a simple WhatsApp group and a shared Google Drive folder to manage raw footage and deliverables, saving development time and cost.",
+    "Offering full social media management (posting, community management, ad management); we will strictly limit the service to editing and delivering the final Reel files, allowing the cafe owner to retain control over their posting schedule and community interactions.",
+    "Creating custom brand guidelines or logo design; we will use the cafe's existing branding assets and focus solely on the editing and motion graphics of the video content to keep the service scope narrow and the delivery time predictable."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "CapCut Pro",
+     "why": "Industry-standard mobile/desktop editor with auto-captions and trending templates, essential for high-volume Reel production."
+    },
+    {
+     "name": "WhatsApp Business",
+     "why": "Primary channel for receiving raw footage via cloud storage links and delivering final MP4 files to cafe owners."
+    },
+    {
+     "name": "Google Drive",
+     "why": "Shared folder structure to organize raw inputs and final exports per client, accessible from any device."
+    },
+    {
+     "name": "Canva Pro",
+     "why": "Creates static cover thumbnails and simple motion graphics overlays for Reels, leveraging the student discount."
+    },
+    {
+     "name": "Razorpay Payment Links",
+     "why": "Generates one-time UPI payment links for monthly retainers, integrating directly with the founder's bank account."
+    },
+    {
+     "name": "Carrd",
+     "why": "One-page portfolio site to showcase 3 pilot Reels and capture leads via a WhatsApp CTA button."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Runway Gen-2",
+     "why": "Generates B-roll and background videos for cafe interiors when raw footage is insufficient, saving 30 minutes per Reel."
+    },
+    {
+     "name": "ElevenLabs",
+     "why": "Creates high-quality AI voiceovers for menu descriptions and location tags, replacing the need for a human voice actor."
+    },
+    {
+     "name": "Adobe Firefly",
+     "why": "Generates custom text overlays and background elements that match the cafe's specific color palette and aesthetic."
+    }
+   ],
+   "mvp_features": [
+    "Starter Pack: 4 Reels/month (10-15s each) with auto-captions, trending audio, and basic color grading, delivered every Monday, capped at 1 revision round.",
+    "Growth Pack: 8 Reels/month (15-30s each) with custom motion graphics, AI voiceovers, and 2 static Instagram carousels, delivered twice a week, capped at 1 revision round.",
+    "Pilot Offer: 1 single 15-second Reel for a one-time fee to establish a case study, strictly limited to 1 revision round, with a 20% discount on the first month of the Growth Pack upon conversion."
+   ],
+   "tool_costs": [
+    {
+     "tool": "CapCut",
+     "plan": "CapCut Pro",
+     "monthly_cost": 399.0
+    },
+    {
+     "tool": "Canva",
+     "plan": "Canva Pro (Student)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Carrd",
+     "plan": "Carrd Pro",
+     "monthly_cost": 499.0
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Razorpay Payment Links",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "WhatsApp",
+     "plan": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Google Drive",
+     "plan": "Google One 100GB",
+     "monthly_cost": 149.0
+    },
+    {
+     "tool": "Runway",
+     "plan": "Runway Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "ElevenLabs",
+     "plan": "ElevenLabs Starter",
+     "monthly_cost": 500.0
+    }
+   ],
+   "mvp_build_cost": 1500.0,
+   "first_10_steps": [
+    "Record 3 sample Reels using stock cafe footage and CapCut Pro to create a portfolio demo reel.",
+    "Publish the demo reel on a Carrd Pro one-page site with a WhatsApp CTA button and a clear 'Book a Pilot' link.",
+    "Identify 10 cafes within 3 km of the campus and save their Instagram handles in a Google Sheet.",
+    "Send a personalized WhatsApp message to 5 cafe owners offering a paid 1-Reel pilot (15s) in exchange for a testimonial and 20% off the first month of the Growth Pack.",
+    "Edit and deliver the first pilot Reel within 48 hours of receiving raw footage, strictly adhering to the 1-revision limit, to demonstrate speed and reliability.",
+    "Collect a video testimonial from the pilot client and add it to the Carrd portfolio site.",
+    "Create a Razorpay payment link for the 'Growth Pack' monthly retainer and share it with the pilot client for conversion.",
+    "Draft a simple 1-page service agreement in Google Docs outlining deliverables, the strict 1-revision limit, and payment terms.",
+    "Set up a Google Drive folder structure with subfolders for 'Raw Footage', 'Final Exports', and 'Invoices' for each client.",
+    "Schedule a recurring 2-hour block every Saturday morning for batch editing all client Reels for the week."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Starter Pack",
+     "monthly_price": 2500.0,
+     "features": [
+      "4 Reels/month (10-15s each)",
+      "Auto-captions and trending audio",
+      "Basic color grading",
+      "Delivered every Monday"
+     ]
+    },
+    {
+     "name": "Growth Pack",
+     "monthly_price": 4500.0,
+     "features": [
+      "8 Reels/month (15-30s each)",
+      "Custom motion graphics",
+      "AI voiceovers",
+      "2 static Instagram carousels",
+      "Delivered twice a week"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 3500.0,
+   "delivery_cost_per_customer": 300.0,
+   "burn_line_items": [
+    {
+     "item": "CapCut Pro",
+     "monthly_cost": 399.0
+    },
+    {
+     "item": "Canva Pro (Student)",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Carrd Pro",
+     "monthly_cost": 499.0
+    },
+    {
+     "item": "Razorpay Payment Links",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "WhatsApp Business",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Google One 100GB",
+     "monthly_cost": 149.0
+    },
+    {
+     "item": "Runway Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "ElevenLabs Starter",
+     "monthly_cost": 500.0
+    },
+    {
+     "item": "Marketing Budget",
+     "monthly_cost": 500.0
+    }
+   ],
+   "monthly_burn": 2047.0,
+   "marketing_budget": 500.0,
+   "starting_capital": 10000.0,
+   "external_funding": 0.0,
+   "runway_months": 4.9,
+   "break_even_customers": 1,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 2,
+     "mrr": 7000.0,
+     "notes": "1 pilot converted to Starter, 1 direct Growth Pack sale"
+    },
+    {
+     "day": 60,
+     "paying_customers": 4,
+     "mrr": 14000.0,
+     "notes": "2 Starter, 2 Growth Pack"
+    },
+    {
+     "day": 90,
+     "paying_customers": 6,
+     "mrr": 21000.0,
+     "notes": "3 Starter, 3 Growth Pack"
+    }
+   ],
+   "key_assumptions": [
+    "Cafe owners in Dehradun value time savings over cost, willing to pay ₹2,500-₹4,500/month to save 5 hours of editing",
+    "60% of paying customers choose Growth Pack (₹4,500) and 40% choose Starter Pack (₹2,500), yielding ₹3,500 average revenue",
+    "Delivery cost per customer is ₹300/month, covering AI tool usage (Runway, ElevenLabs) and storage allocation for one client",
+    "Marketing budget of ₹500/month covers printed flyers for campus cafes and boosted Instagram posts targeting local business owners"
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Targeted Instagram DM Outreach",
+     "tactic": "Send 10 personalized Instagram DMs daily to cafe owners within 3 km of the campus who have posted a Reel in the last 7 days. Each DM includes a 15-second screen recording of the founder editing a sample Reel using the cafe's own recent footage. Volume: 10 DMs/day.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 2,
+     "cac": 0.0
+    },
+    {
+     "name": "Campus WhatsApp Referral Network",
+     "tactic": "Post a 'Free Sample Reel' offer in 5 specific Dehradun college WhatsApp groups (hostel, tech, business) and DM 20 students/friends who work at or know cafe owners daily on Instagram to ask for a direct introduction. Volume: 20 DMs/day + 5 group posts/week.",
+     "monthly_spend": 500.0,
+     "new_customers_per_month": 2,
+     "cac": 250.0
+    }
+   ],
+   "first_10_customers": [
+    "Week 1: Identify 30 cafes within 3 km using Google Maps and Instagram location tags. Filter for those with 3+ posts/week but low production value. Create a spreadsheet with owner names, phone numbers, and Instagram handles.",
+    "Week 1: Record a 15-second 'behind the scenes' video of yourself editing a sample Reel using a free stock footage clip of a coffee pour. Add trending audio and captions using CapCut free version. This is your proof of work.",
+    "Week 2: Send 10 personalized Instagram DMs daily to the top 10 cafes from the list. Attach the sample video and say: 'I can make this for your cafe, tailored to your menu, for ₹2,500/month. I am a student nearby, so I am fast and local.'",
+    "Week 2: For the 5 cafes that say 'maybe', offer a free pilot: 'Send me one raw video from your phone. I will edit it and deliver it in 48 hours for free. If you like it, we start next month.'",
+    "Week 3: Deliver the free pilots. Ask for a testimonial or permission to post the Reel on your Instagram with their tag. Use this content to DM the next 20 cafes.",
+    "Week 4: Convert the pilots to paid. For the remaining 5-6 customers, use the WhatsApp referral channel. Ask batchmates who work at cafes for an intro. Send the cold message to the owner directly via WhatsApp."
+   ],
+   "cold_message": "Hi [Name], I’m a student nearby and I noticed your Reels are great but you’re probably spending hours editing them. I can edit 4 high-quality Reels for your cafe for ₹2,500/month, delivered every Monday. Want me to send a free sample edited from your last video?",
+   "objections": [
+    {
+     "objection": "₹2,500 is too expensive for a cafe; we can edit it ourselves.",
+     "response": "I understand. If you edit it yourself, it takes you 2-3 hours a week. At ₹2,500/month, that’s less than ₹150/hour, which is cheaper than hiring a part-time assistant. Plus, my edits are optimized for local trends to drive footfall, which your own edits might miss."
+    },
+    {
+     "objection": "We don’t have time to send you raw footage.",
+     "response": "You don’t need to. Just point your phone and record 10 seconds of your barista making a drink or a customer smiling. Send it on WhatsApp. I handle the rest. It takes you 30 seconds, and I deliver the final Reel in 48 hours."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is highly coherent and strictly adheres to the bootstrapped, student-founder constraints with a realistic, low-cost tech stack. The service scope is well-defined, and the campus-first go-to-market strategy is appropriate for the local Dehradun market. However, the financial model underestimates the labor intensity of video editing relative to the founder's available time, and the pricing may be slightly high for the initial cold outreach phase without established trust.",
+  "biggest_risk": "The founder will burn out or miss delivery deadlines because the 'Growth Pack' (8 reels/month) requires significantly more editing time than the assumed 15 hours/week allows, especially when accounting for client communication and revisions, leading to churn or reputation damage in the tight local community.",
+  "adherence_score": 0.9
+ },
+ "seconds": 710.9,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1233,
+   "out": 547,
+   "thinking": 0,
+   "total": 1780
+  },
+  {
+   "role": "builder",
+   "in": 1722,
+   "out": 1131,
+   "thinking": 0,
+   "total": 2853
+  },
+  {
+   "role": "economics",
+   "in": 2820,
+   "out": 858,
+   "thinking": 0,
+   "total": 3678
+  },
+  {
+   "role": "growth",
+   "in": 1886,
+   "out": 884,
+   "thinking": 0,
+   "total": 2770
+  },
+  {
+   "role": "critic",
+   "in": 3770,
+   "out": 400,
+   "thinking": 0,
+   "total": 4170
+  },
+  {
+   "role": "builder",
+   "in": 2678,
+   "out": 1215,
+   "thinking": 0,
+   "total": 3893
+  },
+  {
+   "role": "economics",
+   "in": 3501,
+   "out": 898,
+   "thinking": 0,
+   "total": 4399
+  },
+  {
+   "role": "growth",
+   "in": 2774,
+   "out": 894,
+   "thinking": 0,
+   "total": 3668
+  },
+  {
+   "role": "critic",
+   "in": 3838,
+   "out": 436,
+   "thinking": 0,
+   "total": 4274
+  }
+ ],
+ "tokens": {
+  "in": 24222,
+  "out": 7263,
+  "thinking": 0,
+  "total": 31485
+ }
+}

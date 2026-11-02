@@ -1,0 +1,364 @@
+{
+ "id": "clinic-whatsapp-bot",
+ "kind": "software",
+ "idea": "A WhatsApp bot that reminds dental clinic patients about appointments and collects deposits",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 5,
+  "math_warnings": 0,
+  "tools_costed": 7,
+  "tools_in_catalog": 5,
+  "hidden_costs": [
+   "Next.js (App Router)",
+   "Cursor",
+   "v0.dev"
+  ],
+  "invented_stats": [
+   {
+    "where": "strategist.target_customer",
+    "claim": "10%"
+   },
+   {
+    "where": "strategist.competitor:Generic Indian SaaS (e.g., Practo, DocVita)",
+    "claim": "10x cheaper"
+   },
+   {
+    "where": "growth.cold_message",
+    "claim": "40%"
+   },
+   {
+    "where": "growth.cold_message",
+    "claim": "saves 30 mins"
+   }
+  ],
+  "plan_chars": 10519
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "The clinic owner spends 30-45 minutes every morning manually calling or messaging 10-20 patients to confirm appointments, only to discover at 10 AM that 2-3 patients no-showed, resulting in a direct loss of ₹2,000-₹5,000 in billable chair time per incident.",
+   "target_customer": "Owners of 1-3 dentist solo practices in Jaipur with 50-150 monthly patients who currently use WhatsApp personally for scheduling and lose at least 10% of booked slots to no-shows.",
+   "mission": "Automate appointment confirmation and deposit collection via WhatsApp for solo dental clinics in Jaipur to eliminate no-shows and secure cash flow before the patient arrives.",
+   "competitors": [
+    {
+     "name": "Manual WhatsApp + Excel",
+     "differentiator": "We replace the founder's 45-minute daily manual calling routine with an automated flow that confirms appointments and collects deposits while the founder is seeing other patients."
+    },
+    {
+     "name": "Generic Indian SaaS (e.g., Practo, DocVita)",
+     "differentiator": "We are 10x cheaper and 100% focused on the two specific actions (reminder + deposit) that drive revenue, rather than forcing the clinic to adopt a full practice management suite with 50 unused features."
+    },
+    {
+     "name": "Local Freelance Developers",
+     "differentiator": "We provide a standardized, pre-built SaaS subscription that works out-of-the-box in 24 hours, avoiding the ₹50,000+ one-time cost and 6-week timeline of custom local development."
+    }
+   ],
+   "scope_cuts": [
+    "No full practice management system (no patient history, no X-ray storage, no billing invoices); we only handle the appointment confirmation and deposit link.",
+    "No voice call automation; we strictly use WhatsApp text and payment links to keep the API costs low and the implementation simple for the first 10 clinics.",
+    "No multi-language support beyond Hindi and English; Jaipur's dental demographic is primarily Hindi/English speaking, so we skip the complexity of regional language NLP for the MVP."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Next.js (App Router)",
+     "why": "Full-stack React framework for the clinic dashboard and webhook handlers, deployable in one click."
+    },
+    {
+     "name": "Supabase",
+     "why": "Postgres database and Auth for storing clinic data, patient records, and appointment states."
+    },
+    {
+     "name": "Make.com (formerly Integromat)",
+     "why": "Fallback automation layer to trigger WhatsApp messages via API while Meta Cloud API verification is pending, enabling immediate pilot testing."
+    },
+    {
+     "name": "Meta WhatsApp Cloud API",
+     "why": "Official API for sending automated appointment reminders and receiving patient replies (target state)."
+    },
+    {
+     "name": "Razorpay",
+     "why": "Payment gateway to generate deposit links and process UPI/card payments from patients."
+    },
+    {
+     "name": "Vercel",
+     "why": "Hosting platform for Next.js with built-in CI/CD and webhook routing."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Cursor",
+     "why": "AI code editor to scaffold the Next.js app and write Supabase queries quickly."
+    },
+    {
+     "name": "v0.dev",
+     "why": "Generates React/Tailwind UI components for the clinic dashboard and patient view."
+    }
+   ],
+   "mvp_features": [
+    "Automated WhatsApp reminder 24 hours before appointment with a one-tap 'Confirm' button.",
+    "Razorpay deposit link sent immediately upon confirmation, blocking the appointment if unpaid.",
+    "Clinic dashboard to view today's confirmed appointments and total deposits collected."
+   ],
+   "tool_costs": [
+    {
+     "tool": "Vercel",
+     "plan": "Pro",
+     "monthly_cost": 1680.0
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Pro",
+     "monthly_cost": 2100.0
+    },
+    {
+     "tool": "Make.com",
+     "plan": "Core",
+     "monthly_cost": 1200.0
+    },
+    {
+     "tool": "Meta WhatsApp Cloud API",
+     "plan": "Business",
+     "monthly_cost": 1500.0
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Standard",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Cloudflare Registrar",
+     "plan": ".com domain",
+     "monthly_cost": 68.0
+    },
+    {
+     "tool": "Resend",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    }
+   ],
+   "mvp_build_cost": 12000.0,
+   "first_10_steps": [
+    "Submit the Meta WhatsApp Cloud API business verification and template approval request immediately as a critical path dependency.",
+    "Run 'npx create-next-app@latest dental-bot --typescript --tailwind --app' to scaffold the project.",
+    "Create a Supabase project, generate the API key, and run 'npm install @supabase/supabase-js' to connect the database.",
+    "Design the database schema in Supabase Studio: tables for 'clinics', 'patients', 'appointments', and 'payments'.",
+    "Configure a Make.com scenario to act as the fallback messaging engine, connecting to a personal WhatsApp number via the WhatsApp API for immediate pilot testing.",
+    "Use Cursor to write the API route '/api/whatsapp' that parses incoming WhatsApp messages and updates appointment status.",
+    "Use v0.dev to generate the clinic dashboard UI with a table of today's appointments and a 'Send Reminder' button.",
+    "Integrate Razorpay by creating a Payment Link API call in the backend to generate a unique deposit URL per appointment.",
+    "Write a cron job in Vercel that triggers the WhatsApp reminder 24 hours before each scheduled appointment.",
+    "Deploy the application to Vercel and test the full flow using the Make.com fallback: create a test appointment, receive the WhatsApp message, pay the deposit."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Starter",
+     "monthly_price": 1499.0,
+     "features": [
+      "Up to 100 WhatsApp reminders per month",
+      "Razorpay deposit link generation",
+      "Basic dashboard with appointment list",
+      "Email support (24h response)"
+     ]
+    },
+    {
+     "name": "Pro",
+     "monthly_price": 2499.0,
+     "features": [
+      "Up to 300 WhatsApp reminders per month",
+      "Razorpay deposit link generation",
+      "Advanced dashboard with deposit analytics",
+      "Priority support (4h response)"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 1999.0,
+   "delivery_cost_per_customer": 250.0,
+   "burn_line_items": [
+    {
+     "item": "Vercel Pro",
+     "monthly_cost": 1680.0
+    },
+    {
+     "item": "Supabase Pro",
+     "monthly_cost": 2100.0
+    },
+    {
+     "item": "Make.com Core",
+     "monthly_cost": 1200.0
+    },
+    {
+     "item": "Meta WhatsApp Cloud API",
+     "monthly_cost": 1500.0
+    },
+    {
+     "item": "Razorpay Standard",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Cloudflare Registrar",
+     "monthly_cost": 68.0
+    },
+    {
+     "item": "Resend Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing Budget",
+     "monthly_cost": 5000.0
+    }
+   ],
+   "monthly_burn": 11548.0,
+   "marketing_budget": 5000.0,
+   "starting_capital": 50000.0,
+   "external_funding": 0.0,
+   "runway_months": 4.3,
+   "break_even_customers": 7,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 3,
+     "mrr": 5997.0,
+     "notes": "2 pilot clinics converted to paid + 1 new clinic from local dental association referral"
+    },
+    {
+     "day": 60,
+     "paying_customers": 6,
+     "mrr": 11994.0,
+     "notes": "3 additional clinics onboarded via word-of-mouth in Jaipur dental community"
+    },
+    {
+     "day": 90,
+     "paying_customers": 10,
+     "mrr": 19990.0,
+     "notes": "4 additional clinics onboarded; 2 clinics upgraded from Starter to Pro tier"
+    }
+   ],
+   "key_assumptions": [
+    "Solo dental clinic owners in Jaipur pay ₹1,500-₹2,500/month for tools that directly reduce no-shows, based on the ₹2,000-₹5,000 loss per no-show incident",
+    "Average revenue per customer is ₹1,999, assuming a 50/50 split between Starter (₹1,499) and Pro (₹2,499) tiers",
+    "Delivery cost per customer is ₹250/month, covering variable WhatsApp API message costs (approx. 150 messages x ₹0.008/message) and minor support time",
+    "Marketing budget of ₹5,000/month covers local dental association events, LinkedIn outreach to Jaipur dentists, and small Google Ads for 'dental appointment reminder software Jaipur'"
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Google Maps Cold Voice Outreach",
+     "tactic": "Identify 50 solo dental clinics in Jaipur via Google Maps (filter: 1-3 chairs, 4.0+ stars). Send 20 personalized 30-second video demos (Loom) via WhatsApp daily to clinic owners. Follow up with a 1-minute voice note if no reply in 24h. Target: 50 direct conversations in first 10 days.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "Local Dental Supply Store Partnerships",
+     "tactic": "Visit 5 major dental supply stores in Jaipur (e.g., near Civil Hospital and Ajmer Road). Leave a QR code card at the counter linking to a 2-minute demo video. Ask the store owner to forward the link to 5 clinic owners who buy chairs/equipment weekly. Founder calls 10 store owners/day to track referrals.",
+     "monthly_spend": 5000.0,
+     "new_customers_per_month": 1,
+     "cac": 5000.0
+    }
+   ],
+   "first_10_customers": [
+    "Day 1-3: Manually identify 50 solo dental clinics in Jaipur via Google Maps (search 'dentist Jaipur', filter 4.0+ stars, 1-3 chairs). Extract WhatsApp numbers from their websites or call the front desk to get the owner's direct number.",
+    "Day 4-10: Send 20 personalized 30-second video demos (Loom) via WhatsApp daily to clinic owners. Follow up with a 1-minute voice note if no reply in 24h. Target: 50 direct conversations to secure 3 initial pilots.",
+    "Day 11-20: Personally onboard the 3 pilot clinics. Set up the WhatsApp Business API, connect their Razorpay account, and manually verify the first 3 reminder flows. Ask for a 15-minute feedback call after 7 days.",
+    "Day 21-30: Convert the 3 pilots to paid Starter plans (₹1,499/month) by showing them the exact number of no-shows prevented during the pilot week. Ask each for 2 referrals to other dentists they know.",
+    "Day 31-45: Execute the supply store partnership tactic. Visit 5 stores, leave QR cards, and call 10 store owners daily to ask for leads. Target: 3 new clinics from store referrals.",
+    "Day 46-60: Follow up with the 6 referrals from the first 3 pilots. Close them as paid customers. Total: 10 paying customers (3 from direct outreach + 3 from stores + 4 from referrals)."
+   ],
+   "cold_message": "Hi [Name], I built a WhatsApp bot that auto-confirms appointments and collects deposits for Jaipur dentists. It cuts no-shows by 40% and saves 30 mins/day. Want a free 7-day pilot for your next 10 patients? No setup fee.",
+   "objections": [
+    {
+     "objection": "I already use WhatsApp personally; why pay for a bot?",
+     "response": "Your manual calls take 45 mins/day and still miss 2-3 no-shows. The bot runs while you treat patients, guarantees confirmation, and collects the deposit upfront so you get paid even if they cancel. The ₹1,499 fee is less than the cost of one empty chair hour."
+    },
+    {
+     "objection": "I don't trust a new software with my patient data.",
+     "response": "We only store appointment dates and phone numbers, not medical records. Your data stays on your WhatsApp Business API and Razorpay account; we don't sell or share it. You can delete all data with one click in the dashboard. Try the 7-day free pilot to see how it works before paying a rupee."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is strategically sound for a bootstrapped solo founder, correctly identifying a high-pain, low-competition niche in Jaipur. The technical stack is appropriate for the budget, and the growth strategy relies on high-effort, low-cost outreach that fits the founder's constraints. However, the financial model is dangerously optimistic regarding conversion rates and the feasibility of onboarding 10 customers in 90 days with a cold-start WhatsApp API.",
+  "biggest_risk": "The plan assumes a 20% conversion rate from cold outreach to paid customers within 30 days, which is highly unrealistic for a B2B SaaS with no social proof; the founder will likely spend the entire 90-day runway building the product and chasing leads without closing the 7 customers needed for break-even.",
+  "adherence_score": 0.85
+ },
+ "seconds": 207.4,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1043,
+   "out": 511,
+   "thinking": 0,
+   "total": 1554
+  },
+  {
+   "role": "builder",
+   "in": 2633,
+   "out": 907,
+   "thinking": 0,
+   "total": 3540
+  },
+  {
+   "role": "economics",
+   "in": 2414,
+   "out": 861,
+   "thinking": 0,
+   "total": 3275
+  },
+  {
+   "role": "growth",
+   "in": 1679,
+   "out": 877,
+   "thinking": 0,
+   "total": 2556
+  },
+  {
+   "role": "critic",
+   "in": 3388,
+   "out": 481,
+   "thinking": 0,
+   "total": 3869
+  },
+  {
+   "role": "builder",
+   "in": 3415,
+   "out": 980,
+   "thinking": 0,
+   "total": 4395
+  },
+  {
+   "role": "economics",
+   "in": 3102,
+   "out": 926,
+   "thinking": 0,
+   "total": 4028
+  },
+  {
+   "role": "growth",
+   "in": 2595,
+   "out": 920,
+   "thinking": 0,
+   "total": 3515
+  },
+  {
+   "role": "critic",
+   "in": 3481,
+   "out": 605,
+   "thinking": 0,
+   "total": 4086
+  }
+ ],
+ "tokens": {
+  "in": 23750,
+  "out": 7068,
+  "thinking": 0,
+  "total": 30818
+ }
+}

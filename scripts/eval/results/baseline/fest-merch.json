@@ -1,0 +1,314 @@
+{
+ "id": "fest-merch",
+ "kind": "physical",
+ "idea": "Custom printed T-shirts and hoodies for college fests and clubs",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 5,
+  "math_warnings": 0,
+  "tools_costed": 5,
+  "tools_in_catalog": 3,
+  "hidden_costs": [
+   "Google Sheets (Workspace for Education)",
+   "Dunzo or Shiprocket",
+   "Kraftware or local screen printer (Sub-contract)",
+   "Claude 3.5 Sonnet (via Claude.ai Pro)",
+   "Google Gemini (Free Tier)"
+  ],
+  "invented_stats": [],
+  "plan_chars": 10934
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "physical",
+   "problem": "A fest committee treasurer or club head needs 150-500 printed T-shirts in 10-14 days before the event, and discovers on day 1 that local screen printers quote ₹180-250/shirt with 7-10 day turnaround, demand full payment upfront, and give no size-wise stock confirmation — leaving them scrambling across WhatsApp to 3 vendors with no proof of quality.",
+   "target_customer": "Final-year fest committee heads and club conveners at engineering and degree colleges in Tier-1/Tier-2 Indian cities (Bangalore, Pune, Hyderabad, Coimbatore, Jaipur) ordering 100-500 units with a ₹50,000-₹3,00,000 budget from departmental funds, who buy when they see a size-wise quote and a real fabric sample within 24 hours.",
+   "mission": "We deliver fest-grade custom apparel to Indian college committees with a 24-hour size-wise quote, 50% advance payment link, and delivery in 10 days, so event merch is never the bottleneck.",
+   "competitors": [
+    {
+     "name": "Local screen printing shops near campus",
+     "differentiator": "They quote only after an in-person visit, demand full advance, and give no digital proof — we send a digital mockup and size chart within 24 hours over WhatsApp with a Razorpay 50% advance link."
+    },
+    {
+     "name": "Print-on-demand platforms (PrintShop, Qikink, TeeSpring)",
+     "differentiator": "They serve 1-10 unit retail orders at ₹400-600/shirt; we handle 100-500 unit bulk at fest budgets with a dedicated campus coordinator and pre-event delivery guarantee."
+    },
+    {
+     "name": "Fiverr/Upwork freelance merch designers",
+     "differentiator": "They only deliver the design file; we deliver design + fabric sourcing + printing + size-wise packing + doorstep delivery in one 10-day window with a single point of contact."
+    }
+   ],
+   "scope_cuts": [
+    "No custom software platform or web app in v1 — orders run on a WhatsApp + Google Sheet + Razorpay payment link workflow until 10 paying orders prove the demand; building a dashboard burns 3 weeks of the 15-hour week for zero revenue.",
+    "No own printing machinery or screen printing unit — capital of ₹5,000-₹25,000 cannot buy a printer; we sub-contract to 2-3 existing printers in the city and keep the margin, buying equipment only after ₹2,00,000 in confirmed orders.",
+    "No apparel line beyond T-shirts and hoodies (no caps, bags, jackets, custom trousers) — two SKUs keep fabric sourcing, size charts and quality checks repeatable across the first 20 orders."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "WhatsApp Business API (Meta)",
+     "why": "Primary communication channel for Indian college committees; enables sending size-wise PDF quotes and digital mockups instantly."
+    },
+    {
+     "name": "Razorpay Payment Links",
+     "why": "Zero-code UPI and card payment collection for 50% advance, with automated email receipts and no monthly fee for link-only usage."
+    },
+    {
+     "name": "Google Sheets (Workspace for Education)",
+     "why": "Free, real-time collaborative inventory tracker for size-wise stock, vendor lead times, and order status visible to the founder and one helper."
+    },
+    {
+     "name": "Canva Pro (Student Discount)",
+     "why": "Creates professional size-wise quote PDFs and apparel mockups in under 10 minutes without hiring a designer."
+    },
+    {
+     "name": "Dunzo or Shiprocket",
+     "why": "On-demand last-mile delivery for 10-day turnaround to college hostels and department offices in Tier-1/2 cities."
+    },
+    {
+     "name": "Kraftware or local screen printer (Sub-contract)",
+     "why": "Existing infrastructure for 100-500 unit bulk printing at ₹120-150/shirt, eliminating the need to buy ₹50,000+ printing machinery."
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Claude 3.5 Sonnet (via Claude.ai Pro)",
+     "why": "Drafts WhatsApp follow-up scripts, size-wise quote templates, and handles 24-hour turnaround communication with fest committees."
+    },
+    {
+     "name": "Canva Magic Design",
+     "why": "Generates 5-10 apparel mockup variations from a single logo upload in 2 minutes, replacing a ₹2,000 freelance design fee."
+    },
+    {
+     "name": "Google Gemini (Free Tier)",
+     "why": "Summarizes vendor WhatsApp chats into structured Google Sheets rows for lead time and cost tracking."
+    }
+   ],
+   "mvp_features": [
+    "100% Cotton 180 GSM Unisex T-shirts in 5 sizes (S, M, L, XL, XXL) with single-color screen printing, delivered in 10 days",
+    "100% Cotton 300 GSM Unisex Hoodies in 4 sizes (M, L, XL, XXL) with 2-color screen printing, delivered in 12 days",
+    "24-hour digital mockup and size-wise PDF quote with Razorpay 50% advance payment link"
+   ],
+   "tool_costs": [
+    {
+     "tool": "WhatsApp Business",
+     "plan": "Free Tier (Meta)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Razorpay",
+     "plan": "Payment Links (Pay-as-you-go)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Google Workspace for Education",
+     "plan": "Free for Verified Students",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Canva",
+     "plan": "Canva Pro (Student Discount)",
+     "monthly_cost": 300.0
+    },
+    {
+     "tool": "Shiprocket",
+     "plan": "Free Shipping Account",
+     "monthly_cost": 0.0
+    }
+   ],
+   "mvp_build_cost": 5000.0,
+   "first_10_steps": [
+    "Message 3 local screen printers in your city on WhatsApp today to get quotes for 100 units of 180 GSM cotton T-shirts with 1-color printing, targeting a cost under ₹150 per unit.",
+    "Order 5 sample T-shirts (2 sizes) and 2 sample hoodies from the cheapest reliable printer, paying ₹1,500 upfront, to verify fabric weight and print quality.",
+    "Create a Canva Pro template for a 2-page PDF quote that includes a size-wise table, fabric specs, print mockup, and a Razorpay payment link placeholder.",
+    "Generate 10 apparel mockups using Canva Magic Design from a generic college logo to show potential customers what their merch will look like.",
+    "Post a 30-second WhatsApp status and Instagram story showing the sample T-shirt fabric close-up with the text 'Fest merch in 10 days, 50% advance only, DM for size-wise quote'.",
+    "DM 5 final-year fest committee heads and 3 club conveners from your college and 2 nearby colleges, sending the sample photo and asking if they need 100-200 units for their upcoming event.",
+    "Send a 24-hour turnaround size-wise PDF quote to the first 2 interested committees, including a Razorpay link for a ₹5,000 advance to lock in the order.",
+    "Collect the ₹5,000 advance via Razorpay and immediately pay 50% to the printer to start the 10-day production cycle.",
+    "Pack the delivered T-shirts in size-wise poly bags with a printed size chart sticker, and arrange doorstep delivery to the fest committee head via Shiprocket or Dunzo.",
+    "Ask the committee head for a 2-sentence WhatsApp testimonial and 3 photos of students wearing the shirts, to use as social proof for the next 5 prospects."
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "T-Shirt Fest Pack (100-500 units)",
+     "monthly_price": 15000.0,
+     "features": [
+      "100% Cotton 180 GSM T-shirts",
+      "Single-color screen printing",
+      "24-hour digital mockup and size-wise PDF quote",
+      "50% advance via Razorpay, balance on delivery",
+      "10-day doorstep delivery"
+     ]
+    },
+    {
+     "name": "Hoodie Fest Pack (100-500 units)",
+     "monthly_price": 25000.0,
+     "features": [
+      "100% Cotton 300 GSM Hoodies",
+      "2-color screen printing",
+      "24-hour digital mockup and size-wise PDF quote",
+      "50% advance via Razorpay, balance on delivery",
+      "12-day doorstep delivery"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 10000.0,
+   "delivery_cost_per_customer": 1000.0,
+   "burn_line_items": [
+    {
+     "item": "Canva Pro (Student Discount)",
+     "monthly_cost": 300.0
+    },
+    {
+     "item": "Marketing Budget (WhatsApp/Instagram Ads & Samples)",
+     "monthly_cost": 2000.0
+    }
+   ],
+   "monthly_burn": 2300.0,
+   "marketing_budget": 2000.0,
+   "starting_capital": 25000.0,
+   "external_funding": 0.0,
+   "runway_months": 10.9,
+   "break_even_customers": 1,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 2,
+     "mrr": 20000.0,
+     "notes": "2 small club orders (100 units each) generating ₹10,000 net margin each after COGS"
+    },
+    {
+     "day": 60,
+     "paying_customers": 3,
+     "mrr": 30000.0,
+     "notes": "3 orders (100-200 units) leveraging first testimonial, ₹10,000 net margin each"
+    },
+    {
+     "day": 90,
+     "paying_customers": 4,
+     "mrr": 40000.0,
+     "notes": "4 orders including 1 hoodie pack, scaling to 200-300 units, ₹10,000 net margin each"
+    }
+   ],
+   "key_assumptions": [
+    "Average net margin per customer is ₹10,000 based on 100-200 unit orders at ₹50-100 net margin per shirt after ₹150 COGS",
+    "Delivery cost per customer is ₹1,000 covering shipping, packaging, and sample costs",
+    "Customer acquisition relies on WhatsApp and Instagram, with a 10% conversion rate from DMs to paid orders",
+    "Starting capital of ₹25,000 covers initial samples, marketing, and float for the first order's COGS before customer advance is received"
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "Campus WhatsApp & Instagram Direct Outreach",
+     "tactic": "Send 10 personalized DMs/day to college fest committee heads and club conveners on Instagram and WhatsApp, offering a free 24-hour digital mockup and a 15-second fabric video. Physical samples are only sent to leads who agree to a 100-unit pilot or pay a ₹100 token fee.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 2,
+     "cac": 0.0
+    },
+    {
+     "name": "Local College Fest Vendor Lists & Alumni Networks",
+     "tactic": "Email 5 fest secretaries and 5 alumni from target Tier-1/Tier-2 colleges weekly with a 1-page PDF showing 10-day delivery guarantee and 50% advance model, including a link to a digital mockup generator.",
+     "monthly_spend": 2000.0,
+     "new_customers_per_month": 1,
+     "cac": 2000.0
+    }
+   ],
+   "first_10_customers": [
+    "Identify 20 active college clubs and fest committees in 5 nearby colleges using Instagram hashtags like #CollegeFest2026 and #ClubEvents.",
+    "DM 10 club heads/day on Instagram and WhatsApp with a 3-line message offering a free 24-hour digital mockup and a fabric video for 100-500 units.",
+    "Follow up with 5 calls/week to the 10 most responsive leads, sending a Razorpay 50% advance link for a 100-unit pilot order.",
+    "Deliver the first 2 orders in 10 days, collect a 2-sentence testimonial and a photo of the event, and share it in the same WhatsApp groups.",
+    "Ask each of the first 2 customers to refer 1 other club head, offering a ₹500 discount on their next order for a successful referral.",
+    "Repeat the DM and call cycle for the next 8 leads, using the first testimonial as social proof in the cold message."
+   ],
+   "cold_message": "Hi [Name], I saw [Club Name] is planning its next fest. I can send you a 24-hour digital mockup and a fabric video for 100-500 units, with 50% advance and 10-day delivery. Can I send the mockup to your email?",
+   "objections": [
+    {
+     "objection": "We already have a local printer we trust.",
+     "response": "Understood. Most local printers quote ₹180-250/shirt with 7-10 day turnaround and no size-wise confirmation. We offer a 24-hour digital mockup, 50% advance via Razorpay, and a 10-day delivery guarantee. Can I send you a free digital mockup to compare?"
+    },
+    {
+     "objection": "We don't have budget for a new vendor this year.",
+     "response": "We only charge 50% advance, and the balance is due on delivery. For a 100-unit order, the advance is ₹7,500, which is often within a club's petty cash limit. Can I send a size-wise quote so you can check the exact cost?"
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a viable, low-risk service arbitrage model that correctly leverages the founder's student status and limited capital. It avoids the trap of building software or buying machinery, focusing instead on operational reliability and campus trust. The primary weakness is the reliance on a single sub-contractor, which creates a single point of failure for the 10-day delivery promise.",
+  "biggest_risk": "Sub-contractor dependency: If the single local screen printer fails to meet the 10-day deadline or quality standards, the founder has no backup capacity, leading to lost revenue, refunds, and permanent damage to the reputation within the tight-knit college community.",
+  "adherence_score": 0.95
+ },
+ "seconds": 105.7,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1191,
+   "out": 593,
+   "thinking": 0,
+   "total": 1784
+  },
+  {
+   "role": "builder",
+   "in": 1741,
+   "out": 1245,
+   "thinking": 0,
+   "total": 2986
+  },
+  {
+   "role": "economics",
+   "in": 3096,
+   "out": 752,
+   "thinking": 0,
+   "total": 3848
+  },
+  {
+   "role": "growth",
+   "in": 2092,
+   "out": 716,
+   "thinking": 0,
+   "total": 2808
+  },
+  {
+   "role": "critic",
+   "in": 3846,
+   "out": 660,
+   "thinking": 0,
+   "total": 4506
+  },
+  {
+   "role": "economics",
+   "in": 3961,
+   "out": 812,
+   "thinking": 0,
+   "total": 4773
+  },
+  {
+   "role": "growth",
+   "in": 2873,
+   "out": 775,
+   "thinking": 0,
+   "total": 3648
+  },
+  {
+   "role": "critic",
+   "in": 3931,
+   "out": 374,
+   "thinking": 0,
+   "total": 4305
+  }
+ ],
+ "tokens": {
+  "in": 22731,
+  "out": 5927,
+  "thinking": 0,
+  "total": 28658
+ }
+}

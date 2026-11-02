@@ -70,6 +70,13 @@ def invented_stats(slices: dict, founder_text: str) -> list[dict]:
             number = re.match(r"\d[\d,.]*", m.group(0)) or re.search(r"\d[\d,.]*", m.group(0))
             if number and number.group(0) in given:
                 continue
+            # The plan's own offers and promises are decisions, not facts about the world:
+            # "50% off", "20% discount", "100% refund", "50% advance".
+            after = text[m.end():m.end() + 14].lower()
+            if re.match(r"\s*(off|discount|cashback|refund|advance|upfront|deposit)\b", after):
+                continue
+            if m.group(0).startswith("100") and "%" in m.group(0):
+                continue
             hits.append({"where": where, "claim": m.group(0)})
     return hits
 

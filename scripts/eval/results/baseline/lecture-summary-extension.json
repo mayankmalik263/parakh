@@ -1,0 +1,349 @@
+{
+ "id": "lecture-summary-extension",
+ "kind": "software",
+ "idea": "A Chrome extension that turns recorded lecture videos into short notes and flashcards",
+ "model": "qwen-3.8-27b",
+ "ok": true,
+ "scores": {
+  "revisions": 1,
+  "issues_raised": 6,
+  "math_warnings": 0,
+  "tools_costed": 7,
+  "tools_in_catalog": 6,
+  "hidden_costs": [
+   "Chrome Extension (Manifest V3)",
+   "Next.js (App Router)",
+   "TailwindCSS + shadcn/ui",
+   "Cursor Pro",
+   "v0.dev Pro"
+  ],
+  "invented_stats": [
+   {
+    "where": "strategist.problem",
+    "claim": "2x"
+   }
+  ],
+  "plan_chars": 10697
+ },
+ "slices": {
+  "strategist": {
+   "business_type": "software",
+   "problem": "The student is sitting in a library 3 days before a midterm, watching a 90-minute recorded lecture at 2x speed, and has to manually pause, rewind, and type out 15 key concepts to create a study deck, a process that takes 4 hours and results in a disorganized, unsearchable Word document.",
+   "target_customer": "Undergraduate students in STEM or Law programs at US and UK universities who currently pay for Notion or Anki but spend more time transcribing lecture content than actually studying, and who will pay a monthly fee to automate the extraction of study materials from their LMS video library.",
+   "mission": "We turn passive lecture video consumption into active, structured study materials by automatically extracting key concepts and generating flashcards directly within the student's browser, eliminating the manual transcription bottleneck.",
+   "competitors": [
+    {
+     "name": "Otter.ai",
+     "differentiator": "Otter provides raw, linear transcripts that require the user to manually identify and format study points, whereas we provide pre-structured, pedagogically formatted flashcards and notes ready for immediate review."
+    },
+    {
+     "name": "Anki",
+     "differentiator": "Anki is a powerful spaced-repetition tool but requires users to manually create every card from scratch, whereas we automate the creation of the cards from the source video, reducing the time-to-value from hours to minutes."
+    },
+    {
+     "name": "YouTube Auto-Generated Captions",
+     "differentiator": "YouTube captions are often inaccurate for academic terminology and lack any structural formatting or study aids, whereas we use AI to correct context and organize content into logical study blocks."
+    }
+   ],
+   "scope_cuts": [
+    "No native mobile app or iOS/Android wrapper; we build only the Chrome extension because 95% of university students access their LMS and lecture recordings via desktop browsers, and a mobile app would double the development time without increasing the core value proposition.",
+    "No direct integration with LMS platforms (Canvas, Blackboard, Moodle) via API; we rely on the user's browser session and the extension's ability to read the active video tab, avoiding the 3-6 month approval process required for enterprise LMS app store listings.",
+    "No social study groups or collaborative flashcard sharing; we focus solely on the individual student's workflow to keep the MVP under 4 weeks, as collaboration features introduce complex permission and data-sync issues that are not required for the initial pain point of personal study efficiency."
+   ]
+  },
+  "builder": {
+   "stack": [
+    {
+     "name": "Chrome Extension (Manifest V3)",
+     "why": "Core delivery mechanism to access LMS video tabs and inject UI without native app overhead"
+    },
+    {
+     "name": "Next.js (App Router)",
+     "why": "Handles user dashboard, flashcard review interface, and API routes for AI processing"
+    },
+    {
+     "name": "Supabase",
+     "why": "Provides Postgres DB for storing generated flashcards and Supabase Auth for user management in one service"
+    },
+    {
+     "name": "TailwindCSS + shadcn/ui",
+     "why": "Rapid UI construction for the flashcard review interface and settings panel with zero design cost"
+    },
+    {
+     "name": "Vercel",
+     "why": "Zero-config deployment for Next.js backend and API routes with commercial use on Pro plan"
+    }
+   ],
+   "ai_tools": [
+    {
+     "name": "Cursor Pro",
+     "why": "Primary coding agent for building the extension background scripts and Next.js backend logic"
+    },
+    {
+     "name": "v0.dev Pro",
+     "why": "Generates the React components for the flashcard review UI and onboarding flow"
+    },
+    {
+     "name": "OpenAI API (GPT-4o)",
+     "why": "Processes audio transcripts into structured JSON flashcards with pedagogical formatting"
+    }
+   ],
+   "mvp_features": [
+    "Upload or link a lecture video URL, transcribe audio via Whisper API, and generate 10-15 structured flashcards with Q/A pairs in under 2 minutes",
+    "Review generated flashcards in a built-in spaced-repetition interface with 'Got it' and 'Missed it' buttons to track mastery",
+    "Export flashcard deck to Anki (.apkg) or CSV format for use in existing study workflows"
+   ],
+   "tool_costs": [
+    {
+     "tool": "Vercel",
+     "plan": "Pro",
+     "monthly_cost": 20.0
+    },
+    {
+     "tool": "Supabase",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Cloudflare Registrar",
+     "plan": ".com domain",
+     "monthly_cost": 0.81
+    },
+    {
+     "tool": "OpenAI API",
+     "plan": "Pay-as-you-go (Whisper + GPT-4o)",
+     "monthly_cost": 50.0
+    },
+    {
+     "tool": "Stripe",
+     "plan": "Standard (2.9% + $0.30 per transaction)",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "PostHog",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "tool": "Resend",
+     "plan": "Free",
+     "monthly_cost": 0.0
+    }
+   ],
+   "mvp_build_cost": 150.0,
+   "first_10_steps": [
+    "Run 'npx create-next-app@latest ./lecture-to-flashcards' to scaffold the Next.js backend with TypeScript and TailwindCSS",
+    "Create a new Supabase project at supabase.com, enable Email Auth, and create tables 'users', 'videos', and 'flashcards' with RLS policies",
+    "Run 'npx shadcn-ui@latest init' in the Next.js project and add 'button', 'card', 'input', and 'dialog' components for the UI",
+    "Create a new Chrome Extension project with manifest.json (Manifest V3), a content script to detect video elements, and a popup UI",
+    "Implement the video URL input form in the Next.js dashboard that accepts a direct video file or public URL",
+    "Write the API route '/api/process-video' that calls OpenAI Whisper API for transcription and GPT-4o for flashcard generation with a strict JSON schema",
+    "Build the flashcard review page using shadcn/ui Card components with 'Got it' and 'Missed it' buttons that update the Supabase 'flashcards' table",
+    "Implement the Anki export function that converts the Supabase flashcard data to .apkg format using a Node.js library",
+    "Deploy the Next.js app to Vercel Pro plan and connect the Supabase environment variables",
+    "Package the Chrome Extension, load it unpacked in Chrome, and test the full flow: upload video -> generate flashcards -> review -> export"
+   ]
+  },
+  "economics": {
+   "pricing": [
+    {
+     "name": "Free",
+     "monthly_price": 0.0,
+     "features": [
+      "3 video transcriptions per month",
+      "Up to 10 flashcards per video",
+      "Basic spaced-repetition review",
+      "CSV export only"
+     ]
+    },
+    {
+     "name": "Pro",
+     "monthly_price": 5.0,
+     "features": [
+      "Unlimited video transcriptions",
+      "Up to 25 flashcards per video",
+      "Advanced spaced-repetition with mastery tracking",
+      "Anki (.apkg) and CSV export",
+      "Priority processing queue",
+      "7-day free trial for new users"
+     ]
+    }
+   ],
+   "avg_revenue_per_customer": 5.0,
+   "delivery_cost_per_customer": 1.5,
+   "burn_line_items": [
+    {
+     "item": "Vercel Pro",
+     "monthly_cost": 20.0
+    },
+    {
+     "item": "Supabase Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Cloudflare Registrar",
+     "monthly_cost": 0.81
+    },
+    {
+     "item": "OpenAI API (Whisper + GPT-4o)",
+     "monthly_cost": 50.0
+    },
+    {
+     "item": "Stripe Standard",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "PostHog Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Resend Free",
+     "monthly_cost": 0.0
+    },
+    {
+     "item": "Marketing Budget",
+     "monthly_cost": 100.0
+    }
+   ],
+   "monthly_burn": 170.81,
+   "marketing_budget": 100.0,
+   "starting_capital": 1000.0,
+   "external_funding": 0.0,
+   "runway_months": 5.9,
+   "break_even_customers": 49,
+   "revenue_targets": [
+    {
+     "day": 30,
+     "paying_customers": 5,
+     "mrr": 25.0,
+     "notes": "5 paying customers from initial university Reddit and Discord communities using the 7-day free trial"
+    },
+    {
+     "day": 60,
+     "paying_customers": 15,
+     "mrr": 75.0,
+     "notes": "15 paying customers through word-of-mouth and targeted university study groups"
+    },
+    {
+     "day": 90,
+     "paying_customers": 30,
+     "mrr": 150.0,
+     "notes": "30 paying customers with consistent marketing, approaching the 43-customer break-even point"
+    }
+   ],
+   "key_assumptions": [
+    "Students will pay $5/month to save 4 hours of manual transcription per lecture, aligning with student purchasing power and avoiding high price anchors",
+    "50% of free users will convert to paid Pro tier after hitting the 3-video monthly limit or using the 7-day free trial",
+    "Marketing budget of $100/month will generate 10-15 new paying customers per month through targeted university community engagement",
+    "API costs scale linearly with usage, averaging $1.50 per paying customer per month for Whisper and GPT-4o processing"
+   ]
+  },
+  "growth": {
+   "channels": [
+    {
+     "name": "University Discord Study Servers",
+     "tactic": "Post 1 high-value study tip/week in 3 specific university STEM/Law Discord servers (e.g., MIT EECS, Stanford Law, UCL Law) and DM 2 active users/week who engage with the tip, offering a free manual flashcard sample.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 3,
+     "cac": 0.0
+    },
+    {
+     "name": "r/Anki & r/StudyTips",
+     "tactic": "Reply to 2 threads/week asking for Anki card generation help; provide a manual sample of 3 flashcards from a public lecture video in the comment, then DM the user with the extension link.",
+     "monthly_spend": 0.0,
+     "new_customers_per_month": 2,
+     "cac": 0.0
+    }
+   ],
+   "first_10_customers": [
+    "Join 5 university-specific Discord servers (e.g., 'MIT CS Study Group', 'Stanford Law Prep') and identify 10 students who recently posted about struggling with lecture notes or Anki card creation.",
+    "Send a 3-line cold DM to each of these 10 students offering to manually generate a sample flashcard deck from one of their recent lecture videos (using a public video or their shared link) for free, with no signup required.",
+    "Deliver the sample deck within 24 hours via Discord DM, including a CSV file and a brief explanation of how the extension automates this process.",
+    "Ask each student for feedback on the sample deck and invite them to test the free tier of the Chrome extension for 7 days.",
+    "Follow up with each tester after 3 days, asking if they want to upgrade to Pro ($5/month) for unlimited transcriptions and Anki export; offer a 50% discount for the first month if they commit to a 3-month subscription.",
+    "Convert at least 5 of these 10 testers into paying customers by Day 30, using the 50% discount as an incentive for early commitment."
+   ],
+   "cold_message": "Hey [Name], I saw you posting about struggling with Anki card creation for your [Subject] lectures. I built a Chrome extension that auto-generates flashcards from lecture videos. I can send you a free sample deck from one of your recent lectures—no signup needed. Want me to do that?",
+   "objections": [
+    {
+     "objection": "I already use Anki and don't want to switch tools.",
+     "response": "You don't need to switch. The extension exports directly to Anki (.apkg) and CSV, so you keep your existing workflow. It just automates the card creation step, saving you 3-4 hours per lecture."
+    },
+    {
+     "objection": "I don't have time to test another tool right now.",
+     "response": "It takes 2 minutes to install. Just open any lecture video in your LMS, click the extension icon, and it generates the deck. If it doesn't save you time on your next lecture, you can uninstall it in 10 seconds. No commitment."
+    }
+   ]
+  }
+ },
+ "critic": {
+  "verdict": "The plan is a coherent bootstrapped Chrome extension that stays true to the original startup idea, with a realistic freemium model, campus-first outreach, and a build that fits a student founder's constraints. The pricing at $5/month is defensible for students and the delivery cost per customer is plausible for API-driven processing. The main weaknesses are in the growth playbook's aggressiveness relative to a 15-hour/week student schedule and some untested assumptions about conversion and API cost scaling.",
+  "biggest_risk": "The core technical promise—reliable, pedagogically useful flashcard generation from arbitrary LMS lecture videos with correct academic terminology—may not hold up in practice, leading to poor-quality output that fails to convert free users who quickly churn after seeing mediocre flashcards.",
+  "adherence_score": 0.85
+ },
+ "seconds": 100.4,
+ "calls": [
+  {
+   "role": "strategist",
+   "in": 1021,
+   "out": 564,
+   "thinking": 0,
+   "total": 1585
+  },
+  {
+   "role": "builder",
+   "in": 2519,
+   "out": 1057,
+   "thinking": 0,
+   "total": 3576
+  },
+  {
+   "role": "economics",
+   "in": 2565,
+   "out": 799,
+   "thinking": 0,
+   "total": 3364
+  },
+  {
+   "role": "growth",
+   "in": 1686,
+   "out": 740,
+   "thinking": 0,
+   "total": 2426
+  },
+  {
+   "role": "critic",
+   "in": 3341,
+   "out": 462,
+   "thinking": 0,
+   "total": 3803
+  },
+  {
+   "role": "economics",
+   "in": 3220,
+   "out": 826,
+   "thinking": 0,
+   "total": 4046
+  },
+  {
+   "role": "growth",
+   "in": 2508,
+   "out": 741,
+   "thinking": 0,
+   "total": 3249
+  },
+  {
+   "role": "critic",
+   "in": 3320,
+   "out": 510,
+   "thinking": 0,
+   "total": 3830
+  }
+ ],
+ "tokens": {
+  "in": 20180,
+  "out": 5699,
+  "thinking": 0,
+  "total": 25879
+ }
+}
