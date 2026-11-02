@@ -10,6 +10,8 @@
   "math_warnings": 0,
   "tools_costed": 4,
   "tools_in_catalog": 4,
+  "paid_prices_right": 0,
+  "paid_prices": 0,
   "hidden_costs": [
    "Claude Code",
    "v0"

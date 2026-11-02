@@ -1,10 +1,11 @@
 {
  "checked_on": "2026-11-02",
  "usd_to_inr": {
-  "rate": 88,
-  "source": "TODO",
-  "as_of": "TODO"
+  "rate": 94.98,
+  "source": "https://www.x-rates.com/calculator/?from=USD&to=INR&amount=1",
+  "as_of": "Nov 02, 2026 08:30 UTC"
  },
+ "_note": "Prices read from each tool's own page on checked_on. Update by hand; scripts/check_tool_prices.py lists prices it can no longer find.",
  "tools": [
   {
    "name": "Claude",
@@ -43,9 +44,6 @@
   },
   {
    "name": "ChatGPT",
-   "aliases": [
-    "OpenAI ChatGPT"
-   ],
    "category": "ai_assistant",
    "for": [
     "software",
@@ -59,49 +57,605 @@
      "period": "free"
     },
     {
+     "plan": "Go",
+     "period": "month",
+     "note": "Indian price not shown on the official page"
+    },
+    {
      "plan": "Plus",
      "usd": 20,
-     "period": "month"
+     "period": "month",
+     "note": "USD list price; Indian price not verified"
     }
    ],
    "source": "https://openai.com/chatgpt/pricing/",
    "checked_on": "2026-11-02",
-   "india": true
+   "india": true,
+   "aliases": [
+    "OpenAI ChatGPT"
+   ]
   },
   {
-   "name": "Google One",
-   "aliases": [
-    "Google AI Pro",
-    "Google AI Plus"
-   ],
+   "name": "Gemini",
    "category": "ai_assistant",
    "for": [
     "software",
     "service",
     "physical"
    ],
-   "use_for": "Extra Drive storage; AI Pro adds Gemini Pro.",
+   "use_for": "Writing, research, Google Docs/Sheets help. Indian university students: Google AI Plus free for a year (redeem by 31 Dec 2026).",
    "plans": [
     {
-     "plan": "Basic 100 GB",
-     "usd": 1.99,
-     "period": "month"
+     "plan": "Free",
+     "period": "free"
     },
     {
      "plan": "Google AI Plus",
-     "usd": 9.99,
+     "inr": 399,
      "period": "month"
     },
     {
      "plan": "Google AI Pro",
-     "usd": 19.99,
+     "inr": 1950,
+     "period": "month",
+     "note": "5 TB storage"
+    }
+   ],
+   "source": "https://one.google.com/intl/en_in/about/google-ai-plans/",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Google Gemini",
+    "Google AI Pro",
+    "Google AI Plus",
+    "Google One"
+   ],
+   "notes": "Student offer: gemini.google/in/students"
+  },
+  {
+   "name": "BharatCode",
+   "category": "ai_api",
+   "for": [
+    "software"
+   ],
+   "use_for": "Indian LLM API (Qwen 3.8 27B). Verified students: free up to 10M tokens a day.",
+   "plans": [
+    {
+     "plan": "Student (verified college email)",
+     "period": "free"
+    },
+    {
+     "plan": "Lite",
+     "inr": 399,
+     "period": "month"
+    },
+    {
+     "plan": "Pro",
+     "inr": 999,
      "period": "month"
     }
    ],
-   "source": "https://one.google.com/about/plans",
+   "source": "https://bharatcode.ai/account",
    "checked_on": "2026-11-02",
    "india": true,
-   "notes": "Page showed USD; Indian prices may differ."
+   "notes": "Prices from BharatCode's own account page and API message."
+  },
+  {
+   "name": "OpenAI API",
+   "category": "ai_api",
+   "for": [
+    "software"
+   ],
+   "use_for": "Pay-per-token GPT models and transcription.",
+   "plans": [
+    {
+     "plan": "gpt-6-luna",
+     "period": "usage",
+     "usage": "$0.10 per 1M input tokens, $0.50 per 1M output"
+    },
+    {
+     "plan": "gpt-4o-mini-transcribe",
+     "period": "usage",
+     "usage": "about $0.003 per audio minute"
+    }
+   ],
+   "source": "https://developers.openai.com/api/docs/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Gemini API",
+   "category": "ai_api",
+   "for": [
+    "software"
+   ],
+   "use_for": "Google's model API with a free tier.",
+   "plans": [
+    {
+     "plan": "Free tier",
+     "period": "free",
+     "note": "rate limited"
+    },
+    {
+     "plan": "Gemini 2.5 Flash-Lite",
+     "period": "usage",
+     "usage": "$0.10 per 1M input tokens, $0.40 per 1M output"
+    },
+    {
+     "plan": "Gemini 2.5 Flash",
+     "period": "usage",
+     "usage": "$0.30 per 1M input tokens, $2.50 per 1M output"
+    }
+   ],
+   "source": "https://ai.google.dev/gemini-api/docs/pricing",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Google AI Studio"
+   ]
+  },
+  {
+   "name": "Cursor",
+   "category": "ai_coding",
+   "for": [
+    "software"
+   ],
+   "use_for": "AI code editor.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Plus",
+     "usd": 8,
+     "period": "month"
+    },
+    {
+     "plan": "Premium",
+     "usd": 30,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.cursor.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "v0",
+   "aliases": [
+    "v0.dev",
+    "v0.app"
+   ],
+   "category": "ai_coding",
+   "for": [
+    "software"
+   ],
+   "use_for": "AI UI generator from Vercel.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Business",
+     "usd": 100,
+     "period": "month",
+     "note": "per user"
+    }
+   ],
+   "source": "https://v0.app/pricing",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "notes": "Plus price was unreadable ($30 or $90) so it is left out."
+  },
+  {
+   "name": "Lovable",
+   "category": "ai_coding",
+   "for": [
+    "software"
+   ],
+   "use_for": "Build a web app by chatting.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "5 credits a day, up to 30 a month"
+    },
+    {
+     "plan": "Pro",
+     "usd": 25,
+     "period": "month",
+     "note": "up to 50% off with a student email"
+    },
+    {
+     "plan": "Business",
+     "usd": 50,
+     "period": "month"
+    }
+   ],
+   "source": "https://lovable.dev/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Bolt.new",
+   "category": "ai_coding",
+   "for": [
+    "software"
+   ],
+   "use_for": "Build a web app by chatting.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "1M tokens a month"
+    },
+    {
+     "plan": "Pro",
+     "usd": 25,
+     "period": "month"
+    }
+   ],
+   "source": "https://bolt.new/pricing",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Bolt"
+   ]
+  },
+  {
+   "name": "GitHub Copilot",
+   "category": "ai_coding",
+   "for": [
+    "software"
+   ],
+   "use_for": "AI pair programmer. Verified students get Copilot Student free.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "2,000 completions a month"
+    },
+    {
+     "plan": "Student",
+     "period": "free",
+     "note": "verified students, 200 AI credits a month"
+    },
+    {
+     "plan": "Pro",
+     "usd": 10,
+     "period": "month"
+    }
+   ],
+   "source": "https://github.com/features/copilot/plans",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Copilot"
+   ]
+  },
+  {
+   "name": "Next.js",
+   "category": "framework",
+   "for": [
+    "software"
+   ],
+   "use_for": "React framework for web apps.",
+   "plans": [
+    {
+     "plan": "Open source",
+     "period": "free",
+     "note": "MIT licence"
+    }
+   ],
+   "source": "https://github.com/vercel/next.js",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "NextJS",
+    "Next.js App Router"
+   ]
+  },
+  {
+   "name": "Supabase",
+   "aliases": [
+    "Supabase Auth"
+   ],
+   "category": "backend",
+   "for": [
+    "software"
+   ],
+   "use_for": "Postgres database, auth and storage.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "500 MB DB, 50k MAU; pauses after 1 week inactive"
+    },
+    {
+     "plan": "Pro",
+     "usd": 25,
+     "period": "month"
+    }
+   ],
+   "source": "https://supabase.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Vercel",
+   "category": "hosting",
+   "for": [
+    "software"
+   ],
+   "use_for": "Hosting for Next.js.",
+   "plans": [
+    {
+     "plan": "Hobby",
+     "period": "free",
+     "note": "personal, non-commercial use only"
+    },
+    {
+     "plan": "Pro",
+     "usd": 20,
+     "period": "month"
+    }
+   ],
+   "source": "https://vercel.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Resend",
+   "category": "email",
+   "for": [
+    "software"
+   ],
+   "use_for": "Transactional email API.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "3,000 emails/mo, 100/day"
+    },
+    {
+     "plan": "Pro",
+     "usd": 20,
+     "period": "month",
+     "note": "50,000 emails"
+    }
+   ],
+   "source": "https://resend.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Netlify",
+   "category": "hosting",
+   "for": [
+    "software"
+   ],
+   "use_for": "Hosting for static sites and web apps.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "300 credits a month"
+    },
+    {
+     "plan": "Personal",
+     "usd": 9,
+     "period": "month"
+    },
+    {
+     "plan": "Pro",
+     "usd": 20,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.netlify.com/pricing/",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Cloudflare Pages",
+   "category": "hosting",
+   "for": [
+    "software"
+   ],
+   "use_for": "Hosting on Cloudflare Workers with static assets.",
+   "plans": [
+    {
+     "plan": "Workers Free",
+     "period": "free",
+     "note": "100,000 requests a day"
+    },
+    {
+     "plan": "Workers Paid",
+     "usd": 5,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.cloudflare.com/plans/developer-platform/",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Cloudflare Workers"
+   ]
+  },
+  {
+   "name": "Firebase",
+   "category": "backend",
+   "for": [
+    "software"
+   ],
+   "use_for": "Google's database, auth and hosting.",
+   "plans": [
+    {
+     "plan": "Spark",
+     "period": "free",
+     "note": "50K MAU auth, 50K reads/day"
+    },
+    {
+     "plan": "Blaze",
+     "period": "usage",
+     "usage": "pay as you go after the free allowance"
+    }
+   ],
+   "source": "https://firebase.google.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Clerk",
+   "category": "auth",
+   "for": [
+    "software"
+   ],
+   "use_for": "Sign-in and user management.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "50,000 monthly retained users"
+    },
+    {
+     "plan": "Pro",
+     "usd": 25,
+     "period": "month",
+     "note": "$20/mo billed yearly"
+    }
+   ],
+   "source": "https://clerk.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "PostHog",
+   "category": "analytics",
+   "for": [
+    "software"
+   ],
+   "use_for": "Product analytics and session replays.",
+   "plans": [
+    {
+     "plan": "Free tier",
+     "period": "free",
+     "note": "1M events, 5K replays a month"
+    }
+   ],
+   "source": "https://posthog.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Make",
+   "category": "automation",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "No-code automations between apps.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "1,000 credits a month"
+    },
+    {
+     "plan": "Core",
+     "usd": 12,
+     "period": "month",
+     "note": "$9/mo billed yearly"
+    },
+    {
+     "plan": "Pro",
+     "usd": 21,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.make.com/en/pricing",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Make.com"
+   ]
+  },
+  {
+   "name": "Zapier",
+   "category": "automation",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "No-code automations between apps.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "100 tasks a month"
+    },
+    {
+     "plan": "Professional",
+     "usd": 19.99,
+     "period": "month",
+     "note": "starting price"
+    }
+   ],
+   "source": "https://zapier.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "n8n",
+   "category": "automation",
+   "for": [
+    "software",
+    "service"
+   ],
+   "use_for": "Automations; self-host for free or use their cloud.",
+   "plans": [
+    {
+     "plan": "Community",
+     "period": "free",
+     "note": "self-hosted; server cost extra"
+    },
+    {
+     "plan": "Starter",
+     "usd": 20,
+     "period": "month",
+     "note": "billed yearly"
+    }
+   ],
+   "source": "https://n8n.io/pricing/",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "HyperFrames",
+   "aliases": [
+    "HeyGen HyperFrames"
+   ],
+   "category": "video",
+   "for": [
+    "service",
+    "software",
+    "physical"
+   ],
+   "use_for": "Open-source HTML-to-MP4 renderer; Claude Code plugin writes and renders videos. Needs Node 22+ and FFmpeg.",
+   "plans": [
+    {
+     "plan": "Open source",
+     "period": "free",
+     "note": "Apache 2.0, no per-render fees"
+    }
+   ],
+   "source": "https://github.com/heygen-com/hyperframes",
+   "checked_on": "2026-11-02",
+   "india": true
   },
   {
    "name": "CapCut",
@@ -128,29 +682,6 @@
    "checked_on": "2026-11-02",
    "india": false,
    "india_note": "banned in India since 29 June 2020 (fluxnote.io, June 2026)"
-  },
-  {
-   "name": "HyperFrames",
-   "aliases": [
-    "HeyGen HyperFrames"
-   ],
-   "category": "video",
-   "for": [
-    "service",
-    "software",
-    "physical"
-   ],
-   "use_for": "Open-source HTML-to-MP4 renderer; Claude Code plugin writes and renders videos. Needs Node 22+ and FFmpeg.",
-   "plans": [
-    {
-     "plan": "Open source",
-     "period": "free",
-     "note": "Apache 2.0, no per-render fees"
-    }
-   ],
-   "source": "https://github.com/heygen-com/hyperframes",
-   "checked_on": "2026-11-02",
-   "india": true
   },
   {
    "name": "ElevenLabs",
@@ -251,6 +782,145 @@
    "notes": "A Rs 1,590/year individual tier was also listed without a readable name."
   },
   {
+   "name": "FFmpeg",
+   "category": "video",
+   "for": [
+    "service",
+    "software"
+   ],
+   "use_for": "Command-line video and audio tool that AI agents use to cut, caption and convert.",
+   "plans": [
+    {
+     "plan": "Open source",
+     "period": "free",
+     "note": "LGPL/GPL"
+    }
+   ],
+   "source": "https://ffmpeg.org/legal.html",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Whisper",
+   "category": "video",
+   "for": [
+    "service",
+    "software"
+   ],
+   "use_for": "Open-source speech-to-text for captions; runs locally.",
+   "plans": [
+    {
+     "plan": "Open source",
+     "period": "free",
+     "note": "MIT licence"
+    }
+   ],
+   "source": "https://github.com/openai/whisper",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "OpenAI Whisper"
+   ]
+  },
+  {
+   "name": "DaVinci Resolve",
+   "category": "video",
+   "for": [
+    "service"
+   ],
+   "use_for": "Professional video editor; free version is enough to start.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    },
+    {
+     "plan": "Studio",
+     "usd": 236,
+     "period": "one_time",
+     "usage": "one-time $236 (sale price)"
+    }
+   ],
+   "source": "https://www.blackmagicdesign.com/products/davinciresolve",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "VN Video Editor",
+   "category": "video",
+   "for": [
+    "service",
+    "physical"
+   ],
+   "use_for": "Free mobile editor, no watermark.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    }
+   ],
+   "source": "https://www.vlognow.me/",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "VN Editor",
+    "VN"
+   ]
+  },
+  {
+   "name": "InShot",
+   "category": "video",
+   "for": [
+    "service",
+    "physical"
+   ],
+   "use_for": "Mobile video editor.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "watermark on free"
+    },
+    {
+     "plan": "Pro",
+     "period": "month",
+     "note": "price only shown in the app"
+    }
+   ],
+   "source": "https://inshot.com/",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Descript",
+   "category": "video",
+   "for": [
+    "service"
+   ],
+   "use_for": "Edit video by editing the transcript.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "60 media minutes a month"
+    },
+    {
+     "plan": "Hobbyist",
+     "usd": 24,
+     "period": "month",
+     "note": "$16/mo billed yearly"
+    },
+    {
+     "plan": "Creator",
+     "usd": 35,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.descript.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
    "name": "Carrd",
    "category": "website",
    "for": [
@@ -285,6 +955,116 @@
    "india": true
   },
   {
+   "name": "Framer",
+   "category": "website",
+   "for": [
+    "service",
+    "software"
+   ],
+   "use_for": "Designed websites without code.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "framer subdomain"
+    },
+    {
+     "plan": "Basic",
+     "usd": 10,
+     "period": "month",
+     "note": "billing period not stated"
+    }
+   ],
+   "source": "https://www.framer.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Google Sites",
+   "category": "website",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Free simple website with a Google account.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    }
+   ],
+   "source": "https://support.google.com/sites/answer/98081?hl=en",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Google Workspace",
+   "category": "ops",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Gmail, Drive, Forms, Sheets, Docs. Free with a Google account; paid for a custom email domain.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "15 GB shared"
+    },
+    {
+     "plan": "Business Base",
+     "inr": 99,
+     "period": "month",
+     "note": "per user, yearly commitment"
+    },
+    {
+     "plan": "Business Starter",
+     "inr": 270,
+     "period": "month",
+     "note": "per user, yearly; Rs 325 flexible"
+    }
+   ],
+   "source": "https://workspace.google.com/intl/en_in/",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Google Drive",
+    "Google Sheets",
+    "Google Forms",
+    "Google Docs",
+    "Gmail",
+    "Google Workspace for Education"
+   ]
+  },
+  {
+   "name": "Zoho Mail",
+   "category": "ops",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Custom-domain email.",
+   "plans": [
+    {
+     "plan": "Forever Free",
+     "period": "free",
+     "note": "up to 5 users, web only"
+    },
+    {
+     "plan": "Mail Lite",
+     "inr": 59,
+     "period": "month",
+     "note": "per user, billed yearly"
+    }
+   ],
+   "source": "https://www.zoho.com/en-in/mail/zohomail-pricing.html",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
    "name": "Notion",
    "category": "ops",
    "for": [
@@ -299,10 +1079,15 @@
      "period": "free"
     },
     {
+     "plan": "Plus for students",
+     "period": "free",
+     "note": "free with a student email, 1 member"
+    },
+    {
      "plan": "Plus",
-     "usd": 10,
+     "usd": 12,
      "period": "month",
-     "note": "per member"
+     "note": "per member; $10/mo billed yearly"
     }
    ],
    "source": "https://www.notion.com/pricing",
@@ -310,75 +1095,154 @@
    "india": true
   },
   {
-   "name": "Supabase",
-   "aliases": [
-    "Supabase Auth"
-   ],
-   "category": "backend",
+   "name": "Calendly",
+   "category": "ops",
    "for": [
+    "service",
     "software"
    ],
-   "use_for": "Postgres database, auth and storage.",
+   "use_for": "Booking links for calls and pickups.",
    "plans": [
     {
      "plan": "Free",
      "period": "free",
-     "note": "500 MB DB, 50k MAU; pauses after 1 week inactive"
+     "note": "one event type"
     },
     {
-     "plan": "Pro",
-     "usd": 25,
-     "period": "month"
-    }
-   ],
-   "source": "https://supabase.com/pricing",
-   "checked_on": "2026-11-02",
-   "india": true
-  },
-  {
-   "name": "Vercel",
-   "category": "hosting",
-   "for": [
-    "software"
-   ],
-   "use_for": "Hosting for Next.js.",
-   "plans": [
-    {
-     "plan": "Hobby",
-     "period": "free",
-     "note": "personal, non-commercial use only"
-    },
-    {
-     "plan": "Pro",
-     "usd": 20,
-     "period": "month"
-    }
-   ],
-   "source": "https://vercel.com/pricing",
-   "checked_on": "2026-11-02",
-   "india": true
-  },
-  {
-   "name": "Resend",
-   "category": "email",
-   "for": [
-    "software"
-   ],
-   "use_for": "Transactional email API.",
-   "plans": [
-    {
-     "plan": "Free",
-     "period": "free",
-     "note": "3,000 emails/mo, 100/day"
-    },
-    {
-     "plan": "Pro",
-     "usd": 20,
+     "plan": "Standard",
+     "usd": 10,
      "period": "month",
-     "note": "50,000 emails"
+     "note": "billed yearly"
     }
    ],
-   "source": "https://resend.com/pricing",
+   "source": "https://calendly.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Google Business Profile",
+   "category": "marketing",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Free listing on Google Search and Maps.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free"
+    }
+   ],
+   "source": "https://business.google.com/in/business-profile/",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Google My Business",
+    "Google Maps listing"
+   ]
+  },
+  {
+   "name": "Instagram",
+   "category": "marketing",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Business or creator account for posts, reels and DMs.",
+   "plans": [
+    {
+     "plan": "Business account",
+     "period": "free",
+     "note": "no fee on Meta's setup page"
+    }
+   ],
+   "source": "https://help.instagram.com/502981923235522",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Instagram Business",
+    "Instagram Shop"
+   ]
+  },
+  {
+   "name": "WhatsApp Business",
+   "category": "ops",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Free WhatsApp app for orders, catalogue and quick replies. The Cloud API charges per message.",
+   "plans": [
+    {
+     "plan": "App",
+     "period": "free"
+    },
+    {
+     "plan": "Cloud API",
+     "period": "usage",
+     "usage": "India: about Rs 0.86 per marketing message, Rs 0.115 per utility message (third-party copies of Meta's rate card)"
+    }
+   ],
+   "source": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "WhatsApp",
+    "WhatsApp Business app",
+    "Meta WhatsApp Cloud API",
+    "WhatsApp Cloud API"
+   ]
+  },
+  {
+   "name": "Brevo",
+   "category": "marketing",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Email marketing.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "300 emails a day"
+    },
+    {
+     "plan": "Starter",
+     "inr": 625,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.brevo.com/pricing/",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Mailchimp",
+   "category": "marketing",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Email marketing.",
+   "plans": [
+    {
+     "plan": "Free",
+     "period": "free",
+     "note": "250 contacts"
+    },
+    {
+     "plan": "Essentials",
+     "usd": 13,
+     "period": "month"
+    }
+   ],
+   "source": "https://mailchimp.com/pricing/marketing/",
    "checked_on": "2026-11-02",
    "india": true
   },
@@ -427,59 +1291,72 @@
    "india": null
   },
   {
-   "name": "Cursor",
-   "category": "ai_coding",
+   "name": "Cashfree Payments",
+   "category": "payments",
    "for": [
-    "software"
+    "software",
+    "service",
+    "physical"
    ],
-   "use_for": "AI code editor.",
+   "use_for": "Indian payment gateway.",
    "plans": [
     {
-     "plan": "Free",
-     "period": "free"
-    },
-    {
-     "plan": "Plus",
-     "usd": 8,
-     "period": "month"
-    },
-    {
-     "plan": "Premium",
-     "usd": 30,
-     "period": "month"
+     "plan": "Standard",
+     "period": "usage",
+     "usage": "about 1.95% to 2% per domestic payment, no setup fee"
     }
    ],
-   "source": "https://www.cursor.com/pricing",
-   "checked_on": "2026-11-02",
-   "india": true
-  },
-  {
-   "name": "v0",
-   "aliases": [
-    "v0.dev",
-    "v0.app"
-   ],
-   "category": "ai_coding",
-   "for": [
-    "software"
-   ],
-   "use_for": "AI UI generator from Vercel.",
-   "plans": [
-    {
-     "plan": "Free",
-     "period": "free"
-    },
-    {
-     "plan": "Business",
-     "usd": 100,
-     "period": "month",
-     "note": "per user"
-    }
-   ],
-   "source": "https://v0.app/pricing",
+   "source": "https://www.cashfree.com/payment-gateway-charges/",
    "checked_on": "2026-11-02",
    "india": true,
-   "notes": "Plus price was unreadable ($30 or $90) so it is left out."
+   "aliases": [
+    "Cashfree"
+   ]
+  },
+  {
+   "name": "Instamojo",
+   "category": "payments",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Payment links and a simple store in India.",
+   "plans": [
+    {
+     "plan": "Lite",
+     "period": "usage",
+     "usage": "payment links 2% + Rs 3; store 5% + Rs 3, plus GST"
+    },
+    {
+     "plan": "Growth",
+     "inr": 2999,
+     "period": "month"
+    }
+   ],
+   "source": "https://www.instamojo.com/pricing/",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "notes": "Pricing page last updated January 2025."
+  },
+  {
+   "name": "Lemon Squeezy",
+   "category": "payments",
+   "for": [
+    "software"
+   ],
+   "use_for": "Merchant of record for selling software abroad.",
+   "plans": [
+    {
+     "plan": "Standard",
+     "period": "usage",
+     "usage": "5% + 50 cents per payment"
+    }
+   ],
+   "source": "https://www.lemonsqueezy.com/pricing",
+   "checked_on": "2026-11-02",
+   "india": null,
+   "notes": "Payouts to Indian sellers not confirmed."
   },
   {
    "name": "Shiprocket",
@@ -532,6 +1409,97 @@
     }
    ],
    "source": "https://www.shopify.com/in/pricing",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Meesho",
+   "category": "storefront",
+   "for": [
+    "physical"
+   ],
+   "use_for": "Sell on Meesho; 0% commission and non-GST sellers allowed.",
+   "plans": [
+    {
+     "plan": "Supplier",
+     "period": "usage",
+     "usage": "0% commission; shipping through Meesho logistics"
+    }
+   ],
+   "source": "https://supplier.meesho.com/",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Meesho Supplier"
+   ]
+  },
+  {
+   "name": "Delhivery",
+   "category": "shipping",
+   "for": [
+    "physical"
+   ],
+   "use_for": "Courier for parcels across India.",
+   "plans": [
+    {
+     "plan": "Business shipment",
+     "period": "usage",
+     "usage": "per-parcel rate from their calculator; COD fee Rs 40 or 2%"
+    }
+   ],
+   "source": "https://www.delhivery.com/rate-calculator/business-shipment",
+   "checked_on": "2026-11-02",
+   "india": true
+  },
+  {
+   "name": "Domain",
+   "category": "domain",
+   "for": [
+    "software",
+    "service",
+    "physical"
+   ],
+   "use_for": "Your own web address. Rs 1 first-year offers usually need multi-year purchases.",
+   "plans": [
+    {
+     "plan": "in domain",
+     "inr": 899,
+     "period": "year",
+     "note": "GoDaddy India regular price"
+    },
+    {
+     "plan": "com domain",
+     "inr": 1499,
+     "period": "year",
+     "note": "Hostinger India regular price"
+    }
+   ],
+   "source": "https://www.godaddy.com/en-in/tlds/in-domain",
+   "checked_on": "2026-11-02",
+   "india": true,
+   "aliases": [
+    "Domain (.in)",
+    "Domain (.com)",
+    "GoDaddy",
+    "Hostinger",
+    "Domain name"
+   ]
+  },
+  {
+   "name": "Cloudflare Registrar",
+   "category": "domain",
+   "for": [
+    "software"
+   ],
+   "use_for": "Domains at cost with no markup (no .in).",
+   "plans": [
+    {
+     "plan": "com domain",
+     "period": "year",
+     "note": "at cost; exact price not on Cloudflare's page"
+    }
+   ],
+   "source": "https://www.cloudflare.com/products/registrar/",
    "checked_on": "2026-11-02",
    "india": true
   }

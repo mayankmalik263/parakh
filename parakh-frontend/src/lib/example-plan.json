@@ -6,7 +6,7 @@
  "business_model": [
   {
    "name": "One subject",
-   "price": "₹149/mo",
+   "price": "₹149 one-time",
    "features": [
     "Unit-wise notes",
     "3 years of papers"
@@ -14,7 +14,7 @@
   },
   {
    "name": "Two subjects",
-   "price": "₹249/mo",
+   "price": "₹249 one-time",
    "features": [
     "Both bundles",
     "Most-asked questions list"
@@ -70,6 +70,36 @@
   {
    "name": "Photocopy shops near campus",
    "differentiator": "No queue the night before the exam, and the notes are searchable."
+  }
+ ],
+ "tools": [
+  {
+   "name": "Google Drive",
+   "plan": "Free (15 GB)",
+   "monthly_cost": "₹0/mo",
+   "verified": true,
+   "note": "Price checked 2026-11-02 on https://workspace.google.com/intl/en_in/"
+  },
+  {
+   "name": "Notion",
+   "plan": "Free",
+   "monthly_cost": "₹0/mo",
+   "verified": true,
+   "note": "Price checked 2026-11-02 on https://www.notion.com/pricing"
+  },
+  {
+   "name": "Razorpay Payment Links",
+   "plan": "Per transaction",
+   "monthly_cost": "₹0/mo",
+   "verified": true,
+   "note": "2% + GST per payment, no setup fee or AMC. Price checked 2026-11-02 on https://razorpay.com/pricing/"
+  },
+  {
+   "name": "Claude",
+   "plan": "Free",
+   "monthly_cost": "₹0/mo",
+   "verified": true,
+   "note": "Price checked 2026-11-02 on https://claude.com/pricing"
   }
  ],
  "key_conflicts": [],

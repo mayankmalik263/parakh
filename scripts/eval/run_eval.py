@@ -28,7 +28,7 @@ sys.path.insert(0, str(HERE))
 
 import graph_orchestrator as go  # noqa: E402
 from agents.llm_router import MODEL, summarize_usage, token_meter  # noqa: E402
-from metrics import catalog_names, score  # noqa: E402
+from metrics import score  # noqa: E402
 
 # No database writes, no live events, no lessons: the same input must mean the same conditions.
 go.save_state = lambda *a, **k: None
@@ -36,7 +36,7 @@ go.get_lessons_from_db = lambda profile: []
 go.event_bus.publish = lambda *a, **k: None
 
 
-def run_one(item: dict, out_dir: Path, catalog: list[str]) -> dict:
+def run_one(item: dict, out_dir: Path) -> dict:
     log = io.StringIO()
     started = time.monotonic()
     record = {"id": item["id"], "kind": item["kind"], "idea": item["idea"], "model": MODEL}
@@ -44,7 +44,7 @@ def run_one(item: dict, out_dir: Path, catalog: list[str]) -> dict:
         try:
             final = go.run(item["idea"], {"market": item["market"], "constraints": item["constraints"]})
             record["ok"] = True
-            record["scores"] = score(final, f"{item['idea']} {item['constraints']}", catalog)
+            record["scores"] = score(final, f"{item['idea']} {item['constraints']}", final["profile"])
             record["slices"] = final["slices"]
             record["critic"] = final.get("critic", {})
         except Exception as e:  # one failed idea must not stop the set
@@ -84,7 +84,8 @@ def summary(label: str, records: list[dict]) -> str:
         f"| Time | {avg(lambda r: r['seconds']):,.0f}s |",
         f"| Revision rounds | {avg(lambda r: r['scores']['revisions']):.2f} |",
         f"| Unfixed math errors | {avg(lambda r: r['scores']['math_warnings']):.2f} |",
-        f"| Costed tools we can price-check | {sum(r['scores']['tools_in_catalog'] for r in ok)}/{sum(r['scores']['tools_costed'] for r in ok)} |",
+        f"| Paid tool prices matching the checked list | {sum(r['scores'].get('paid_prices_right', 0) for r in ok)}/{sum(r['scores'].get('paid_prices', 0) for r in ok)} |",
+        f"| All tool prices matching the checked list | {sum(r['scores']['tools_in_catalog'] for r in ok)}/{sum(r['scores']['tools_costed'] for r in ok)} |",
         f"| Recommended tools missing from costs | {avg(lambda r: len(r['scores']['hidden_costs'])):.1f} |",
         f"| Stats with no source | {avg(lambda r: len(r['scores']['invented_stats'])):.1f} |",
         "",
@@ -113,11 +114,10 @@ def main():
         ideas = [i for i in ideas if i["id"] in wanted]
     out_dir = HERE / "results" / args.label
     out_dir.mkdir(parents=True, exist_ok=True)
-    catalog = catalog_names()
 
     print(f"Running {len(ideas)} idea(s) on {MODEL} -> {out_dir}")
     for item in ideas:
-        run_one(item, out_dir, catalog)
+        run_one(item, out_dir)
     # The summary covers every idea run under this label so far, so --only runs add up.
     records = load(out_dir)
     (out_dir / "SUMMARY.md").write_text(summary(args.label, records), encoding="utf-8")

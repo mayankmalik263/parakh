@@ -9,7 +9,9 @@
   "issues_raised": 5,
   "math_warnings": 0,
   "tools_costed": 7,
-  "tools_in_catalog": 5,
+  "tools_in_catalog": 2,
+  "paid_prices_right": 0,
+  "paid_prices": 5,
   "hidden_costs": [
    "Next.js (App Router)",
    "Cursor",

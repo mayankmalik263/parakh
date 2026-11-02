@@ -4,7 +4,7 @@ give the same answer on any machine.
 
 What each number means:
 - math_warnings: arithmetic problems code could not fix (should be 0).
-- catalog_share: share of costed tools whose price is in tool_catalog.json, i.e. checked.
+- tools_in_catalog: tool cost lines whose price matches tool_catalog.json (tool, plan and amount).
 - hidden_costs: tools the Builder recommends (stack + AI tools) that never appear in tool_costs.
 - invented_stats: percentages, view counts and "N x faster" style claims in prose that the founder
   never gave us. Not every hit is wrong, but each one is a number with no source.
@@ -14,6 +14,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+import sys  # noqa: E402
+sys.path.insert(0, str(ROOT))
 
 # "40%", "500+ views", "3x", "10x faster", "saves 30 minutes", "2.5 lakh views"
 _STAT = re.compile(
@@ -41,12 +43,6 @@ def same_tool(a: str, b: str) -> bool:
         return False
     n = min(len(wa), len(wb))
     return wa[:n] == wb[:n]
-
-
-def catalog_names(path: Path = ROOT / "tool_catalog.json") -> list[str]:
-    """Every tool name and alias in Parakh's checked price list."""
-    catalog = json.loads(path.read_text(encoding="utf-8"))
-    return [n for t in catalog["tools"] for n in [t["name"], *t.get("aliases", [])]]
 
 
 def prose_fields(slices: dict) -> list[tuple[str, str]]:
@@ -90,20 +86,29 @@ def hidden_costs(slices: dict) -> list[str]:
     return [n for n in named if _words(n) and not any(same_tool(n, c) for c in costed)]
 
 
-def catalog_share(slices: dict, catalog: list[str]) -> tuple[int, int]:
-    """(costed tools found in the catalog, costed tools)."""
+def correct_prices(slices: dict, profile: dict) -> tuple[int, int, int, int]:
+    """(lines whose monthly cost matches Parakh's checked price, lines, paid lines that match, paid lines).
+    A line counts only if the tool and plan are in tool_catalog.json and the number agrees."""
+    import tool_catalog as tc
     costs = slices.get("builder", {}).get("tool_costs", [])
-    # Plans made since Step 1 carry the flag code set when it priced the tool; older ones are matched by name.
-    if any("verified" in t for t in costs):
-        checked = sum(1 for t in costs if t.get("verified"))
-    else:
-        checked = sum(1 for t in costs if any(same_tool(t.get("tool", ""), c) for c in catalog))
-    return checked, len(costs)
+    right = paid = paid_right = 0
+    for line in costs:
+        stated = line.get("monthly_cost") or 0
+        tool = tc.find_tool(line.get("tool", ""))
+        plan = tc.find_plan(tool, f"{line.get('tool', '')} {line.get('plan', '')}", stated) if tool else None
+        price = tc.monthly_cost(plan, profile) if plan else None
+        ok = price is not None and abs(stated - price) <= max(1, 0.02 * price)
+        right += ok
+        # Paid lines are the ones that matter: a free tool at 0 is easy to get right.
+        if stated > 0 or (price or 0) > 0:
+            paid += 1
+            paid_right += ok
+    return right, len(costs), paid_right, paid
 
 
-def score(final_state: dict, founder_text: str, catalog: list[str]) -> dict:
+def score(final_state: dict, founder_text: str, profile: dict) -> dict:
     slices = final_state.get("slices", {})
-    in_catalog, costed = catalog_share(slices, catalog)
+    in_catalog, costed, paid_right, paid = correct_prices(slices, profile)
     stats = invented_stats(slices, founder_text)
     return {
         "revisions": final_state.get("revision", 0),
@@ -111,6 +116,8 @@ def score(final_state: dict, founder_text: str, catalog: list[str]) -> dict:
         "math_warnings": len(final_state.get("math_warnings", [])),
         "tools_costed": costed,
         "tools_in_catalog": in_catalog,
+        "paid_prices_right": paid_right,
+        "paid_prices": paid,
         "hidden_costs": hidden_costs(slices),
         "invented_stats": stats,
         "plan_chars": len(json.dumps(slices, ensure_ascii=False)),

@@ -31,6 +31,8 @@ def main():
         "Revision rounds": lambda r: r["scores"]["revisions"],
         "Unfixed math errors": lambda r: r["scores"]["math_warnings"],
         "Hidden costs": lambda r: len(r["scores"]["hidden_costs"]),
+        "Paid prices right": lambda r: r["scores"].get("paid_prices_right", 0),
+        "Paid price lines": lambda r: r["scores"].get("paid_prices", 0),
         "Unsourced stats": lambda r: len(r["scores"]["invented_stats"]),
     }
     print(f"{len(common)} ideas in both runs\n")

@@ -9,7 +9,9 @@
   "issues_raised": 6,
   "math_warnings": 0,
   "tools_costed": 7,
-  "tools_in_catalog": 3,
+  "tools_in_catalog": 6,
+  "paid_prices_right": 0,
+  "paid_prices": 1,
   "hidden_costs": [
    "Google Forms + Google Sheets (free) — order log, per-kg weight sheet, weekly route sheet for pickup runner",
    "ChatGPT Free / Gemini Free — draft WhatsApp order scripts, reminder templates, price-list copy in Hinglish",

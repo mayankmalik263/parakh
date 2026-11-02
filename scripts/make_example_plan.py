@@ -13,6 +13,7 @@ from agents.context_block import build_profile
 from evaluation_engine import autofix_math, check_plan
 from models import BuildSlice, EconomicsSlice, GrowthSlice, StrategySlice
 from report_generator import build_display_plan, render_report
+from tool_catalog import price_build
 
 idea = "Notes and past papers for juniors at my college, sold before exams"
 state = {"startup_idea": idea, "market": "India", "constraints": "Funding: Bootstrapped. Founder: Student.", "target_audience": ""}
@@ -42,8 +43,8 @@ slices = {
                      "Make one Notion page with subjects and prices", "Create a ₹149 Razorpay Payment Link",
                      "Post one free sample page in 6 first-year WhatsApp groups"]}).model_dump(),
  "economics": EconomicsSlice.model_validate({
-  "pricing": [{"name": "One subject", "monthly_price": 149, "features": ["Unit-wise notes", "3 years of papers"]},
-              {"name": "Two subjects", "monthly_price": 249, "features": ["Both bundles", "Most-asked questions list"]}],
+  "pricing": [{"name": "One subject", "monthly_price": 149, "billing": "one_time", "features": ["Unit-wise notes", "3 years of papers"]},
+              {"name": "Two subjects", "monthly_price": 249, "billing": "one_time", "features": ["Both bundles", "Most-asked questions list"]}],
   "avg_revenue_per_customer": 149, "delivery_cost_per_customer": 25,
   "burn_line_items": [{"item": "Scanning and printing", "monthly_cost": 500},
                       {"item": "Posters at the canteen and hostel", "monthly_cost": 1000},
@@ -64,6 +65,8 @@ slices = {
   "objections": [{"objection": "The same PDFs are free in our group", "response": "Ours are sorted by unit and checked by a topper. The sample page is free, so compare first."},
                  {"objection": "₹149 is a lot for notes", "response": "It's less than a photocopy run of the same pages, and you get it tonight."}]}).model_dump(),
 }
+price_fixes = price_build(slices["builder"], profile)
+assert not price_fixes, price_fixes
 fixed = autofix_math(slices)
 issues = check_plan(slices, profile)
 assert not fixed and not issues, (fixed, issues)

@@ -14,14 +14,17 @@ You do NOT set pricing, burn, revenue or marketing; other agents own those.
 # The business type is set by the Strategist; each type gets its own build rules.
 BY_TYPE = {
     "software": """This is a SOFTWARE business.
-- Default stack: Next.js (App Router) + Supabase + Tailwind, deployed on Vercel. React Native + Expo only if the idea truly needs a phone app. Deviate only with a reason tied to this idea.
+- Default stack: Next.js (App Router) + Supabase + Tailwind. Host on Netlify or Cloudflare Pages free tiers:
+  Vercel's free Hobby plan is for non-commercial use only, so a paid product on Vercel needs Vercel Pro.
+  React Native + Expo only if the idea truly needs a phone app. Deviate only with a reason tied to this idea.
 - No custom ML training, no native iOS/Android for an MVP, no microservices. Use existing APIs.
 - mvp_features: at most 3, and feature 1 is the core moment the user pays for.
 - tool_costs: hosting, DB, auth, payments, email, domain, AI APIs.
 - first_10_steps: include exact commands where relevant (e.g. "npx create-next-app@latest").""",
     "service": """This is a SERVICE business (agency, consulting, done-for-you). Do NOT plan an app or write code.
 - stack: the tools used to deliver the work and run the business (e.g. design, scheduling, client comms, invoicing, a one-page portfolio site on a no-code builder).
-- ai_tools: AI tools that cut delivery time per client.
+- ai_tools: AI that cuts delivery time per client. Start with the founder's AI assistant; for video work,
+  Claude Code with FFmpeg, Whisper and HyperFrames can cut, caption and render clips. Add a paid editor only if needed.
 - mvp_features: the first 1-3 sellable service packages, each with exact deliverables per month.
 - tool_costs: every delivery and business tool, plus a portfolio site and domain.
 - mvp_build_cost: one-time setup (portfolio site, domain, templates, a paid pilot's costs).

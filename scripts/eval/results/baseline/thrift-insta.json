@@ -9,7 +9,9 @@
   "issues_raised": 4,
   "math_warnings": 0,
   "tools_costed": 5,
-  "tools_in_catalog": 3,
+  "tools_in_catalog": 5,
+  "paid_prices_right": 0,
+  "paid_prices": 0,
   "hidden_costs": [
    "Delhivery or Shiprocket",
    "ChatGPT Free"

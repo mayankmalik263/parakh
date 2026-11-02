@@ -55,7 +55,7 @@ def test_tool_banned_in_india_is_a_builder_issue_and_left_out_of_the_prompt():
     assert found and found[0]["owner"] == "builder" and "banned in India" in found[0]["problem"]
     assert market_findings(slices, US, CATALOG) == []
     assert "CapCut" not in catalog_prompt(INDIA, "service", CATALOG)
-    assert "Canva: Free free; Pro ₹333/mo" in catalog_prompt(INDIA, "service", CATALOG)
+    assert "Canva: free; Pro ₹333/mo" in catalog_prompt(INDIA, "service", CATALOG)
 
 
 def test_budget_and_ai_answers_reach_the_profile():

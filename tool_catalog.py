@@ -52,7 +52,7 @@ def find_tool(name: str, catalog: dict | None = None) -> dict | None:
 
 def find_plan(tool: dict, plan_text: str, stated_cost: float | None = None) -> dict | None:
     """The catalog plan named in the Builder's plan text, e.g. "Supabase Pro" -> Pro."""
-    text = (plan_text or "").lower()
+    text = set(re.findall(r"[a-z0-9]+", (plan_text or "").lower()))
     scored = []
     for plan in tool["plans"]:
         words = re.findall(r"[a-z0-9]+", plan["plan"].lower())
@@ -72,7 +72,8 @@ def monthly_cost(plan: dict, profile: dict, catalog: dict | None = None) -> floa
     """A plan's fixed monthly cost in the plan currency. Usage-priced plans cost 0 a month up front."""
     catalog = catalog or load_catalog()
     period = plan["period"]
-    if period in ("free", "usage"):
+    if period in ("free", "usage", "one_time"):
+        # Pay-per-use and one-off purchases carry no fixed monthly cost; their note says what they cost.
         return 0.0
     rate = catalog["usd_to_inr"]["rate"]
     want_inr = profile.get("currency") == "INR"
@@ -97,10 +98,16 @@ def _default_plan(tool: dict) -> dict | None:
     return min(fixed, key=lambda p: (p.get("usd") or 0) + (p.get("inr") or 0) / 100) if fixed else None
 
 
-def _note(tool: dict, plan: dict) -> str:
+def _note(tool: dict, plan: dict, profile: dict | None = None) -> str:
     checked = tool.get("checked_on") or "?"
     usage = f"{plan['usage']}. " if plan.get("usage") else ""
-    return f"{usage}Price checked {checked} on {tool['source']}"
+    converted = ""
+    if profile and plan["period"] in ("month", "year"):
+        if profile.get("currency") == "INR" and plan.get("inr") is None and plan.get("usd") is not None:
+            converted = f" (${plan['usd']:g}/{plan['period']}, converted to rupees)"
+        elif profile.get("currency") == "USD" and plan.get("usd") is None and plan.get("inr") is not None:
+            converted = f" (₹{plan['inr']:,.0f}/{plan['period']}, converted to dollars)"
+    return f"{usage}Price checked {checked} on {tool['source']}{converted}"
 
 
 def price_build(build: dict, profile: dict, catalog: dict | None = None) -> list[dict]:
@@ -123,7 +130,7 @@ def price_build(build: dict, profile: dict, catalog: dict | None = None) -> list
             fixes.append({"label": f"{line['tool']} ({plan['plan']})", "unit": "money", "before": line.get("monthly_cost") or 0, "after": price})
             line["monthly_cost"] = price
         line["verified"] = True
-        line["price_note"] = _note(tool, plan)
+        line["price_note"] = _note(tool, plan, profile)
 
     named = [t.get("name", "") for t in build.get("stack", []) + build.get("ai_tools", [])]
     for name in named:
@@ -137,7 +144,7 @@ def price_build(build: dict, profile: dict, catalog: dict | None = None) -> list
                           "price_note": "Recommended without a price. Check whether it is free before you rely on it."})
         else:
             costs.append({"tool": tool["name"], "plan": plan["plan"], "monthly_cost": price, "verified": True,
-                          "price_note": _note(tool, plan), "added_by_code": True})
+                          "price_note": _note(tool, plan, profile), "added_by_code": True})
     return fixes
 
 
@@ -175,8 +182,8 @@ def catalog_prompt(profile: dict, business_type: str, catalog: dict | None = Non
         for p in tool["plans"]:
             price = monthly_cost(p, profile, catalog)
             if p["period"] == "free":
-                plans.append(f"{p['plan']} free")
-            elif p["period"] == "usage":
+                plans.append("free" if p["plan"].lower() == "free" else f"{p['plan']} free")
+            elif p["period"] in ("usage", "one_time"):
                 plans.append(f"{p['plan']} ({p.get('usage', 'pay per use')})")
             elif price is not None:
                 plans.append(f"{p['plan']} {profile['symbol']}{price:,.0f}/mo")
