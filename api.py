@@ -23,7 +23,7 @@ from graph_orchestrator import run
 import event_bus
 
 from supabase_client import get_supabase
-from agents.llm_router import BharatCodeAccessError, call_llm, call_llm_json, use_bharatcode_key
+from agents.llm_router import BharatCodeAccessError, call_llm, call_llm_json, summarize_usage, token_meter, use_bharatcode_key
 
 app = FastAPI(title="Parakh API", description="Your own AI co-founder, on BharatCode")
 
@@ -138,7 +138,11 @@ def run_simulation(job_id: str, req: SimulateRequest, user_id: str):
             "constraints": req.constraints
         }
 
-        final_state = run(req.idea, context, job_id=job_id, user_id=user_id)
+        with token_meter() as calls:
+            try:
+                final_state = run(req.idea, context, job_id=job_id, user_id=user_id)
+            finally:
+                print(f"[Parakh] run {job_id[:8]} used {summarize_usage(calls)}")
 
         result = {
             "final_report": final_state.get("final_report", ""),

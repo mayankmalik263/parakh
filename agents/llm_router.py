@@ -45,6 +45,17 @@ FALLBACK = {m: [MODEL] for m in (CRITIC_MODEL, VISION_MODEL) if m != MODEL}
 # API rejects it: _extract_json still pulls the object out of a plain-text reply.
 JSON_MODE = os.getenv("BHARATCODE_JSON_MODE", "1") != "0"
 
+# Qwen 3.x "thinks" before answering by default. On BharatCode those thinking tokens count against
+# max_tokens and the daily quota, and a long think can use the whole budget and leave the answer
+# empty. Parakh's agents get their reasoning steps in the prompt, so thinking is off unless
+# PARAKH_THINKING=1. It is switched off with chat_template_kwargs (vLLM / SGLang style); if
+# BharatCode rejects that field, Parakh drops it for the rest of the process.
+THINKING = os.getenv("PARAKH_THINKING", "0") == "1"
+_send_no_think = not THINKING
+NO_THINK_BODY = {"chat_template_kwargs": {"enable_thinking": False}}
+# One retry gets a bigger budget when a reply comes back empty because thinking used it all up.
+MAX_TOKENS_CAP = 8000
+
 # Standard OpenAI sampling parameters only. Provider-specific ones (Groq's reasoning_effort,
 # reasoning_format) are rejected with a 400 by APIs that don't know them.
 SAMPLING = {"temperature": 0.7, "top_p": 0.8}
@@ -64,6 +75,28 @@ _client: OpenAI | None = None
 # A visitor's own BharatCode key for the current request (header X-BharatCode-Key). Calls made
 # while it is set use the visitor's quota instead of the server's. Never stored or logged.
 _user_key: ContextVar[str | None] = ContextVar("bharatcode_user_key", default=None)
+
+
+# Collects token usage for one simulation so the backend can print a total at the end.
+_meter: ContextVar[list | None] = ContextVar("parakh_token_meter", default=None)
+
+
+@contextmanager
+def token_meter():
+    """with token_meter() as calls: ... then sum(c['total'] for c in calls)."""
+    calls: list = []
+    token = _meter.set(calls)
+    try:
+        yield calls
+    finally:
+        _meter.reset(token)
+
+
+def summarize_usage(calls: list) -> str:
+    inp = sum(c["in"] for c in calls)
+    out = sum(c["out"] for c in calls)
+    think = sum(c["thinking"] for c in calls)
+    return f"{len(calls)} calls, {inp + out:,} tokens ({inp:,} in, {out:,} out, of which {think:,} thinking)"
 
 
 @contextmanager
@@ -103,8 +136,27 @@ _THINK = re.compile(r"<think>.*?</think>", re.DOTALL)
 
 
 def _strip_thinking(text: str) -> str:
-    """Qwen 3.x can put its reasoning in <think>...</think> before the answer. Drop it."""
-    return _THINK.sub("", text).strip()
+    """Qwen 3.x can put its reasoning in <think>...</think> before the answer. Drop it, including a
+    <think> block that never closed because the reply ran out of tokens mid-thought."""
+    text = _THINK.sub("", text)
+    if "<think>" in text:
+        text = text.split("<think>", 1)[0]
+    return text.strip()
+
+
+def _record_usage(resp, role: str, model: str, seconds: float, finish: str | None) -> None:
+    usage = getattr(resp, "usage", None)
+    if not usage:
+        return
+    details = getattr(usage, "completion_tokens_details", None)
+    thinking = (getattr(details, "reasoning_tokens", None) or 0) if details else 0
+    entry = {"role": role, "in": usage.prompt_tokens or 0, "out": usage.completion_tokens or 0, "thinking": thinking}
+    entry["total"] = entry["in"] + entry["out"]
+    calls = _meter.get()
+    if calls is not None:
+        calls.append(entry)
+    think = f", {thinking} thinking" if thinking else ""
+    print(f"[LLM] {role:<10} {model}  in={entry['in']} out={entry['out']}{think}  finish={finish}  {seconds:.1f}s")
 
 
 def _extract_json(text: str) -> str:
@@ -119,23 +171,35 @@ def _extract_json(text: str) -> str:
     return text[start:end + 1] if start != -1 and end > start else text
 
 
+class EmptyReplyError(RuntimeError):
+    """The model answered with no text after its thinking was removed."""
+
+
 def _complete(model: str, messages: list[dict], json_mode: bool, max_tokens: int, role: str) -> str:
+    global _send_no_think
     client = _get_client()
     kwargs = {"model": model, "messages": messages, "max_tokens": max_tokens, **SAMPLING}
     if json_mode and JSON_MODE:
         kwargs["response_format"] = {"type": "json_object"}
 
-    for attempt in range(MAX_ATTEMPTS):
+    attempt = 0
+    empty_retry_done = False
+    while attempt < MAX_ATTEMPTS:
+        if _send_no_think:
+            kwargs["extra_body"] = NO_THINK_BODY
+        else:
+            kwargs.pop("extra_body", None)
+        started = time.monotonic()
         try:
             resp = client.chat.completions.create(**kwargs)
-            if resp.usage:
-                logger.info("usage role=%s model=%s in=%d out=%d", role, model, resp.usage.prompt_tokens, resp.usage.completion_tokens)
-            content = _strip_thinking(resp.choices[0].message.content or "")
-            if not content:
-                raise RuntimeError(f"{model} returned an empty response")
-            return content
         except (APIStatusError, APIConnectionError) as e:
             status = getattr(e, "status_code", None)  # None for connection errors and timeouts
+            if status == 400 and "extra_body" in kwargs:
+                # BharatCode may not accept chat_template_kwargs. Stop sending it and retry at once.
+                logger.warning("BharatCode rejected chat_template_kwargs (%s); sending requests without it.", e)
+                print("[LLM] BharatCode doesn't accept the 'thinking off' switch; continuing without it.")
+                _send_no_think = False
+                continue
             if status is not None and status not in RETRYABLE_STATUS:
                 raise
             wait = _wait_seconds(e, attempt)
@@ -143,6 +207,31 @@ def _complete(model: str, messages: list[dict], json_mode: bool, max_tokens: int
                 raise
             logger.warning("%s answered %s, retrying in %.1fs (attempt %d of %d)", model, status or "no response", wait, attempt + 1, MAX_ATTEMPTS)
             time.sleep(wait)
+            attempt += 1
+            continue
+
+        choice = resp.choices[0] if resp.choices else None
+        finish = getattr(choice, "finish_reason", None) if choice else None
+        _record_usage(resp, role, model, time.monotonic() - started, finish)
+        content = _strip_thinking((choice.message.content if choice else None) or "")
+        if content:
+            return content
+
+        # Empty answer. Almost always: the model spent max_tokens thinking (finish_reason "length").
+        if not empty_retry_done:
+            empty_retry_done = True
+            kwargs["max_tokens"] = min(MAX_TOKENS_CAP, max(kwargs["max_tokens"] * 2, 4000))
+            last = dict(kwargs["messages"][-1])
+            if isinstance(last.get("content"), str) and "/no_think" not in last["content"]:
+                # Qwen 3's own switch for "answer without thinking". Models that don't know it ignore it.
+                last["content"] += "\n\n/no_think"
+                kwargs["messages"] = [*kwargs["messages"][:-1], last]
+            print(f"[LLM] {role}: empty reply (finish={finish}). Retrying once with max_tokens={kwargs['max_tokens']}.")
+            continue
+        raise EmptyReplyError(
+            f"The {role} agent got no answer from {model} (finish_reason={finish}). "
+            "It most likely spent its whole token budget thinking. Try again; if it keeps happening, tell us."
+        )
     raise AssertionError("unreachable")
 
 

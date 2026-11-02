@@ -163,3 +163,39 @@ def test_unverified_student_key_says_how_to_unlock_the_model(monkeypatch):
     monkeypatch.setattr(r, "_get_client", lambda: _fake_client([_status_error("APIStatusError", 402)], []))
     with pytest.raises(r.BharatCodeAccessError, match="bharatcode.ai/account"):
         r.call_llm("hi", role="strategist")
+
+
+def test_thinking_is_switched_off_by_default(monkeypatch):
+    from agents import llm_router as r
+    calls = []
+    monkeypatch.setattr(r, "_send_no_think", True)
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client(["ok"], calls))
+    r.call_llm("hi", role="strategist")
+    assert calls[0]["extra_body"] == {"chat_template_kwargs": {"enable_thinking": False}}
+
+
+def test_rejected_thinking_switch_is_dropped_and_the_call_still_works(monkeypatch):
+    from agents import llm_router as r
+    calls = []
+    monkeypatch.setattr(r, "_send_no_think", True)
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client([_status_error("BadRequestError", 400), "ok"], calls))
+    assert r.call_llm("hi", role="strategist") == "ok"
+    assert "extra_body" in calls[0] and "extra_body" not in calls[1]
+    assert r._send_no_think is False
+
+
+def test_empty_reply_is_retried_once_with_more_room(monkeypatch):
+    # A reply that is only an unfinished <think> block: the model ran out of tokens mid-thought.
+    from agents import llm_router as r
+    calls = []
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client(["<think>Let me weigh the price", "the answer"], calls))
+    assert r.call_llm("hi", role="economics", max_tokens=3000) == "the answer"
+    assert calls[1]["max_tokens"] == 6000 and calls[1]["messages"][-1]["content"].endswith("/no_think")
+
+
+def test_empty_reply_twice_gives_a_readable_error(monkeypatch):
+    import pytest
+    from agents import llm_router as r
+    monkeypatch.setattr(r, "_get_client", lambda: _fake_client([""], []))
+    with pytest.raises(r.EmptyReplyError, match="The growth agent got no answer"):
+        r.call_llm("hi", role="growth")
