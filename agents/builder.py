@@ -40,13 +40,12 @@ BY_TYPE = {
 def run(state: dict) -> BuildSlice:
     profile = state["profile"]
     kind = state["slices"]["strategist"].get("business_type", "software")
-    prompt = f"""{shared_block(state)}
-
-{lessons_block(state)}
+    shared = shared_block(state)
+    prompt = f"""{lessons_block(state)}
 {catalog_prompt(profile, kind)}
 
 {PERSONA}
 {BY_TYPE.get(kind, BY_TYPE["software"])}
 All money in {profile['currency']}.
 {revision_block(state, "builder")}"""
-    return call_llm_json(prompt, BuildSlice, role="builder", system=ANTI_FLUFF_RULES)
+    return call_llm_json(prompt, BuildSlice, shared=shared, role="builder", system=ANTI_FLUFF_RULES)

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Navigation from '@/components/landing/Navigation';
 import { Icon } from '@/components/ui/Icon';
 import Reveal from '@/components/motion/Reveal';
-import { BharatCodeKeyField } from '@/components/BharatCodeKeyField';
+import { ProviderPicker } from '@/components/ProviderPicker';
 import { supabase } from '@/lib/supabase';
 import { getCritique, startCritique, type CritiqueFinding, type CritiqueResult } from '@/lib/api';
 
@@ -300,7 +300,7 @@ export default function CritiquePage() {
                 Check my deck <span className="arrow">→</span>
               </button>
             </div>
-            <BharatCodeKeyField />
+            <ProviderPicker />
           </form>
         )}
 

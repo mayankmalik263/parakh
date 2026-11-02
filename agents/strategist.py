@@ -19,9 +19,8 @@ You do NOT set prices, costs, tech stack or marketing channels; other agents own
 
 
 def run(state: dict) -> StrategySlice:
-    prompt = f"""{shared_block(state)}
-
-{lessons_block(state)}
+    shared = shared_block(state)
+    prompt = f"""{lessons_block(state)}
 {PERSONA}
 {revision_block(state, "strategist")}"""
-    return call_llm_json(prompt, StrategySlice, role="strategist", system=ANTI_FLUFF_RULES)
+    return call_llm_json(prompt, StrategySlice, shared=shared, role="strategist", system=ANTI_FLUFF_RULES)

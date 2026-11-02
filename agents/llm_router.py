@@ -23,6 +23,15 @@ from dotenv import load_dotenv
 from openai import APIConnectionError, APIStatusError, OpenAI
 from pydantic import BaseModel, ValidationError
 
+from .providers import DEFAULT_PROVIDER, PROVIDERS, Provider
+
+try:  # Claude support is optional for a BharatCode-only deployment.
+    import anthropic
+    _HTTP_ERRORS = (APIStatusError, APIConnectionError, anthropic.APIStatusError, anthropic.APIConnectionError)
+except ImportError:  # pragma: no cover
+    anthropic = None
+    _HTTP_ERRORS = (APIStatusError, APIConnectionError)
+
 load_dotenv(override=True)
 
 logger = logging.getLogger(__name__)
@@ -72,9 +81,11 @@ T = TypeVar("T", bound=BaseModel)
 
 _client: OpenAI | None = None
 
-# A visitor's own BharatCode key for the current request (header X-BharatCode-Key). Calls made
-# while it is set use the visitor's quota instead of the server's. Never stored or logged.
-_user_key: ContextVar[str | None] = ContextVar("bharatcode_user_key", default=None)
+# The visitor's choice for the current request: provider, their own key and model. None means
+# BharatCode on the server's key. Keys arrive in request headers and are never stored or logged.
+_selection: ContextVar[dict | None] = ContextVar("parakh_ai_selection", default=None)
+# Optional request fields a provider has refused once (400); not sent to it again in this process.
+_refused: dict[str, set] = {}
 
 
 # Collects token usage for one simulation so the backend can print a total at the end.
@@ -92,32 +103,101 @@ def token_meter():
         _meter.reset(token)
 
 
+def run_stats(calls: list, seconds: float) -> dict:
+    """What a finished run cost, for the line on each plan."""
+    from .providers import estimate_cost_usd
+    provider = current_provider()
+    return {
+        "provider": provider.id, "provider_label": provider.label,
+        "model": calls[-1]["model"] if calls else model_for("utility"),
+        "calls": len(calls), "tokens_in": sum(c["in"] for c in calls), "tokens_out": sum(c["out"] for c in calls),
+        "cached": sum(c.get("cached", 0) for c in calls), "seconds": round(seconds),
+        "cost_usd": estimate_cost_usd(calls), "own_key": bool(_own_key()),
+    }
+
+
+def current_calls() -> list:
+    """The calls recorded so far in this run (empty outside token_meter)."""
+    return list(_meter.get() or [])
+
+
 def summarize_usage(calls: list) -> str:
     inp = sum(c["in"] for c in calls)
     out = sum(c["out"] for c in calls)
     think = sum(c["thinking"] for c in calls)
-    return f"{len(calls)} calls, {inp + out:,} tokens ({inp:,} in, {out:,} out, of which {think:,} thinking)"
+    cached = sum(c.get("cached", 0) for c in calls)
+    return f"{len(calls)} calls, {inp + out:,} tokens ({inp:,} in, {out:,} out, of which {think:,} thinking, {cached:,} cached)"
+
+
+@contextmanager
+def use_provider(provider: str | None, key: str | None = None, model: str | None = None):
+    """Run the calls inside on this provider with the visitor's key and model."""
+    provider = (provider or DEFAULT_PROVIDER).strip().lower()
+    if provider not in PROVIDERS:
+        raise ValueError(f"Unknown AI provider '{provider}'.")
+    token = _selection.set({"provider": provider, "key": (key or "").strip() or None, "model": (model or "").strip() or None})
+    try:
+        yield
+    finally:
+        _selection.reset(token)
 
 
 @contextmanager
 def use_bharatcode_key(key: str | None):
-    token = _user_key.set((key or "").strip() or None)
-    try:
+    """A visitor's own BharatCode key (header X-BharatCode-Key)."""
+    with use_provider("bharatcode", key):
         yield
-    finally:
-        _user_key.reset(token)
+
+
+def current_provider() -> Provider:
+    sel = _selection.get()
+    return PROVIDERS[sel["provider"] if sel else DEFAULT_PROVIDER]
+
+
+def _own_key() -> str | None:
+    sel = _selection.get()
+    return sel["key"] if sel else None
+
+
+def model_for(role: str) -> str:
+    """BharatCode uses the server's per-role models; any other provider runs one model, the visitor's pick."""
+    provider = current_provider()
+    if provider.id == "bharatcode":
+        sel = _selection.get()
+        return (sel and sel["model"]) or ROLE_MODELS.get(role, MODEL)
+    model = ((_selection.get() or {}).get("model")) or provider.default_model
+    if not model:
+        raise RuntimeError(f"Choose a model for {provider.label} (for example from its model list) and try again.")
+    return model
 
 
 def _get_client() -> OpenAI:
+    """An OpenAI-compatible client for the current provider."""
     global _client
-    if _user_key.get():
-        return OpenAI(api_key=_user_key.get(), base_url=BASE_URL, max_retries=0, timeout=TIMEOUT_S)
-    if _client is None:
-        key = (os.environ.get("BHARATCODE_API_KEY") or "").strip().strip('"').strip("'")
-        if not key:
-            raise RuntimeError("BHARATCODE_API_KEY is not set. Add it to .env.")
-        _client = OpenAI(api_key=key, base_url=BASE_URL, max_retries=0, timeout=TIMEOUT_S)
-    return _client
+    provider = current_provider()
+    key = _own_key()
+    if provider.id == "bharatcode":
+        if key:
+            return OpenAI(api_key=key, base_url=BASE_URL, max_retries=0, timeout=TIMEOUT_S)
+        if _client is None:
+            server_key = (os.environ.get("BHARATCODE_API_KEY") or "").strip().strip('"').strip("'")
+            if not server_key:
+                raise RuntimeError("BHARATCODE_API_KEY is not set. Add it to .env.")
+            _client = OpenAI(api_key=server_key, base_url=BASE_URL, max_retries=0, timeout=TIMEOUT_S)
+        return _client
+    if not key:
+        raise RuntimeError(f"Paste your {provider.label} API key to run plans on {provider.label}.")
+    return OpenAI(api_key=key, base_url=provider.base_url, max_retries=0, timeout=TIMEOUT_S,
+                  default_headers=provider.headers or None)
+
+
+def _get_anthropic():
+    if anthropic is None:
+        raise RuntimeError("Claude support needs the anthropic package: pip install -r requirements.txt")
+    key = _own_key()
+    if not key:
+        raise RuntimeError("Paste your Claude (Anthropic) API key to run plans on Claude.")
+    return anthropic.Anthropic(api_key=key, max_retries=0, timeout=TIMEOUT_S)
 
 
 def _wait_seconds(err: Exception, attempt: int) -> float:
@@ -145,6 +225,7 @@ def _strip_thinking(text: str) -> str:
 
 
 def _record_usage(resp, role: str, model: str, seconds: float, finish: str | None) -> None:
+    """Token counts for one OpenAI-style reply. cached = prompt tokens the provider served from its cache."""
     usage = getattr(resp, "usage", None)
     if not usage:
         return
@@ -155,13 +236,19 @@ def _record_usage(resp, role: str, model: str, seconds: float, finish: str | Non
         msg = resp.choices[0].message
         reasoning = getattr(msg, "reasoning_content", None) or getattr(msg, "reasoning", None) or ""
         thinking = round(len(reasoning) / 3.5)  # rough: ~3.5 characters per token
-    entry = {"role": role, "in": usage.prompt_tokens or 0, "out": usage.completion_tokens or 0, "thinking": thinking}
-    entry["total"] = entry["in"] + entry["out"]
+    prompt_details = getattr(usage, "prompt_tokens_details", None)
+    cached = (getattr(prompt_details, "cached_tokens", None) or 0) if prompt_details else 0
+    _log_usage(role, model, usage.prompt_tokens or 0, usage.completion_tokens or 0, thinking, cached, seconds, finish)
+
+
+def _log_usage(role: str, model: str, tokens_in: int, tokens_out: int, thinking: int, cached: int, seconds: float, finish) -> None:
+    entry = {"role": role, "provider": current_provider().id, "model": model, "in": tokens_in, "out": tokens_out,
+             "thinking": thinking, "cached": cached, "total": tokens_in + tokens_out, "seconds": round(seconds, 1)}
     calls = _meter.get()
     if calls is not None:
         calls.append(entry)
-    think = f", {thinking} thinking" if thinking else ""
-    print(f"[LLM] {role:<10} {model}  in={entry['in']} out={entry['out']}{think}  finish={finish}  {seconds:.1f}s")
+    extra = (f", {thinking} thinking" if thinking else "") + (f", {cached} cached" if cached else "")
+    print(f"[LLM] {role:<10} {model}  in={tokens_in} out={tokens_out}{extra}  finish={finish}  {seconds:.1f}s")
 
 
 def _extract_json(text: str) -> str:
@@ -183,17 +270,38 @@ class EmptyReplyError(RuntimeError):
     """The model answered with no text after its thinking was removed."""
 
 
+def _openai_messages(messages: list[dict]) -> list[dict]:
+    """Shared-prefix blocks become one string per message: OpenAI-style APIs cache the prefix by themselves."""
+    out = []
+    for m in messages:
+        content = m["content"]
+        if isinstance(content, list) and all(b.get("type") == "text" for b in content):
+            content = "\n\n".join(b["text"] for b in content)
+        else:
+            content = [{k: v for k, v in b.items() if k != "cache_control"} for b in content] if isinstance(content, list) else content
+        out.append({"role": m["role"], "content": content})
+    return out
+
+
 def _complete(model: str, messages: list[dict], json_mode: bool, max_tokens: int, role: str) -> str:
     global _send_no_think
+    provider = current_provider()
+    if provider.kind == "anthropic":
+        return _complete_anthropic(model, messages, json_mode, max_tokens, role)
     client = _get_client()
-    kwargs = {"model": model, "messages": messages, "max_tokens": max_tokens, **SAMPLING}
-    if json_mode and JSON_MODE:
+    refused = _refused.setdefault(provider.id, set())
+    kwargs = {"model": model, "messages": _openai_messages(messages), provider.token_param: max_tokens}
+    if provider.sampling:
+        kwargs.update(SAMPLING)
+    json_mode = json_mode and "response_format" not in refused and (JSON_MODE or provider.id != "bharatcode")
+    if json_mode:
         kwargs["response_format"] = {"type": "json_object"}
+    no_think = provider.no_think and _send_no_think
 
     attempt = 0
     empty_retry_done = False
     while attempt < MAX_ATTEMPTS:
-        if _send_no_think:
+        if no_think:
             kwargs["extra_body"] = NO_THINK_BODY
         else:
             kwargs.pop("extra_body", None)
@@ -206,7 +314,13 @@ def _complete(model: str, messages: list[dict], json_mode: bool, max_tokens: int
                 # BharatCode may not accept chat_template_kwargs. Stop sending it and retry at once.
                 logger.warning("BharatCode rejected chat_template_kwargs (%s); sending requests without it.", e)
                 print("[LLM] BharatCode doesn't accept the 'thinking off' switch; continuing without it.")
-                _send_no_think = False
+                _send_no_think = no_think = False
+                continue
+            if status == 400 and "response_format" in kwargs and "response_format" in str(e):
+                # Some models behind OpenRouter or Gemini don't take JSON mode; the prompt still asks for JSON.
+                print(f"[LLM] {provider.label} rejected JSON mode for {model}; continuing without it.")
+                refused.add("response_format")
+                kwargs.pop("response_format")
                 continue
             if status is not None and status not in RETRYABLE_STATUS:
                 raise
@@ -228,13 +342,13 @@ def _complete(model: str, messages: list[dict], json_mode: bool, max_tokens: int
         # Empty answer. Almost always: the model spent max_tokens thinking (finish_reason "length").
         if not empty_retry_done:
             empty_retry_done = True
-            kwargs["max_tokens"] = min(MAX_TOKENS_CAP, max(kwargs["max_tokens"] * 2, 4000))
+            kwargs[provider.token_param] = min(MAX_TOKENS_CAP, max(kwargs[provider.token_param] * 2, 4000))
             last = dict(kwargs["messages"][-1])
-            if isinstance(last.get("content"), str) and "/no_think" not in last["content"]:
+            if provider.no_think and isinstance(last.get("content"), str) and "/no_think" not in last["content"]:
                 # Qwen 3's own switch for "answer without thinking". Models that don't know it ignore it.
                 last["content"] += "\n\n/no_think"
                 kwargs["messages"] = [*kwargs["messages"][:-1], last]
-            print(f"[LLM] {role}: empty reply (finish={finish}). Retrying once with max_tokens={kwargs['max_tokens']}.")
+            print(f"[LLM] {role}: empty reply (finish={finish}). Retrying once with {provider.token_param}={kwargs[provider.token_param]}.")
             continue
         raise EmptyReplyError(
             f"The {role} agent got no answer from {model} (finish_reason={finish}). "
@@ -243,40 +357,106 @@ def _complete(model: str, messages: list[dict], json_mode: bool, max_tokens: int
     raise AssertionError("unreachable")
 
 
+def _anthropic_content(content) -> list[dict]:
+    """Our message content as Claude content blocks: text keeps its cache marker, image data URLs become base64 images."""
+    if isinstance(content, str):
+        return [{"type": "text", "text": content}]
+    blocks = []
+    for b in content:
+        if b.get("type") == "image_url":
+            head, data = b["image_url"]["url"].split(",", 1)
+            media = head.split(":", 1)[1].split(";", 1)[0]
+            blocks.append({"type": "image", "source": {"type": "base64", "media_type": media, "data": data}})
+        else:
+            blocks.append(b)
+    return blocks
+
+
+def _complete_anthropic(model: str, messages: list[dict], json_mode: bool, max_tokens: int, role: str) -> str:
+    """Claude through the Anthropic SDK. The system prompt and the shared start of the user prompt carry
+    cache markers, so later calls in the run read them from the cache at a fraction of the input price."""
+    client = _get_anthropic()
+    system = [{"type": "text", "text": m["content"], "cache_control": {"type": "ephemeral"}} for m in messages if m["role"] == "system"]
+    convo = [{"role": m["role"], "content": _anthropic_content(m["content"])} for m in messages if m["role"] != "system"]
+    kwargs = {"model": model, "max_tokens": max_tokens, "messages": convo}
+    if system:
+        kwargs["system"] = system
+    for attempt in range(MAX_ATTEMPTS):
+        started = time.monotonic()
+        try:
+            resp = client.messages.create(**kwargs)
+        except (anthropic.APIStatusError, anthropic.APIConnectionError) as e:
+            status = getattr(e, "status_code", None)
+            if status is not None and status not in RETRYABLE_STATUS | {529}:
+                raise
+            wait = _wait_seconds(e, attempt)
+            if wait > MAX_WAIT_S or attempt == MAX_ATTEMPTS - 1:
+                raise
+            time.sleep(wait)
+            continue
+        u = resp.usage
+        cache_read = u.cache_read_input_tokens or 0
+        tokens_in = (u.input_tokens or 0) + cache_read + (u.cache_creation_input_tokens or 0)
+        _log_usage(role, model, tokens_in, u.output_tokens or 0, 0, cache_read, time.monotonic() - started, resp.stop_reason)
+        text = "".join(b.text for b in resp.content if getattr(b, "type", "") == "text").strip()
+        if text:
+            return text
+        raise EmptyReplyError(f"The {role} agent got no answer from {model} (stop_reason={resp.stop_reason}). Try again.")
+    raise AssertionError("unreachable")
+
+
 class BharatCodeAccessError(RuntimeError):
     """The key works but isn't allowed to use the model (BharatCode answers 402 or 403). Retrying won't help."""
 
 
 def _complete_with_fallback(role: str, messages: list[dict], json_mode: bool, max_tokens: int) -> str:
-    primary = ROLE_MODELS.get(role, MODEL)
-    chain = [primary, *FALLBACK.get(primary, [])]
+    provider = current_provider()
+    primary = model_for(role)
+    chain = [primary, *(FALLBACK.get(primary, []) if provider.id == "bharatcode" else [])]
     for model in chain:
         try:
             return _complete(model, messages, json_mode, max_tokens, role)
-        except (APIStatusError, APIConnectionError) as e:
+        except _HTTP_ERRORS as e:
             status = getattr(e, "status_code", None)
             # 400 is a bad request or a bad generation, not a dead model: let the caller retry.
             if status == 400:
                 raise
+            if provider.id != "bharatcode":
+                _raise_readable(provider, model, status, e)
             if status == 401:
-                if _user_key.get():
+                if _own_key():
                     raise RuntimeError("Your BharatCode API key was rejected. Check it, or remove it to use the shared quota.") from e
                 raise RuntimeError("The server's BHARATCODE_API_KEY was rejected. Check .env.") from e
             if model != chain[-1]:
                 logger.warning("%s failed (%s). Falling back for role '%s'.", model, status or e, role)
                 continue
             if status in (402, 403):
-                whose = "Your BharatCode key" if _user_key.get() else "The server's BharatCode key"
+                whose = "Your BharatCode key" if _own_key() else "The server's BharatCode key"
                 raise BharatCodeAccessError(
                     f"{whose} can't use {model} yet. Students get it free after verifying their college email at "
                     "https://bharatcode.ai/account. Otherwise it needs a BharatCode Lite or Pro plan."
                 ) from e
             if status == 429:
-                whose = "Your BharatCode key's" if _user_key.get() else "Today's shared"
+                whose = "Your BharatCode key's" if _own_key() else "Today's shared"
                 raise RuntimeError(f"{whose} AI quota is used up. Try again later, or add your own BharatCode API key.") from e
             if status is None or status >= 500:
                 raise RuntimeError("BharatCode is busy and didn't answer after several retries. Try again in a minute.") from e
             raise
+
+
+def _raise_readable(provider: Provider, model: str, status: int | None, err: Exception):
+    """Errors from a visitor's own provider key, in words they can act on."""
+    if status == 401:
+        raise RuntimeError(f"Your {provider.label} API key was rejected. Check it in the AI provider settings.") from err
+    if status in (402, 403):
+        raise RuntimeError(f"Your {provider.label} account can't use {model}: check its billing or model access.") from err
+    if status == 404:
+        raise RuntimeError(f"{provider.label} doesn't know the model '{model}'. Check the model name.") from err
+    if status == 429:
+        raise RuntimeError(f"Your {provider.label} key hit its rate limit or quota. Try again later.") from err
+    if status is None or status >= 500:
+        raise RuntimeError(f"{provider.label} didn't answer after several retries. Try again in a minute.") from err
+    raise err
 
 
 def _shape(node: dict, defs: dict) -> str:
@@ -316,14 +496,22 @@ def _schema_hint(schema: type[BaseModel]) -> str:
     return _shape(js, js.get("$defs", {}))
 
 
+def _user_content(prompt: str, shared: str | None):
+    """The user message: plain text, or the shared opening (cache-marked) followed by this call's own part."""
+    if not shared:
+        return prompt
+    return [{"type": "text", "text": shared, "cache_control": {"type": "ephemeral"}}, {"type": "text", "text": prompt}]
+
+
 def call_llm(
     prompt: str,
     role: str = "utility",
     system: str | None = None,
     max_tokens: int = 3000,
+    shared: str | None = None,
 ):
-    """Plain-text call. Returns the model's reply as a string."""
-    messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": prompt}]
+    """Plain-text call. Returns the model's reply as a string. shared: see call_llm_json."""
+    messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": _user_content(prompt, shared)}]
     return _complete_with_fallback(role, messages, json_mode=False, max_tokens=max_tokens)
 
 
@@ -334,6 +522,7 @@ def call_llm_json(
     system: str | None = None,
     max_tokens: int = 3000,
     images: list[str] | None = None,
+    shared: str | None = None,
 ) -> T:
     """
     JSON call validated against a Pydantic model. On invalid output, retries once
@@ -341,10 +530,16 @@ def call_llm_json(
 
     images: data URLs (data:image/png;base64,...) sent with the prompt in the OpenAI
     vision message format, for models that accept image input.
+
+    shared: the opening every agent in a run starts with (brief + plan so far). It goes first and is
+    marked for caching on Claude; OpenAI-style providers cache a repeated prefix by themselves.
     """
     user = (f"{prompt}\n\nRespond with ONLY a JSON object in this shape (? marks an optional field, // explains a field):\n{_schema_hint(schema)}\n"
             "Each field holds the final answer only, never your working or self-checks.")
-    content = [{"type": "text", "text": user}, *({"type": "image_url", "image_url": {"url": url}} for url in images)] if images else user
+    content = _user_content(user, shared)
+    if images:
+        content = (content if isinstance(content, list) else [{"type": "text", "text": content}]) + [
+            {"type": "image_url", "image_url": {"url": url}} for url in images]
     messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": content}]
 
     last_error: Exception | None = None
@@ -359,8 +554,8 @@ def call_llm_json(
                 {"role": "assistant", "content": raw},
                 {"role": "user", "content": f"That JSON failed validation:\n{e}\nReturn the corrected JSON object only."},
             ]
-        except APIStatusError as e:
-            if e.status_code != 400:
+        except _HTTP_ERRORS as e:
+            if getattr(e, "status_code", None) != 400:
                 raise
             last_error = e
             logger.warning("[%s] BharatCode rejected the request (attempt %d): %s", role, attempt, e)

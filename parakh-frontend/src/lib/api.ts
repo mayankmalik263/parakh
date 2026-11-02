@@ -3,15 +3,15 @@ import type { SimulateRequest, SimulationJob, AgentEvent, BusinessPlan } from '@
 // Strip trailing slashes: "https://x.onrender.com/" + "/clarify" would 404 on "//clarify".
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/+$/, '');
 import { supabase } from './supabase';
-import { getBharatCodeKey } from './bharatcodeKey';
+import { aiHeaders } from './aiProvider';
 
 async function getAuthHeaders() {
   const { data: { session } } = await supabase.auth.getSession();
-  const bharatcodeKey = getBharatCodeKey();
   return {
     'Content-Type': 'application/json',
     ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
-    ...(bharatcodeKey ? { 'X-BharatCode-Key': bharatcodeKey } : {})
+    // The chosen AI provider, model and the visitor's own key, if any (see lib/aiProvider.ts).
+    ...aiHeaders()
   };
 }
 

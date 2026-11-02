@@ -25,10 +25,9 @@ At most 4 issues, each problem in one or two sentences. An empty list is fine fo
 def run(state: dict, math_findings: list[dict]) -> CriticResult:
     found = "\n".join(f"- [{f['owner']}] {f['problem']}" for f in math_findings) or "- none"
     # The Critic judges against the HARD RULES only; past lessons are advice for the planners, not law.
-    prompt = f"""{shared_block(state)}
-
-ARITHMETIC FINDINGS FROM CODE (already queued for fixing):
+    shared = shared_block(state)
+    prompt = f"""ARITHMETIC FINDINGS FROM CODE (already queued for fixing):
 {found}
 
 {PERSONA}"""
-    return call_llm_json(prompt, CriticResult, role="critic", max_tokens=4000)
+    return call_llm_json(prompt, CriticResult, shared=shared, role="critic", max_tokens=4000)

@@ -4,7 +4,7 @@
 
 Already have a pitch deck? Upload the slides with your numbers and Parakh recomputes runway, break-even, MRR and CAC from what the deck itself says, then tells you which ones don't add up.
 
-Built for the BharatCode Build League. Every model call runs on [BharatCode](https://bharatcode.ai).
+Built for the BharatCode Build League. [BharatCode](https://bharatcode.ai) is the default AI and runs the live demo. Founders who already pay for OpenAI, Claude, Gemini or OpenRouter can run plans on their own API key instead.
 
 > *Parakh* (परख) means the act of testing something to find out if it's genuine. That's the job: test your idea before you spend months on it.
 
@@ -59,7 +59,16 @@ All LLM access lives in one file, [`agents/llm_router.py`](agents/llm_router.py)
 - `PARAKH_CRITIC_MODEL` gives the Critic its own model, so it doesn't grade output from the model that wrote it
 - Busy-server and rate-limit responses are retried with backoff
 - Pitch-deck slides go to the model as images in the OpenAI vision format (`PARAKH_VISION_MODEL` to use a separate one). If the model on your key doesn't accept images, the app asks for pasted numbers instead.
-- Visitors can bring their own BharatCode key. It's sent in an `X-BharatCode-Key` header and never stored.
+- Visitors can bring their own BharatCode key. It's sent in an `X-Parakh-Key` header (the older `X-BharatCode-Key` still works) and never stored.
+
+### Other providers (bring your own key)
+
+BharatCode stays first and selected by default. The New plan page also lets a founder pick OpenAI, Claude, Gemini or OpenRouter and paste their own API key. The registry is [`agents/providers.py`](agents/providers.py).
+
+- The browser keeps the provider, model and key in localStorage and sends them as `X-Parakh-Provider`, `X-Parakh-Model` and `X-Parakh-Key`. The server uses the key for that request only. It never stores or logs it, and it never falls back to the server's BharatCode key for another provider.
+- One model runs all five agents. Defaults: `gpt-6-luna` (OpenAI), `claude-sonnet-5-5` (Claude), `gemini-2.5-flash` (Gemini). OpenRouter needs a model id typed in.
+- Claude goes through the `anthropic` SDK so the start of every prompt (founder context, rules, plan so far) is marked for prompt caching. Later agents read it from the cache at a fraction of the input price. Gemini and OpenRouter use their OpenAI-compatible endpoints.
+- Each plan ends with a small line: provider, model, calls, tokens, time, and an estimated cost for paid keys. Prices per million tokens live in `MODEL_PRICES` in `providers.py`, read from each provider's pricing page on 2 Nov 2026. Re-check them before relying on the estimate.
 
 ## Run it locally
 

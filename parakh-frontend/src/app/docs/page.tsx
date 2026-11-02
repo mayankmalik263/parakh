@@ -218,16 +218,21 @@ export default function DocsPage() {
 
           <Section id="limits" eyebrow="Limits" title="Limits and your own key">
             <P>
-              Parakh runs on BharatCode&apos;s API with one shared key, which has a daily token budget shared by
-              everyone using the site. A plan uses a fair share of it, so on busy days the shared quota can run out.
-              When that happens you&apos;ll see a message saying so.
+              By default Parakh runs on BharatCode&apos;s API with one shared key, which has a daily token budget shared by
+              everyone using the site. On busy days the shared quota can run out, and you&apos;ll see a message saying so.
             </P>
             <P>
               You can skip the wait with your own key from{' '}
               <a href="https://bharatcode.ai" target="_blank" rel="noopener noreferrer" className="text-primary-fixed-dim underline">bharatcode.ai</a>{' '}
-              (eligible students get free access, subject to BharatCode&apos;s current usage limits).
-              Paste it on the New plan page. It is stored only in your browser, sent with your own requests in an{' '}
-              <Code>X-BharatCode-Key</Code> header, and never saved or logged on the server.
+              (eligible students get free access, subject to BharatCode&apos;s current usage limits), or switch the AI to
+              OpenAI, Claude, Gemini or OpenRouter with your own API key for that provider. Pick it under
+              &ldquo;Change AI or use your own key&rdquo; on the New plan page. One model runs all five agents.
+            </P>
+            <P>
+              Your key is stored only in your browser and sent with your own requests in the <Code>X-Parakh-Provider</Code>,{' '}
+              <Code>X-Parakh-Model</Code> and <Code>X-Parakh-Key</Code> headers. The server uses it for that request and never
+              saves or logs it. API usage is billed by the provider, separately from a ChatGPT, Claude or Gemini chat
+              subscription. Each plan shows the tokens it used and, on a paid key, a rough cost.
             </P>
           </Section>
 

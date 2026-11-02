@@ -22,10 +22,9 @@ def numbers(econ: dict) -> dict:
 
 
 def run(state: dict) -> GrowthSlice:
-    prompt = f"""{shared_block(state)}
-
-{lessons_block(state)}
+    shared = shared_block(state)
+    prompt = f"""{lessons_block(state)}
 {PERSONA}
 All money in {state['profile']['currency']}.
 {revision_block(state, "growth")}"""
-    return call_llm_json(prompt, GrowthSlice, role="growth", system=ANTI_FLUFF_RULES)
+    return call_llm_json(prompt, GrowthSlice, shared=shared, role="growth", system=ANTI_FLUFF_RULES)

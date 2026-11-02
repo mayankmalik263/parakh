@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
-import type { BusinessPlan } from '@/types/simulation';
+import type { BusinessPlan, RunStats } from '@/types/simulation';
 import Reveal from '@/components/motion/Reveal';
 import CountUp from './CountUp';
 
@@ -101,7 +101,27 @@ export default function PlanView({ plan, report, checklist, onToggle }: Props) {
           </article>
         )}
       </div>
+
+      {plan.run_stats && <RunStatsLine stats={plan.run_stats} />}
     </div>
+  );
+}
+
+/** One quiet line: which AI made the plan, how many tokens and how long it took, and roughly what it cost. */
+function RunStatsLine({ stats: s }: { stats: RunStats }) {
+  const tokens = s.tokens_in + s.tokens_out;
+  const mins = Math.floor(s.seconds / 60);
+  const time = mins ? `${mins} min ${s.seconds % 60} s` : `${s.seconds} s`;
+  const cost = s.provider === 'bharatcode'
+    ? (s.own_key ? 'on your BharatCode quota' : 'on the shared free quota')
+    : s.cost_usd == null
+      ? 'cost not estimated for this model'
+      : `about $${s.cost_usd < 0.01 ? s.cost_usd.toFixed(4) : s.cost_usd.toFixed(2)} on your key`;
+  return (
+    <p className="m-0 font-mono text-xs leading-relaxed muted">
+      Made with {s.provider_label} ({s.model}) · {s.calls} model calls · {tokens.toLocaleString('en-IN')} tokens
+      {s.cached > 0 && ` (${s.cached.toLocaleString('en-IN')} read from cache)`} · {time} · {cost}
+    </p>
   );
 }
 

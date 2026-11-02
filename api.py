@@ -13,7 +13,7 @@ for _stream in (sys.stdout, sys.stderr):
 from fastapi import FastAPI, HTTPException, BackgroundTasks, Depends
 from auth import get_current_user
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -23,7 +23,8 @@ from graph_orchestrator import run
 import event_bus
 
 from supabase_client import get_supabase
-from agents.llm_router import BharatCodeAccessError, call_llm, call_llm_json, summarize_usage, token_meter, use_bharatcode_key
+from agents.llm_router import BharatCodeAccessError, call_llm, call_llm_json, summarize_usage, token_meter, use_provider
+from agents.providers import PROVIDERS
 
 app = FastAPI(title="Parakh API", description="Your own AI co-founder, on BharatCode")
 
@@ -32,10 +33,17 @@ app = FastAPI(title="Parakh API", description="Your own AI co-founder, on Bharat
 allowed_origins = [o.strip().rstrip("/") for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
 
 @app.middleware("http")
-async def bharatcode_key_from_header(request, call_next):
-    # Optional visitor-supplied BharatCode key. The endpoint and its background tasks run in a copy of
-    # this context, so every LLM call for the request (including a whole simulation) uses it.
-    with use_bharatcode_key(request.headers.get("x-bharatcode-key")):
+async def ai_provider_from_headers(request, call_next):
+    # The visitor's AI provider, model and own key (X-Parakh-Provider / -Model / -Key), or their own
+    # BharatCode key (X-BharatCode-Key). Default: BharatCode on the server's key. The endpoint and its
+    # background tasks run in a copy of this context, so every LLM call for the request uses it.
+    # Keys are never stored or logged.
+    h = request.headers
+    provider = (h.get("x-parakh-provider") or "bharatcode").strip().lower()
+    if provider not in PROVIDERS:
+        return JSONResponse(status_code=400, content={"detail": f"Unknown AI provider '{provider}'."})
+    key = h.get("x-parakh-key") or (h.get("x-bharatcode-key") if provider == "bharatcode" else None)
+    with use_provider(provider, key, h.get("x-parakh-model")):
         return await call_next(request)
 
 

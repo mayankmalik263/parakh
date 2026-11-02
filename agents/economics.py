@@ -25,11 +25,10 @@ def run(state: dict) -> EconomicsSlice:
     caps = ""
     if profile["burn_cap"]:
         caps = f"Caps: monthly_burn <= {profile['burn_cap']}, external_funding = 0."
-    prompt = f"""{shared_block(state)}
-
-{lessons_block(state)}
+    shared = shared_block(state)
+    prompt = f"""{lessons_block(state)}
 Carry every tool cost from the "builder" section into burn_line_items.
 {PERSONA}
 All money in {profile['currency']} as plain numbers. {caps}
 {revision_block(state, "economics")}"""
-    return call_llm_json(prompt, EconomicsSlice, role="economics", system=ANTI_FLUFF_RULES, max_tokens=4000)
+    return call_llm_json(prompt, EconomicsSlice, shared=shared, role="economics", system=ANTI_FLUFF_RULES, max_tokens=4000)

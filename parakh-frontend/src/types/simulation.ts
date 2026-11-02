@@ -63,6 +63,21 @@ export interface BusinessPlan {
   tools?: PlanTool[];
   key_conflicts: Conflict[];
   final_verdict: string;
+  run_stats?: RunStats | null;
+}
+
+/** What one plan cost to make (plans saved before the provider picker have none). */
+export interface RunStats {
+  provider: string;
+  provider_label: string;
+  model: string;
+  calls: number;
+  tokens_in: number;
+  tokens_out: number;
+  cached: number;
+  seconds: number;
+  cost_usd: number | null;
+  own_key: boolean;
 }
 
 export interface SimulationResult {

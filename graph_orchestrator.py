@@ -17,9 +17,11 @@ from langgraph.graph import END, StateGraph
 import event_bus
 from agents import builder, critic, economics, growth, strategist
 from agents.context_block import build_profile, get_lessons_from_db
+from agents.llm_router import current_calls, run_stats
 from evaluation_engine import autofix_math, check_plan
 from report_generator import build_display_plan, render_report
 from save_report import save_state
+from models import RunStats
 from state import StartupState, create_state
 from tool_catalog import market_findings, price_build
 
@@ -165,6 +167,9 @@ def report_node(state: StartupState) -> StartupState:
     event_bus.publish(job_id, {"type": "agent_start", "agent": "Report", "round": state["revision"] + 1})
 
     plan = build_display_plan(state)
+    # Every model call of this run so far (the report itself makes none), for the cost line.
+    stats = run_stats(current_calls(), time.monotonic() - state["started_at"])
+    plan.run_stats = RunStats(**stats)
     state["business_plan"] = plan.model_dump()
     state["final_report"] = render_report(state)
     save_state(state, state["final_report"], plan)

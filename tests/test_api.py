@@ -141,10 +141,10 @@ def test_visitor_bharatcode_key_reaches_every_agent_of_a_background_simulation(s
     for owner, model in (("strategist", StrategySlice), ("builder", BuildSlice),
                          ("economics", EconomicsSlice), ("growth", GrowthSlice)):
         def runner(state, o=owner, m=model):
-            seen.append(llm_router._user_key.get())
+            seen.append(llm_router._own_key())
             return m.model_validate(slices[o])
         monkeypatch.setitem(go.RUNNERS, owner, runner)
-    monkeypatch.setattr(go.critic, "run", lambda state, math: (seen.append(llm_router._user_key.get()), CriticResult(
+    monkeypatch.setattr(go.critic, "run", lambda state, math: (seen.append(llm_router._own_key()), CriticResult(
         issues=[], biggest_risk="Clinics ignore SMS from unknown numbers.", verdict="Viable with 4 clinics.",
         adherence_score=0.9))[1])
     monkeypatch.setattr(go, "save_state", lambda *a, **k: None)
@@ -155,14 +155,14 @@ def test_visitor_bharatcode_key_reaches_every_agent_of_a_background_simulation(s
                     headers={"X-BharatCode-Key": " bc_visitor "})
     assert api.get_job(r.json()["job_id"])["status"] == "done"
     assert seen == ["bc_visitor"] * 5
-    assert llm_router._user_key.get() is None  # nothing leaks past the request
+    assert llm_router._own_key() is None  # nothing leaks past the request
 
 
 def test_clarify_without_key_uses_the_server_key(monkeypatch):
     from agents import llm_router
     seen = []
     canned = ClarifyResponse(questions=[{"question": f"Q{i}?", "options": ["A", "B", "C"]} for i in range(3)])
-    monkeypatch.setattr(api, "call_llm_json", lambda *a, **k: seen.append(llm_router._user_key.get()) or canned)
+    monkeypatch.setattr(api, "call_llm_json", lambda *a, **k: seen.append(llm_router._own_key()) or canned)
     client.post("/clarify", json={"idea": "A CRM for pet sitters"})
     assert seen == [None]
 

@@ -179,6 +179,20 @@ class DisplayTool(BaseModel):
     note: str = ""
 
 
+class RunStats(BaseModel):
+    """What one plan cost to make: shown as a small line on the plan."""
+    provider: str = "bharatcode"
+    provider_label: str = "BharatCode"
+    model: str = ""
+    calls: int = 0
+    tokens_in: int = 0
+    tokens_out: int = 0
+    cached: int = 0
+    seconds: int = 0
+    cost_usd: Optional[float] = None   # None: model price unknown, or a flat-rate provider
+    own_key: bool = False
+
+
 class StartupBusinessPlan(BaseModel):
     startup_idea: str
     mission: str
@@ -193,6 +207,7 @@ class StartupBusinessPlan(BaseModel):
     tools: List[DisplayTool] = Field(default_factory=list)
     key_conflicts: List[Conflict] = Field(default_factory=list)
     final_verdict: str
+    run_stats: Optional[RunStats] = None
 
 
 # ── Deck critique: numbers read from a pitch deck or a pasted numbers sheet ──
