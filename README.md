@@ -16,7 +16,7 @@ Type your startup idea in one line. Four AI agents plan it in rupees, plain Pyth
 ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
 ![Tailwind](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-auth%20%2B%20Postgres-3ECF8E?logo=supabase&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-106%20passing-2EA44F)
+![Tests](https://img.shields.io/badge/tests-110%20passing-2EA44F)
 
 [Features](#what-parakh-does) · [How it works](#how-it-works) · [AI providers](#ai-providers-bharatcode-first) · [Results](#measured-results) · [Run it locally](#run-it-locally) · [Deploy](#deploy) · [API](#api-reference)
 
@@ -107,7 +107,11 @@ BharatCode runs everything by default, free on the shared quota. If you already 
 
 ### 💬 Ask the agents
 
-After the plan, ask follow-ups like "@Economics what if I charge ₹99?" and get answers grounded in your plan's numbers, in English or **Hinglish**.
+After the plan, ask follow-ups like "@Economics what if I charge ₹99?" and get answers grounded in your plan's numbers, in English or **Hinglish**. Pick an agent with one click, and the answer comes back formatted, with the working shown.
+
+<div align="center">
+<img src="docs/images/chat.png" alt="Asking the Economics agent what happens at a ₹99 price" width="760">
+</div>
 
 ### 🔗 Share, privately by default
 
@@ -448,7 +452,7 @@ Visitors' own provider keys are **not** configuration. They're pasted in the app
 ### Automated
 
 ```bash
-python -m pytest            # 106 tests, every model call faked, no key needed
+python -m pytest            # 110 tests, every model call faked, no key needed
 ```
 
 | File | Covers |
@@ -589,7 +593,7 @@ parakh/
 ├── render.yaml            Render blueprint for the API
 ├── BharatCode.txt         how Parakh uses BharatCode (hackathon requirement)
 ├── scripts/               eval harness, price check, example plan, BharatCode probe
-├── tests/                 106 pytest tests, every model call faked
+├── tests/                 110 pytest tests, every model call faked
 ├── examples/              a sample deck slide with 4 planted mistakes
 ├── docs/images/           README screenshots
 └── parakh-frontend/       Next.js 16 app
