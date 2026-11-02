@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Navigation from '@/components/landing/Navigation';
 import PlanView from '@/components/plan/PlanView';
+import ChatMarkdown from '@/components/plan/ChatMarkdown';
 import { getSimulationById, getChecklist, initializeChecklist, toggleChecklistItem, setSharing } from '@/lib/api';
 import { Icon } from '@/components/ui/Icon';
 
@@ -241,8 +242,8 @@ export default function HistoryDetailPage() {
                 )}
                 {chatMessages.map((msg, i) => (
                   <div key={i} className={`enter flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-[0.9375rem] leading-relaxed ${msg.role === 'user' ? 'rounded-br-md border-2 border-ink bg-rani text-white' : 'rounded-bl-md border-2 border-ink bg-surface text-on-surface'}`}>
-                      {msg.content}
+                    <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-[0.9375rem] leading-relaxed ${msg.role === 'user' ? 'whitespace-pre-wrap rounded-br-md border-2 border-ink bg-rani text-white' : 'rounded-bl-md border-2 border-ink bg-surface text-on-surface'}`}>
+                      {msg.role === 'user' ? msg.content : <ChatMarkdown content={msg.content} />}
                     </div>
                   </div>
                 ))}

@@ -93,6 +93,14 @@ CLARIFY_FIXED = [
      "options": ["None, I use the free versions", "ChatGPT (Go or Plus)", "Claude Pro", "Gemini (Google AI Pro)", "More than one of these"]},
 ]
 
+# The chat window renders Markdown, so replies use it, kept light enough to read in a chat bubble.
+CHAT_FORMAT = """Format the reply in Markdown:
+- First line: the answering role on its own, like "@Economics". Nothing else on that line.
+- Then a one-sentence answer. Use "### " headings only when the reply has two or more parts.
+- Use "- " bullets for steps, options and number workings, and **bold** for the key numbers and the recommendation.
+- No tables, no code blocks, no em dashes. Show arithmetic with plain symbols, like "₹2,275 ÷ ₹84.66 = 27".
+- Under 180 words."""
+
 HINGLISH_RULE = """
 Reply in Hinglish: everyday Hindi and English mixed, written in Roman script, the way Indian college friends text each other.
 Keep numbers, tool names and the plan's terms (MRR, CAC, runway) in English."""
@@ -302,7 +310,8 @@ def chat_with_council(job_id: str, req: ChatRequest, user_id: str = Depends(get_
 The council: Strategist (problem, customer, competitors), Builder (stack, tools, steps),
 Economics (pricing, burn, runway, targets), Growth (channels, first customers), Critic (review).
 If the founder addresses one of them (e.g. "@Economics"), answer as that role. Otherwise answer as the Critic.
-Keep answers concise, brutally honest, and specific to their constraints and the numbers in the plan.{language}"""
+Keep answers concise, brutally honest, and specific to their constraints and the numbers in the plan.
+{CHAT_FORMAT}{language}"""
 
     if not req.messages or not req.messages[-1].content.strip():
         raise HTTPException(status_code=400, detail="Empty message")
