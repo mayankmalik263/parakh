@@ -1,5 +1,5 @@
 from models import EconomicsSlice
-from .context_block import ANTI_FLUFF_RULES, build_context_block, revision_block, slice_json
+from .context_block import ANTI_FLUFF_RULES, lessons_block, revision_block, shared_block
 from .llm_router import call_llm_json
 
 # Naval-style: every number is a judgement with a stated assumption.
@@ -25,14 +25,10 @@ def run(state: dict) -> EconomicsSlice:
     caps = ""
     if profile["burn_cap"]:
         caps = f"Caps: monthly_burn <= {profile['burn_cap']}, external_funding = 0."
-    prompt = f"""{build_context_block(state)}
+    prompt = f"""{shared_block(state)}
 
-STRATEGY (fixed input):
-{slice_json(state, "strategist")}
-
-BUILD, incl. tool costs you must carry into the burn (fixed input):
-{slice_json(state, "builder")}
-
+{lessons_block(state)}
+Carry every tool cost from the "builder" section into burn_line_items.
 {PERSONA}
 All money in {profile['currency']} as plain numbers. {caps}
 {revision_block(state, "economics")}"""

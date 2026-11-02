@@ -1,7 +1,5 @@
-import json
-
 from models import GrowthSlice
-from .context_block import ANTI_FLUFF_RULES, build_context_block, revision_block, slice_json
+from .context_block import ANTI_FLUFF_RULES, lessons_block, revision_block, shared_block
 from .llm_router import call_llm_json
 
 # Hormozi offer clarity + Lemkin founder-led sales.
@@ -24,15 +22,9 @@ def numbers(econ: dict) -> dict:
 
 
 def run(state: dict) -> GrowthSlice:
-    numbers_in = numbers(state["slices"]["economics"])
-    prompt = f"""{build_context_block(state)}
+    prompt = f"""{shared_block(state)}
 
-STRATEGY (fixed input):
-{slice_json(state, "strategist")}
-
-ECONOMICS numbers (fixed input):
-{json.dumps(numbers_in, ensure_ascii=False, separators=(",", ":"))}
-
+{lessons_block(state)}
 {PERSONA}
 All money in {state['profile']['currency']}.
 {revision_block(state, "growth")}"""

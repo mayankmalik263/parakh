@@ -180,8 +180,7 @@ def catalog_prompt(profile: dict, business_type: str, catalog: dict | None = Non
     """The checked tools for this kind of business, one line each, for the Builder's prompt."""
     catalog = catalog or load_catalog()
     india = profile.get("is_india")
-    lines = [f"TOOLS WITH CHECKED PRICES (checked {catalog['checked_on']}). Prefer these and use these exact names; "
-             "code fills in their prices. Any other tool is shown to the founder as 'price not verified'."]
+    lines = [f"TOOLS (prices checked {catalog['checked_on']}; use these names, code fills in prices; other tools show as unverified):"]
     for tool in catalog["tools"]:
         if business_type not in tool.get("for", ["software", "service", "physical"]):
             continue
@@ -196,5 +195,6 @@ def catalog_prompt(profile: dict, business_type: str, catalog: dict | None = Non
                 plans.append(f"{p['plan']} ({p.get('usage', 'pay per use')})")
             elif price is not None:
                 plans.append(f"{p['plan']} {profile['symbol']}{price:,.0f}/mo")
-        lines.append(f"- {tool['name']}: {'; '.join(plans) or 'price not listed'}. {tool.get('use_for', '')}".rstrip())
+        use = tool.get("use_for", "").split(". ")[0].rstrip(".")
+        lines.append(f"- {tool['name']}: {'; '.join(plans) or 'price not listed'}. {use}".rstrip())
     return "\n".join(lines)

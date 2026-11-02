@@ -34,7 +34,7 @@ const STEPS = [
   ['campaign', 'Growth', 'Channels with spend and expected customers, a cold message, objection replies.'],
   ['calculate', 'Math check', 'Plain code recomputes the numbers and fixes what it can.'],
   ['gavel', 'Critic', 'Reads the whole plan and sends each problem to the agent that owns it.'],
-  ['sync', 'Revise', "Only the agents with problems run again, up to two rounds. Agents whose inputs didn't change are skipped."],
+  ['sync', 'Revise', "Only blocking problems send a section back, up to two rounds; minor ones stay in the plan as notes. Agents whose inputs didn't change are skipped."],
   ['description', 'Report', "The plan is saved to your dashboard with the Critic's verdict and any open warnings."],
 ];
 

@@ -595,7 +595,7 @@ function ActivityLogEntry({ event }: { event: AgentEvent }) {
         <div className={`enter my-2 rounded-2xl border-[3px] border-ink px-4 py-3.5 shadow-[4px_4px_0_#161616] ${event.forced ? 'bg-tertiary-fixed' : event.agreed ? 'bg-marigold' : 'bg-primary-fixed'}`}>
           <div className="mb-1 flex items-center gap-2 text-sm font-semibold">
             <Icon name="gavel" className="text-[1.05rem]" />
-            {event.forced ? 'Critic: out of revisions, open issues stay in the plan' : event.agreed ? 'Critic approved the plan' : 'Critic sent problems back'}
+            {event.forced ? 'Critic: out of revisions, open issues stay in the plan' : event.agreed ? (event.conflicts?.length ? 'Critic approved the plan, with notes' : 'Critic approved the plan') : 'Critic sent problems back'}
           </div>
           {event.reason && <p className="m-0 text-[0.9375rem] leading-relaxed">{event.reason}</p>}
           {!!event.conflicts?.length && (

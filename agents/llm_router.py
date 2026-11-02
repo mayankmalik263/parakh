@@ -279,17 +279,41 @@ def _complete_with_fallback(role: str, messages: list[dict], json_mode: bool, ma
             raise
 
 
-def _strip_titles(node):
-    if isinstance(node, dict):
-        return {k: _strip_titles(v) for k, v in node.items() if not (k == "title" and isinstance(v, str))}
-    if isinstance(node, list):
-        return [_strip_titles(v) for v in node]
-    return node
+def _shape(node: dict, defs: dict) -> str:
+    """A JSON Schema node as a short template: {"name": string, "tags": [string] (1-3), ...}."""
+    if "$ref" in node:
+        return _shape(defs[node["$ref"].split("/")[-1]], defs)
+    if "enum" in node:
+        return "|".join(json.dumps(v) for v in node["enum"])
+    if "const" in node:
+        return json.dumps(node["const"])
+    if "anyOf" in node:
+        return " | ".join(_shape(n, defs) for n in node["anyOf"])
+    kind = node.get("type")
+    if kind == "object" or "properties" in node:
+        required = set(node.get("required", []))
+        props = list(node.get("properties", {}).items())
+        lines = []
+        for n, (name, sub) in enumerate(props):
+            comma = "," if n < len(props) - 1 else ""
+            note = f" // {sub['description']}" if sub.get("description") else ""
+            optional = "" if name in required else "?"
+            lines.append(f'"{name}"{optional}: {_shape(sub, defs)}{comma}{note}')
+        return "{\n" + "\n".join(lines) + "\n}"
+    if kind == "array":
+        lo, hi = node.get("minItems"), node.get("maxItems")
+        count = f" ({lo}-{hi} items)" if lo is not None and hi is not None and lo != hi else (f" (exactly {lo})" if lo is not None and lo == hi else (f" (at least {lo})" if lo else ""))
+        return f"[{_shape(node.get('items', {}), defs)}]{count}"
+    if kind == "null":
+        return "null"
+    return {"string": "string", "number": "number", "integer": "integer", "boolean": "true|false"}.get(kind, "any")
 
 
 def _schema_hint(schema: type[BaseModel]) -> str:
-    # Titles repeat the field names: dropping them cuts the hint by about a quarter.
-    return json.dumps(_strip_titles(schema.model_json_schema()), separators=(",", ":"))
+    """A compact template of the expected JSON. About half the size of the raw JSON Schema; descriptions
+    and list sizes are kept because the agents need them."""
+    js = schema.model_json_schema()
+    return _shape(js, js.get("$defs", {}))
 
 
 def call_llm(
@@ -318,7 +342,7 @@ def call_llm_json(
     images: data URLs (data:image/png;base64,...) sent with the prompt in the OpenAI
     vision message format, for models that accept image input.
     """
-    user = (f"{prompt}\n\nRespond with ONLY a JSON object matching this JSON Schema:\n{_schema_hint(schema)}\n"
+    user = (f"{prompt}\n\nRespond with ONLY a JSON object in this shape (? marks an optional field, // explains a field):\n{_schema_hint(schema)}\n"
             "Each field holds the final answer only, never your working or self-checks.")
     content = [{"type": "text", "text": user}, *({"type": "image_url", "image_url": {"url": url}} for url in images)] if images else user
     messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": content}]

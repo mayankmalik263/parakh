@@ -17,6 +17,11 @@ def _to_number(value):
     return number * {"k": 1_000, "m": 1_000_000}.get(suffix, 1)
 
 
+
+def _cap(n: int):
+    """Keep the first n items. A model that writes 4 price tiers when 3 are allowed gets trimmed, not re-asked."""
+    return BeforeValidator(lambda v: v[:n] if isinstance(v, list) else v)
+
 Money = Annotated[float, BeforeValidator(_to_number), Field(ge=0)]
 Count = Annotated[int, BeforeValidator(lambda v: round(_to_number(v)) if v is not None else v), Field(ge=0)]
 
@@ -36,8 +41,8 @@ class StrategySlice(BaseModel):
     problem: str = Field(min_length=10, description="The specific pain and the exact moment the user feels it")
     target_customer: str = Field(min_length=10, description="One sentence: who, where, what behaviour makes them a buyer")
     mission: str = Field(min_length=10, description="One sentence: what we do, for whom, why we win")
-    competitors: List[Competitor] = Field(min_length=2, max_length=3)
-    scope_cuts: List[str] = Field(min_length=1, max_length=3, description="Things we are deliberately NOT building, with reason")
+    competitors: Annotated[List[Competitor], _cap(3)] = Field(min_length=2, max_length=3)
+    scope_cuts: Annotated[List[str], _cap(3)] = Field(min_length=1, max_length=3, description="Things we are deliberately NOT building, with reason")
 
 
 class StackItem(BaseModel):
@@ -52,12 +57,12 @@ class ToolCost(BaseModel):
 
 
 class BuildSlice(BaseModel):
-    stack: List[StackItem] = Field(min_length=2, max_length=6)
-    ai_tools: List[StackItem] = Field(min_length=1, max_length=4)
-    mvp_features: List[str] = Field(min_length=1, max_length=3)
+    stack: Annotated[List[StackItem], _cap(6)] = Field(min_length=2, max_length=6)
+    ai_tools: Annotated[List[StackItem], _cap(4)] = Field(min_length=1, max_length=4)
+    mvp_features: Annotated[List[str], _cap(3)] = Field(min_length=1, max_length=3)
     tool_costs: List[ToolCost] = Field(min_length=1, description="Every paid or free service the MVP runs on")
     mvp_build_cost: Money = Field(description="One-time cost to ship the MVP, in plan currency")
-    first_10_steps: List[str] = Field(min_length=5, max_length=10)
+    first_10_steps: Annotated[List[str], _cap(10)] = Field(min_length=5, max_length=10)
 
 
 class PricingTier(BaseModel):
@@ -81,7 +86,7 @@ class RevenueTarget(BaseModel):
 
 
 class EconomicsSlice(BaseModel):
-    pricing: List[PricingTier] = Field(min_length=1, max_length=3)
+    pricing: Annotated[List[PricingTier], _cap(3)] = Field(min_length=1, max_length=3)
     avg_revenue_per_customer: Money = Field(description="Blended monthly revenue per PAYING customer")
     delivery_cost_per_customer: Money = Field(description="Monthly cost to serve ONE paying customer: freelancers, per-client tools, API usage, goods")
     burn_line_items: List[LineItem] = Field(min_length=1, description="Must include every Builder tool cost and the marketing budget")
@@ -91,8 +96,8 @@ class EconomicsSlice(BaseModel):
     external_funding: Money = Field(description="Outside money raised; 0 if bootstrapped")
     runway_months: Annotated[float, BeforeValidator(_to_number), Field(ge=0)] = Field(description="starting_capital / monthly_burn")
     break_even_customers: Count = Field(description="ceil(monthly_burn / (avg_revenue_per_customer - delivery_cost_per_customer))")
-    revenue_targets: List[RevenueTarget] = Field(min_length=3, max_length=3, description="Day 30, 60 and 90")
-    key_assumptions: List[str] = Field(min_length=1, max_length=4)
+    revenue_targets: Annotated[List[RevenueTarget], _cap(3)] = Field(min_length=3, max_length=3, description="Day 30, 60 and 90")
+    key_assumptions: Annotated[List[str], _cap(4)] = Field(min_length=1, max_length=4)
 
 
 class Channel(BaseModel):
@@ -109,10 +114,10 @@ class Objection(BaseModel):
 
 
 class GrowthSlice(BaseModel):
-    channels: List[Channel] = Field(min_length=1, max_length=2)
-    first_10_customers: List[str] = Field(min_length=3, max_length=6, description="Step-by-step founder hustle to land the first 10 paying customers")
+    channels: Annotated[List[Channel], _cap(2)] = Field(min_length=1, max_length=2)
+    first_10_customers: Annotated[List[str], _cap(6)] = Field(min_length=3, max_length=6, description="Step-by-step founder hustle to land the first 10 paying customers")
     cold_message: str = Field(min_length=20, description="A 3-line cold DM/email the founder can send today")
-    objections: List[Objection] = Field(min_length=2, max_length=2)
+    objections: Annotated[List[Objection], _cap(2)] = Field(min_length=2, max_length=2)
 
 
 Owner = Literal["strategist", "builder", "economics", "growth"]
@@ -120,6 +125,7 @@ Owner = Literal["strategist", "builder", "economics", "growth"]
 
 class CriticIssue(BaseModel):
     owner: Owner
+    severity: Literal["blocking", "minor"] = Field(default="blocking", description="blocking: the founder would make a bad decision or get stuck, so the owner rewrites; minor: a note kept in the plan, no rewrite")
     problem: str = Field(description="One or two sentences")
     fix: str = Field(description="Exactly what the owner must change, one sentence")
 
@@ -128,7 +134,7 @@ class CriticResult(BaseModel):
     verdict: str = Field(min_length=20, description="3 sentence honest verdict on viability")
     biggest_risk: str = Field(min_length=20, description="The single most likely reason THIS plan fails, specific to this idea. Required even if issues is empty.")
     adherence_score: Annotated[float, Field(ge=0, le=1)] = Field(description="How well the plan honours market + funding constraints, 0-1")
-    issues: List[CriticIssue] = Field(default_factory=list, description="Only blocking problems; empty if the plan is sound")
+    issues: List[CriticIssue] = Field(default_factory=list, description="At most 4; empty if the plan is sound")
 
 
 # ── Display plan: the shape the frontend renders (built in Python from slices) ──
@@ -246,6 +252,6 @@ class DeckRedFlag(BaseModel):
 class DeckVerdict(BaseModel):
     verdict: str = Field(min_length=20, description="Three honest sentences: would this deck convince a careful judge?")
     biggest_risk: str = Field(min_length=10, description="The single most likely reason this business fails")
-    red_flags: List[DeckRedFlag] = Field(default_factory=list, max_length=5)
-    missing: List[str] = Field(default_factory=list, max_length=5, description="Numbers a judge will ask for that the deck doesn't give")
-    questions_to_expect: List[str] = Field(default_factory=list, max_length=3)
+    red_flags: Annotated[List[DeckRedFlag], _cap(5)] = Field(default_factory=list, max_length=5)
+    missing: Annotated[List[str], _cap(5)] = Field(default_factory=list, max_length=5, description="Numbers a judge will ask for that the deck doesn't give")
+    questions_to_expect: Annotated[List[str], _cap(3)] = Field(default_factory=list, max_length=3)

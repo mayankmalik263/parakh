@@ -2,7 +2,7 @@
 Shared context for all Parakh agents.
 
 - build_profile(state): parses market/funding ONCE into a small dict (currency, caps).
-- build_context_block(state): a short (~300 token) brief every agent receives.
+- shared_block(state): the brief, hard rules and plan so far that every agent and the Critic start with.
 """
 
 import json
@@ -15,6 +15,7 @@ Rules for everything you write:
 - No generic phrases ("build an MVP", "do market research", "run social media ads", "leverage", "increase awareness"). Name the tool, the platform, the action and the number.
 - Every tool is a real product that exists today. Prices come from the TOOLS list when the tool is on it.
 - Exact numbers for the founder's own plan (prices, budgets, targets, steps). Never "some", "a few", "several".
+- Short fields: one sentence of at most 25 words unless a field asks for more; one line per list item. No filler.
 - Never state an outside fact you were not given (conversion rates, view counts, market size, "% faster", "saves N hours")
   as if it were true. If the plan depends on such a number, put it in key_assumptions as an assumption.
 - AI first: ChatGPT, Claude and Gemini now write, design, code and even edit short videos (Claude Code with ffmpeg,
@@ -193,12 +194,31 @@ def get_lessons_from_db(profile: dict, limit: int = 5) -> list[str]:
         return []
 
 
-def build_context_block(state: dict) -> str:
-    profile = state.get("profile") or build_profile(state)
-    lessons = state.get("lessons")
-    if lessons is None:
-        lessons = get_lessons_from_db(profile)
+_SECTIONS = ("strategist", "builder", "economics", "growth")
+# Bookkeeping code adds to tool cost lines; the agents don't need it.
+_PRIVATE = {"price_note", "added_by_code"}
 
+
+def _plan_so_far(slices: dict) -> str:
+    plan = {}
+    for owner in _SECTIONS:
+        if owner not in slices:
+            continue
+        section = dict(slices[owner])
+        if owner == "builder":
+            section["tool_costs"] = [{k: v for k, v in t.items() if k not in _PRIVATE} for t in section.get("tool_costs", [])]
+        plan[owner] = section
+    return json.dumps(plan, ensure_ascii=False, separators=(",", ":"))
+
+
+def shared_block(state: dict) -> str:
+    """
+    The same opening for every agent and the Critic in a run: the brief, the hard rules and the plan
+    written so far (each agent sees everything). Agent-specific instructions come after it, so the
+    prompt prefix only grows as the run goes on. Providers that cache prompt prefixes (OpenAI, Claude,
+    Gemini, DeepSeek) charge less for the part they have already seen.
+    """
+    profile = state.get("profile") or build_profile(state)
     lines = [
         "CONTEXT",
         f"Startup idea   : {state.get('startup_idea', 'N/A')}",
@@ -210,9 +230,23 @@ def build_context_block(state: dict) -> str:
         "HARD RULES",
         *[f"- {r}" for r in _rules(profile)],
     ]
-    if lessons:
-        lines += ["", "PAST OBSERVATIONS (advisory, from earlier runs)", *[f"- {l}" for l in lessons]]
+    if any(o in state.get("slices", {}) for o in _SECTIONS):
+        lines += ["", "PLAN SO FAR (JSON, one section per agent; other sections are fixed inputs for you):",
+                  _plan_so_far(state["slices"])]
     return "\n".join(lines)
+
+
+def lessons_block(state: dict) -> str:
+    """Advisory notes from earlier runs, for the planning agents only (after the shared block)."""
+    lessons = state.get("lessons")
+    if lessons is None:
+        lessons = get_lessons_from_db(state.get("profile") or build_profile(state))
+    return "\n".join(["PAST OBSERVATIONS (advisory, from earlier runs)", *[f"- {l}" for l in lessons]]) if lessons else ""
+
+
+def build_context_block(state: dict) -> str:
+    """Shared block plus lessons. Kept for callers outside the agent pipeline (chat)."""
+    return "\n\n".join(b for b in (shared_block(state), lessons_block(state)) if b)
 
 
 def slice_json(state: dict, owner: str) -> str:
@@ -226,7 +260,8 @@ def revision_block(state: dict, owner: str) -> str:
     if not previous:
         return ""
     issues = [i for i in state.get("issues", []) if i["owner"] == owner]
-    lines = ["", "REVISION PASS. Your previous output:", slice_json(state, owner)]
+    # The previous output is already in PLAN SO FAR; don't send it twice.
+    lines = ["", f'REVISION PASS. Your previous output is the "{owner}" section of PLAN SO FAR.']
     if issues:
         lines.append("You MUST fix these issues:")
         lines += [f"- {i['problem']} -> FIX: {i['fix']}" for i in issues]

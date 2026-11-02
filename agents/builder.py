@@ -1,6 +1,6 @@
 from models import BuildSlice
 from tool_catalog import catalog_prompt
-from .context_block import ANTI_FLUFF_RULES, build_context_block, revision_block, slice_json
+from .context_block import ANTI_FLUFF_RULES, lessons_block, revision_block, shared_block
 from .llm_router import call_llm_json
 
 # Chesky-style: the one magic moment, scoped back to what ships in 30 days.
@@ -40,11 +40,9 @@ BY_TYPE = {
 def run(state: dict) -> BuildSlice:
     profile = state["profile"]
     kind = state["slices"]["strategist"].get("business_type", "software")
-    prompt = f"""{build_context_block(state)}
+    prompt = f"""{shared_block(state)}
 
-STRATEGY (fixed input):
-{slice_json(state, "strategist")}
-
+{lessons_block(state)}
 {catalog_prompt(profile, kind)}
 
 {PERSONA}

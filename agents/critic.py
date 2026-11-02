@@ -1,7 +1,5 @@
-import json
-
 from models import CriticResult
-from .context_block import build_context_block
+from .context_block import shared_block
 from .llm_router import call_llm_json
 
 PERSONA = """You are the CRITIC, an independent reviewer. You did not write this plan and you owe it nothing.
@@ -16,20 +14,18 @@ Judge only what code cannot:
 6. Vagueness: any action a founder could not start within 60 minutes without asking a follow-up question?
 7. Founder fit: if the HARD RULES describe a student founder, does the plan fit about 15 hours a week, a savings-sized budget,
    and a campus-first launch? Plans that need a team, an office, paid ads at scale or months of full-time work are blocking issues.
-Raise an issue ONLY if it is blocking, i.e. the founder would make a bad decision or get stuck. Address each issue to the one agent who owns that field:
+Mark each issue's severity. "blocking" = the founder would make a bad decision or get stuck; the owner rewrites their section.
+"minor" = worth knowing but the plan works; it stays in the plan as a note and nothing is rewritten. Rewrites cost the founder time, so
+use blocking only when it matters. Address each issue to the one agent who owns that field:
 strategist (business type, problem, customer, mission, competitors, scope cuts), builder (stack, tools, tool costs, steps),
 economics (pricing, delivery cost, burn, capital, runway, targets), growth (channels, CAC, playbook, message, objections).
 At most 4 issues, each problem in one or two sentences. An empty list is fine for a sound plan, but biggest_risk is always required: never call a plan risk-free."""
 
 
 def run(state: dict, math_findings: list[dict]) -> CriticResult:
-    plan = json.dumps(state["slices"], ensure_ascii=False, separators=(",", ":"))
     found = "\n".join(f"- [{f['owner']}] {f['problem']}" for f in math_findings) or "- none"
     # The Critic judges against the HARD RULES only; past lessons are advice for the planners, not law.
-    prompt = f"""{build_context_block({**state, "lessons": []})}
-
-PLAN (JSON, one section per agent):
-{plan}
+    prompt = f"""{shared_block(state)}
 
 ARITHMETIC FINDINGS FROM CODE (already queued for fixing):
 {found}

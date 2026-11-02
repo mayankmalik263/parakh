@@ -118,8 +118,10 @@ def critic_node(state: StartupState) -> StartupState:
             "verdict": "The Critic could not complete its review on this run. The arithmetic checks still applied.",
             "biggest_risk": "", "adherence_score": 0.5}
     issues = math + critic_issues
+    # Only code findings and blocking Critic issues send a section back; minor ones stay as notes.
+    to_fix = [i for i in issues if i.get("severity", "blocking") == "blocking"]
 
-    state["issues"] = issues
+    state["issues"] = to_fix
     state["conflicts"].extend({**i, "round": round_num} for i in issues)
     state["math_warnings"] = [f["problem"] for f in math]
 
@@ -127,31 +129,32 @@ def critic_node(state: StartupState) -> StartupState:
     # costs about a minute of rate-limit budget, and the plan must not take longer than before.
     elapsed = time.monotonic() - state["started_at"]
     in_budget = state["revision"] == 0 or elapsed < SECOND_ROUND_BUDGET_S
-    will_revise = bool(issues) and state["revision"] < state["max_revisions"] and in_budget
-    print(f"[Critic] {elapsed:.0f}s elapsed, {len(issues)} issue(s), revise: {will_revise}")
-    owners = {i["owner"] for i in issues}
+    will_revise = bool(to_fix) and state["revision"] < state["max_revisions"] and in_budget
+    print(f"[Critic] {elapsed:.0f}s elapsed, {len(to_fix)} blocking and {len(issues) - len(to_fix)} minor issue(s), revise: {will_revise}")
+    owners = {i["owner"] for i in to_fix}
     state["revise_from"] = next((o for o in AGENT_CHAIN if o in owners), "") if will_revise else ""
 
     event_bus.publish(job_id, {
         "type": "supervisor_result",
         "agent": "Critic",
         "round": round_num,
-        "agreed": not issues,
+        "agreed": not to_fix,
         "reason": state["critic"]["verdict"],
-        "conflicts": [{"title": f"{LABELS[i['owner']]} ({i['source']})", "description": f"{i['problem']} Fix: {i['fix']}"} for i in issues],
+        "conflicts": [{"title": f"{LABELS[i['owner']]} ({i['source']}{', minor' if i.get('severity') == 'minor' else ''})",
+                       "description": f"{i['problem']} Fix: {i['fix']}"} for i in issues],
         "decisions": [],
-        "forced": bool(issues) and not will_revise,
+        "forced": bool(to_fix) and not will_revise,
     })
 
     if will_revise:
         state["revision"] += 1
         rerun = AGENT_CHAIN[AGENT_CHAIN.index(state["revise_from"]):]
-        print(f"[Critic] {len(issues)} issue(s). Revising: {', '.join(rerun)}")
+        print(f"[Critic] {len(to_fix)} blocking issue(s). Revising: {', '.join(rerun)}")
         event_bus.publish(job_id, {
             "type": "debate_loop",
             "round": state["revision"] + 1,
             "agents": [LABELS[o] for o in rerun],
-            "reason": f"{len(issues)} issue(s) found. Revising {', '.join(LABELS[o] for o in rerun)}.",
+            "reason": f"{len(to_fix)} blocking issue(s). Revising {', '.join(LABELS[o] for o in rerun)}.",
         })
     return state
 

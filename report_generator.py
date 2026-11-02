@@ -66,7 +66,8 @@ def build_display_plan(state: dict) -> StartupBusinessPlan:
         tools=[{"name": t["tool"], "plan": t["plan"], "monthly_cost": f"{m(t['monthly_cost'])}/mo",
                 "verified": bool(t.get("verified")), "note": t.get("price_note", "")} for t in b["tool_costs"]],
         key_conflicts=[
-            {"title": f"{c['owner'].title()}: {c['problem'][:120]}", "description": f"{c['problem']} Fix: {c['fix']}"}
+            {"title": f"{c['owner'].title()}: {c['problem'][:120]}",
+             "description": f"{'Minor: ' if c.get('severity') == 'minor' else ''}{c['problem']} Fix: {c['fix']}"}
             for c in state["conflicts"]
         ],
         final_verdict=_verdict(state["critic"]),

@@ -1,5 +1,5 @@
 from models import StrategySlice
-from .context_block import ANTI_FLUFF_RULES, build_context_block, revision_block
+from .context_block import ANTI_FLUFF_RULES, lessons_block, revision_block, shared_block
 from .llm_router import call_llm_json
 
 # Musk first-principles for scope, Jobs simplicity for coherence.
@@ -19,8 +19,9 @@ You do NOT set prices, costs, tech stack or marketing channels; other agents own
 
 
 def run(state: dict) -> StrategySlice:
-    prompt = f"""{build_context_block(state)}
+    prompt = f"""{shared_block(state)}
 
+{lessons_block(state)}
 {PERSONA}
 {revision_block(state, "strategist")}"""
     return call_llm_json(prompt, StrategySlice, role="strategist", system=ANTI_FLUFF_RULES)
