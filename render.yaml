@@ -9,6 +9,9 @@ services:
     startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /
     envVars:
+      # Render's default Python is newer than the version the pinned packages were tested on.
+      - key: PYTHON_VERSION
+        value: 3.13.18
       - key: BHARATCODE_API_KEY
         sync: false
       - key: PARAKH_MODEL
