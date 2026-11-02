@@ -18,11 +18,15 @@ Type your startup idea in one line. Four AI agents plan it in rupees, plain Pyth
 ![Supabase](https://img.shields.io/badge/Supabase-auth%20%2B%20Postgres-3ECF8E?logo=supabase&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-110%20passing-2EA44F)
 
+<a href="https://parakh-xyz.vercel.app/"><img src="https://img.shields.io/badge/%E2%96%B6%20Try%20Parakh%20live-parakh--xyz.vercel.app-E0177A?style=for-the-badge&labelColor=161616" alt="Try Parakh live"></a>
+
 [Features](#what-parakh-does) · [How it works](#how-it-works) · [AI providers](#ai-providers-bharatcode-first) · [Results](#measured-results) · [Run it locally](#run-it-locally) · [Deploy](#deploy) · [API](#api-reference)
 
 <img src="docs/images/hero.png" alt="Parakh landing page: Test your idea before campus does" width="900">
 
 </div>
+
+**Live:** [parakh-xyz.vercel.app](https://parakh-xyz.vercel.app/). Sign up free, type one line, and get your plan in about two minutes.
 
 > **Parakh** (परख) means testing something to find out if it's genuine. That's the job: test your idea before you spend months on it.
 

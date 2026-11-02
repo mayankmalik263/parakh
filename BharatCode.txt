@@ -1,5 +1,6 @@
 Project: Parakh, your own AI co-founder
 Repository: https://github.com/mayankmalik263/parakh
+Live demo: https://parakh-xyz.vercel.app/
 Author: Mayank Malik (github.com/mayankmalik263)
 Built for: BharatCode Build League 2026
 
