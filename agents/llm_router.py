@@ -150,6 +150,11 @@ def _record_usage(resp, role: str, model: str, seconds: float, finish: str | Non
         return
     details = getattr(usage, "completion_tokens_details", None)
     thinking = (getattr(details, "reasoning_tokens", None) or 0) if details else 0
+    if not thinking and resp.choices:
+        # BharatCode returns the thinking as text in reasoning_content without counting it separately.
+        msg = resp.choices[0].message
+        reasoning = getattr(msg, "reasoning_content", None) or getattr(msg, "reasoning", None) or ""
+        thinking = round(len(reasoning) / 3.5)  # rough: ~3.5 characters per token
     entry = {"role": role, "in": usage.prompt_tokens or 0, "out": usage.completion_tokens or 0, "thinking": thinking}
     entry["total"] = entry["in"] + entry["out"]
     calls = _meter.get()
@@ -310,7 +315,8 @@ def call_llm_json(
     images: data URLs (data:image/png;base64,...) sent with the prompt in the OpenAI
     vision message format, for models that accept image input.
     """
-    user = f"{prompt}\n\nRespond with ONLY a JSON object matching this JSON Schema:\n{_schema_hint(schema)}"
+    user = (f"{prompt}\n\nRespond with ONLY a JSON object matching this JSON Schema:\n{_schema_hint(schema)}\n"
+            "Each field holds the final answer only, never your working or self-checks.")
     content = [{"type": "text", "text": user}, *({"type": "image_url", "image_url": {"url": url}} for url in images)] if images else user
     messages = ([{"role": "system", "content": system}] if system else []) + [{"role": "user", "content": content}]
 
