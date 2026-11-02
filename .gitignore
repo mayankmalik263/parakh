@@ -183,3 +183,6 @@ ruff_cache/
 
 # Private planning notes (kept local, not published)
 PARAKH_PLAN.md
+
+# Eval run logs (plans and scores in the .json files are kept)
+scripts/eval/results/**/*.log

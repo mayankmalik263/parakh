@@ -1,0 +1,89 @@
+{
+  "_note": "Fixed test set. Each idea carries the answers the questions step would have collected, so every run starts from the same input. Don't edit an idea once results exist for it: add a new one instead.",
+  "ideas": [
+    {
+      "id": "notes-juniors",
+      "kind": "digital product",
+      "idea": "Notes and PYQ papers for my college, sold to juniors before exams. I have about 8,000 rupees saved.",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Where are your first customers? On my campus. Who pays? First and second year students. How do they pay? Per subject bundle."
+    },
+    {
+      "id": "reels-cafes",
+      "kind": "service",
+      "idea": "Instagram reels editing for cafes near campus in Dehradun",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Where are your first customers? Cafes within 3 km of my campus. Who pays? Cafe owners. How do they pay? Monthly package or per reel."
+    },
+    {
+      "id": "hostel-tiffin",
+      "kind": "physical / food",
+      "idea": "Home-style tiffin delivery for hostel students in Bidholi, Dehradun",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Where are your first customers? Hostels near UPES. Who pays? Students. How do they pay? Monthly subscription. Budget: about 15,000 rupees."
+    },
+    {
+      "id": "candles-insta",
+      "kind": "physical",
+      "idea": "Handmade scented candles sold on Instagram, made in my hostel room",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Where are your first customers? Instagram followers across India. How do they pay? One-time purchase with shipping."
+    },
+    {
+      "id": "jee-planner",
+      "kind": "software",
+      "idea": "An AI study planner app for JEE aspirants that adjusts the timetable after every mock test",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Who pays? Parents of class 11 and 12 students. How do they pay? Monthly subscription."
+    },
+    {
+      "id": "clinic-whatsapp-bot",
+      "kind": "software",
+      "idea": "A WhatsApp bot that reminds dental clinic patients about appointments and collects deposits",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Full-time. Context: Where are your first customers? Solo dental clinics in Jaipur. How do they pay? Monthly subscription. Budget: 50,000 rupees."
+    },
+    {
+      "id": "campus-laundry",
+      "kind": "service",
+      "idea": "Laundry pickup and drop for students in my university hostels",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Who pays? Hostel students. How do they pay? Per kg or monthly plan."
+    },
+    {
+      "id": "thrift-insta",
+      "kind": "physical",
+      "idea": "A thrift clothing store on Instagram selling secondhand jackets and jeans",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Where are your first customers? College students in Delhi NCR. How do they pay? UPI per item."
+    },
+    {
+      "id": "freelancer-invoices-us",
+      "kind": "software",
+      "idea": "Invoicing and late-payment reminders for freelance designers in the US",
+      "market": "Global",
+      "constraints": "Funding: Bootstrapped. Founder: Professional. Context: Where are your first customers? Outside India, freelancers in the US. How do they pay? Monthly subscription in dollars."
+    },
+    {
+      "id": "resume-review",
+      "kind": "service",
+      "idea": "Resume and LinkedIn review for final-year engineering students before placements",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Who pays? Final-year students. How do they pay? One-time fee per review."
+    },
+    {
+      "id": "fest-merch",
+      "kind": "physical",
+      "idea": "Custom printed T-shirts and hoodies for college fests and clubs",
+      "market": "India",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Who pays? Club heads and fest committees. How do they pay? Bulk order with 50% advance."
+    },
+    {
+      "id": "lecture-summary-extension",
+      "kind": "software",
+      "idea": "A Chrome extension that turns recorded lecture videos into short notes and flashcards",
+      "market": "Global",
+      "constraints": "Funding: Bootstrapped. Founder: Student. Context: Where are your first customers? University students worldwide. How do they pay? Freemium, paid monthly plan."
+    }
+  ]
+}
