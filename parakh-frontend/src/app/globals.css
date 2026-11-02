@@ -250,17 +250,21 @@
     line-height: 0.92;
     text-wrap: balance;
   }
-  /* Accent words get a marigold paint stroke behind them. */
+  /* Accent words get a marigold block behind them, with the same breathing room on every side.
+     A plain background would fill Anton's whole content area (about 1.5em tall) and spill over the
+     line above. Capitals sit in the middle 57% of that area; a centred 68% band adds about 0.08em
+     above and below them, matching the 0.08em on the left and right. */
   .display em {
     font-style: normal;
-    /* Paint only behind the capitals. A plain background fills Anton's whole content area (about
-       1.5em tall), which at a 0.9 line height spills up over the line above. Caps sit between 21%
-       and 78% of that area, so a centred 60% band covers them with a little margin. */
-    background: linear-gradient(var(--color-marigold), var(--color-marigold)) center / 100% 60% no-repeat;
-    padding: 0 0.12em;
+    background: linear-gradient(var(--color-marigold), var(--color-marigold)) center / 100% 68% no-repeat;
+    padding: 0 0.08em;
+    margin: 0 0.02em;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
+  /* The band is about 1.02em tall, so lines with one need a little more than the 0.92 leading
+     or neighbouring bands touch. */
+  .display:has(em) { line-height: 1.1; }
 
   .deva { font-family: var(--font-deva); }
 

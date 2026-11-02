@@ -1,20 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Navigation from '@/components/landing/Navigation';
 import PlanView from '@/components/plan/PlanView';
-import ChatMarkdown from '@/components/plan/ChatMarkdown';
-import { getSimulationById, getChecklist, initializeChecklist, toggleChecklistItem, setSharing } from '@/lib/api';
+import ChatPanel from '@/components/plan/ChatPanel';
+import { getSimulationById, getChecklist, getChatHistory, initializeChecklist, toggleChecklistItem, setSharing } from '@/lib/api';
 import { Icon } from '@/components/ui/Icon';
-
-const SUGGESTIONS = [
-  '@Economics what happens if I double the price?',
-  '@Growth which channel should I start with this week?',
-  "@Builder what's the cheapest way to build this?",
-  "What's the biggest risk, in one line?",
-];
 
 export default function HistoryDetailPage() {
   const params = useParams();
@@ -27,11 +20,8 @@ export default function HistoryDetailPage() {
   // Checklist State
   const [checklistState, setChecklistState] = useState<Record<string, boolean>>({});
 
-  // Chat State
-  const [chatMessages, setChatMessages] = useState<{role: string, content: string}[]>([]);
-  const [chatInput, setChatInput] = useState('');
-  const [isChatting, setIsChatting] = useState(false);
-  const [hinglish, setHinglish] = useState(false);
+  // Saved chat; null until loaded, so the panel mounts once with the full history.
+  const [chatHistory, setChatHistory] = useState<{ role: string; content: string }[] | null>(null);
   const [shareError, setShareError] = useState('');
   const [copied, setCopied] = useState(false);
 
@@ -45,29 +35,7 @@ export default function HistoryDetailPage() {
     }
   };
   const shareUrl = typeof window !== 'undefined' && simulation ? `${window.location.origin}/p/${simulation.id}` : '';
-  const chatEnd = useRef<HTMLDivElement>(null);
   const [showContext, setShowContext] = useState(false);
-
-
-  const handleChatSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!chatInput.trim() || isChatting) return;
-
-    const newMessages = [...chatMessages, { role: 'user', content: chatInput }];
-    setChatMessages(newMessages);
-    setChatInput('');
-    setIsChatting(true);
-
-    try {
-      const { chatWithCouncil } = await import('@/lib/api');
-      const res = await chatWithCouncil(simulation.job_id, newMessages, hinglish ? 'hinglish' : 'en');
-      setChatMessages([...newMessages, { role: 'assistant', content: res.reply }]);
-    } catch (err) {
-      setChatMessages([...newMessages, { role: 'assistant', content: `Error: ${err instanceof Error ? err.message : err}` }]);
-    } finally {
-      setIsChatting(false);
-    }
-  };
 
   // Handle checklist toggle
   const handleToggleChecklist = async (category: string, index: number, completed: boolean) => {
@@ -83,51 +51,37 @@ export default function HistoryDetailPage() {
     }
   };
 
-  useEffect(() => {
-    const box = chatEnd.current?.parentElement;
-    if (box) box.scrollTo({ top: box.scrollHeight, behavior: 'smooth' });
-  }, [chatMessages, isChatting]);
-
+  // The plan, its chat and its checklist all load at once: they only need the id from the URL.
   useEffect(() => {
     if (!id) return;
     getSimulationById(id)
       .then(setSimulation)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [id]);
 
-  // Load the saved council chat for this simulation
-  useEffect(() => {
-    if (!simulation?.id) return;
-    import('@/lib/api')
-      .then(({ getChatHistory }) => getChatHistory(simulation.id))
-      .then((history) => setChatMessages(history.map(({ role, content }) => ({ role, content }))))
-      .catch((err) => console.error('Failed to load chat history:', err));
-  }, [simulation?.id]);
+    getChatHistory(id)
+      .then((history) => setChatHistory(history.map(({ role, content }) => ({ role, content }))))
+      .catch((err) => {
+        console.error('Failed to load chat history:', err);
+        setChatHistory([]);
+      });
 
-  // Initialize and load checklist when simulation loads
-  useEffect(() => {
-    if (!simulation?.id) return;
-    
-    const loadChecklist = async () => {
+    const toState = (items: { category: string; item_index: number; completed: boolean }[]) =>
+      Object.fromEntries(items.map((item) => [`${item.category}_${item.item_index}`, item.completed]));
+    (async () => {
       try {
-        // Initialize checklist if it doesn't exist yet
-        await initializeChecklist(simulation.id);
-        
-        // Fetch checklist items
-        const items = await getChecklist(simulation.id);
-        const state: Record<string, boolean> = {};
-        for (const item of items) {
-          state[`${item.category}_${item.item_index}`] = item.completed;
+        let items = await getChecklist(id);
+        if (!items.length) {
+          // First visit to this plan: create its checklist, then read it back.
+          await initializeChecklist(id);
+          items = await getChecklist(id);
         }
-        setChecklistState(state);
+        setChecklistState(toState(items));
       } catch (err) {
         console.error('Failed to load checklist:', err);
       }
-    };
-    
-    loadChecklist();
-  }, [simulation?.id]);
+    })();
+  }, [id]);
 
   const score = typeof simulation?.alignment_score === 'number' ? Math.round(simulation.alignment_score * 100) : null;
 
@@ -210,69 +164,15 @@ export default function HistoryDetailPage() {
             )}
 
             {/* Follow-up chat */}
-            <section className="card overflow-hidden" aria-labelledby="chat-title">
-              <div className="flex flex-col gap-1 border-b-[3px] border-ink bg-marigold px-6 py-5">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <h2 id="chat-title" className="display m-0 text-[2rem]">Ask the agents</h2>
-                  <div role="group" aria-label="Reply language" className="flex rounded-full border-2 border-ink bg-surface p-1 text-sm">
-                    {([['English', false], ['Hinglish', true]] as const).map(([label, value]) => (
-                      <button
-                        key={label}
-                        type="button"
-                        aria-pressed={hinglish === value}
-                        onClick={() => setHinglish(value)}
-                        className={`cursor-pointer rounded-full px-3 py-1 transition-colors ${hinglish === value ? 'bg-ink font-bold text-marigold' : 'muted hover:text-on-surface'}`}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <p className="m-0 text-sm font-medium">Start with a role, like @Economics, to get that agent&apos;s answer. Switch to Hinglish if that&apos;s how you think. The chat is saved with this plan.</p>
+            {chatHistory ? (
+              <ChatPanel jobId={simulation.job_id} initial={chatHistory} />
+            ) : (
+              <div className="card flex h-56 flex-col gap-3 p-6">
+                <div className="shimmer h-6 w-48 rounded-full" />
+                <div className="shimmer h-4 w-72 rounded-full" />
+                <div className="shimmer mt-auto h-14 w-full rounded-2xl" />
               </div>
-              <div className="flex max-h-[30rem] min-h-[10rem] flex-col gap-3 overflow-y-auto px-6 py-5">
-                {chatMessages.length === 0 && !isChatting && (
-                  <div className="flex flex-wrap gap-2">
-                    {SUGGESTIONS.map((q) => (
-                      <button key={q} type="button" onClick={() => setChatInput(q)} className="cursor-pointer rounded-full border-2 border-ink bg-surface px-3.5 py-2 font-semibold text-left text-sm text-on-surface transition-[background-color,transform] duration-200 hover:bg-marigold active:scale-95">
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                {chatMessages.map((msg, i) => (
-                  <div key={i} className={`enter flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-[0.9375rem] leading-relaxed ${msg.role === 'user' ? 'whitespace-pre-wrap rounded-br-md border-2 border-ink bg-rani text-white' : 'rounded-bl-md border-2 border-ink bg-surface text-on-surface'}`}>
-                      {msg.role === 'user' ? msg.content : <ChatMarkdown content={msg.content} />}
-                    </div>
-                  </div>
-                ))}
-                {isChatting && (
-                  <div className="enter flex justify-start">
-                    <div className="flex gap-1.5 rounded-2xl rounded-bl-md border-2 border-ink bg-surface px-4 py-4" role="status" aria-label="The agents are typing">
-                      {[0, 1, 2].map((d) => (
-                        <span key={d} className="size-2 animate-bounce rounded-full bg-ink" style={{ animationDelay: `${d * 140}ms` }} />
-                      ))}
-                    </div>
-                  </div>
-                )}
-                <div ref={chatEnd} />
-              </div>
-              <form onSubmit={handleChatSubmit} className="flex gap-2 border-t-[3px] border-ink p-3">
-                <label htmlFor="chat-input" className="sr-only">Ask the agents</label>
-                <input
-                  id="chat-input"
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="@Growth what if I skip ads entirely?"
-                  className="field min-w-0 flex-1 rounded-full py-3"
-                />
-                <button type="submit" disabled={isChatting || !chatInput.trim()} className="btn btn-primary" aria-label="Send">
-                  <Icon name="arrow_upward" className="text-[1.25rem]" />
-                </button>
-              </form>
-            </section>
+            )}
           </div>
         ) : (
           <div className="card flex flex-col items-center gap-5 p-10 text-center">

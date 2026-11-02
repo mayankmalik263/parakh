@@ -26,8 +26,21 @@ export default function DashboardPage() {
         return;
       }
       setUserEmail(session.user.email || '');
+      // Show the list from the last visit at once, then refresh it from the server.
+      const cacheKey = `parakh_plans_${session.user.id}`;
+      try {
+        const cached = sessionStorage.getItem(cacheKey);
+        if (cached) {
+          setSimulations(JSON.parse(cached));
+          setLoading(false);
+        }
+      } catch { /* no cache: wait for the server */ }
       getSimulations()
-        .then(setSimulations)
+        .then((list: Sim[]) => {
+          setSimulations(list);
+          setError('');
+          try { sessionStorage.setItem(cacheKey, JSON.stringify(list)); } catch { /* storage full or blocked */ }
+        })
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
     });

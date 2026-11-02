@@ -175,7 +175,8 @@ def test_chat_can_answer_in_hinglish(monkeypatch, language, expect_hinglish):
     monkeypatch.setattr(api, "call_llm", lambda prompt, role, system: seen.update(system=system) or "Haan, chalega.")
     r = client.post("/simulate/job-1/chat", json={"language": language, "messages": [{"role": "user", "content": "Price theek hai?"}]})
     assert r.status_code == 200
-    assert ("Hinglish" in seen["system"]) is expect_hinglish
+    assert ("Reply in Hinglish" in seen["system"]) is expect_hinglish
+    assert ("Reply in plain English only" in seen["system"]) is not expect_hinglish
 
 
 PNG = "data:image/png;base64," + "A" * 40
@@ -240,3 +241,36 @@ def test_clarify_stops_early_when_the_key_cannot_use_the_model(monkeypatch):
     monkeypatch.setattr(api, "call_llm_json", no_access)
     r = client.post("/clarify", json={"idea": "A CRM for pet sitters"})
     assert r.status_code == 402 and "bharatcode.ai/account" in r.json()["detail"]
+
+
+def test_a_verified_token_is_not_checked_again_on_every_request(monkeypatch):
+    import base64
+    import json
+    import time
+    import auth
+    calls = []
+    fake = SimpleNamespace(auth=SimpleNamespace(get_user=lambda t: calls.append(t) or SimpleNamespace(user=SimpleNamespace(id="user-9"))))
+    monkeypatch.setattr(auth, "get_supabase", lambda: fake)
+    monkeypatch.setattr(auth, "_verified", {})
+    payload = base64.urlsafe_b64encode(json.dumps({"exp": time.time() + 3600}).encode()).decode().rstrip("=")
+    token = f"h.{payload}.s"
+    creds = SimpleNamespace(credentials=token)
+    assert auth.get_current_user(creds) == "user-9"
+    assert auth.get_current_user(creds) == "user-9"
+    assert calls == [token]
+
+
+def test_an_expired_token_is_checked_again(monkeypatch):
+    import base64
+    import json
+    import time
+    import auth
+    calls = []
+    fake = SimpleNamespace(auth=SimpleNamespace(get_user=lambda t: calls.append(t) or SimpleNamespace(user=SimpleNamespace(id="user-9"))))
+    monkeypatch.setattr(auth, "get_supabase", lambda: fake)
+    monkeypatch.setattr(auth, "_verified", {})
+    payload = base64.urlsafe_b64encode(json.dumps({"exp": time.time() - 5}).encode()).decode().rstrip("=")
+    creds = SimpleNamespace(credentials=f"h.{payload}.s")
+    auth.get_current_user(creds)
+    auth.get_current_user(creds)
+    assert len(calls) == 2

@@ -101,9 +101,14 @@ CHAT_FORMAT = """Format the reply in Markdown:
 - No tables, no code blocks, no em dashes. Show arithmetic with plain symbols, like "₹2,275 ÷ ₹84.66 = 27".
 - Under 180 words."""
 
+# The founder picks the language per message; earlier replies in the other language must not carry over.
+ENGLISH_RULE = """
+Reply in plain English only, even if the founder or earlier replies used Hinglish or Hindi."""
+
 HINGLISH_RULE = """
 Reply in Hinglish: everyday Hindi and English mixed, written in Roman script, the way Indian college friends text each other.
-Keep numbers, tool names and the plan's terms (MRR, CAC, runway) in English."""
+Keep numbers, tool names and the plan's terms (MRR, CAC, runway) in English.
+Do this even if earlier replies were in plain English."""
 
 
 class ClarifyQuestion(BaseModel):
@@ -302,7 +307,7 @@ def chat_with_council(job_id: str, req: ChatRequest, user_id: str = Depends(get_
     if not final_report:
         raise HTTPException(status_code=404, detail="Simulation not found")
 
-    language = HINGLISH_RULE if req.language == "hinglish" else ""
+    language = HINGLISH_RULE if req.language == "hinglish" else ENGLISH_RULE
     system_prompt = f"""You are the Parakh council. You just created this build plan for the founder:
 
 {final_report}
@@ -397,7 +402,7 @@ async def stream_simulation(job_id: str):
 def list_simulations(user_id: str = Depends(get_current_user)):
     try:
         supabase = get_supabase()
-        response = supabase.table("simulations").select("id, job_id, idea, created_at").eq("user_id", user_id).order("created_at", desc=True).execute()
+        response = supabase.table("simulations").select("id, job_id, idea, market, created_at").eq("user_id", user_id).order("created_at", desc=True).execute()
         return response.data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

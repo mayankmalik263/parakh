@@ -28,19 +28,18 @@ const components: Components = {
   hr: () => <hr className="my-1 border-0 border-t-2 border-dashed border-ink/30" />,
 };
 
-/** An agent's chat reply: Markdown rendered as real headings, bold and lists, with the answering role as a tag. */
-export default function ChatMarkdown({ content }: { content: string }) {
+/** Splits a reply into the answering role (from a first line like "**@Economics**") and the rest. */
+export function splitRole(content: string): { role: string | null; body: string } {
   const match = content.match(ROLE_LINE);
-  const role = match ? ROLES.find((r) => r.toLowerCase() === match[1].toLowerCase()) : null;
-  const body = match ? content.slice(match[0].length) : content;
+  const role = match ? ROLES.find((r) => r.toLowerCase() === match[1].toLowerCase()) ?? null : null;
+  return { role, body: (match ? content.slice(match[0].length) : content).trim() };
+}
+
+/** An agent's chat reply: Markdown rendered as real headings, bold and lists. */
+export default function ChatMarkdown({ content }: { content: string }) {
   return (
-    <div className="flex flex-col gap-3">
-      {role && (
-        <span className="w-fit rounded-full border-2 border-ink bg-marigold px-2.5 py-0.5 text-xs font-extrabold text-ink">{role}</span>
-      )}
-      <div className="flex flex-col gap-3 break-words">
-        <ReactMarkdown components={components}>{body.trim()}</ReactMarkdown>
-      </div>
+    <div className="flex flex-col gap-3 break-words">
+      <ReactMarkdown components={components}>{content}</ReactMarkdown>
     </div>
   );
 }

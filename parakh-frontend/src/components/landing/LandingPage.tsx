@@ -56,7 +56,7 @@ export default function LandingPage() {
             >
               Idea hai? Test karo.
             </span>
-            <h1 className="display m-0 text-[clamp(3.5rem,8.5vw,7.75rem)] leading-[0.9]">
+            <h1 className="display m-0 text-[clamp(3.5rem,8.5vw,7.75rem)]">
               Test your idea <em>before campus</em> does.
             </h1>
             <p className="m-0 max-w-[34rem] text-xl font-medium leading-relaxed">
@@ -80,13 +80,16 @@ export default function LandingPage() {
             <div className="spin-slow absolute right-2 top-0 size-36">
               <svg viewBox="0 0 160 160" width="100%" height="100%">
                 <defs>
-                  <path id="stamp-ring" d="M80,80 m-60,0 a60,60 0 1,1 120,0 a60,60 0 1,1 -120,0" />
+                  {/* Letters stand on this circle and grow outwards, so it sits well inside the rim:
+                      15px capitals reach r = 66, leaving a clear gap to the rim at r = 74. */}
+                  <path id="stamp-ring" d="M80,80 m-53,0 a53,53 0 1,1 106,0 a53,53 0 1,1 -106,0" />
                 </defs>
                 <circle cx="80" cy="80" r="76" fill="#FFB20F" stroke="#161616" strokeWidth="4" />
-                <text style={{ fontFamily: 'var(--font-anton)' }} fontSize="17" letterSpacing="3" fill="#161616">
-                  <textPath href="#stamp-ring">CODE CHECKED ★ NO FAKE MATH ★</textPath>
+                <circle cx="80" cy="80" r="48" fill="none" stroke="#161616" strokeWidth="2" />
+                <text style={{ fontFamily: 'var(--font-anton)' }} fontSize="15" fill="#161616">
+                  <textPath href="#stamp-ring" textLength="326" lengthAdjust="spacing">CODE CHECKED ★ NO FAKE MATH ★</textPath>
                 </text>
-                <text x="80" y="96" textAnchor="middle" style={{ fontFamily: 'var(--font-tiro-deva)' }} fontSize="40" fill="#161616">
+                <text x="80" y="93" textAnchor="middle" style={{ fontFamily: 'var(--font-tiro-deva)' }} fontSize="34" fill="#161616">
                   परख
                 </text>
               </svg>
