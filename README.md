@@ -6,6 +6,10 @@
 
 Type your startup idea in one line. Four AI agents plan it in rupees, plain Python rechecks every number they write, and a Critic tells you straight what won't hold up.
 
+<a href="https://github.com/mayankmalik263/parakh/raw/main/docs/video/parakh-launch.mp4"><img src="docs/video/parakh-launch.jpg" alt="Watch the 24-second Parakh launch video" width="900"></a>
+
+<sub>▶ <a href="https://github.com/mayankmalik263/parakh/raw/main/docs/video/parakh-launch.mp4">Watch the 24-second launch video</a> (with sound)</sub>
+
 [![BharatCode Build League](https://img.shields.io/badge/BharatCode-Build%20League%202026-FFB20F?style=for-the-badge&labelColor=161616)](https://bharatcode.ai)
 [![Runs on BharatCode](https://img.shields.io/badge/default%20model-qwen--3.8--27b-E0177A?style=for-the-badge&labelColor=161616)](BharatCode.txt)
 [![MIT License](https://img.shields.io/badge/license-MIT-FFF3DC?style=for-the-badge&labelColor=161616)](LICENSE)
